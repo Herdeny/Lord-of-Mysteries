@@ -1,72 +1,149 @@
 # Project Mystery —《诡秘之主》Minecraft Mod
 
-> 在未知中承担风险、通过扮演消化力量、逐步成为非凡者的 Minecraft 生存冒险 Mod。
-> 仓库代号：Lord-of-Mysteries ・ 项目代号：Project Mystery
+> 在未知中承担风险、通过**扮演**消化力量、逐步成为非凡者的 Minecraft 生存冒险 Mod。
+>
+> 仓库代号：`Lord-of-Mysteries`　·　项目代号：`Project Mystery`　·　当前阶段：**M0 技术验证（框架）**
 
-## 技术基线
+本 Mod 把《诡秘之主》的核心体验搬进 Minecraft：玩家从普通人出发，调配**魔药**晋升序列，
+靠**扮演对应序列的角色**来消化力量，同时对抗灵性枯竭与失控污染，逐步揭开非凡世界。
 
-| 项 | 版本 |
-|----|------|
-| Minecraft | Java Edition **1.21.1** |
-| Mod Loader | **NeoForge 21.1.x** |
-| Java | **21** |
-| 构建 | Gradle 8.8 + NeoForged ModDevGradle |
-| mod_id | `project_mystery` |
-| 包根 | `top.aurora.projectmystery` |
+---
 
-> ⚠️ 设计文档 v0.4 的基线是 NeoForge 1.21.1；本工程已按此重建。
-> （此前仓库里的 Forge 1.20.1 example 模板已清理。）
+## 一、技术基线（已锁定）
 
-## 当前进度：M0 技术验证（框架阶段）
+| 项目 | 版本 | 说明 |
+|------|------|------|
+| Minecraft | **Java Edition 1.20.1** | 锁定，不升级 |
+| Mod Loader | **Forge 47.4.20**（`[47,)`） | 经典 Forge，非 NeoForge |
+| Java | **17** | Forge 1.20.1 工具链要求 |
+| 构建 | Gradle 8.8 + **ForgeGradle 6** | `./gradlew` 自带 wrapper |
+| 映射 | official（Mojang 官方映射） | |
+| `mod_id` | `project_mystery` | |
+| Java 包根 | `top.aurora.projectmystery` | |
 
-已落地的骨架（可编译运行的最小闭环）：
+> 玩家数据采用 **Forge Capability**（1.20.1 无 NeoForge 的 Attachments API），
+> 随玩家存档以 NBT 持久化，死亡/跨维度自动继承。
 
-- ✅ NeoForge 1.21.1 工程配置（build.gradle / settings / gradle.properties / wrapper / neoforge.mods.toml）
-- ✅ Mod 入口 `ProjectMystery`（注册附件、注册表、配置、事件总线）
-- ✅ 玩家数据 `PlayerMysteryData` + `MysteryAttachments`（Attachment + Codec + copyOnDeath，§5.1）
-- ✅ 灵性恢复 `SpiritualityRegenHandler`（§5.2）
-- ✅ 污染/失控检定节奏 `PollutionEffectHandler`（§5.3）
-- ✅ 注册管线：方块（仪式祭坛/坩埚）、物品（占位材料/封印物）、方块实体占位、创造标签
-- ✅ 服务端配置 `ServerConfig`（§19.1 平衡开关）
-- ✅ 数据驱动 JSON 示例（途径/序列/扮演事件/魔药/仪式/封印物，§18）
-- ✅ 中英双语 lang + blockstate/model 资源
-- ✅ M0 单元测试框架（`PlayerMysteryDataTest`）
-- ✅ 按 §17 建立全部 13 个模块包结构（含 package-info 说明）
+---
 
-待填充（按文档里程碑）：M1 占卜家序列9闭环 → M2 三途径+灰雾 → M3 MVP 内容 → M4 发布 → M5 扩展。
+## 二、当前进度：M0 技术验证
 
-## 目录结构
+已落地一套**可编译、可运行、带单测**的最小骨架，验证核心技术路线可行。
 
-遵循设计文档 §17。核心源码在 `src/main/java/top/aurora/projectmystery/`，
-按 core / player / ability / potion / ritual / divination / knowledge / artifact /
-acting / world / organization / grayfog / client / compat 分模块。
+### ✅ 已完成
 
-数据包在 `src/main/resources/data/project_mystery/`，资源在 `assets/project_mystery/`。
+**工程基础**
+- Forge 1.20.1 完整工程（`build.gradle` / `gradle.properties` / `settings.gradle` / gradle wrapper / `mods.toml`）
+- `./gradlew compileJava test` → **BUILD SUCCESSFUL**（3 个单元测试通过）
 
-## 构建 & 运行
+**核心系统骨架**
+- `ProjectMystery`：Mod 入口，挂载注册、配置、事件总线
+- `PlayerMysteryData`：玩家非凡者数据载荷（途径 / 序列 / 灵性 / 消化 / 污染 / 失控压力 / 知识 / 扮演历史 / 组织声望 / NBT 序列化）
+- `MysteryCapability` + `PlayerCapabilityEvents`：Capability 附着 / 注册 / 死亡跨维度数据继承（§5.1）
+- `SpiritualityRegenHandler`：灵性自然恢复（非战斗 + 光照≥7 + 失控压力<30，§5.2）
+- `PollutionEffectHandler`：污染 / 失控压力分级检定节奏（§5.3）
+- `ServerConfig`：服务端平衡开关（灵性恢复 / 消化 / 污染倍率、失控模式、灰雾开关等，§19.1）
 
-```bash
-# 需要 Java 21
-./gradlew build              # 编译 + 测试 + 打 jar
-./gradlew test               # 仅跑单元测试
-./gradlew runClient          # 启动带 mod 的客户端（首次会下载/反编译 MC，较慢）
-./gradlew runServer          # 启动专用服务端
-./gradlew runData            # 运行数据生成
+**注册管线**
+- 方块：仪式祭坛 `ritual_altar`、坩埚 `crucible`
+- 物品：占位材料（灵性草药 / 占卜水晶 / 月华水 / 污染混合物）、封印物（永燃火柴盒）、对应方块物品
+- 方块实体注册器（坩埚 BlockEntity 占位，M1 绑定）
+- 创造模式物品栏 `project_mystery:main`
+
+**数据驱动示例（§18，全部为合法 JSON）**
+- 途径 `pathways/seer.json`（占卜家）
+- 序列 `sequences/seer_9.json`
+- 扮演事件 `acting_events/seer9_divination_success.json`
+- 魔药 `potions/seer_potion_9.json`
+- 仪式 `rituals/calm_sealing_ritual.json`
+- 封印物 `artifacts/eternal_matchbox.json`
+
+**资源与本地化**
+- 中英双语 `lang/zh_cn.json` + `lang/en_us.json`
+- blockstate / 方块模型 / 物品模型（纹理待补，见 `assets/.../textures/TEXTURES_TODO.md`）
+
+**模块包结构**（按设计文档 §17，13 个模块均已建包 + `package-info` 说明职责）
+`core` `player` `ability` `potion` `ritual` `divination` `knowledge`
+`artifact` `acting` `world` `organization` `grayfog` `client` `compat`
+
+### 🚧 待实现（按里程碑）
+
+| 里程碑 | 目标 |
+|--------|------|
+| **M1** | 占卜家序列 9 完整闭环：灵视 / 危险直觉 / 简易占卜 + 占卜可信度计算 + 扮演事件系统 + 坩埚魔药制作 + 消化与失控 + 1 个失控体 + 1 件封印物 |
+| **M2** | 三途径（占卜家 / 观众 / 猎人）序列 9-8 + 通用仪式状态机 + 多人同步 + 灰雾空间基础版 |
+| **M3** | 三途径序列 7 + 偷盗者/学徒 9-7 + 阶段 Boss + 任务链 + 首发结构 + 世界事件 |
+| **M4** | 平衡 / 性能 / 兼容 / 存档迁移 / 本地化 → MVP 1.0 |
+| **M5** | 序列 6-5、更多途径（→10 条）、组织深化、塔罗会完整功能 |
+
+---
+
+## 三、目录结构
+
+```text
+Lord-of-Mysteries/
+├── build.gradle / settings.gradle / gradle.properties   # Forge 1.20.1 工程
+├── gradlew / gradlew.bat / gradle/                       # Gradle 8.8 wrapper
+├── docs/
+│   ├── Project_Mystery_Mod_Design_Doc_v0.4.pdf           # 唯一权威设计规格
+│   └── IP_MAPPING.md                                     # 原作→原创化映射表（发布前必处理）
+└── src/
+    ├── main/
+    │   ├── java/top/aurora/projectmystery/
+    │   │   ├── ProjectMystery.java                       # 入口
+    │   │   ├── core/        （MysteryRegistries / config/ServerConfig）
+    │   │   ├── player/      （PlayerMysteryData / MysteryCapability / 事件 / Handler）
+    │   │   ├── registry/    （ModBlocks / ModItems / ModBlockEntities / ModCreativeTabs）
+    │   │   └── ability potion ritual divination knowledge
+    │   │       artifact acting world organization grayfog client compat   # 模块占位包
+    │   └── resources/
+    │       ├── META-INF/mods.toml
+    │       ├── data/project_mystery/    （pathways/sequences/potions/rituals/...）
+    │       └── assets/project_mystery/  （lang/ models/ blockstates/ textures/）
+    └── test/java/...                                     # JUnit 5 单元测试
 ```
 
-> 首次 `./gradlew build` 会下载 NeoForge 与 Minecraft 并反编译，需要较长时间和约 3GB 内存。
+---
 
-## 文档
+## 四、构建与运行
 
-- 设计文档：`docs/Project_Mystery_Mod_Design_Doc_v0.4.pdf`（唯一权威规格）
-- IP 原创化映射表：`docs/IP_MAPPING.md`（公开发布前必须处理）
+> 需要 **JDK 17**。首次构建会下载 Forge 并反编译 Minecraft，耗时较长、约需 3GB 内存。
 
-## 授权与 IP 声明
+```bash
+# 编译 + 跑单元测试
+./gradlew compileJava test
 
-所有专有名词当前仅用于内部原型。公开发布前必须完成 IP 处理或原创化映射
-（见 `docs/IP_MAPPING.md`）。
+# 打出可加载的 mod jar（产物在 build/libs/）
+./gradlew build
 
-## 协作
+# 开发期启动客户端 / 专用服务端 / 数据生成
+./gradlew runClient
+./gradlew runServer
+./gradlew runData
 
-- Herdeny（星魂）：项目发起 / 共享
-- Zijian-Ni（小倪）：协同开发
+# IDE：IntelliJ 直接 import build.gradle；Eclipse 先 ./gradlew genEclipseRuns
+```
+
+构建产物 `build/libs/project_mystery-<version>.jar` 放进 Forge 1.20.1 的 `mods/` 即可加载。
+
+---
+
+## 五、IP 与授权声明 ⚠️
+
+当前所有专有名词（途径名、序列名、组织名、封印物名等）**仅用于内部原型开发**。
+
+- 公开发布前**必须**完成 IP 处理或原创化映射，详见 [`docs/IP_MAPPING.md`](docs/IP_MAPPING.md)。
+- 代码与数据层统一使用稳定英文代号（如 `seer`），不含原作中文专有名词；
+  所有玩家可见文本走 `lang/*.json`，发布时只替换展示名即可完成原创化，无需改逻辑。
+- License 当前为 `All Rights Reserved`（见 `gradle.properties` 的 `mod_license`）。
+
+---
+
+## 六、协作
+
+| 角色 | 成员 |
+|------|------|
+| 发起 / 共享 | **Herdeny**（星魂） |
+| 协同开发 | **Zijian-Ni**（小倪） |
+
+设计文档 v0.4 为唯一权威规格，任何系统实现以文档为准；如需偏离请先更新文档。
