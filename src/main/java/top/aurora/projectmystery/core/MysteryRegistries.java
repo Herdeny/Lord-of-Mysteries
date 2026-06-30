@@ -1,6 +1,6 @@
 package top.aurora.projectmystery.core;
 
-import net.neoforged.bus.api.IEventBus;
+import net.minecraftforge.eventbus.api.IEventBus;
 
 import top.aurora.projectmystery.registry.ModItems;
 import top.aurora.projectmystery.registry.ModBlocks;

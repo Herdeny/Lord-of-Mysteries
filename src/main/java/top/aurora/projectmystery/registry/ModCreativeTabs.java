@@ -1,27 +1,26 @@
 package top.aurora.projectmystery.registry;
 
-import java.util.function.Supplier;
-
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 import top.aurora.projectmystery.ProjectMystery;
 
 /**
- * 创造模式物品栏。把本 mod 的占位物品收纳到一个标签页，便于开发期测试。
+ * 创造模式物品栏（Forge 1.20.1）。把本 mod 的占位物品收纳到一个标签页，便于开发期测试。
  */
 public final class ModCreativeTabs {
 
     private ModCreativeTabs() {}
 
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS =
-            DeferredRegister.create(net.minecraft.core.registries.Registries.CREATIVE_MODE_TAB,
-                    ProjectMystery.MOD_ID);
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ProjectMystery.MOD_ID);
 
-    public static final Supplier<CreativeModeTab> MAIN_TAB = CREATIVE_TABS.register("main",
+    public static final RegistryObject<CreativeModeTab> MAIN_TAB = CREATIVE_TABS.register("main",
             () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup." + ProjectMystery.MOD_ID + ".main"))
                     .icon(() -> new ItemStack(ModItems.DIVINATION_CRYSTAL.get()))

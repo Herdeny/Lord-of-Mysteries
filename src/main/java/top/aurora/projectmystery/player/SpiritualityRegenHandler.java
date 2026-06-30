@@ -1,33 +1,33 @@
 package top.aurora.projectmystery.player;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-
-import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import top.aurora.projectmystery.ProjectMystery;
 
 /**
- * 灵性自然恢复（设计文档 §5.2）。
+ * 灵性自然恢复（Forge 1.20.1，设计文档 §5.2）。
  *
  * 恢复条件：非战斗 + 光照 ≥ 7 + 失控压力 < 30。
  * 恢复速率随途径/序列变化，M0 先用文档给出的近似值。
  */
-@EventBusSubscriber(modid = ProjectMystery.MOD_ID)
+@Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class SpiritualityRegenHandler {
 
     private SpiritualityRegenHandler() {}
 
     @SubscribeEvent
-    public static void onPlayerTick(PlayerTickEvent.Post event) {
-        Player player = event.getEntity();
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        Player player = event.player;
         if (player.level().isClientSide()) return;
         if (player.tickCount % 20 != 0) return; // 每秒检查一次
 
-        PlayerMysteryData data = player.getData(MysteryAttachments.MYSTERY_DATA.get());
+        PlayerMysteryData data = MysteryCapability.get(player);
         if (data.pathway == null) return;
 
         boolean inCombat = player.getLastHurtByMobTimestamp() > player.tickCount - 100;
@@ -37,7 +37,6 @@ public final class SpiritualityRegenHandler {
         if (!inCombat && goodLight && lowPressure) {
             float regenRate = getRegenRate(data.pathway, data.sequence);
             data.spirituality = Math.min(data.spiritualityMax, data.spirituality + regenRate);
-            player.setData(MysteryAttachments.MYSTERY_DATA.get(), data);
         }
     }
 

@@ -1,29 +1,29 @@
 package top.aurora.projectmystery.core.config;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 /**
- * 服务端配置（设计文档 §19.1 server.toml）。
+ * 服务端配置（Forge 1.20.1，设计文档 §19.1 server.toml）。
  * M0 先声明核心平衡开关；随系统落地逐项接线到对应 Handler。
  */
 public final class ServerConfig {
 
     private ServerConfig() {}
 
-    public static final ModConfigSpec SPEC;
+    public static final ForgeConfigSpec SPEC;
 
-    public static final ModConfigSpec.DoubleValue SPIRITUALITY_REGEN_MULTIPLIER;
-    public static final ModConfigSpec.DoubleValue DIGESTION_MULTIPLIER;
-    public static final ModConfigSpec.DoubleValue POLLUTION_RATE_MULTIPLIER;
-    public static final ModConfigSpec.ConfigValue<String> BREAKDOWN_MODE; // recoverable / permanent / death
-    public static final ModConfigSpec.BooleanValue PVP_MENTAL_ABILITIES;
-    public static final ModConfigSpec.BooleanValue EXPLOSION_BLOCK_DAMAGE;
-    public static final ModConfigSpec.BooleanValue GRAYFOG_ENABLED;
-    public static final ModConfigSpec.BooleanValue WORLD_EVENTS_ENABLED;
-    public static final ModConfigSpec.BooleanValue SHOW_EXACT_DIGESTION;
+    public static final ForgeConfigSpec.DoubleValue SPIRITUALITY_REGEN_MULTIPLIER;
+    public static final ForgeConfigSpec.DoubleValue DIGESTION_MULTIPLIER;
+    public static final ForgeConfigSpec.DoubleValue POLLUTION_RATE_MULTIPLIER;
+    public static final ForgeConfigSpec.ConfigValue<String> BREAKDOWN_MODE; // recoverable / permanent / death
+    public static final ForgeConfigSpec.BooleanValue PVP_MENTAL_ABILITIES;
+    public static final ForgeConfigSpec.BooleanValue EXPLOSION_BLOCK_DAMAGE;
+    public static final ForgeConfigSpec.BooleanValue GRAYFOG_ENABLED;
+    public static final ForgeConfigSpec.BooleanValue WORLD_EVENTS_ENABLED;
+    public static final ForgeConfigSpec.BooleanValue SHOW_EXACT_DIGESTION;
 
     static {
-        ModConfigSpec.Builder b = new ModConfigSpec.Builder();
+        ForgeConfigSpec.Builder b = new ForgeConfigSpec.Builder();
         b.push("gameplay");
 
         SPIRITUALITY_REGEN_MULTIPLIER = b.comment("灵性恢复倍率（默认 1.0）")

@@ -1,9 +1,8 @@
 plugins {
-    id 'java-library'
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.78'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
 
 version = mod_version
@@ -13,46 +12,38 @@ base {
     archivesName = mod_id
 }
 
-// Java 21 工具链（NeoForge 1.21.1 要求）
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+// Forge 1.20.1 要求 Java 17
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-neoForge {
-    version = project.neo_version
+minecraft {
+    mappings channel: mapping_channel, version: mapping_version
 
-    // 使用 NeoForge 官方 Mojang 映射（official）。
-    // 如需 Parchment 社区参数名，确认存在的 mappingsVersion 后再启用：
-    // parchment { minecraftVersion = '1.21.1'; mappingsVersion = '2024.07.28' }
+    // copyIdeResources = true
 
     runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            modSource sourceSets.main
+        }
+
         client {
-            client()
-            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+            // 开发期客户端
         }
+
         server {
-            server()
             programArgument '--nogui'
-            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
         }
+
         gameTestServer {
-            type = "gameTestServer"
-            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+            property 'forge.enabledGameTestNamespaces', mod_id
         }
+
         data {
-            data()
             programArguments.addAll '--mod', mod_id, '--all',
                 '--output', file('src/generated/resources/').getAbsolutePath(),
                 '--existing', file('src/main/resources/').getAbsolutePath()
-        }
-
-        configureEach {
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
-            logLevel = org.slf4j.event.Level.DEBUG
-        }
-    }
-
-    mods {
-        "${mod_id}" {
-            sourceSet(sourceSets.main)
         }
     }
 }
@@ -62,39 +53,28 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     mavenLocal()
-    maven {
-        name = 'ParchmentMC'
-        url = 'https://maven.parchmentmc.org'
-    }
 }
 
 dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
     // 测试
     testImplementation platform('org.junit:junit-bom:5.10.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // 可选兼容（MVP 后启用）
-    // compileOnly "mezz.jei:jei-1.21.1-common-api:..."
-    // compileOnly "top.theillusivec4.curios:curios-neoforge:..."
+    // compileOnly fg.deobf("mezz.jei:jei-1.20.1-common-api:...")
+    // compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:...")
 }
 
-// 让 test 源集能看到主源集编译时依赖（含 Minecraft/NeoForge 类）
-configurations {
-    testImplementation.extendsFrom(compileClasspath)
-}
-
-test {
-    useJUnitPlatform()
-}
-
-// mods.toml / neoforge.mods.toml 占位符替换
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+// mods.toml 占位符替换
+tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
         minecraft_version      : minecraft_version,
         minecraft_version_range: minecraft_version_range,
-        neo_version            : neo_version,
-        neo_version_range      : neo_version_range,
+        forge_version          : forge_version,
+        forge_version_range    : forge_version_range,
         loader_version_range   : loader_version_range,
         mod_id                 : mod_id,
         mod_name               : mod_name,
@@ -104,18 +84,40 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
         mod_description        : mod_description
     ]
     inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties
+    }
 }
 
-sourceSets.main.resources.srcDir generateModMetadata
-neoForge.ideSyncTask generateModMetadata
+// 让 test 源集能看到主源集编译时依赖（含 Minecraft/Forge 类）
+configurations {
+    testImplementation.extendsFrom(compileClasspath)
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes([
+            'Specification-Title'     : mod_id,
+            'Specification-Vendor'    : mod_authors,
+            'Specification-Version'   : '1',
+            'Implementation-Title'    : project.name,
+            'Implementation-Version'  : project.jar.archiveVersion,
+            'Implementation-Vendor'   : mod_authors
+        ])
+    }
+}
+
+// ForgeGradle 需要对最终 jar 做重映射
+jar.finalizedBy('reobfJar')
 
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
-            from components.java
+            artifact jar
         }
     }
     repositories {

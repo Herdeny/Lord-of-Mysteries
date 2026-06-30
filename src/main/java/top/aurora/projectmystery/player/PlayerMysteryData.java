@@ -5,17 +5,17 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 
 /**
  * 玩家非凡者数据（设计文档 §5.1）。
  *
- * NeoForge 1.21.1 通过 Attachments 存储玩家自定义数据；本类即附着的载荷。
- * 注意：Attachment 推荐使用不可变/可序列化结构 + Codec。此处为 M0 骨架，
- * 字段保持可变以便快速迭代，序列化通过下方 CODEC 完成。
+ * Forge 1.20.1 没有 NeoForge 的 Attachments API，本类作为 Capability 的载荷，
+ * 通过 NBT 序列化随玩家存档；附着逻辑见 {@link MysteryCapability}。
  */
 public class PlayerMysteryData {
 
@@ -48,30 +48,75 @@ public class PlayerMysteryData {
         return pathway != null && sequence >= 0;
     }
 
-    /**
-     * M0 简化 CODEC：先序列化最核心的数值与途径/序列字段，
-     * 知识/历史/声望等集合字段待 M1 数据系统完善后补全。
-     */
-    public static final Codec<PlayerMysteryData> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            ResourceLocation.CODEC.optionalFieldOf("pathway").forGetter(d ->
-                    java.util.Optional.ofNullable(d.pathway)),
-            Codec.INT.fieldOf("sequence").forGetter(d -> d.sequence),
-            Codec.FLOAT.fieldOf("spirituality").forGetter(d -> d.spirituality),
-            Codec.FLOAT.fieldOf("spirituality_max").forGetter(d -> d.spiritualityMax),
-            Codec.FLOAT.fieldOf("digestion").forGetter(d -> d.digestion),
-            Codec.FLOAT.fieldOf("pollution").forGetter(d -> d.pollution),
-            Codec.FLOAT.fieldOf("insanity_pressure").forGetter(d -> d.insanityPressure),
-            Codec.INT.fieldOf("schema_version").forGetter(d -> d.schemaVersion)
-    ).apply(inst, (pathway, sequence, spi, spiMax, dig, pol, ins, ver) -> {
-        PlayerMysteryData d = new PlayerMysteryData();
-        d.pathway = pathway.orElse(null);
-        d.sequence = sequence;
-        d.spirituality = spi;
-        d.spiritualityMax = spiMax;
-        d.digestion = dig;
-        d.pollution = pol;
-        d.insanityPressure = ins;
-        d.schemaVersion = ver;
-        return d;
-    }));
+    /** 死亡/跨维度时把数据拷贝到新实体（§5：默认保留非凡者身份）。 */
+    public void copyFrom(PlayerMysteryData src) {
+        this.pathway = src.pathway;
+        this.sequence = src.sequence;
+        this.spirituality = src.spirituality;
+        this.spiritualityMax = src.spiritualityMax;
+        this.digestion = src.digestion;
+        this.pollution = src.pollution;
+        this.insanityPressure = src.insanityPressure;
+        this.knownKnowledge = new HashSet<>(src.knownKnowledge);
+        this.actingHistory = new HashMap<>(src.actingHistory);
+        this.orgReputation = new HashMap<>(src.orgReputation);
+        this.schemaVersion = src.schemaVersion;
+    }
+
+    // —— NBT 序列化 ——
+
+    public CompoundTag save() {
+        CompoundTag tag = new CompoundTag();
+        if (pathway != null) tag.putString("pathway", pathway.toString());
+        tag.putInt("sequence", sequence);
+        tag.putFloat("spirituality", spirituality);
+        tag.putFloat("spirituality_max", spiritualityMax);
+        tag.putFloat("digestion", digestion);
+        tag.putFloat("pollution", pollution);
+        tag.putFloat("insanity_pressure", insanityPressure);
+        tag.putInt("schema_version", schemaVersion);
+
+        ListTag known = new ListTag();
+        for (ResourceLocation k : knownKnowledge) known.add(StringTag.valueOf(k.toString()));
+        tag.put("known_knowledge", known);
+
+        CompoundTag acting = new CompoundTag();
+        actingHistory.forEach(acting::putLong);
+        tag.put("acting_history", acting);
+
+        CompoundTag rep = new CompoundTag();
+        orgReputation.forEach((id, v) -> rep.putInt(id.toString(), v));
+        tag.put("org_reputation", rep);
+
+        return tag;
+    }
+
+    public void load(CompoundTag tag) {
+        pathway = tag.contains("pathway") ? ResourceLocation.tryParse(tag.getString("pathway")) : null;
+        sequence = tag.getInt("sequence");
+        spirituality = tag.getFloat("spirituality");
+        spiritualityMax = tag.contains("spirituality_max") ? tag.getFloat("spirituality_max") : 100f;
+        digestion = tag.getFloat("digestion");
+        pollution = tag.getFloat("pollution");
+        insanityPressure = tag.getFloat("insanity_pressure");
+        schemaVersion = tag.contains("schema_version") ? tag.getInt("schema_version") : 1;
+
+        knownKnowledge.clear();
+        ListTag known = tag.getList("known_knowledge", Tag.TAG_STRING);
+        for (int i = 0; i < known.size(); i++) {
+            ResourceLocation rl = ResourceLocation.tryParse(known.getString(i));
+            if (rl != null) knownKnowledge.add(rl);
+        }
+
+        actingHistory.clear();
+        CompoundTag acting = tag.getCompound("acting_history");
+        for (String key : acting.getAllKeys()) actingHistory.put(key, acting.getLong(key));
+
+        orgReputation.clear();
+        CompoundTag rep = tag.getCompound("org_reputation");
+        for (String key : rep.getAllKeys()) {
+            ResourceLocation rl = ResourceLocation.tryParse(key);
+            if (rl != null) orgReputation.put(rl, rep.getInt(key));
+        }
+    }
 }

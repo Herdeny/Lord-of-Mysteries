@@ -2,14 +2,14 @@ package top.aurora.projectmystery.player;
 
 import net.minecraft.server.level.ServerPlayer;
 
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import top.aurora.projectmystery.ProjectMystery;
 
 /**
- * 污染与失控压力检定（设计文档 §5.3）。
+ * 污染与失控压力检定（Forge 1.20.1，设计文档 §5.3）。
  *
  * 阈值表：
  *   0-24  稳定      无检定
@@ -20,16 +20,17 @@ import top.aurora.projectmystery.ProjectMystery;
  *
  * M0 仅做检定节奏骨架；具体事件由 InsanityEventHandler（M1）实现。
  */
-@EventBusSubscriber(modid = ProjectMystery.MOD_ID)
+@Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class PollutionEffectHandler {
 
     private PollutionEffectHandler() {}
 
     @SubscribeEvent
-    public static void onPollutionTick(PlayerTickEvent.Post event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+    public static void onPollutionTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        if (!(event.player instanceof ServerPlayer player)) return;
 
-        PlayerMysteryData data = player.getData(MysteryAttachments.MYSTERY_DATA.get());
+        PlayerMysteryData data = MysteryCapability.get(player);
         if (data.pathway == null) return;
 
         float pollution = data.pollution;
