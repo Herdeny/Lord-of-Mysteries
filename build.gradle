@@ -19,10 +19,9 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 neoForge {
     version = project.neo_version
 
-    parchment {
-        mappingsVersion = '2024.07.28'
-        minecraftVersion = '1.21.1'
-    }
+    // 使用 NeoForge 官方 Mojang 映射（official）。
+    // 如需 Parchment 社区参数名，确认存在的 mappingsVersion 后再启用：
+    // parchment { minecraftVersion = '1.21.1'; mappingsVersion = '2024.07.28' }
 
     runs {
         client {
@@ -63,6 +62,10 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     mavenLocal()
+    maven {
+        name = 'ParchmentMC'
+        url = 'https://maven.parchmentmc.org'
+    }
 }
 
 dependencies {
@@ -74,6 +77,11 @@ dependencies {
     // 可选兼容（MVP 后启用）
     // compileOnly "mezz.jei:jei-1.21.1-common-api:..."
     // compileOnly "top.theillusivec4.curios:curios-neoforge:..."
+}
+
+// 让 test 源集能看到主源集编译时依赖（含 Minecraft/NeoForge 类）
+configurations {
+    testImplementation.extendsFrom(compileClasspath)
 }
 
 test {

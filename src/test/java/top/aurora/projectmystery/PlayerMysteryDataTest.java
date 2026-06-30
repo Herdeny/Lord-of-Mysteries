@@ -9,8 +9,10 @@ import top.aurora.projectmystery.player.PlayerMysteryData;
 /**
  * M0 基础单元测试框架（设计文档 §20 M0 任务：基础单元测试框架）。
  * 验证 PlayerMysteryData 默认值与普通人/非凡者判定逻辑。
- * 注：涉及 Minecraft 运行时类的测试（Codec 反序列化、能力检定）需 gameTestServer，
- * 此处仅覆盖纯 POJO 逻辑。
+ *
+ * 注：test 源集默认不在 Minecraft 运行时类路径上（NeoForge ModDev），
+ * 因此这里只覆盖不依赖 net.minecraft.* 的纯 POJO 逻辑。涉及 ResourceLocation /
+ * Codec 反序列化 / 能力检定的测试放到 gameTestServer（§20 M0 任务）。
  */
 class PlayerMysteryDataTest {
 
@@ -27,10 +29,16 @@ class PlayerMysteryDataTest {
     }
 
     @Test
-    void becomesExtraordinaryWhenPathwayAndSequenceSet() {
+    void notExtraordinaryWithoutPathwayEvenIfSequenceSet() {
         PlayerMysteryData d = new PlayerMysteryData();
-        d.pathway = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("project_mystery", "seer");
-        d.sequence = 9;
-        assertTrue(d.isExtraordinary());
+        d.sequence = 9; // 仅有序列、无途径 → 仍非非凡者
+        assertFalse(d.isExtraordinary(), "无途径时不应判定为非凡者");
+    }
+
+    @Test
+    void sequenceBoundaryStaysCommonerWhenNegative() {
+        PlayerMysteryData d = new PlayerMysteryData();
+        d.sequence = -1;
+        assertFalse(d.isExtraordinary());
     }
 }
