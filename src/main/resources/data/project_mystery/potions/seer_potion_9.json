@@ -1,0 +1,19 @@
+{
+  "id": "project_mystery:seer_potion_9",
+  "target_pathway": "project_mystery:seer",
+  "target_sequence": 9,
+  "ingredients": [
+    { "item": "project_mystery:spirit_herb", "order": 1, "required": true },
+    { "item": "project_mystery:divination_crystal", "order": 2, "required": true },
+    { "item": "project_mystery:moonwater", "order": 3, "required": false, "quality_bonus": 0.2 }
+  ],
+  "temperature_range": [60, 80],
+  "brewing_time_ticks": 1200,
+  "quality_thresholds": {
+    "perfect": { "ingredient_match": 1.0, "temp_deviation": 5 },
+    "complete": { "ingredient_match": 1.0, "temp_deviation": 15 },
+    "flawed": { "ingredient_match": 0.8, "temp_deviation": 30 },
+    "contaminated": { "ingredient_match": 0.5 }
+  },
+  "failure_result": "project_mystery:contaminated_mixture"
+}

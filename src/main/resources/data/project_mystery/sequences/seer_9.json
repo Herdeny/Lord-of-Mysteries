@@ -1,0 +1,21 @@
+{
+  "id": "project_mystery:seer_9",
+  "pathway": "project_mystery:seer",
+  "sequence": 9,
+  "spirituality_max_bonus": 22,
+  "spirituality_regen_bonus": 0.0,
+  "abilities": [
+    "project_mystery:spirit_vision",
+    "project_mystery:danger_intuition",
+    "project_mystery:simple_divination"
+  ],
+  "acting_events": [
+    "project_mystery:seer9_divination_success",
+    "project_mystery:seer9_abstain_divination",
+    "project_mystery:seer9_interpret_ambiguous",
+    "project_mystery:seer9_help_player_escape",
+    "project_mystery:seer9_over_divination_penalty"
+  ],
+  "potion_id": "project_mystery:seer_potion_9",
+  "digestion_target": 100.0
+}

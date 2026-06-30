@@ -1,0 +1,12 @@
+{
+  "itemGroup.project_mystery.main": "诡秘之主",
+
+  "item.project_mystery.spirit_herb": "灵性草药",
+  "item.project_mystery.divination_crystal": "占卜水晶",
+  "item.project_mystery.moonwater": "月华水",
+  "item.project_mystery.contaminated_mixture": "污染混合物",
+  "item.project_mystery.eternal_matchbox": "永燃火柴盒",
+
+  "block.project_mystery.ritual_altar": "仪式祭坛",
+  "block.project_mystery.crucible": "坩埚"
+}

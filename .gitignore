@@ -1,0 +1,34 @@
+# Gradle
+.gradle/
+build/
+bin/
+out/
+!gradle/wrapper/gradle-wrapper.jar
+
+# NeoForge / 运行环境
+run/
+runs/
+run-data/
+src/generated/resources/.cache/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+.metadata/
+eclipse/
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+
+# 本地发布仓库
+repo/
