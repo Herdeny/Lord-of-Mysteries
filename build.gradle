@@ -102,6 +102,8 @@ tasks.named('processResources', ProcessResources).configure {
         mod_license            : mod_license,
         mod_version            : mod_version,
         mod_authors            : mod_authors,
+        mod_display_url        : mod_display_url,
+        mod_issue_tracker_url  : mod_issue_tracker_url,
         mod_description        : mod_description
     ]
     inputs.properties replaceProperties
