@@ -18,8 +18,8 @@
 | Java | **17** | Forge 1.20.1 工具链要求 |
 | 构建 | Gradle 8.8 + **ForgeGradle 6** | `./gradlew` 自带 wrapper |
 | 映射 | official（Mojang 官方映射） | |
-| `mod_id` | `project_mystery` | |
-| Java 包根 | `top.aurora.projectmystery` | |
+| `mod_id` | `lord_of_mysteries` | |
+| Java 包根 | `top.aurora.lordofmysteries` | |
 
 > 玩家数据采用 **Forge Capability**（1.20.1 无 NeoForge 的 Attachments API），
 > 随玩家存档以 NBT 持久化，死亡/跨维度自动继承。
@@ -48,7 +48,7 @@
 - 方块：仪式祭坛 `ritual_altar`、坩埚 `crucible`
 - 物品：占位材料（灵性草药 / 占卜水晶 / 月华水 / 污染混合物）、封印物（永燃火柴盒）、对应方块物品
 - 方块实体注册器（坩埚 BlockEntity 占位，M1 绑定）
-- 创造模式物品栏 `project_mystery:main`
+- 创造模式物品栏 `lord_of_mysteries:main`
 
 **数据驱动示例（§18，全部为合法 JSON）**
 - 途径 `pathways/seer.json`（占卜家）
@@ -89,7 +89,7 @@ Lord-of-Mysteries/
 │   └── IP_MAPPING.md                                     # 原作→原创化映射表（发布前必处理）
 └── src/
     ├── main/
-    │   ├── java/top/aurora/projectmystery/
+    │   ├── java/top/aurora/lordofmysteries/
     │   │   ├── ProjectMystery.java                       # 入口
     │   │   ├── core/        （MysteryRegistries / config/ServerConfig）
     │   │   ├── player/      （PlayerMysteryData / MysteryCapability / 事件 / Handler）
@@ -98,8 +98,8 @@ Lord-of-Mysteries/
     │   │       artifact acting world organization grayfog client compat   # 模块占位包
     │   └── resources/
     │       ├── META-INF/mods.toml
-    │       ├── data/project_mystery/    （pathways/sequences/potions/rituals/...）
-    │       └── assets/project_mystery/  （lang/ models/ blockstates/ textures/）
+    │       ├── data/lord_of_mysteries/    （pathways/sequences/potions/rituals/...）
+    │       └── assets/lord_of_mysteries/  （lang/ models/ blockstates/ textures/）
     └── test/java/...                                     # JUnit 5 单元测试
 ```
 
@@ -124,7 +124,7 @@ Lord-of-Mysteries/
 # IDE：IntelliJ 直接 import build.gradle；Eclipse 先 ./gradlew genEclipseRuns
 ```
 
-构建产物 `build/libs/project_mystery-<version>.jar` 放进 Forge 1.20.1 的 `mods/` 即可加载。
+构建产物 `build/libs/lord_of_mysteries-<version>.jar` 放进 Forge 1.20.1 的 `mods/` 即可加载。
 
 ---
 

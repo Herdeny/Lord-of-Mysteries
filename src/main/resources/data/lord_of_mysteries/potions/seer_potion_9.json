@@ -1,0 +1,19 @@
+{
+  "id": "lord_of_mysteries:seer_potion_9",
+  "target_pathway": "lord_of_mysteries:seer",
+  "target_sequence": 9,
+  "ingredients": [
+    { "item": "lord_of_mysteries:spirit_herb", "order": 1, "required": true },
+    { "item": "lord_of_mysteries:divination_crystal", "order": 2, "required": true },
+    { "item": "lord_of_mysteries:moonwater", "order": 3, "required": false, "quality_bonus": 0.2 }
+  ],
+  "temperature_range": [60, 80],
+  "brewing_time_ticks": 1200,
+  "quality_thresholds": {
+    "perfect": { "ingredient_match": 1.0, "temp_deviation": 5 },
+    "complete": { "ingredient_match": 1.0, "temp_deviation": 15 },
+    "flawed": { "ingredient_match": 0.8, "temp_deviation": 30 },
+    "contaminated": { "ingredient_match": 0.5 }
+  },
+  "failure_result": "lord_of_mysteries:contaminated_mixture"
+}

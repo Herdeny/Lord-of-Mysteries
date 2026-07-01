@@ -1,0 +1,4 @@
+{
+  "parent": "block/cube_all",
+  "textures": { "all": "lord_of_mysteries:block/ritual_altar" }
+}

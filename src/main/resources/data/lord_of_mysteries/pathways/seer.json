@@ -1,0 +1,10 @@
+{
+  "id": "lord_of_mysteries:seer",
+  "display_name": "占卜家途径",
+  "color": "#8B5CF6",
+  "sequences": [9, 8, 7],
+  "spirituality_base": 100,
+  "spirituality_per_sequence": 22,
+  "breakdown_entity": "lord_of_mysteries:seer_breakdown",
+  "description": "以观察、占卜和灵视见长，擅长获取信息但正面战斗能力较弱"
+}

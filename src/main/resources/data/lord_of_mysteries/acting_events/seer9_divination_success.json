@@ -1,0 +1,16 @@
+{
+  "id": "lord_of_mysteries:seer9_divination_success",
+  "pathway": "lord_of_mysteries:seer",
+  "sequence": 9,
+  "display_name": "成功占卜并帮助他人规避危险",
+  "base_digestion": 12.0,
+  "novelty_decay_ticks": 1200,
+  "target_cooldown_multiplier": 0.4,
+  "target_cooldown_max_count": 3,
+  "risk_bonus": true,
+  "trigger": {
+    "type": "lord_of_mysteries:divination_outcome",
+    "min_confidence": "clear_enough",
+    "requires_avoidance": true
+  }
+}

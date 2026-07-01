@@ -1,0 +1,21 @@
+{
+  "id": "lord_of_mysteries:seer_9",
+  "pathway": "lord_of_mysteries:seer",
+  "sequence": 9,
+  "spirituality_max_bonus": 22,
+  "spirituality_regen_bonus": 0.0,
+  "abilities": [
+    "lord_of_mysteries:spirit_vision",
+    "lord_of_mysteries:danger_intuition",
+    "lord_of_mysteries:simple_divination"
+  ],
+  "acting_events": [
+    "lord_of_mysteries:seer9_divination_success",
+    "lord_of_mysteries:seer9_abstain_divination",
+    "lord_of_mysteries:seer9_interpret_ambiguous",
+    "lord_of_mysteries:seer9_help_player_escape",
+    "lord_of_mysteries:seer9_over_divination_penalty"
+  ],
+  "potion_id": "lord_of_mysteries:seer_potion_9",
+  "digestion_target": 100.0
+}

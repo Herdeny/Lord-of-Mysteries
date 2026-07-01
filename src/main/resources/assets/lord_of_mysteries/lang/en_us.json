@@ -1,0 +1,12 @@
+{
+  "itemGroup.lord_of_mysteries.main": "Project Mystery",
+
+  "item.lord_of_mysteries.spirit_herb": "Spirit Herb",
+  "item.lord_of_mysteries.divination_crystal": "Divination Crystal",
+  "item.lord_of_mysteries.moonwater": "Moonwater",
+  "item.lord_of_mysteries.contaminated_mixture": "Contaminated Mixture",
+  "item.lord_of_mysteries.eternal_matchbox": "Eternal Matchbox",
+
+  "block.lord_of_mysteries.ritual_altar": "Ritual Altar",
+  "block.lord_of_mysteries.crucible": "Crucible"
+}

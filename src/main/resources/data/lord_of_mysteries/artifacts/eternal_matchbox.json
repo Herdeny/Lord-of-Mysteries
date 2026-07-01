@@ -1,0 +1,24 @@
+{
+  "id": "lord_of_mysteries:eternal_matchbox",
+  "display_name": "永燃火柴盒",
+  "danger_level": 5,
+  "effect": {
+    "type": "lord_of_mysteries:ignite_spirit_flame",
+    "can_damage_spirits": true,
+    "flame_duration_ticks": 100
+  },
+  "cost": {
+    "type": "lord_of_mysteries:anger_buildup",
+    "anger_per_use": 15,
+    "description": "每次使用提高持有者愤怒状态"
+  },
+  "seal_method": {
+    "type": "lord_of_mysteries:ritual_seal",
+    "ritual_id": "lord_of_mysteries:calm_sealing",
+    "required_items": ["lord_of_mysteries:pure_water", "minecraft:blue_orchid"]
+  },
+  "discovery": {
+    "type": "lord_of_mysteries:loot_table",
+    "loot_table": "lord_of_mysteries:ancient_camp_chest"
+  }
+}

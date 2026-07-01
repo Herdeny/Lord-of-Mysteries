@@ -1,0 +1,31 @@
+{
+  "id": "lord_of_mysteries:calm_sealing",
+  "display_name": "净化封印仪式",
+  "structure": {
+    "type": "lord_of_mysteries:altar_circle",
+    "radius": 3,
+    "center_block": "lord_of_mysteries:ritual_altar"
+  },
+  "environment": {
+    "time": "night",
+    "weather": "clear",
+    "min_y": -60,
+    "max_y": 100
+  },
+  "materials": [
+    { "item": "lord_of_mysteries:pure_water", "count": 3, "consumable": true },
+    { "item": "minecraft:blue_orchid", "count": 5, "consumable": true },
+    { "item": "lord_of_mysteries:white_candle", "count": 8, "consumable": false }
+  ],
+  "phases": [
+    { "action": "light_candles", "timeout_ticks": 100 },
+    { "action": "speak_incantation", "knowledge_required": "lord_of_mysteries:calm_words" },
+    { "action": "pour_water", "timeout_ticks": 60 }
+  ],
+  "success_result": { "type": "lord_of_mysteries:seal_artifact", "artifact_slot": 0 },
+  "failure_results": [
+    { "weight": 5, "type": "lord_of_mysteries:spawn_entity", "entity": "lord_of_mysteries:low_spirit" },
+    { "weight": 3, "type": "lord_of_mysteries:add_pollution", "amount": 15 },
+    { "weight": 2, "type": "lord_of_mysteries:ritual_explosion", "radius": 3 }
+  ]
+}
