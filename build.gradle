@@ -91,6 +91,7 @@ dependencies {
 
 // mods.toml 占位符替换
 tasks.named('processResources', ProcessResources).configure {
+    def modDescriptionFile = file('gradle/mod-description.txt')
     var replaceProperties = [
         minecraft_version      : minecraft_version,
         minecraft_version_range: minecraft_version_range,
@@ -104,9 +105,10 @@ tasks.named('processResources', ProcessResources).configure {
         mod_authors            : mod_authors,
         mod_display_url        : mod_display_url,
         mod_issue_tracker_url  : mod_issue_tracker_url,
-        mod_description        : mod_description
+        mod_description        : modDescriptionFile.getText('UTF-8')
     ]
     inputs.properties replaceProperties
+    inputs.file modDescriptionFile
     filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
         expand replaceProperties
     }
