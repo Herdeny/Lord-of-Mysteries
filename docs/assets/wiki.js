@@ -17,6 +17,31 @@
     try { localStorage.setItem("lom-theme", cur); } catch (e) {}
   });
 
+  /* ── 移动端汉堡菜单 ── */
+  var navToggle = $("#nav-toggle"), topnav = $("#topnav");
+  function setNav(open) {
+    if (!topnav || !navToggle) return;
+    topnav.classList.toggle("open", open);
+    navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    navToggle.textContent = open ? "✕" : "☰";
+  }
+  if (navToggle && topnav) {
+    navToggle.addEventListener("click", function (ev) {
+      ev.stopPropagation();
+      setNav(!topnav.classList.contains("open"));
+    });
+    // 点击导航项后收起
+    topnav.addEventListener("click", function (ev) { if (ev.target.tagName === "A") setNav(false); });
+    // 点击外部收起
+    document.addEventListener("click", function (ev) {
+      if (topnav.classList.contains("open") && !topnav.contains(ev.target) && ev.target !== navToggle) setNav(false);
+    });
+    // Esc 收起
+    document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") setNav(false); });
+    // 视口放大回桌面时清理状态
+    addEventListener("resize", function () { if (innerWidth > 960) setNav(false); });
+  }
+
   /* ── Hero meta ── */
   var metaDl = $("#meta-dl");
   if (metaDl) {
@@ -188,7 +213,7 @@
 
   /* ── 灵界粒子背景 ── */
   var canvas = $("#fog-canvas");
-  if (canvas && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (canvas && innerWidth > 620 && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     var ctx = canvas.getContext("2d"), W, H, pts = [];
     function resize() {
       W = canvas.width = innerWidth; H = canvas.height = innerHeight;
