@@ -1,190 +1,215 @@
-const entries = [
-  {
-    type: "item",
-    id: "lord_of_mysteries:spirit_herb",
-    name: "灵性草药",
-    summary: "基础灵性材料，后续可作为采集、掉落、交易与魔药制作输入。",
-    tags: ["材料", "M0", "魔药"],
-    details: [["来源", "规划中"], ["用途", "魔药材料、仪式材料"], ["注册", "ModItems.SPIRIT_HERB"]]
-  },
-  {
-    type: "item",
-    id: "lord_of_mysteries:divination_crystal",
-    name: "占卜水晶",
-    summary: "占卜与序列 9 魔药用材料，当前作为创造模式标签图标。",
-    tags: ["材料", "占卜", "魔药"],
-    details: [["用途", "占卜家魔药、仪式聚焦"], ["注册", "ModItems.DIVINATION_CRYSTAL"]]
-  },
-  {
-    type: "item",
-    id: "lord_of_mysteries:moonwater",
-    name: "月华水",
-    summary: "月相或夜晚相关的魔药辅助材料，提供品质加成占位。",
-    tags: ["材料", "夜晚", "品质"],
-    details: [["品质加成", "+0.2"], ["关联魔药", "占卜家魔药 序列 9"]]
-  },
-  {
-    type: "item",
-    id: "lord_of_mysteries:contaminated_mixture",
-    name: "污染混合物",
-    summary: "魔药制作失败或污染反应的产物。",
-    tags: ["失败产物", "污染"],
-    details: [["来源", "魔药失败结果"], ["关联系统", "污染与失控压力"]]
-  },
-  {
-    type: "item",
-    id: "lord_of_mysteries:eternal_matchbox",
-    name: "永燃火柴盒",
-    summary: "封印物占位物品，未来会拥有灵火、代价和封印逻辑。",
-    tags: ["封印物", "危险等级 5"],
-    details: [["效果", "点燃灵性火焰"], ["代价", "每次使用提高愤怒状态"], ["封印方式", "净化封印仪式"]]
-  },
-  {
-    type: "block",
-    id: "lord_of_mysteries:ritual_altar",
-    name: "仪式祭坛",
-    summary: "仪式结构核心方块，当前用于验证方块注册、模型和语言文件。",
-    tags: ["方块", "仪式", "M0"],
-    details: [["硬度", "3.0"], ["爆炸抗性", "6.0"], ["工具要求", "需要正确工具掉落"]]
-  },
-  {
-    type: "block",
-    id: "lord_of_mysteries:crucible",
-    name: "坩埚",
-    summary: "魔药制作系统载体，后续会绑定 CrucibleBlockEntity。",
-    tags: ["方块", "魔药", "方块实体规划"],
-    details: [["硬度", "3.5"], ["爆炸抗性", "6.0"], ["后续模块", "坩埚方块实体 + 基础魔药制作"]]
-  },
-  {
-    type: "pathway",
-    id: "lord_of_mysteries:seer",
-    name: "占卜家途径",
-    summary: "以观察、占卜和灵视见长，擅长获取信息但正面战斗能力较弱。",
-    tags: ["途径", "信息获取", "灵视"],
-    details: [["基础灵性", "100"], ["每序列灵性成长", "22"], ["已规划序列", "9 / 8 / 7"]]
-  },
-  {
-    type: "sequence",
-    id: "lord_of_mysteries:seer_9",
-    name: "序列 9：占卜家",
-    summary: "获得灵视、危险直觉与简单占卜，消化目标为 100%。",
-    tags: ["序列 9", "占卜家", "能力"],
-    details: [["灵性上限加成", "+22"], ["能力", "灵视、危险直觉、简单占卜"], ["关联魔药", "seer_potion_9"]]
-  },
-  {
-    type: "potion",
-    id: "lord_of_mysteries:seer_potion_9",
-    name: "占卜家魔药 序列 9",
-    summary: "以灵性草药、占卜水晶为必需材料，月华水可提高品质。",
-    tags: ["魔药", "序列 9", "坩埚"],
-    details: [["温度", "60-80"], ["制作时间", "1200 tick"], ["失败产物", "污染混合物"]]
-  },
-  {
-    type: "ritual",
-    id: "lord_of_mysteries:calm_sealing",
-    name: "净化封印仪式",
-    summary: "围绕仪式祭坛布置半径 3 的圆阵，用于封印异常封印物。",
-    tags: ["仪式", "夜晚", "封印"],
-    details: [["环境", "夜晚、晴天、Y -60 至 100"], ["材料", "纯水 x3、兰花 x5、白蜡烛 x8"], ["失败风险", "低阶灵体、污染、爆炸"]]
-  },
-  {
-    type: "artifact",
-    id: "lord_of_mysteries:eternal_matchbox",
-    name: "封印物：永燃火柴盒",
-    summary: "危险等级 5，可点燃能伤害灵体的灵性火焰。",
-    tags: ["封印物", "灵火", "危险等级 5"],
-    details: [["主动效果", "ignite_spirit_flame"], ["持续时间", "100 tick"], ["代价", "anger_buildup +15"]]
-  },
-  {
-    type: "status",
-    id: "lord_of_mysteries:pollution",
-    name: "污染",
-    summary: "核心风险值，25/50/75/100 分别进入更高检定区间。",
-    tags: ["Buff/状态", "风险", "失控"],
-    details: [["0-24", "稳定"], ["25-49", "轻度异常，每 5 分钟检定"], ["50-74", "危险，每 2 分钟检定"], ["75-99", "临界，每 30 秒检定"], ["100", "立即触发失控结局"]]
-  },
-  {
-    type: "status",
-    id: "lord_of_mysteries:spirituality",
-    name: "灵性",
-    summary: "能力消耗与自然恢复的核心资源，非战斗、光照充足、压力低时恢复。",
-    tags: ["Buff/状态", "资源", "恢复"],
-    details: [["恢复条件", "非战斗、光照 ≥ 7、失控压力 < 30"], ["默认上限", "100"], ["序列 9 恢复", "0.05/s"]]
-  }
-];
+/* Lord of Mysteries Wiki — 交互逻辑（纯前端，GitHub Pages 直接运行） */
+(function () {
+  "use strict";
+  var D = window.LOM || {};
+  var meta = D.meta || {}, entries = D.entries || [], labels = D.labels || {};
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var el = function (t, c, h) { var e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
 
-const labels = {
-  item: "物品",
-  block: "方块",
-  pathway: "途径",
-  sequence: "序列",
-  potion: "魔药",
-  ritual: "仪式",
-  artifact: "封印物",
-  status: "Buff/状态"
-};
-
-const cards = document.querySelector("#cards");
-const search = document.querySelector("#search");
-const filterButtons = [...document.querySelectorAll(".filter")];
-let activeFilter = "all";
-
-function render() {
-  const keyword = search.value.trim().toLowerCase();
-  const filtered = entries.filter((entry) => {
-    const matchesType = activeFilter === "all" || entry.type === activeFilter;
-    const haystack = [entry.id, entry.name, entry.summary, ...entry.tags].join(" ").toLowerCase();
-    return matchesType && (!keyword || haystack.includes(keyword));
+  /* ── 主题切换 ── */
+  var themeToggle = $("#theme-toggle");
+  var saved = null;
+  try { saved = localStorage.getItem("lom-theme"); } catch (e) {}
+  if (saved) document.documentElement.setAttribute("data-theme", saved);
+  if (themeToggle) themeToggle.addEventListener("click", function () {
+    var cur = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", cur);
+    try { localStorage.setItem("lom-theme", cur); } catch (e) {}
   });
 
-  cards.innerHTML = "";
+  /* ── Hero meta ── */
+  var metaDl = $("#meta-dl");
+  if (metaDl) {
+    [["Mod ID", meta.modId], ["版本", meta.version], ["Minecraft", meta.mc],
+     ["加载器", meta.loader], ["Java", meta.java], ["阶段", meta.stage]]
+      .forEach(function (p) { var d = el("div"); d.appendChild(el("dt", null, p[0])); d.appendChild(el("dd", null, p[1] || "—")); metaDl.appendChild(d); });
+  }
+  var heroTags = $("#hero-tags");
+  if (heroTags) ["🜁 五条途径", "🜂 序列晋升", "🜃 魔药炼制", "🜄 扮演消化", "☾ 失控风险"].forEach(function (t) { heroTags.appendChild(el("span", "pill type", t)); });
 
-  if (filtered.length === 0) {
-    cards.innerHTML = '<div class="empty">没有找到匹配条目。</div>';
-    return;
+  /* ── Stats ── */
+  var statsEl = $("#stats");
+  if (statsEl) {
+    var cAbil = entries.filter(function (e) { return e.type === "ability"; }).length;
+    var cPotion = entries.filter(function (e) { return e.type === "potion" || e.type === "item"; }).length;
+    var stats = [
+      [entries.length, "图鉴条目"],
+      [(D.pathwaysOverview || []).length, "途径"],
+      [(D.seerSequences || []).length, "占卜家序列"],
+      [entries.filter(function (e) { return e.type === "ability"; }).length, "序列9能力"],
+      [(D.roadmap || []).length, "开发里程碑"]
+    ];
+    stats.forEach(function (s) {
+      var d = el("div", "stat");
+      d.appendChild(el("strong", null, String(s[0])));
+      d.appendChild(el("span", null, s[1]));
+      statsEl.appendChild(d);
+    });
   }
 
-  for (const entry of filtered) {
-    const el = document.createElement("article");
-    el.className = "card";
-    el.id = entry.id.replace(":", "-");
-    el.innerHTML = `
-      <div class="card-head">
-        <div class="icon ${entry.type}" aria-hidden="true">${entry.name.slice(0, 1)}</div>
-        <div>
-          <h3>${entry.name}</h3>
-          <p class="tagline">${entry.id}</p>
-        </div>
-      </div>
-      <p>${entry.summary}</p>
-      <div class="meta">
-        <span class="pill">${labels[entry.type]}</span>
-        ${entry.tags.map((tag) => `<span class="pill">${tag}</span>`).join("")}
-      </div>
-      <ul class="details">
-        ${entry.details.map(([key, value]) => `<li><strong>${key}：</strong>${value}</li>`).join("")}
-      </ul>
-    `;
-    cards.appendChild(el);
-  }
-}
-
-function updateStats() {
-  const count = (type) => entries.filter((entry) => entry.type === type).length;
-  document.querySelector("#stat-items").textContent = count("item");
-  document.querySelector("#stat-blocks").textContent = count("block");
-  document.querySelector("#stat-systems").textContent = entries.filter((entry) => !["item", "block"].includes(entry.type)).length;
-  document.querySelector("#stat-data").textContent = 6;
-}
-
-filterButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    activeFilter = button.dataset.filter;
-    filterButtons.forEach((item) => item.classList.toggle("active", item === button));
-    render();
+  /* ── Roadmap ── */
+  var rmTrack = $("#roadmap-track");
+  if (rmTrack) (D.roadmap || []).forEach(function (m) {
+    var c = el("div", "rm-card " + m.state);
+    var stateTxt = { done: "已完成", active: "进行中", planned: "规划", future: "远期" }[m.state] || m.state;
+    var badge = el("span", "rm-badge", m.id + '<span class="rm-state state-' + m.state + '">' + stateTxt + "</span>");
+    c.appendChild(badge);
+    c.appendChild(el("b", "rm-title", m.title));
+    var ul = el("ul", "rm-points");
+    (m.points || []).forEach(function (p) { ul.appendChild(el("li", null, p)); });
+    c.appendChild(ul);
+    rmTrack.appendChild(c);
   });
-});
 
-search.addEventListener("input", render);
-updateStats();
-render();
+  /* ── Pathways ── */
+  var pwGrid = $("#pathway-grid");
+  if (pwGrid) (D.pathwaysOverview || []).forEach(function (p) {
+    var c = el("div", "pw-card");
+    c.style.setProperty("--accent", p.accent);
+    c.innerHTML =
+      '<div class="pw-head"><h3>' + p.name + '</h3><span class="en">' + p.en + '</span></div>' +
+      '<span class="pw-status">' + p.status + '</span>' +
+      '<p class="pw-desc">' + p.desc + '</p>' +
+      '<div class="pw-traits">' + (p.traits || []).map(function (t) { return '<span class="pill">' + t + '</span>'; }).join("") + '</div>' +
+      '<p class="pw-spirit">基础灵性 <b>' + p.baseSpirit + '</b> · 每序列成长 <b>+' + p.growth + '</b></p>';
+    pwGrid.appendChild(c);
+  });
+
+  /* ── Sequence ladder ── */
+  var ladder = $("#seq-ladder");
+  if (ladder) (D.seerSequences || []).forEach(function (s) {
+    var row = el("div", "seq-row " + (s.state === "active" ? "active" : (s.state === "future" ? "future" : "")));
+    row.innerHTML =
+      '<div class="seq-num">' + s.seq + '</div>' +
+      '<div class="seq-info"><h4>序列 ' + s.seq + '：' + s.name + '</h4>' +
+      '<span class="abil">' + (s.abilities || []).join(" · ") + '</span></div>' +
+      '<div class="seq-spirit"><b>' + s.spiritMax + '</b>灵性上限</div>';
+    row.title = s.desc || "";
+    ladder.appendChild(row);
+  });
+
+  /* ── Core loop ── */
+  var loop = $("#loop");
+  if (loop) [
+    ["炼制魔药", "在坩埚中按配方精确控温投料，炼制序列9占卜家魔药，品质决定后续收益。"],
+    ["服用晋升", "饮下魔药，踏入占卜家途径，获得灵视、危险直觉、简易占卜三大能力。"],
+    ["扮演消化", "像占卜家一样行动——占卜、规避、助人脱险，把消化度从 0 推向 100%。"],
+    ["管理风险", "监控灵性、污染与失控压力，避免污染满值触发失控与失控体。"],
+    ["晋升下一序列", "消化满额后炼制更高阶魔药，向序列 8 及更高迈进。"]
+  ].forEach(function (p) {
+    var li = el("li"); li.appendChild(el("h4", null, p[0])); li.appendChild(el("p", null, p[1])); loop.appendChild(li);
+  });
+
+  /* ── About ── */
+  var techList = $("#tech-list");
+  if (techList) [["Minecraft", meta.mc], ["加载器", meta.loader], ["Java", meta.java],
+    ["映射", "official（Mojang）"], ["构建", "Gradle 8.8 + ForgeGradle 6"], ["数据", "Forge Capability + NBT"]]
+    .forEach(function (p) { techList.appendChild(el("li", null, "<span>" + p[0] + "</span><b>" + (p[1] || "—") + "</b>")); });
+  var teamList = $("#team-list");
+  if (teamList) (meta.authors || []).forEach(function (a) {
+    teamList.appendChild(el("li", null, '<span>' + a.role + '</span><b><a href="' + a.link + '" target="_blank" rel="noopener">' + a.name + '</a></b>'));
+  });
+
+  /* ── Catalog: filters + search + cards ── */
+  var filterGroup = $("#filter-group"), cardsEl = $("#cards"), searchEl = $("#search"), countEl = $("#result-count");
+  var activeFilter = "all";
+
+  var types = ["all"].concat(Object.keys(labels).filter(function (k) { return entries.some(function (e) { return e.type === k; }); }));
+  if (filterGroup) types.forEach(function (t) {
+    var n = t === "all" ? entries.length : entries.filter(function (e) { return e.type === t; }).length;
+    var b = el("button", "filter" + (t === "all" ? " active" : ""),
+      "<span>" + (t === "all" ? "全部" : (labels[t] || t)) + '</span><span class="cnt">' + n + "</span>");
+    b.dataset.filter = t;
+    b.addEventListener("click", function () {
+      activeFilter = t;
+      [].forEach.call(filterGroup.children, function (c) { c.classList.toggle("active", c === b); });
+      render();
+    });
+    filterGroup.appendChild(b);
+  });
+
+  function iconChar(e) { return (e.name || "?").slice(0, 1); }
+
+  function render() {
+    if (!cardsEl) return;
+    var kw = (searchEl && searchEl.value.trim().toLowerCase()) || "";
+    var list = entries.filter(function (e) {
+      var okType = activeFilter === "all" || e.type === activeFilter;
+      var hay = [e.id, e.name, e.en, e.summary, (e.tags || []).join(" ")].join(" ").toLowerCase();
+      return okType && (!kw || hay.indexOf(kw) >= 0);
+    });
+    cardsEl.innerHTML = "";
+    if (countEl) countEl.textContent = "共 " + list.length + " 条" + (kw ? "（搜索：" + kw + "）" : "");
+    if (!list.length) { cardsEl.appendChild(el("div", "empty", "没有找到匹配条目。")); return; }
+    list.forEach(function (e, i) {
+      var card = el("article", "card");
+      card.style.animationDelay = Math.min(i * 30, 300) + "ms";
+      card.innerHTML =
+        '<div class="card-head"><div class="icon ' + e.type + '">' + iconChar(e) + '</div>' +
+        '<div><h3>' + e.name + '</h3><p class="tagline">' + (e.en ? e.en + " · " : "") + e.id + '</p></div></div>' +
+        '<p>' + (e.summary || "") + '</p>' +
+        '<div class="meta"><span class="pill type">' + (labels[e.type] || e.type) + '</span>' +
+        (e.tags || []).slice(0, 3).map(function (t) { return '<span class="pill">' + t + '</span>'; }).join("") + '</div>';
+      card.addEventListener("click", function () { openModal(e); });
+      cardsEl.appendChild(card);
+    });
+  }
+  if (searchEl) searchEl.addEventListener("input", render);
+  render();
+
+  /* ── Modal ── */
+  var modal = $("#modal");
+  function openModal(e) {
+    if (!modal) return;
+    $("#modal-icon").className = "icon lg " + e.type;
+    $("#modal-icon").textContent = iconChar(e);
+    $("#modal-title").textContent = e.name + (e.en ? "  ·  " + e.en : "");
+    $("#modal-id").textContent = e.id;
+    $("#modal-tags").innerHTML = '<span class="pill type">' + (labels[e.type] || e.type) + '</span>' +
+      (e.tags || []).map(function (t) { return '<span class="pill">' + t + '</span>'; }).join("");
+    $("#modal-long").innerHTML = e.long || e.summary || "";
+    var ul = $("#modal-details"); ul.innerHTML = "";
+    (e.details || []).forEach(function (d) { ul.appendChild(el("li", null, "<strong>" + d[0] + "</strong><span>" + d[1] + "</span>")); });
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+  function closeModal() { if (modal) { modal.hidden = true; document.body.style.overflow = ""; } }
+  if (modal) modal.addEventListener("click", function (ev) { if (ev.target.hasAttribute("data-close")) closeModal(); });
+  document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") closeModal(); });
+
+  /* ── Reveal on scroll ── */
+  var reveals = [].slice.call(document.querySelectorAll(".reveal"));
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (ents) {
+      ents.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+    }, { threshold: 0.08 });
+    reveals.forEach(function (r) { io.observe(r); });
+  } else reveals.forEach(function (r) { r.classList.add("in"); });
+
+  /* ── 灵界粒子背景 ── */
+  var canvas = $("#fog-canvas");
+  if (canvas && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var ctx = canvas.getContext("2d"), W, H, pts = [];
+    function resize() {
+      W = canvas.width = innerWidth; H = canvas.height = innerHeight;
+      var n = Math.min(70, Math.floor(W * H / 22000));
+      pts = []; for (var i = 0; i < n; i++) pts.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .25, vy: (Math.random() - .5) * .25, r: Math.random() * 1.6 + .4 });
+    }
+    function tick() {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i]; p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1; if (p.y < 0 || p.y > H) p.vy *= -1;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283);
+        ctx.fillStyle = "rgba(212,175,55,.5)"; ctx.fill();
+        for (var j = i + 1; j < pts.length; j++) {
+          var q = pts[j], dx = p.x - q.x, dy = p.y - q.y, d = dx * dx + dy * dy;
+          if (d < 13000) { ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
+            ctx.strokeStyle = "rgba(139,92,246," + (0.10 * (1 - d / 13000)) + ")"; ctx.stroke(); }
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+    addEventListener("resize", resize); resize(); tick();
+  }
+})();

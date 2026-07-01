@@ -1,91 +1,192 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lord of Mysteries Wiki</title>
-  <meta name="description" content="Lord of Mysteries Minecraft Mod Wiki: 物品、方块、途径、序列、魔药、仪式与封印物资料。">
+  <title>Lord of Mysteries · 诡秘之主 Minecraft Mod 资料站</title>
+  <meta name="description" content="《诡秘之主》Minecraft Forge 1.20.1 模组官方资料站：途径、序列、能力、魔药、仪式、封印物、组织与失控机制全解，含 M1 开发进度与路线图。">
+  <meta name="theme-color" content="#11100d">
+  <meta property="og:title" content="Lord of Mysteries · 诡秘之主 Minecraft Mod">
+  <meta property="og:description" content="在未知中承担风险、通过扮演消化力量、逐步成为非凡者的 Minecraft 生存冒险 Mod 资料站。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/logo.png">
+  <link rel="icon" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="assets/wiki.css">
 </head>
 <body>
+  <!-- 灵界粒子背景 -->
+  <canvas id="fog-canvas" aria-hidden="true"></canvas>
+
   <header class="topbar">
-    <a class="brand" href="#overview" aria-label="Lord of Mysteries Wiki 首页">
+    <a class="brand" href="#top" aria-label="Lord of Mysteries 资料站首页">
       <img src="assets/logo.png" alt="" class="brand-logo">
-      <span>
-        <strong>Lord of Mysteries Wiki</strong>
-        <small>Minecraft Forge 1.20.1</small>
+      <span class="brand-text">
+        <strong>Lord of Mysteries</strong>
+        <small>诡秘之主 · Minecraft Forge 1.20.1</small>
       </span>
     </a>
     <nav class="topnav" aria-label="主要导航">
-      <a href="#items">物品</a>
-      <a href="#blocks">方块</a>
+      <a href="#overview">概述</a>
+      <a href="#roadmap">路线图</a>
       <a href="#pathways">途径</a>
-      <a href="#potions">魔药</a>
-      <a href="#rituals">仪式</a>
-      <a href="#artifacts">封印物</a>
+      <a href="#sequences">序列</a>
+      <a href="#catalog">图鉴</a>
+      <a href="#mechanics">机制</a>
+      <a href="#about">关于</a>
     </nav>
+    <div class="top-actions">
+      <button id="theme-toggle" class="icon-btn" title="切换明暗主题" aria-label="切换主题">◐</button>
+      <a class="icon-btn gh" href="https://github.com/Herdeny/Lord-of-Mysteries" title="GitHub 仓库" target="_blank" rel="noopener">★</a>
+    </div>
   </header>
 
+  <span id="top"></span>
   <main>
-    <section id="overview" class="hero">
+    <!-- HERO -->
+    <section id="overview" class="hero reveal">
       <div class="hero-copy">
-        <p class="eyebrow">资料站原型</p>
-        <h1>诡秘之主 Minecraft Mod 资料库</h1>
-        <p>集中展示当前 Mod 已注册和已规划的数据：物品、方块、途径、序列、魔药、仪式、封印物与状态系统。页面内容与项目数据文件保持同源，适合后续扩展成类似 MCMod 的条目站。</p>
+        <p class="eyebrow">✦ 非凡者的冒险 · 资料站</p>
+        <h1 class="glow-title">在未知中<br>成为<span class="accent">非凡者</span></h1>
+        <p class="lead">把《诡秘之主》的核心体验搬进 Minecraft：从普通人出发，在坩埚中调配<b>魔药</b>晋升序列，靠<b>扮演</b>对应角色消化力量，同时对抗灵性枯竭与失控污染，一步步揭开非凡世界的帷幕。</p>
         <div class="hero-actions">
-          <a class="button primary" href="#catalog">浏览资料</a>
-          <a class="button" href="https://github.com/Herdeny/Lord-of-Mysteries">GitHub 仓库</a>
+          <a class="button primary" href="#catalog">📖 浏览图鉴</a>
+          <a class="button" href="#pathways">🜁 探索途径</a>
+          <a class="button ghost" href="https://github.com/Herdeny/Lord-of-Mysteries" target="_blank" rel="noopener">GitHub ↗</a>
         </div>
+        <div class="hero-tags" id="hero-tags"></div>
       </div>
-      <div class="hero-panel" aria-label="当前版本信息">
-        <dl>
-          <div><dt>Mod ID</dt><dd>lord_of_mysteries</dd></div>
-          <div><dt>版本</dt><dd>0.0.1-1.20.1</dd></div>
-          <div><dt>环境</dt><dd>Forge 47.4.20</dd></div>
-          <div><dt>阶段</dt><dd>M0 技术验证</dd></div>
-        </dl>
-      </div>
-    </section>
-
-    <section class="stats" aria-label="资料统计">
-      <div><strong id="stat-items">0</strong><span>物品</span></div>
-      <div><strong id="stat-blocks">0</strong><span>方块</span></div>
-      <div><strong id="stat-systems">0</strong><span>系统条目</span></div>
-      <div><strong id="stat-data">0</strong><span>数据文件</span></div>
-    </section>
-
-    <section id="catalog" class="catalog">
-      <aside class="filters" aria-label="资料筛选">
-        <label class="search-label" for="search">搜索</label>
-        <input id="search" type="search" placeholder="输入名称、ID、关键词">
-        <div class="filter-group" role="list" aria-label="分类">
-          <button class="filter active" data-filter="all">全部</button>
-          <button class="filter" data-filter="item">物品</button>
-          <button class="filter" data-filter="block">方块</button>
-          <button class="filter" data-filter="pathway">途径</button>
-          <button class="filter" data-filter="sequence">序列</button>
-          <button class="filter" data-filter="potion">魔药</button>
-          <button class="filter" data-filter="ritual">仪式</button>
-          <button class="filter" data-filter="artifact">封印物</button>
-          <button class="filter" data-filter="status">Buff/状态</button>
-        </div>
+      <aside class="hero-panel" aria-label="版本信息">
+        <div class="panel-glow"></div>
+        <h3 class="panel-title">当前版本</h3>
+        <dl id="meta-dl"></dl>
       </aside>
+    </section>
 
-      <section class="results" aria-live="polite">
-        <div class="section-heading">
-          <p class="eyebrow">Catalog</p>
-          <h2>条目索引</h2>
+    <!-- STATS -->
+    <section class="stats reveal" aria-label="资料统计" id="stats"></section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap" class="block-section reveal">
+      <div class="section-heading">
+        <p class="eyebrow">Roadmap</p>
+        <h2>开发路线图</h2>
+        <p class="sub">从技术验证到完整 MVP，逐里程碑推进。</p>
+      </div>
+      <div class="roadmap" id="roadmap-track"></div>
+    </section>
+
+    <!-- PATHWAYS -->
+    <section id="pathways" class="block-section reveal">
+      <div class="section-heading">
+        <p class="eyebrow">Pathways</p>
+        <h2>五条途径</h2>
+        <p class="sub">每条途径是一条通往非凡的道路，拥有独特的能力体系与扮演方式。</p>
+      </div>
+      <div class="pathway-grid" id="pathway-grid"></div>
+    </section>
+
+    <!-- SEQUENCES -->
+    <section id="sequences" class="block-section reveal">
+      <div class="section-heading">
+        <p class="eyebrow">Sequences</p>
+        <h2>占卜家序列阶梯</h2>
+        <p class="sub">序列 9 → 0，数字越小越强大。M1 完整实装序列 9。</p>
+      </div>
+      <div class="seq-ladder" id="seq-ladder"></div>
+    </section>
+
+    <!-- CATALOG -->
+    <section id="catalog" class="catalog reveal">
+      <div class="section-heading full">
+        <p class="eyebrow">Catalog</p>
+        <h2>图鉴索引</h2>
+        <p class="sub">能力 · 机制 · 魔药 · 方块 · 物品 · 封印物 · 仪式 · 组织 · 世界 · 状态</p>
+      </div>
+      <div class="catalog-body">
+        <aside class="filters" aria-label="筛选">
+          <label class="search-label" for="search">搜索</label>
+          <input id="search" type="search" placeholder="名称 / ID / 关键词…" autocomplete="off">
+          <div class="filter-group" id="filter-group" role="list" aria-label="分类"></div>
+        </aside>
+        <div class="results">
+          <div id="result-count" class="result-count"></div>
+          <div id="cards" class="cards"></div>
         </div>
-        <div id="cards" class="cards"></div>
-      </section>
+      </div>
+    </section>
+
+    <!-- MECHANICS highlight -->
+    <section id="mechanics" class="block-section reveal">
+      <div class="section-heading">
+        <p class="eyebrow">Core Loop</p>
+        <h2>核心循环：晋升之路</h2>
+        <p class="sub">这是每个非凡者都要走的路——也是本 Mod 的灵魂玩法。</p>
+      </div>
+      <ol class="loop" id="loop"></ol>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="block-section reveal">
+      <div class="section-heading">
+        <p class="eyebrow">About</p>
+        <h2>关于本项目</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-card">
+          <h3>项目简介</h3>
+          <p>Project Mystery 是一个把《诡秘之主》非凡者体系带入 Minecraft 的生存冒险 Mod。玩家将体验完整的魔药炼制、序列晋升、扮演消化与失控风险机制。当前处于 <b>M1</b> 开发阶段。</p>
+        </div>
+        <div class="about-card">
+          <h3>技术基线</h3>
+          <ul class="tech-list" id="tech-list"></ul>
+        </div>
+        <div class="about-card">
+          <h3>协作团队</h3>
+          <ul class="team-list" id="team-list"></ul>
+        </div>
+        <div class="about-card warn">
+          <h3>⚠️ IP 声明</h3>
+          <p>当前所有专有名词仅用于内部原型开发。代码与数据层统一使用稳定英文代号，玩家可见文本走本地化文件，公开发布前将完成原创化映射。License：All Rights Reserved。</p>
+        </div>
+      </div>
     </section>
   </main>
 
   <footer class="footer">
-    <span>Lord of Mysteries Wiki</span>
-    <a href="https://github.com/Herdeny/Lord-of-Mysteries/issues">反馈问题</a>
+    <div class="footer-inner">
+      <div>
+        <img src="assets/logo.png" alt="" class="foot-logo">
+        <p>Lord of Mysteries — 诡秘之主 Minecraft Mod 资料站</p>
+        <p class="muted small">数据与项目 data/*.json 和设计文档 v0.4 同源整理。</p>
+      </div>
+      <nav class="foot-links">
+        <a href="https://github.com/Herdeny/Lord-of-Mysteries" target="_blank" rel="noopener">GitHub 仓库</a>
+        <a href="https://github.com/Herdeny/Lord-of-Mysteries/issues" target="_blank" rel="noopener">反馈问题</a>
+        <a href="#top">回到顶部 ↑</a>
+      </nav>
+    </div>
   </footer>
 
+  <!-- 详情弹窗 -->
+  <div id="modal" class="modal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" data-close aria-label="关闭">×</button>
+      <div class="modal-head">
+        <div id="modal-icon" class="icon lg"></div>
+        <div>
+          <h3 id="modal-title"></h3>
+          <p id="modal-id" class="tagline"></p>
+        </div>
+      </div>
+      <div id="modal-tags" class="meta"></div>
+      <p id="modal-long" class="modal-long"></p>
+      <ul id="modal-details" class="details"></ul>
+    </article>
+  </div>
+
+  <script src="assets/wiki-data.js"></script>
   <script src="assets/wiki.js"></script>
 </body>
 </html>
