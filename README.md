@@ -128,7 +128,27 @@ Lord-of-Mysteries/
 
 ---
 
-## 五、IP 与授权声明 ⚠️
+## 五、Wiki / GitHub Pages
+
+项目内置静态 Wiki 原型，位置：
+
+```text
+docs/index.html
+```
+
+推送到 GitHub 后，`.github/workflows/pages.yml` 会把 `docs/` 发布到 GitHub Pages。仓库 Pages 来源请选择 **GitHub Actions**。
+
+公开地址：
+
+```text
+https://herdeny.github.io/Lord-of-Mysteries/
+```
+
+当前 Wiki 已包含物品、方块、途径、序列、魔药、仪式、封印物和 Buff/状态条目；后续可以继续把数据 JSON 自动导出到页面。
+
+---
+
+## 六、IP 与授权声明 ⚠️
 
 当前所有专有名词（途径名、序列名、组织名、封印物名等）**仅用于内部原型开发**。
 
@@ -139,7 +159,7 @@ Lord-of-Mysteries/
 
 ---
 
-## 六、协作
+## 七、协作
 
 | 角色 | 成员 |
 |------|------|

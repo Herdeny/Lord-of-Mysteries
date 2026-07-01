@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lord of Mysteries Wiki</title>
+  <meta name="description" content="Lord of Mysteries Minecraft Mod Wiki: 物品、方块、途径、序列、魔药、仪式与封印物资料。">
+  <link rel="stylesheet" href="assets/wiki.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#overview" aria-label="Lord of Mysteries Wiki 首页">
+      <img src="assets/logo.png" alt="" class="brand-logo">
+      <span>
+        <strong>Lord of Mysteries Wiki</strong>
+        <small>Minecraft Forge 1.20.1</small>
+      </span>
+    </a>
+    <nav class="topnav" aria-label="主要导航">
+      <a href="#items">物品</a>
+      <a href="#blocks">方块</a>
+      <a href="#pathways">途径</a>
+      <a href="#potions">魔药</a>
+      <a href="#rituals">仪式</a>
+      <a href="#artifacts">封印物</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="overview" class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">资料站原型</p>
+        <h1>诡秘之主 Minecraft Mod 资料库</h1>
+        <p>集中展示当前 Mod 已注册和已规划的数据：物品、方块、途径、序列、魔药、仪式、封印物与状态系统。页面内容与项目数据文件保持同源，适合后续扩展成类似 MCMod 的条目站。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#catalog">浏览资料</a>
+          <a class="button" href="https://github.com/Herdeny/Lord-of-Mysteries">GitHub 仓库</a>
+        </div>
+      </div>
+      <div class="hero-panel" aria-label="当前版本信息">
+        <dl>
+          <div><dt>Mod ID</dt><dd>lord_of_mysteries</dd></div>
+          <div><dt>版本</dt><dd>0.0.1-1.20.1</dd></div>
+          <div><dt>环境</dt><dd>Forge 47.4.20</dd></div>
+          <div><dt>阶段</dt><dd>M0 技术验证</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="资料统计">
+      <div><strong id="stat-items">0</strong><span>物品</span></div>
+      <div><strong id="stat-blocks">0</strong><span>方块</span></div>
+      <div><strong id="stat-systems">0</strong><span>系统条目</span></div>
+      <div><strong id="stat-data">0</strong><span>数据文件</span></div>
+    </section>
+
+    <section id="catalog" class="catalog">
+      <aside class="filters" aria-label="资料筛选">
+        <label class="search-label" for="search">搜索</label>
+        <input id="search" type="search" placeholder="输入名称、ID、关键词">
+        <div class="filter-group" role="list" aria-label="分类">
+          <button class="filter active" data-filter="all">全部</button>
+          <button class="filter" data-filter="item">物品</button>
+          <button class="filter" data-filter="block">方块</button>
+          <button class="filter" data-filter="pathway">途径</button>
+          <button class="filter" data-filter="sequence">序列</button>
+          <button class="filter" data-filter="potion">魔药</button>
+          <button class="filter" data-filter="ritual">仪式</button>
+          <button class="filter" data-filter="artifact">封印物</button>
+          <button class="filter" data-filter="status">Buff/状态</button>
+        </div>
+      </aside>
+
+      <section class="results" aria-live="polite">
+        <div class="section-heading">
+          <p class="eyebrow">Catalog</p>
+          <h2>条目索引</h2>
+        </div>
+        <div id="cards" class="cards"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Lord of Mysteries Wiki</span>
+    <a href="https://github.com/Herdeny/Lord-of-Mysteries/issues">反馈问题</a>
+  </footer>
+
+  <script src="assets/wiki.js"></script>
+</body>
+</html>
