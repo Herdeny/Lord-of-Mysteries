@@ -124,7 +124,7 @@ Lord-of-Mysteries/
 # IDE：IntelliJ 直接 import build.gradle；Eclipse 先 ./gradlew genEclipseRuns
 ```
 
-构建产物 `build/libs/lord_of_mysteries-<version>.jar` 放进 Forge 1.20.1 的 `mods/` 即可加载。
+构建产物 `build/libs/Lord of Mysteries-<version>.jar` 放进 Forge 1.20.1 的 `mods/` 即可加载。
 
 ---
 
