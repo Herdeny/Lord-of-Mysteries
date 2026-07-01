@@ -8,5 +8,9 @@
   "item.lord_of_mysteries.eternal_matchbox": "Eternal Matchbox",
 
   "block.lord_of_mysteries.ritual_altar": "Ritual Altar",
-  "block.lord_of_mysteries.crucible": "Crucible"
+  "block.lord_of_mysteries.crucible": "Crucible",
+
+  "key.categories.lord_of_mysteries": "Project Mystery",
+  "key.lord_of_mysteries.toggle_spirit_vision": "Toggle Spirit Vision",
+  "key.lord_of_mysteries.use_divination": "Simple Divination"
 }

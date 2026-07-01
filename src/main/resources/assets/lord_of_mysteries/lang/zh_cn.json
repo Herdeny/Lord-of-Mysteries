@@ -8,5 +8,9 @@
   "item.lord_of_mysteries.eternal_matchbox": "永燃火柴盒",
 
   "block.lord_of_mysteries.ritual_altar": "仪式祭坛",
-  "block.lord_of_mysteries.crucible": "坩埚"
+  "block.lord_of_mysteries.crucible": "坩埚",
+
+  "key.categories.lord_of_mysteries": "诡秘之主",
+  "key.lord_of_mysteries.toggle_spirit_vision": "切换灵视",
+  "key.lord_of_mysteries.use_divination": "简易占卜"
 }

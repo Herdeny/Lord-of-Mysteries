@@ -13,6 +13,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import top.aurora.lordofmysteries.core.MysteryRegistries;
 import top.aurora.lordofmysteries.core.config.ServerConfig;
+import top.aurora.lordofmysteries.network.PMNetwork;
 
 /**
  * Project Mystery —《诡秘之主》Minecraft Mod 入口。
@@ -81,6 +82,8 @@ public class ProjectMystery {
      * 安排到主线程执行。M0 暂时只输出日志，确认生命周期能正常走到这里。
      */
     private void commonSetup(final FMLCommonSetupEvent event) {
+        // 网络包必须在主线程注册（SimpleChannel 内部会做线程检查）。
+        event.enqueueWork(PMNetwork::register);
         LOGGER.info("[Project Mystery] commonSetup 完成。MOD_ID={}", MOD_ID);
     }
 }
