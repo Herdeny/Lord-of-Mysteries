@@ -1,169 +1,108 @@
 # Project Mystery —《诡秘之主》Minecraft Mod
 
-> 在未知中承担风险、通过**扮演**消化力量、逐步成为非凡者的 Minecraft 生存冒险 Mod。
+> 在未知中承担风险，通过扮演消化力量，逐步成为非凡者。
 >
-> 仓库代号：`Lord-of-Mysteries`　·　项目代号：`Project Mystery`　·　当前阶段：**M0 技术验证（框架）**
+> 当前阶段：**M1 可玩 Alpha**　·　Minecraft **1.20.1**　·　Forge **47.4.20**　·　Java **17**
 
-本 Mod 把《诡秘之主》的核心体验搬进 Minecraft：玩家从普通人出发，调配**魔药**晋升序列，
-靠**扮演对应序列的角色**来消化力量，同时对抗灵性枯竭与失控污染，逐步揭开非凡世界。
+Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 Minecraft 生存冒险 Mod。
+仓库现有实现是唯一技术基线；设计文档 `docs/Project_Mystery_Mod_Design_Doc_v0.4.pdf`
+中的 NeoForge 1.21.1 示例只用于机制与数值参考。
 
----
+## 当前可玩内容
 
-## 一、技术基线（已锁定）
+M1 已形成“普通人 → 序列 9 占卜家”的基础闭环：
 
-| 项目 | 版本 | 说明 |
-|------|------|------|
-| Minecraft | **Java Edition 1.20.1** | 锁定，不升级 |
-| Mod Loader | **Forge 47.4.20**（`[47,)`） | 经典 Forge，非 NeoForge |
-| Java | **17** | Forge 1.20.1 工具链要求 |
-| 构建 | Gradle 8.8 + **ForgeGradle 6** | `./gradlew` 自带 wrapper |
-| 映射 | official（Mojang 官方映射） | |
-| `mod_id` | `lord_of_mysteries` | |
-| Java 包根 | `top.aurora.lordofmysteries` | |
+1. 合成坩埚、灵性草药、占卜水晶与月华水。
+2. 按顺序把材料放进坩埚，空手点击开始 1200 tick 炼制。
+3. 热源决定温度与魔药品质：完美、完整、瑕疵或污染失败。
+4. 服用占卜家魔药，获得 122 灵性上限与三项序列能力。
+5. 使用扮演事件消化魔药；重复行为受到新颖度衰减和过度占卜惩罚。
+6. 管理污染与失控压力；污染达到 100 会按服务器配置触发失控结局。
 
-> 玩家数据采用 **Forge Capability**（1.20.1 无 NeoForge 的 Attachments API），
-> 随玩家存档以 NBT 持久化，死亡/跨维度自动继承。
+### 能力与按键
 
----
+| 按键 | 功能 | 规则 |
+|---|---|---|
+| `V` | 灵视 | 0.8 灵性/秒，32 格服务端定向彩色粒子 |
+| `B` | 简易占卜 | 15 灵性，60 秒冷却，结果按可信度扭曲 |
+| 被动 | 危险直觉 | 35% 概率拦截一次致命攻击，30 秒冷却 |
+| `N` | 非凡者档案 | 查看灵性、污染、压力、魔药品质与已知知识 |
 
-## 二、当前进度：M0 技术验证
+### 已完成系统
 
-已落地一套**可编译、可运行、带单测**的最小骨架，验证核心技术路线可行。
+- Forge Capability 玩家数据、NBT 持久化、死亡/跨维度继承
+- 灵性恢复、能力消耗与冷却、服务端权威 C2S/S2C 数据包
+- 占卜可信度、方向与文本扭曲、序列 9 能力访问控制
+- 可交互 `CrucibleBlockEntity`、温度模拟、投料顺序和四档品质
+- 占卜家魔药物品、普通人晋升、魔药品质对消化倍率的影响
+- 扮演收益公式、新颖度衰减、风险系数和过度占卜惩罚
+- 污染分级事件与 `recoverable` / `permanent` / `death` 三种失控模式
+- 永燃火柴盒：灵火、灵体额外伤害、每次使用增加 15 失控压力
+- 中英双语、基础配方与方块掉落、缺失专用美术时的原版纹理回退
+- JUnit 5 覆盖玩家数据、灵性消耗、占卜可信度、坩埚品质与扮演公式
 
-### ✅ 已完成
+### 当前限制
 
-**工程基础**
-- Forge 1.20.1 完整工程（`build.gradle` / `gradle.properties` / `settings.gradle` / gradle wrapper / `mods.toml`）
-- `./gradlew compileJava test` → **BUILD SUCCESSFUL**（3 个单元测试通过）
+- 灵视仍使用只对施术者可见的服务端粒子；客户端实体描边渲染尚未完成。
+- 占卜家失控体已有独立实体、属性、灵性干扰和掉落，但暂时复用原版僵尸模型。
+- 净化封印已实现状态机与祭坛库存交互；多方块圆阵检测和失败分支仍待深化。
+- 废弃调查员营地采用轻量程序生成；完整结构模板与七步调查任务链尚未实装。
+- 观众/猎人途径和灰雾空间尚未实装。
+- 专用像素美术仍待制作，当前模型引用原版纹理以保证游戏内可见。
 
-**核心系统骨架**
-- `ProjectMystery`：Mod 入口，挂载注册、配置、事件总线
-- `PlayerMysteryData`：玩家非凡者数据载荷（途径 / 序列 / 灵性 / 消化 / 污染 / 失控压力 / 知识 / 扮演历史 / 组织声望 / NBT 序列化）
-- `MysteryCapability` + `PlayerCapabilityEvents`：Capability 附着 / 注册 / 死亡跨维度数据继承（§5.1）
-- `SpiritualityRegenHandler`：灵性自然恢复（非战斗 + 光照≥7 + 失控压力<30，§5.2）
-- `PollutionEffectHandler`：污染 / 失控压力分级检定节奏（§5.3）
-- `ServerConfig`：服务端平衡开关（灵性恢复 / 消化 / 污染倍率、失控模式、灰雾开关等，§19.1）
+## 技术基线
 
-**注册管线**
-- 方块：仪式祭坛 `ritual_altar`、坩埚 `crucible`
-- 物品：占位材料（灵性草药 / 占卜水晶 / 月华水 / 污染混合物）、封印物（永燃火柴盒）、对应方块物品
-- 方块实体注册器（坩埚 BlockEntity 占位，M1 绑定）
-- 创造模式物品栏 `lord_of_mysteries:main`
+| 项目 | 版本 |
+|---|---|
+| Minecraft | Java Edition 1.20.1 |
+| Mod Loader | Forge 47.4.20（`[47,)`） |
+| Java | 17 |
+| 构建 | Gradle 8.8 + ForgeGradle 6 |
+| 映射 | Parchment `2023.09.03-1.20.1` |
+| `mod_id` | `lord_of_mysteries` |
+| Java 包根 | `top.aurora.lordofmysteries` |
 
-**数据驱动示例（§18，全部为合法 JSON）**
-- 途径 `pathways/seer.json`（占卜家）
-- 序列 `sequences/seer_9.json`
-- 扮演事件 `acting_events/seer9_divination_success.json`
-- 魔药 `potions/seer_potion_9.json`
-- 仪式 `rituals/calm_sealing_ritual.json`
-- 封印物 `artifacts/eternal_matchbox.json`
-
-**资源与本地化**
-- 中英双语 `lang/zh_cn.json` + `lang/en_us.json`
-- blockstate / 方块模型 / 物品模型（纹理待补，见 `assets/.../textures/TEXTURES_TODO.md`）
-
-**模块包结构**（按设计文档 §17，13 个模块均已建包 + `package-info` 说明职责）
-`core` `player` `ability` `potion` `ritual` `divination` `knowledge`
-`artifact` `acting` `world` `organization` `grayfog` `client` `compat`
-
-### 🚧 待实现（按里程碑）
-
-| 里程碑 | 目标 |
-|--------|------|
-| **M1** | 占卜家序列 9 完整闭环：灵视 / 危险直觉 / 简易占卜 + 占卜可信度计算 + 扮演事件系统 + 坩埚魔药制作 + 消化与失控 + 1 个失控体 + 1 件封印物 |
-| **M2** | 三途径（占卜家 / 观众 / 猎人）序列 9-8 + 通用仪式状态机 + 多人同步 + 灰雾空间基础版 |
-| **M3** | 三途径序列 7 + 偷盗者/学徒 9-7 + 阶段 Boss + 任务链 + 首发结构 + 世界事件 |
-| **M4** | 平衡 / 性能 / 兼容 / 存档迁移 / 本地化 → MVP 1.0 |
-| **M5** | 序列 6-5、更多途径（→10 条）、组织深化、塔罗会完整功能 |
-
----
-
-## 三、目录结构
-
-```text
-Lord-of-Mysteries/
-├── build.gradle / settings.gradle / gradle.properties   # Forge 1.20.1 工程
-├── gradlew / gradlew.bat / gradle/                       # Gradle 8.8 wrapper
-├── docs/
-│   ├── Project_Mystery_Mod_Design_Doc_v0.4.pdf           # 唯一权威设计规格
-│   └── IP_MAPPING.md                                     # 原作→原创化映射表（发布前必处理）
-└── src/
-    ├── main/
-    │   ├── java/top/aurora/lordofmysteries/
-    │   │   ├── ProjectMystery.java                       # 入口
-    │   │   ├── core/        （MysteryRegistries / config/ServerConfig）
-    │   │   ├── player/      （PlayerMysteryData / MysteryCapability / 事件 / Handler）
-    │   │   ├── registry/    （ModBlocks / ModItems / ModBlockEntities / ModCreativeTabs）
-    │   │   └── ability potion ritual divination knowledge
-    │   │       artifact acting world organization grayfog client compat   # 模块占位包
-    │   └── resources/
-    │       ├── META-INF/mods.toml
-    │       ├── data/lord_of_mysteries/    （pathways/sequences/potions/rituals/...）
-    │       └── assets/lord_of_mysteries/  （lang/ models/ blockstates/ textures/）
-    └── test/java/...                                     # JUnit 5 单元测试
-```
-
----
-
-## 四、构建与运行
-
-> 需要 **JDK 17**。首次构建会下载 Forge 并反编译 Minecraft，耗时较长、约需 3GB 内存。
+## 构建
 
 ```bash
-# 编译 + 跑单元测试
 ./gradlew compileJava test
-
-# 打出可加载的 mod jar（产物在 build/libs/）
 ./gradlew build
-
-# 开发期启动客户端 / 专用服务端 / 数据生成
 ./gradlew runClient
 ./gradlew runServer
-./gradlew runData
-
-# IDE：IntelliJ 直接 import build.gradle；Eclipse 先 ./gradlew genEclipseRuns
 ```
 
-构建产物 `build/libs/Lord of Mysteries-<version>.jar` 放进 Forge 1.20.1 的 `mods/` 即可加载。
+构建产物位于 `build/libs/`，放入 Forge 1.20.1 的 `mods/` 目录即可加载。
 
----
-
-## 五、Wiki / GitHub Pages
-
-项目内置静态 Wiki 原型，位置：
+## 项目结构
 
 ```text
-docs/index.html
+src/main/java/top/aurora/lordofmysteries/
+├── ability/       # 灵视、危险直觉、简易占卜与可信度
+├── acting/        # 扮演事件、消化公式与反刷取
+├── artifact/      # 封印物行为
+├── client/        # 按键与非凡者档案 UI
+├── network/       # 服务端权威网络包
+├── player/        # Capability、灵性、污染与失控
+├── potion/        # 坩埚、魔药品质与晋升
+└── registry/      # 方块、物品、方块实体和创造栏注册
 ```
 
-推送到 GitHub 后，`.github/workflows/pages.yml` 会把 `docs/` 发布到 GitHub Pages。仓库 Pages 来源请选择 **GitHub Actions**。
+数据定义位于 `src/main/resources/data/lord_of_mysteries/`，静态资料站位于 `docs/`，
+发布地址为 <https://herdeny.github.io/Lord-of-Mysteries/>。
 
-公开地址：
+## 路线图
 
-```text
-https://herdeny.github.io/Lord-of-Mysteries/
-```
+| 里程碑 | 状态 | 目标 |
+|---|---|---|
+| M0 | 完成 | Forge 工程、Capability、注册与配置骨架 |
+| M1 | 功能闭环 Alpha | 占卜家序列 9、净化封印、专属失控体与调查营地基础 |
+| M2 | 规划 | 观众/猎人序列 9-8、通用仪式、多人同步与灰雾基础 |
+| M3 | 规划 | 序列 7、偷盗者/学徒、Boss、任务链、结构与世界事件 |
+| M4 | 规划 | 平衡、性能、兼容、存档迁移与 MVP 1.0 |
 
-当前 Wiki 已包含物品、方块、途径、序列、魔药、仪式、封印物和 Buff/状态条目；后续可以继续把数据 JSON 自动导出到页面。
+## IP 与授权
 
----
+当前专有名词仅用于内部原型。公开发布前必须处理 IP 授权或完成原创化映射，
+详见 [`docs/IP_MAPPING.md`](docs/IP_MAPPING.md)。License 为 `All Rights Reserved`。
 
-## 六、IP 与授权声明 ⚠️
-
-当前所有专有名词（途径名、序列名、组织名、封印物名等）**仅用于内部原型开发**。
-
-- 公开发布前**必须**完成 IP 处理或原创化映射，详见 [`docs/IP_MAPPING.md`](docs/IP_MAPPING.md)。
-- 代码与数据层统一使用稳定英文代号（如 `seer`），不含原作中文专有名词；
-  所有玩家可见文本走 `lang/*.json`，发布时只替换展示名即可完成原创化，无需改逻辑。
-- License 当前为 `All Rights Reserved`（见 `gradle.properties` 的 `mod_license`）。
-
----
-
-## 七、协作
-
-| 角色 | 成员 |
-|------|------|
-| 发起 / 共享 | **Herdeny**（星魂） |
-| 协同开发 | **Zijian-Ni**（小倪） |
-
-设计文档 v0.4 为唯一权威规格，任何系统实现以文档为准；如需偏离请先更新文档。
+协作成员：Herdeny（星魂）、Zijian-Ni（小倪）。

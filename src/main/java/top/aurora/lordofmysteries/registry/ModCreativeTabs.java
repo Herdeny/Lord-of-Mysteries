@@ -40,7 +40,12 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.SPIRIT_HERB.get());
                         output.accept(ModItems.DIVINATION_CRYSTAL.get());
                         output.accept(ModItems.MOONWATER.get());
+                        output.accept(ModItems.PURE_WATER.get());
+                        output.accept(ModItems.WHITE_CANDLE.get());
                         output.accept(ModItems.CONTAMINATED_MIXTURE.get());
+                        output.accept(ModItems.BROKEN_CHARACTERISTIC.get());
+                        output.accept(ModItems.INVESTIGATOR_NOTES.get());
+                        output.accept(ModItems.SEER_POTION_9.get());
                         output.accept(ModItems.ETERNAL_MATCHBOX.get());
                         output.accept(ModItems.RITUAL_ALTAR_ITEM.get());
                         output.accept(ModItems.CRUCIBLE_ITEM.get());

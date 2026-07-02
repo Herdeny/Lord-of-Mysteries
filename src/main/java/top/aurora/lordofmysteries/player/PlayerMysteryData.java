@@ -34,6 +34,7 @@ public class PlayerMysteryData {
     public float digestion = 0f;            // 消化进度，范围约定为 0-100%
     public float pollution = 0f;            // 污染值，范围约定为 0-100，100 触发失控
     public float insanityPressure = 0f;     // 失控压力，范围约定为 0-100，用于短期精神状态
+    public String potionQuality = "complete"; // 当前序列魔药品质，影响扮演消化倍率
 
     // 批次1 能力状态。
     // 灵视是否开启：服务端权威，登入登出保留状态。
@@ -42,6 +43,8 @@ public class PlayerMysteryData {
     public long divinationCooldownEndTick = 0L;
     // 危险直觉冷却截止 gameTime（tick）。<=0 表示不在冷却。
     public long dangerIntuitionCooldownEndTick = 0L;
+    public long breakdownCooldownEndTick = 0L;
+    public long mentalTraumaEndTick = 0L;
 
     // 知识系统。保存玩家已经解锁的知识条目 ID，供手册、仪式和配方门槛读取。
     public Set<ResourceLocation> knownKnowledge = new HashSet<>();
@@ -82,9 +85,12 @@ public class PlayerMysteryData {
         this.digestion = src.digestion;
         this.pollution = src.pollution;
         this.insanityPressure = src.insanityPressure;
+        this.potionQuality = src.potionQuality;
         this.spiritVisionActive = src.spiritVisionActive;
         this.divinationCooldownEndTick = src.divinationCooldownEndTick;
         this.dangerIntuitionCooldownEndTick = src.dangerIntuitionCooldownEndTick;
+        this.breakdownCooldownEndTick = src.breakdownCooldownEndTick;
+        this.mentalTraumaEndTick = src.mentalTraumaEndTick;
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
         this.actingHistory = new HashMap<>(src.actingHistory);
         this.orgReputation = new HashMap<>(src.orgReputation);
@@ -108,9 +114,12 @@ public class PlayerMysteryData {
         tag.putFloat("digestion", digestion);
         tag.putFloat("pollution", pollution);
         tag.putFloat("insanity_pressure", insanityPressure);
+        tag.putString("potion_quality", potionQuality);
         tag.putBoolean("spirit_vision_active", spiritVisionActive);
         tag.putLong("divination_cd_end", divinationCooldownEndTick);
         tag.putLong("danger_intuition_cd_end", dangerIntuitionCooldownEndTick);
+        tag.putLong("breakdown_cd_end", breakdownCooldownEndTick);
+        tag.putLong("mental_trauma_end", mentalTraumaEndTick);
         tag.putInt("schema_version", schemaVersion);
 
         ListTag known = new ListTag();
@@ -146,9 +155,12 @@ public class PlayerMysteryData {
         digestion = tag.getFloat("digestion");
         pollution = tag.getFloat("pollution");
         insanityPressure = tag.getFloat("insanity_pressure");
+        potionQuality = tag.contains("potion_quality") ? tag.getString("potion_quality") : "complete";
         spiritVisionActive = tag.getBoolean("spirit_vision_active");
         divinationCooldownEndTick = tag.getLong("divination_cd_end");
         dangerIntuitionCooldownEndTick = tag.getLong("danger_intuition_cd_end");
+        breakdownCooldownEndTick = tag.getLong("breakdown_cd_end");
+        mentalTraumaEndTick = tag.getLong("mental_trauma_end");
         schemaVersion = tag.contains("schema_version") ? tag.getInt("schema_version") : 1;
 
         knownKnowledge.clear();

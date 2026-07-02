@@ -1,4 +1,4 @@
 {
-  "parent": "item/generated",
-  "textures": { "layer0": "lord_of_mysteries:item/eternal_matchbox" }
+  "parent": "minecraft:item/generated",
+  "textures": { "layer0": "minecraft:item/flint_and_steel" }
 }

@@ -43,6 +43,7 @@ public final class ServerConfig {
 
     /** 调试用开关：是否向玩家展示精确消化数值，而不是模糊描述。 */
     public static final ForgeConfigSpec.BooleanValue SHOW_EXACT_DIGESTION;
+    public static final ForgeConfigSpec.DoubleValue STRUCTURE_GENERATION_RATE;
 
     static {
         ForgeConfigSpec.Builder b = new ForgeConfigSpec.Builder();
@@ -68,6 +69,8 @@ public final class ServerConfig {
                 .define("world_events_enabled", true);
         SHOW_EXACT_DIGESTION = b.comment("是否显示精确消化数值（调试用）")
                 .define("show_exact_digestion", false);
+        STRUCTURE_GENERATION_RATE = b.comment("神秘结构生成倍率（0 为关闭）")
+                .defineInRange("structure_generation_rate", 1.0, 0.0, 10.0);
 
         b.pop();
 
