@@ -52,6 +52,7 @@ public final class SpiritualityRegenHandler {
 
         if (!inCombat && goodLight && lowPressure) {
             float regenRate = getRegenRate(data.pathway, data.sequence);
+            if (player.level().getGameTime() < data.mentalTraumaEndTick) regenRate *= 0.5f;
             // 恢复值必须被上限截断，避免长时间 tick 后超过 spiritualityMax。
             data.spirituality = Math.min(data.spiritualityMax, data.spirituality + regenRate);
         }

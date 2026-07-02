@@ -44,5 +44,15 @@ public final class PMNetwork {
                 .decoder(UseSimpleDivinationC2SPacket::decode)
                 .consumerMainThread(UseSimpleDivinationC2SPacket::handle)
                 .add();
+        CHANNEL.messageBuilder(RequestMysteryStatusC2SPacket.class, id++)
+                .encoder(RequestMysteryStatusC2SPacket::encode)
+                .decoder(RequestMysteryStatusC2SPacket::decode)
+                .consumerMainThread(RequestMysteryStatusC2SPacket::handle)
+                .add();
+        CHANNEL.messageBuilder(PlayerMysteryStatusS2CPacket.class, id++)
+                .encoder(PlayerMysteryStatusS2CPacket::encode)
+                .decoder(PlayerMysteryStatusS2CPacket::decode)
+                .consumerMainThread(PlayerMysteryStatusS2CPacket::handle)
+                .add();
     }
 }

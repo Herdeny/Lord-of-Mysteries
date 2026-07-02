@@ -46,19 +46,18 @@ public final class PollutionEffectHandler {
         float pollution = data.pollution;
 
         if (pollution >= 100f) {
-            // TODO(M1): InsanityEventHandler.triggerBreakdown(player, data);
-            ProjectMystery.LOGGER.debug("[Pollution] {} 达到失控阈值（占位）", player.getGameProfile().getName());
+            InsanityEventHandler.triggerBreakdown(player, data);
             return;
         }
 
         // 20 tick = 1 秒：600 tick = 30 秒，2400 tick = 2 分钟，6000 tick = 5 分钟。
         // 污染越高，检查越频繁；M1 的具体事件处理器会在这些分支里实现。
         if (pollution >= 75f && player.tickCount % 600 == 0) {
-            // TODO(M1): triggerSevereEvent
+            InsanityEventHandler.triggerSevereEvent(player, data);
         } else if (pollution >= 50f && player.tickCount % 2400 == 0) {
-            // TODO(M1): triggerModerateEvent
+            InsanityEventHandler.triggerModerateEvent(player, data);
         } else if (pollution >= 25f && player.tickCount % 6000 == 0) {
-            // TODO(M1): triggerMildEvent
+            InsanityEventHandler.triggerMildEvent(player, data);
         }
     }
 }

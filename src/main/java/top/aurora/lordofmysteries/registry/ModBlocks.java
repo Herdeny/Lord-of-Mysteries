@@ -9,6 +9,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import top.aurora.lordofmysteries.ProjectMystery;
+import top.aurora.lordofmysteries.potion.CrucibleBlock;
 
 /**
  * 方块注册（Forge 1.20.1）。M0 放仪式祭坛与坩埚的占位方块，验证注册管线。
@@ -41,7 +42,7 @@ public final class ModBlocks {
     // 坩埚（§7.2 CrucibleBlockEntity 的载体）。
     // 目前只是普通方块；魔药制作状态、材料槽和 tick 逻辑会转移到 CrucibleBlockEntity。
     public static final RegistryObject<Block> CRUCIBLE = BLOCKS.register("crucible",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new CrucibleBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.METAL)
                     .strength(3.5f, 6.0f)
                     .requiresCorrectToolForDrops()));

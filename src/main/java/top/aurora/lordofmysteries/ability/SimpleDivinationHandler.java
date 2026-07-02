@@ -15,6 +15,9 @@ import net.minecraft.world.phys.AABB;
 
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
+import top.aurora.lordofmysteries.acting.ActingEvent;
+import top.aurora.lordofmysteries.acting.ActingEventHandler;
+import top.aurora.lordofmysteries.potion.SeerPotionItem;
 
 /**
  * 简易占卜主动能力（批次1，设计文档 §6 / §8）。
@@ -48,7 +51,7 @@ public final class SimpleDivinationHandler {
      */
     public static Result cast(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
-        if (data.pathway == null) {
+        if (!SeerPotionItem.SEER_PATHWAY.equals(data.pathway) || data.sequence < 0 || data.sequence > 9) {
             player.sendSystemMessage(Component.literal("§c你尚未进入任何途径"));
             return Result.fail("not_extraordinary");
         }
@@ -61,6 +64,7 @@ public final class SimpleDivinationHandler {
         }
 
         if (!SpiritualityCost.tryConsume(data, COST)) {
+            ActingEventHandler.trigger(player, ActingEvent.ABSTAIN_DIVINATION, null);
             player.sendSystemMessage(Component.literal("§c灵性不足（需 " + COST + "）"));
             return Result.fail("insufficient_spirit");
         }
@@ -91,6 +95,14 @@ public final class SimpleDivinationHandler {
         double interf = DivinationCredibility.interference(highSeqNearby, data.pollution, 0.0);
         double score = DivinationCredibility.finalScore(base, interf, rng);
         DivinationCredibility.Clarity clarity = DivinationCredibility.classify(score);
+        long previousCast = data.actingHistory.getOrDefault("seer9:last_divination_cast", 0L);
+        if (previousCast > 0L && now - previousCast < 1200L) {
+            ActingEventHandler.trigger(player, ActingEvent.OVER_DIVINATION_PENALTY, nearest);
+        }
+        data.actingHistory.put("seer9:last_divination_cast", now);
+        if (clarity == DivinationCredibility.Clarity.CLEAR) {
+            ActingEventHandler.trigger(player, ActingEvent.DIVINATION_SUCCESS, nearest);
+        }
 
         // —— 客户端展示：按 clarity 扭曲 ——
         double shownYaw = DivinationCredibility.distortDirection(trueYaw, clarity, rng);

@@ -76,5 +76,26 @@
 - 灵性上限的 122 目前仍靠 `spiritualityMax` 字段人工设置；晋升逻辑（批次2 坩埚）落地时应在服务魔药时一并写入。
 - 灵视目前用服务端定向 dust 粒子作 M1 占位渲染；后续应实现 `SpiritVisionSyncS2CPacket` + 客户端描边着色器。
 - `SimpleDivinationHandler` 里附近高序列干扰暂只统计玩家（NPC 尚未接入 npc 序列数据）。
-- 危险直觉预警不阻挡伤害，仅提供 40 tick 加速；若需要 0.8s「暂缓伤害」的规则再评估。
+- 危险直觉已改为拦截一次致命攻击并提供 16 tick 加速窗口，作为 Forge 1.20.1 下的等价实现。
+
+---
+
+## 批次2-4完成记录（2026-07-02）
+
+### 已落地
+- `CrucibleBlock` / `CrucibleBlockEntity`：三槽顺序投料、热源温控、1200 tick 进度、NBT 持久化、破坏掉落与成品领取。
+- `CrucibleRecipeLogic` / `PotionQuality`：完美、完整、瑕疵、污染四档品质及纯逻辑单测。
+- `SeerPotionItem`：魔药品质 NBT、普通人晋升序列9、灵性上限122、初始压力/污染、知识解锁。
+- `ActingCalculator` / `ActingEventHandler`：新颖度、风险、品质、服务器倍率与消化进度；清晰占卜、克制占卜、过度占卜已接线。
+- `InsanityEventHandler`：污染分级反馈与 `recoverable` / `permanent` / `death` 三种失控结局。
+- `EternalMatchboxItem`：灵魂火、实体伤害、失控体额外伤害、+15失控压力、耐久与冷却。
+- `MysteryStatusScreen`：`N` 键请求服务端权威数据，显示灵性、污染、压力、品质与已知知识。
+- 生存配方、方块掉落、中英本地化与原版纹理回退。
+
+### 与设计规格的暂时差异
+- 灵视使用定向彩色粒子，客户端描边渲染待实现。
+- 危险直觉在 Forge 1.20.1 中拦截一次致命攻击并提供0.8秒加速，代替无法通用实现的“提前预告下一次攻击”。
+- 失控体暂用带专用标记的僵尸原型；专属模型、AI、能力复制和破碎特性掉落待补。
+- 净化封印仪式只有数据定义，运行时 `RitualStateMachine` 与祭坛交互待下一批实现。
+- 调查营地结构与任务链尚未落地，因此 M1 标记为“可玩 Alpha”，而非最终完成。
 

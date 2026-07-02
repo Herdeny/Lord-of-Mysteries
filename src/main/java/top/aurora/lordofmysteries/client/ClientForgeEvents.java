@@ -9,6 +9,7 @@ import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.network.PMNetwork;
 import top.aurora.lordofmysteries.network.ToggleSpiritVisionC2SPacket;
 import top.aurora.lordofmysteries.network.UseSimpleDivinationC2SPacket;
+import top.aurora.lordofmysteries.network.RequestMysteryStatusC2SPacket;
 
 /**
  * 客户端游戏总线事件（Forge 1.20.1）。
@@ -33,6 +34,9 @@ public final class ClientForgeEvents {
         }
         while (PMKeyBindings.USE_DIVINATION.consumeClick()) {
             PMNetwork.CHANNEL.sendToServer(new UseSimpleDivinationC2SPacket());
+        }
+        while (PMKeyBindings.OPEN_STATUS.consumeClick()) {
+            PMNetwork.CHANNEL.sendToServer(new RequestMysteryStatusC2SPacket());
         }
     }
 }

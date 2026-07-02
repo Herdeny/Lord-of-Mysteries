@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
+import top.aurora.lordofmysteries.potion.SeerPotionItem;
 
 /**
  * 灵视被动能力（批次1，设计文档 §6）。
@@ -48,7 +49,9 @@ public final class SpiritVisionHandler {
      */
     public static Boolean toggle(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
-        if (data.pathway == null) return null;
+        if (!SeerPotionItem.SEER_PATHWAY.equals(data.pathway) || data.sequence < 0 || data.sequence > 9) {
+            return null;
+        }
 
         if (data.spiritVisionActive) {
             data.spiritVisionActive = false;

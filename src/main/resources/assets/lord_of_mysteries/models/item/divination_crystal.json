@@ -1,4 +1,4 @@
 {
-  "parent": "item/generated",
-  "textures": { "layer0": "lord_of_mysteries:item/divination_crystal" }
+  "parent": "minecraft:item/generated",
+  "textures": { "layer0": "minecraft:item/amethyst_shard" }
 }

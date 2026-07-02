@@ -37,9 +37,17 @@ public final class PMKeyBindings {
             InputConstants.KEY_B,
             CATEGORY);
 
+    public static final KeyMapping OPEN_STATUS = new KeyMapping(
+            "key.lord_of_mysteries.open_status",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_N,
+            CATEGORY);
+
     /** 通过 mod 总线注册；由 {@code ClientModEvents} 调用。 */
     public static void register(RegisterKeyMappingsEvent event) {
         event.register(TOGGLE_SPIRIT_VISION);
         event.register(USE_DIVINATION);
+        event.register(OPEN_STATUS);
     }
 }
