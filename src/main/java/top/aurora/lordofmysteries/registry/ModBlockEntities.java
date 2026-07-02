@@ -8,6 +8,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.potion.CrucibleBlockEntity;
+import top.aurora.lordofmysteries.ritual.RitualAltarBlockEntity;
 
 /**
  * 方块实体注册占位（Forge 1.20.1，设计文档 §7.2 CrucibleBlockEntity）。
@@ -36,4 +37,9 @@ public final class ModBlockEntities {
             BLOCK_ENTITIES.register("crucible", () ->
                     BlockEntityType.Builder.of(
                             CrucibleBlockEntity::new, ModBlocks.CRUCIBLE.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<RitualAltarBlockEntity>> RITUAL_ALTAR =
+            BLOCK_ENTITIES.register("ritual_altar", () ->
+                    BlockEntityType.Builder.of(
+                            RitualAltarBlockEntity::new, ModBlocks.RITUAL_ALTAR.get()).build(null));
 }

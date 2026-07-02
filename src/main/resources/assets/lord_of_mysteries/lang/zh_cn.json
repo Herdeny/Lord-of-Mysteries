@@ -4,7 +4,11 @@
   "item.lord_of_mysteries.spirit_herb": "灵性草药",
   "item.lord_of_mysteries.divination_crystal": "占卜水晶",
   "item.lord_of_mysteries.moonwater": "月华水",
+  "item.lord_of_mysteries.pure_water": "纯净水",
+  "item.lord_of_mysteries.white_candle": "白蜡烛",
   "item.lord_of_mysteries.contaminated_mixture": "污染混合物",
+  "item.lord_of_mysteries.broken_characteristic": "破碎特性",
+  "item.lord_of_mysteries.investigator_notes": "调查员残缺手稿",
   "item.lord_of_mysteries.seer_potion_9": "占卜家魔药",
   "item.lord_of_mysteries.eternal_matchbox": "永燃火柴盒",
 
@@ -54,5 +58,11 @@
   "screen.lord_of_mysteries.status.quality": "魔药品质",
   "screen.lord_of_mysteries.status.hidden": "只能感到模糊变化",
   "screen.lord_of_mysteries.status.knowledge": "已掌握知识",
-  "screen.lord_of_mysteries.status.no_knowledge": "尚未记录任何神秘学知识"
+  "screen.lord_of_mysteries.status.no_knowledge": "尚未记录任何神秘学知识",
+  "message.lord_of_mysteries.ritual.material_added": "材料已放上仪式祭坛",
+  "message.lord_of_mysteries.ritual.started": "净化封印仪式开始，周围的灵性逐渐安静",
+  "message.lord_of_mysteries.ritual.sealed": "封印完成，永燃火柴盒暂时沉寂",
+  "message.lord_of_mysteries.ritual.requirements": "需要夜晚晴天：永燃火柴盒、纯净水×3、青兰花×5、白蜡烛×8",
+  "message.lord_of_mysteries.artifact.sealed": "封印状态下无法使用此封印物",
+  "tooltip.lord_of_mysteries.artifact.sealed": "已封印：效果与代价均被抑制"
 }

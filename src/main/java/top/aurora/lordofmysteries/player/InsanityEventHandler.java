@@ -10,10 +10,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Zombie;
 
 import top.aurora.lordofmysteries.core.config.ServerConfig;
+import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
+import top.aurora.lordofmysteries.registry.ModEntities;
 
 public final class InsanityEventHandler {
 
@@ -94,14 +94,13 @@ public final class InsanityEventHandler {
 
     private static void spawnBreakdownBody(ServerPlayer player) {
         if (!(player.level() instanceof ServerLevel level)) return;
-        Zombie body = EntityType.ZOMBIE.create(level);
+        SeerBreakdownEntity body = ModEntities.SEER_BREAKDOWN.get().create(level);
         if (body == null) return;
         body.moveTo(player.getX() + 1.5, player.getY(), player.getZ() + 1.5,
                 player.getYRot(), player.getXRot());
         body.setCustomName(Component.translatable("entity.lord_of_mysteries.seer_breakdown"));
         body.setCustomNameVisible(true);
         body.setGlowingTag(true);
-        body.getPersistentData().putBoolean("lord_of_mysteries:seer_breakdown", true);
         body.setTarget(player);
         level.addFreshEntity(body);
     }

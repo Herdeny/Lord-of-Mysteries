@@ -49,9 +49,17 @@ public final class ModItems {
 
     // 月相/夜晚相关材料，占位给魔药品质加成和仪式媒介使用。
     public static final RegistryObject<Item> MOONWATER = simple("moonwater");
+    public static final RegistryObject<Item> PURE_WATER = simple("pure_water");
+    public static final RegistryObject<Item> WHITE_CANDLE = simple("white_candle");
 
     // 制作失败或污染反应的产物，用于验证失败结果和污染系统链路。
     public static final RegistryObject<Item> CONTAMINATED_MIXTURE = simple("contaminated_mixture");
+    public static final RegistryObject<Item> BROKEN_CHARACTERISTIC = ITEMS.register(
+            "broken_characteristic",
+            () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> INVESTIGATOR_NOTES = ITEMS.register(
+            "investigator_notes",
+            () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> SEER_POTION_9 = ITEMS.register("seer_potion_9",
             () -> new SeerPotionItem(new Item.Properties()));
 

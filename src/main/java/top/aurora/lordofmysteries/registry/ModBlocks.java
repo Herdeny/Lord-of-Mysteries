@@ -10,6 +10,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.potion.CrucibleBlock;
+import top.aurora.lordofmysteries.ritual.RitualAltarBlock;
 
 /**
  * 方块注册（Forge 1.20.1）。M0 放仪式祭坛与坩埚的占位方块，验证注册管线。
@@ -32,7 +33,7 @@ public final class ModBlocks {
     // 仪式祭坛（§18.5 ritual_altar）。
     // M0 使用原版 Block 验证注册、模型和掉落工具要求；M1/M2 可替换为 RitualAltarBlock。
     public static final RegistryObject<Block> RITUAL_ALTAR = BLOCKS.register("ritual_altar",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new RitualAltarBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE)
                     // strength(硬度, 爆炸抗性)。这里接近石质工作台，避免生存模式过脆。
                     .strength(3.0f, 6.0f)

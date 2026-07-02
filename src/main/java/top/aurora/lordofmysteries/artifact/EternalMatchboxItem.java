@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
+import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
 
 public final class EternalMatchboxItem extends Item {
 
@@ -33,6 +34,13 @@ public final class EternalMatchboxItem extends Item {
         Level level = context.getLevel();
         Player player = context.getPlayer();
         if (player == null) return InteractionResult.PASS;
+        if (isSealed(context.getItemInHand())) {
+            if (!level.isClientSide()) {
+                player.sendSystemMessage(Component.translatable(
+                        "message.lord_of_mysteries.artifact.sealed"));
+            }
+            return InteractionResult.FAIL;
+        }
         BlockPos firePos = context.getClickedPos().relative(context.getClickedFace());
         if (!level.isEmptyBlock(firePos)
                 || !Blocks.SOUL_FIRE.defaultBlockState().canSurvive(level, firePos)) {
@@ -50,9 +58,15 @@ public final class EternalMatchboxItem extends Item {
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player player,
                                                    LivingEntity target, InteractionHand hand) {
+        if (isSealed(stack)) {
+            if (!player.level().isClientSide()) {
+                player.sendSystemMessage(Component.translatable(
+                        "message.lord_of_mysteries.artifact.sealed"));
+            }
+            return InteractionResult.FAIL;
+        }
         if (!player.level().isClientSide()) {
-            float damage = target.getPersistentData().getBoolean(
-                    "lord_of_mysteries:seer_breakdown") ? 12f : 6f;
+            float damage = target instanceof SeerBreakdownEntity ? 12f : 6f;
             target.hurt(player.damageSources().magic(), damage);
             target.setSecondsOnFire(5);
             payCost(player);
@@ -77,5 +91,13 @@ public final class EternalMatchboxItem extends Item {
                 .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("tooltip.lord_of_mysteries.artifact.matchbox")
                 .withStyle(ChatFormatting.GRAY));
+        if (isSealed(stack)) {
+            tooltip.add(Component.translatable("tooltip.lord_of_mysteries.artifact.sealed")
+                    .withStyle(ChatFormatting.AQUA));
+        }
+    }
+
+    private static boolean isSealed(ItemStack stack) {
+        return stack.hasTag() && stack.getTag().getBoolean("sealed");
     }
 }

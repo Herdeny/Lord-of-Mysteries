@@ -4,7 +4,11 @@
   "item.lord_of_mysteries.spirit_herb": "Spirit Herb",
   "item.lord_of_mysteries.divination_crystal": "Divination Crystal",
   "item.lord_of_mysteries.moonwater": "Moonwater",
+  "item.lord_of_mysteries.pure_water": "Pure Water",
+  "item.lord_of_mysteries.white_candle": "White Candle",
   "item.lord_of_mysteries.contaminated_mixture": "Contaminated Mixture",
+  "item.lord_of_mysteries.broken_characteristic": "Broken Characteristic",
+  "item.lord_of_mysteries.investigator_notes": "Fragmentary Investigator Notes",
   "item.lord_of_mysteries.seer_potion_9": "Seer Potion",
   "item.lord_of_mysteries.eternal_matchbox": "Eternal Matchbox",
 
@@ -54,5 +58,11 @@
   "screen.lord_of_mysteries.status.quality": "Potion quality",
   "screen.lord_of_mysteries.status.hidden": "Only vague changes can be felt",
   "screen.lord_of_mysteries.status.knowledge": "Known knowledge",
-  "screen.lord_of_mysteries.status.no_knowledge": "No occult knowledge has been recorded"
+  "screen.lord_of_mysteries.status.no_knowledge": "No occult knowledge has been recorded",
+  "message.lord_of_mysteries.ritual.material_added": "A material was placed on the ritual altar",
+  "message.lord_of_mysteries.ritual.started": "The calming seal begins and the surrounding spirituality settles",
+  "message.lord_of_mysteries.ritual.sealed": "The seal is complete; the Eternal Matchbox falls silent",
+  "message.lord_of_mysteries.ritual.requirements": "Requires a clear night: Eternal Matchbox, 3 Pure Water, 5 Blue Orchids, and 8 White Candles",
+  "message.lord_of_mysteries.artifact.sealed": "This artifact cannot be used while sealed",
+  "tooltip.lord_of_mysteries.artifact.sealed": "Sealed: both effect and cost are suppressed"
 }
