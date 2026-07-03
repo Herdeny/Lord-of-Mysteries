@@ -1,0 +1,12 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Wiki / 使用文档
+    url: https://github.com/Herdeny/Lord-of-Mysteries/wiki
+    about: 安装、玩法和常见说明
+  - name: Security report / 安全漏洞
+    url: https://github.com/Herdeny/Lord-of-Mysteries/security/advisories/new
+    about: 请私下报告可利用漏洞
+  - name: Support policy / 支持范围
+    url: https://github.com/Herdeny/Lord-of-Mysteries/blob/main/SUPPORT.md
+    about: 提问前请阅读支持范围和日志要求
+

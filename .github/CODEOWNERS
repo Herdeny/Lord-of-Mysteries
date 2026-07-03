@@ -1,0 +1,11 @@
+# Default maintainers
+* @Herdeny @Zijian-Ni
+
+# High-risk project policy and automation
+/LICENSE @Herdeny @Zijian-Ni
+/NOTICE.md @Herdeny @Zijian-Ni
+/ASSET_LICENSE.md @Herdeny @Zijian-Ni
+/SECURITY.md @Herdeny @Zijian-Ni
+/.github/ @Herdeny @Zijian-Ni
+/gradle.properties @Herdeny @Zijian-Ni
+
