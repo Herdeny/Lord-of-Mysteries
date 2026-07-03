@@ -1,0 +1,70 @@
+name: Bug report / 缺陷报告
+description: 报告可复现的崩溃、逻辑错误或兼容问题
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请先搜索已有 Issues。安全漏洞不要公开提交，请阅读 `SECURITY.md`。
+  - type: input
+    id: version
+    attributes:
+      label: Mod 版本或提交
+      description: 例如 0.0.1-1.20.1 或完整 commit SHA
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 环境
+      description: 操作系统、Java、Forge、单人/客户端/专用服务端
+      placeholder: Windows 11, Java 17, Forge 47.4.20, singleplayer
+    validations:
+      required: true
+  - type: textarea
+    id: mods
+    attributes:
+      label: 其他模组
+      description: 使用最小复现环境；没有则写“无”
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志
+      description: 粘贴相关片段或上传日志文件；先删除令牌、地址和个人信息
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交确认
+      options:
+        - label: 我已搜索重复 Issue，并在纯 Forge + 本 Mod 环境尝试复现
+          required: true
+        - label: 这不是需要私下报告的安全漏洞
+          required: true
+

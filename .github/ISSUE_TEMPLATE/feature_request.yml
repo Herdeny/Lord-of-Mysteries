@@ -1,0 +1,57 @@
+name: Feature request / 功能建议
+description: 提议新的机制、体验改进或技术能力
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        先描述玩家问题，再描述方案。大型改动会先进入讨论和里程碑规划。
+  - type: textarea
+    id: problem
+    attributes:
+      label: 要解决的问题
+      description: 当前体验为什么不足？
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议方案
+      description: 包括玩法流程、服务端规则和用户反馈
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: 范围
+      options:
+        - Gameplay / 玩法
+        - World generation / 世界生成
+        - UI / 可访问性
+        - Multiplayer / 网络同步
+        - Performance / 性能
+        - Data or API / 数据与扩展
+        - Documentation / 文档
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 替代方案与取舍
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: 兼容性影响
+      description: 是否影响存档、配置、网络协议、性能或现有平衡？
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交确认
+      options:
+        - label: 我已搜索重复建议并阅读路线图
+          required: true
+        - label: 建议不依赖复制小说原文、官方插画或未授权资源
+          required: true
+

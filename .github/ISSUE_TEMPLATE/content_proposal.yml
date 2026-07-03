@@ -1,0 +1,68 @@
+name: Content proposal / 内容提案
+description: 提议途径、序列、仪式、封印物、结构或原创美术
+title: "[Content]: "
+labels:
+  - content
+  - needs-design
+body:
+  - type: markdown
+    attributes:
+      value: |
+        内容必须可实现、可平衡、可测试，并满足 `NOTICE.md` 与 `docs/IP_MAPPING.md`。
+  - type: input
+    id: summary
+    attributes:
+      label: 一句话概述
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: 内容类型
+      options:
+        - Pathway or sequence / 途径或序列
+        - Potion or ingredient / 魔药或材料
+        - Ritual or artifact / 仪式或封印物
+        - Structure or quest / 结构或任务
+        - Entity or boss / 实体或 Boss
+        - Original art or audio / 原创美术或音频
+        - Other / 其他
+    validations:
+      required: true
+  - type: textarea
+    id: loop
+    attributes:
+      label: 玩家流程与规则
+      description: 获取、使用、反馈、失败条件和多人行为
+    validations:
+      required: true
+  - type: textarea
+    id: balance
+    attributes:
+      label: 数值、风险与平衡
+    validations:
+      required: true
+  - type: textarea
+    id: provenance
+    attributes:
+      label: 原创性、来源与许可
+      description: 说明哪些是原创；引用资料请给链接，不要粘贴受版权保护的正文
+    validations:
+      required: true
+  - type: textarea
+    id: mapping
+    attributes:
+      label: 原创化映射
+      description: 如使用原作内部代号，请提供可替换的原创公开名称
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交确认
+      options:
+        - label: 我有权提交所附文字、图片、音频和其他材料
+          required: true
+        - label: 我同意按项目适用许可证提供原创贡献
+          required: true
+

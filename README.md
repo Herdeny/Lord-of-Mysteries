@@ -1,5 +1,10 @@
 # Project Mystery —《诡秘之主》Minecraft Mod
 
+[![Build](https://github.com/Herdeny/Lord-of-Mysteries/actions/workflows/build.yml/badge.svg)](https://github.com/Herdeny/Lord-of-Mysteries/actions/workflows/build.yml)
+[![CodeQL](https://github.com/Herdeny/Lord-of-Mysteries/actions/workflows/codeql.yml/badge.svg)](https://github.com/Herdeny/Lord-of-Mysteries/actions/workflows/codeql.yml)
+[![License: GPL v3+](https://img.shields.io/badge/code-GPL--3.0--or--later-blue.svg)](LICENSE)
+[![Assets: CC BY-NC-SA 4.0](https://img.shields.io/badge/assets-CC%20BY--NC--SA%204.0-lightgrey.svg)](ASSET_LICENSE.md)
+
 > 在未知中承担风险，通过扮演消化力量，逐步成为非凡者。
 >
 > 当前阶段：**M1 可玩 Alpha**　·　Minecraft **1.20.1**　·　Forge **47.4.20**　·　Java **17**
@@ -7,6 +12,16 @@
 Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 Minecraft 生存冒险 Mod。
 仓库现有实现是唯一技术基线；设计文档 `docs/Project_Mystery_Mod_Design_Doc_v0.4.pdf`
 中的 NeoForge 1.21.1 示例只用于机制与数值参考。
+
+> **非官方同人项目：** 本项目未获得《诡秘之主》作者、出版/运营方、Mojang 或
+> Microsoft 的授权、认可或赞助。不要将本项目或任何分支描述为官方作品。
+> **NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH
+> MOJANG OR MICROSOFT.**
+
+📖 [资料站](https://herdeny.github.io/Lord-of-Mysteries/) ·
+[Wiki](https://github.com/Herdeny/Lord-of-Mysteries/wiki) ·
+[路线与任务](https://github.com/Herdeny/Lord-of-Mysteries/issues) ·
+[参与贡献](CONTRIBUTING.md)
 
 ## 当前可玩内容
 
@@ -102,7 +117,18 @@ src/main/java/top/aurora/lordofmysteries/
 
 ## IP 与授权
 
-当前专有名词仅用于内部原型。公开发布前必须处理 IP 授权或完成原创化映射，
-详见 [`docs/IP_MAPPING.md`](docs/IP_MAPPING.md)。License 为 `All Rights Reserved`。
+本仓库只对项目成员有权授权的原创部分授予许可：
+
+- 原创代码与机器可读逻辑：[`GPL-3.0-or-later`](LICENSE)。他人可以学习、
+  修改和分发，但发布修改版时必须保留许可并提供对应源码，不得闭源占有。
+- 原创文档与原创美术资产：
+  [`CC BY-NC-SA 4.0`](ASSET_LICENSE.md)。要求署名、非商业、相同方式共享。
+- 《诡秘之主》、Minecraft、Forge 及其他第三方名称、设定、角色、素材与商标
+  不属于上述授权，权利归各自权利人所有。
+
+完整边界、免责声明和权利人联系流程见 [`NOTICE.md`](NOTICE.md)；
+专有名词原创化计划见 [`docs/IP_MAPPING.md`](docs/IP_MAPPING.md)。
+欢迎贡献，但所有提交必须满足 [`CONTRIBUTING.md`](CONTRIBUTING.md) 的 DCO、
+来源和许可要求。
 
 协作成员：Herdeny（星魂）、Zijian-Ni（小倪）。
