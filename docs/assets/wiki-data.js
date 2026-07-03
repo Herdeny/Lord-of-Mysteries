@@ -5,17 +5,21 @@
  */
 
 window.LOM = window.LOM || {};
+var projectMeta = window.LOM_PROJECT_META || {};
 
 /* ── 项目元信息 ── */
 LOM.meta = {
   modId: "lord_of_mysteries",
   name: "Lord of Mysteries",
   cnName: "诡秘之主",
-  version: "0.0.1-1.20.1",
-  mc: "Minecraft Java 1.20.1",
-  loader: "Forge 47.4.20",
-  java: "17",
-  stage: "M2 开发 Alpha · Forge 1.20.1",
+  version: projectMeta.version || "unknown",
+  mc: projectMeta.mc || "Minecraft Java 1.20.1",
+  loader: projectMeta.loader || "Forge 47.4.20",
+  java: projectMeta.java || "17",
+  stage: (projectMeta.stage || "开发中") + " · " + (projectMeta.milestone || ""),
+  lastUpdated: projectMeta.lastUpdated,
+  lastUpdatedUtc: projectMeta.lastUpdatedUtc,
+  lastUpdatedDisplay: projectMeta.lastUpdatedDisplay || "unknown",
   repo: "https://github.com/Herdeny/Lord-of-Mysteries",
   pages: "https://herdeny.github.io/Lord-of-Mysteries/",
   authors: [

@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 plugins {
     id 'eclipse'
     id 'idea'
@@ -6,7 +8,10 @@ plugins {
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
-version = mod_version
+def projectStatusFile = file('project-status.json')
+def projectStatus = new JsonSlurper().parse(projectStatusFile)
+
+version = projectStatus.version
 group = mod_group_id
 
 base {
@@ -101,7 +106,7 @@ tasks.named('processResources', ProcessResources).configure {
         mod_id                 : mod_id,
         mod_name               : mod_name,
         mod_license            : mod_license,
-        mod_version            : mod_version,
+        mod_version            : project.version.toString(),
         mod_authors            : mod_authors,
         mod_logo_file          : mod_logo_file,
         mod_display_url        : mod_display_url,
@@ -110,6 +115,7 @@ tasks.named('processResources', ProcessResources).configure {
     ]
     inputs.properties replaceProperties
     inputs.file modDescriptionFile
+    inputs.file projectStatusFile
     filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
         expand replaceProperties
     }

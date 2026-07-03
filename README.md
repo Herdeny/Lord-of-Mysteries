@@ -2,12 +2,19 @@
 
 [![Build](https://github.com/Herdeny/Lord-of-Mysteries/actions/workflows/build.yml/badge.svg)](https://github.com/Herdeny/Lord-of-Mysteries/actions/workflows/build.yml)
 [![CodeQL](https://github.com/Herdeny/Lord-of-Mysteries/actions/workflows/codeql.yml/badge.svg)](https://github.com/Herdeny/Lord-of-Mysteries/actions/workflows/codeql.yml)
+[![Documentation](https://github.com/Herdeny/Lord-of-Mysteries/actions/workflows/docs-consistency.yml/badge.svg)](https://github.com/Herdeny/Lord-of-Mysteries/actions/workflows/docs-consistency.yml)
+[![Pages](https://github.com/Herdeny/Lord-of-Mysteries/actions/workflows/pages.yml/badge.svg)](https://github.com/Herdeny/Lord-of-Mysteries/actions/workflows/pages.yml)
 [![License: GPL v3+](https://img.shields.io/badge/code-GPL--3.0--or--later-blue.svg)](LICENSE)
 [![Assets: CC BY-NC-SA 4.0](https://img.shields.io/badge/assets-CC%20BY--NC--SA%204.0-lightgrey.svg)](ASSET_LICENSE.md)
 
 > 在未知中承担风险，通过扮演消化力量，逐步成为非凡者。
->
-> 当前阶段：**M2 开发 Alpha**　·　Minecraft **1.20.1**　·　Forge **47.4.20**　·　Java **17**
+
+<!-- project-status:start -->
+> - 当前版本：**`0.0.1-1.20.1`**
+> - 开发阶段：**M2 开发 Alpha**（M2）
+> - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
+> - 最后更新：**2026-07-03 06:52:20 UTC+01:00**（`2026-07-03T05:52:20Z`）
+<!-- project-status:end -->
 
 Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 Minecraft 生存冒险 Mod。
 仓库现有实现是唯一技术基线；设计文档 `docs/Project_Mystery_Mod_Design_Doc_v0.4.pdf`
@@ -20,6 +27,8 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 
 📖 [资料站](https://herdeny.github.io/Lord-of-Mysteries/) ·
 [Wiki](https://github.com/Herdeny/Lord-of-Mysteries/wiki) ·
+[版本记录](CHANGELOG.md) ·
+[版本规范](VERSIONING.md) ·
 [路线与任务](https://github.com/Herdeny/Lord-of-Mysteries/issues) ·
 [参与贡献](CONTRIBUTING.md)
 
@@ -96,6 +105,19 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 ```
 
 构建产物位于 `build/libs/`，放入 Forge 1.20.1 的 `mods/` 目录即可加载。
+
+## 版本与文档同步
+
+`project-status.json` 是版本号、开发阶段、技术基线和最后更新时间的唯一来源。
+功能变更必须同时更新 README、Pages、Wiki 和 `CHANGELOG.md`，然后运行：
+
+```bash
+python scripts/sync_project_metadata.py
+python scripts/sync_project_metadata.py --check
+```
+
+CI 会检查同步状态，并在 `wiki/` 内容变化后自动发布 GitHub Wiki。完整规则见
+[`VERSIONING.md`](VERSIONING.md)。
 
 ## 项目结构
 

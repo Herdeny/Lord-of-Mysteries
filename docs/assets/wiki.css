@@ -143,6 +143,7 @@ h1, h2, h3 { margin: 0; line-height: 1.14; }
 .hero-panel dl { position: relative; display: grid; gap: 12px; margin: 0; }
 .hero-panel dl > div { display: flex; justify-content: space-between; gap: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--line-solid); }
 .hero-panel dl > div:last-child { border-bottom: 0; padding-bottom: 0; }
+.hero-panel dt { white-space: nowrap; }
 dt { color: var(--muted); font-size: 13px; }
 dd { margin: 0; font-weight: 800; text-align: right; font-size: 14px; }
 

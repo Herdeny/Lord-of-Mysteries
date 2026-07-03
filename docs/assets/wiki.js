@@ -46,7 +46,8 @@
   var metaDl = $("#meta-dl");
   if (metaDl) {
     [["Mod ID", meta.modId], ["版本", meta.version], ["Minecraft", meta.mc],
-     ["加载器", meta.loader], ["Java", meta.java], ["阶段", meta.stage]]
+     ["加载器", meta.loader], ["Java", meta.java], ["阶段", meta.stage],
+     ["最后更新", meta.lastUpdatedDisplay]]
       .forEach(function (p) { var d = el("div"); d.appendChild(el("dt", null, p[0])); d.appendChild(el("dd", null, p[1] || "—")); metaDl.appendChild(d); });
   }
   var heroTags = $("#hero-tags");
@@ -139,6 +140,11 @@
   if (teamList) (meta.authors || []).forEach(function (a) {
     teamList.appendChild(el("li", null, '<span>' + a.role + '</span><b><a href="' + a.link + '" target="_blank" rel="noopener">' + a.name + '</a></b>'));
   });
+  var lastUpdated = $("#last-updated");
+  if (lastUpdated) {
+    lastUpdated.textContent = "版本 " + meta.version + " · 最后更新 " + meta.lastUpdatedDisplay +
+      " · UTC " + meta.lastUpdatedUtc;
+  }
 
   /* ── Catalog: filters + search + cards ── */
   var filterGroup = $("#filter-group"), cardsEl = $("#cards"), searchEl = $("#search"), countEl = $("#result-count");

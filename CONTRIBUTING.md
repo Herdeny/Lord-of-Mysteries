@@ -32,13 +32,20 @@ Windows 可使用对应的 `gradlew.bat`。
    `chore/...`。
 2. 一个 Pull Request 只解决一个清晰问题。
 3. 补充或更新相关测试、数据文件和文档。
-4. 确保 `./gradlew clean build` 通过。
-5. 使用清晰的提交信息，推荐 Conventional Commits，例如
+4. 玩家可见功能必须同步更新 `README.md`、`docs/`、`wiki/` 和
+   `CHANGELOG.md`；版本、阶段或更新时间变化时修改 `project-status.json`。
+5. 运行 `python scripts/sync_project_metadata.py`，并确保
+   `python scripts/sync_project_metadata.py --check` 通过。
+6. 确保 `./gradlew clean build` 通过。
+7. 使用清晰的提交信息，推荐 Conventional Commits，例如
    `feat(ritual): add failure feedback`。
-6. 填写 Pull Request 模板，关联 Issue，并说明游戏内验证结果。
+8. 填写 Pull Request 模板，关联 Issue，并说明游戏内验证结果。
 
 `main` 只通过 Pull Request 更新。合并前需要 CI 通过、讨论已解决，并由维护者
 审核。维护者通常使用 squash merge。
+
+版本和发布时间规则见 `VERSIONING.md`。主仓库 `wiki/` 是 GitHub Wiki 的受控源，
+合并到 `main` 后由 Wiki Sync 工作流自动发布；不要只在网页端修改 Wiki。
 
 ## 贡献许可与 DCO
 

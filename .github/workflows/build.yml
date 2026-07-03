@@ -9,6 +9,8 @@ on:
     paths:
       - "src/**"
       - "gradle/**"
+      - "project-status.json"
+      - "scripts/sync_project_metadata.py"
       - "build.gradle"
       - "settings.gradle"
       - "gradle.properties"
@@ -19,6 +21,8 @@ on:
     paths:
       - "src/**"
       - "gradle/**"
+      - "project-status.json"
+      - "scripts/sync_project_metadata.py"
       - "build.gradle"
       - "settings.gradle"
       - "gradle.properties"
@@ -48,6 +52,9 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
+
+      - name: Verify project metadata
+        run: python3 scripts/sync_project_metadata.py --check
 
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew

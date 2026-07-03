@@ -1,0 +1,65 @@
+name: Documentation Consistency
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - "project-status.json"
+      - "README.md"
+      - "CHANGELOG.md"
+      - "VERSIONING.md"
+      - "docs/**"
+      - "wiki/**"
+      - "scripts/sync_project_metadata.py"
+      - "build.gradle"
+      - ".github/workflows/docs-consistency.yml"
+  pull_request:
+    paths:
+      - "project-status.json"
+      - "README.md"
+      - "CHANGELOG.md"
+      - "VERSIONING.md"
+      - "docs/**"
+      - "wiki/**"
+      - "scripts/sync_project_metadata.py"
+      - "build.gradle"
+      - ".github/workflows/docs-consistency.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify version and documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Verify generated metadata
+        run: python3 scripts/sync_project_metadata.py --check
+
+      - name: Validate JSON
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          files = list(Path("src/main/resources").rglob("*.json"))
+          files.append(Path("project-status.json"))
+          for path in files:
+              with path.open(encoding="utf-8") as stream:
+                  json.load(stream)
+          print(f"Validated {len(files)} JSON files")
+          PY
+
+      - name: Validate JavaScript syntax
+        run: |
+          node --check docs/assets/project-meta.js
+          node --check docs/assets/wiki-data.js
+          node --check docs/assets/wiki.js
