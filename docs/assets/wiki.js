@@ -60,8 +60,8 @@
     var stats = [
       [entries.length, "图鉴条目"],
       [(D.pathwaysOverview || []).length, "途径"],
-      [(D.seerSequences || []).length, "占卜家序列"],
-      [entries.filter(function (e) { return e.type === "ability"; }).length, "序列9能力"],
+      [(D.seerSequences || []).length + (D.spectatorSequences || []).length, "序列条目"],
+      [entries.filter(function (e) { return e.type === "ability"; }).length, "能力"],
       [(D.roadmap || []).length, "开发里程碑"]
     ];
     stats.forEach(function (s) {
@@ -96,17 +96,22 @@
       '<span class="pw-status">' + p.status + '</span>' +
       '<p class="pw-desc">' + p.desc + '</p>' +
       '<div class="pw-traits">' + (p.traits || []).map(function (t) { return '<span class="pill">' + t + '</span>'; }).join("") + '</div>' +
-      '<p class="pw-spirit">基础灵性 <b>' + p.baseSpirit + '</b> · 每序列成长 <b>+' + p.growth + '</b></p>';
+      '<p class="pw-spirit">' + (p.spirit
+        ? '灵性上限 <b>' + p.spirit + '</b>'
+        : '基础灵性 <b>' + p.baseSpirit + '</b> · 每序列成长 <b>+' + p.growth + '</b>') + '</p>';
     pwGrid.appendChild(c);
   });
 
   /* ── Sequence ladder ── */
   var ladder = $("#seq-ladder");
-  if (ladder) (D.seerSequences || []).forEach(function (s) {
+  var playableSequences = (D.seerSequences || []).map(function (s) {
+    return Object.assign({ pathway: "占卜家" }, s);
+  }).concat(D.spectatorSequences || []);
+  if (ladder) playableSequences.forEach(function (s) {
     var row = el("div", "seq-row " + (s.state === "active" ? "active" : (s.state === "future" ? "future" : "")));
     row.innerHTML =
       '<div class="seq-num">' + s.seq + '</div>' +
-      '<div class="seq-info"><h4>序列 ' + s.seq + '：' + s.name + '</h4>' +
+      '<div class="seq-info"><h4>' + s.pathway + ' · 序列 ' + s.seq + '：' + s.name + '</h4>' +
       '<span class="abil">' + (s.abilities || []).join(" · ") + '</span></div>' +
       '<div class="seq-spirit"><b>' + s.spiritMax + '</b>灵性上限</div>';
     row.title = s.desc || "";
@@ -116,9 +121,9 @@
   /* ── Core loop ── */
   var loop = $("#loop");
   if (loop) [
-    ["炼制魔药", "在坩埚中按配方精确控温投料，炼制序列9占卜家魔药，品质决定后续收益。"],
-    ["服用晋升", "饮下魔药，踏入占卜家途径，获得灵视、危险直觉、简易占卜三大能力。"],
-    ["扮演消化", "像占卜家一样行动——占卜、规避、助人脱险，把消化度从 0 推向 100%。"],
+    ["炼制魔药", "在坩埚中按途径配方精确控温投料，材料顺序与温度共同决定成品品质。"],
+    ["服用晋升", "选择占卜家或观众途径，获得对应序列能力；高阶魔药由服务端校验晋升资格。"],
+    ["扮演消化", "按当前序列身份行动，通过占卜、观察、预判或精神能力把消化度推向 100%。"],
     ["管理风险", "监控灵性、污染与失控压力，避免污染满值触发失控与失控体。"],
     ["晋升下一序列", "消化满额后炼制更高阶魔药，向序列 8 及更高迈进。"]
   ].forEach(function (p) {

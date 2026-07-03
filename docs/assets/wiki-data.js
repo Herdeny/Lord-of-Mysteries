@@ -15,7 +15,7 @@ LOM.meta = {
   mc: "Minecraft Java 1.20.1",
   loader: "Forge 47.4.20",
   java: "17",
-  stage: "M1 功能闭环 Alpha · Forge 1.20.1",
+  stage: "M2 开发 Alpha · Forge 1.20.1",
   repo: "https://github.com/Herdeny/Lord-of-Mysteries",
   pages: "https://herdeny.github.io/Lord-of-Mysteries/",
   authors: [
@@ -33,8 +33,9 @@ LOM.roadmap = [
     points: ["三能力、占卜可信度与服务端访问控制", "扮演事件、消化公式与反刷取衰减",
       "可交互坩埚、热源温控、四档品质与服药晋升", "污染分级、三种失控模式与专属失控体",
       "永燃火柴盒 + 净化封印仪式", "N 键档案 + 废弃调查员营地基础"] },
-  { id: "M2", title: "三途径序列9-8", state: "planned",
-    points: ["占卜家 / 观众 / 猎人 序列 9-8", "通用仪式状态机 + 多人同步", "灰雾空间基础版"] },
+  { id: "M2", title: "三途径序列9-8", state: "active",
+    points: ["观众序列 9-8 已实装", "猎人序列 9-8 与占卜家序列 8 待开发",
+      "通用仪式 + 多人一致性测试", "灰雾空间基础版"] },
   { id: "M3", title: "序列7与世界扩展", state: "planned",
     points: ["三途径序列 7 + 偷盗者 / 学徒 9-7", "阶段 Boss + 任务链", "首发结构 + 世界事件"] },
   { id: "M4", title: "MVP 1.0", state: "planned",
@@ -52,8 +53,9 @@ LOM.pathwaysOverview = [
     desc: "力量与战斗的途径。强化肉体、狂怒与狩猎本能，近战与生存能力顶尖。M2 规划。",
     traits: ["肉体强化", "狂怒", "狩猎", "夜视"], baseSpirit: 100, growth: 20, status: "M2 规划" },
   { id: "spectator", name: "观众", en: "Spectator", accent: "#6bcad0",
-    desc: "精神与心灵的途径。读心、暗示、精神操控，擅长影响与洞察他人心智。M2 规划。",
-    traits: ["读心", "精神暗示", "心灵洞察", "情绪感知"], baseSpirit: 100, growth: 22, status: "M2 规划" },
+    desc: "精神与心灵的途径。序列 9 读取情绪并预判行为，序列 8 可读取表层思维并施加可抵抗的心理暗示。",
+    traits: ["情绪读取", "行为预判", "表层读心", "心理暗示"],
+    spirit: "序列9 112 · 序列8 138", status: "M2 序列9-8实装" },
   { id: "apprentice", name: "学徒", en: "Apprentice", accent: "#d4af37",
     desc: "知识与元素的途径。掌控元素、空间与造物，博学而多能。M3 规划。",
     traits: ["元素", "造物", "空间", "博学"], baseSpirit: 100, growth: 24, status: "M3 规划" },
@@ -83,6 +85,15 @@ LOM.seerSequences = [
   { seq: 0, name: "旧日 / 途径之主", state: "future", spiritMax: 999, abilities: ["神性"], desc: "途径顶点，遥远愿景。" }
 ];
 
+LOM.spectatorSequences = [
+  { pathway: "观众", seq: 9, name: "观众 Spectator", state: "active", spiritMax: 112,
+    abilities: ["情绪读取", "行为预判", "镇定"],
+    desc: "持续观察目标情绪，并在战斗中预判来袭行为。M2 已实装。" },
+  { pathway: "观众", seq: 8, name: "读心者 Telepathist", state: "active", spiritMax: 138,
+    abilities: ["表层读心", "心理暗示", "精神抵抗"],
+    desc: "读取目标当前表层状态，并施加带可见反馈和玩家抵抗窗口的心理暗示。M2 已实装。" }
+];
+
 /* ── 详细条目（卡片 + 详情弹窗） ── */
 LOM.entries = [
   /* 能力 ability */
@@ -102,6 +113,27 @@ LOM.entries = [
     tags: ["能力", "序列9", "主动", "占卜", "M1"],
     details: [["类型", "主动"], ["灵性消耗", "15"], ["冷却", "60 秒"], ["结果", "按可信度分清晰 / 模糊 / 错误"]],
     long: "占卜家可对方向、危险源、目标状态进行简易占卜。服务端计算真实结果，再依据可信度得分把结果「扭曲」后返回：清晰=准确，模糊=方向偏移 / 用语含糊，错误=误导。对同一目标反复占卜会累积「过度占卜」惩罚，降低可信度并影响消化。" },
+  { type: "ability", id: "lord_of_mysteries:emotion_read", name: "情绪读取", en: "Emotion Read",
+    summary: "观众序列 9 主动开关能力。持续读取视线目标情绪，每秒消耗 0.5 灵性。",
+    tags: ["能力", "观众", "序列9", "M2"],
+    details: [["按键", "G"], ["类型", "持续主动"], ["灵性消耗", "0.5 / 秒"], ["范围", "16 格"], ["权威端", "服务端"]],
+    long: "开启后由服务端对视线目标进行射线判定，并在快捷栏显示平静、好奇、愤怒、恐惧或敌意等状态。能力不会读取玩家聊天、背包或其他隐私数据；灵性耗尽时自动关闭。" },
+  { type: "ability", id: "lord_of_mysteries:behavior_prediction", name: "行为预判", en: "Behavior Prediction",
+    summary: "观众序列 9 被动能力。每 8 秒可预判一次来袭攻击，使该次伤害降低 40%。",
+    tags: ["能力", "观众", "序列9", "被动", "M2"],
+    details: [["类型", "触发被动"], ["冷却", "8 秒"], ["效果", "该次伤害 ×0.6"], ["扮演", "连续预判 5 次触发事件"]],
+    long: "当玩家受到生物攻击且冷却就绪时，服务端降低本次伤害并给出音效与快捷栏反馈。连续成功预判会推进观众的扮演消化事件。" },
+  { type: "ability", id: "lord_of_mysteries:surface_read", name: "表层读心", en: "Surface Thought Reading",
+    summary: "读心者序列 8 主动能力。读取视线目标当前表层状态，不读取聊天或背包。",
+    tags: ["能力", "观众", "序列8", "M2"],
+    details: [["按键", "H"], ["灵性消耗", "18"], ["冷却", "30 秒"], ["范围", "16 格"], ["权威端", "服务端"]],
+    long: "能力仅根据目标当下的战斗、生命与实体类型状态生成平静、好奇、愤怒、恐惧或敌意反馈。所有目标选择和消耗均由服务端校验。" },
+  { type: "ability", id: "lord_of_mysteries:mental_suggestion", name: "心理暗示", en: "Mental Suggestion",
+    summary: "读心者序列 8 主动能力。对低抗性目标施加缓慢与虚弱，并提供明确可见的抵抗反馈。",
+    tags: ["能力", "观众", "序列8", "精神", "M2"],
+    details: [["按键", "J"], ["灵性消耗", "25"], ["冷却", "40 秒"], ["范围", "12 格"],
+      ["持续", "普通目标 8 秒；观众 4 秒；玩家潜行 3 秒"], ["PvP", "受服务器配置控制"]],
+    long: "心理暗示会播放施法音效与粒子，玩家目标会收到施法者和持续时间提示。潜行可显著缩短效果，观众途径拥有额外精神抵抗；高生命非玩家目标会直接抵抗。服务器可完全关闭玩家间精神能力。" },
 
   /* 系统机制 system */
   { type: "system", id: "credibility", name: "占卜可信度", en: "Divination Credibility",
@@ -148,6 +180,19 @@ LOM.entries = [
     tags: ["魔药", "序列9", "坩埚", "M1"],
     details: [["途径", "占卜家"], ["温度", "60 - 80 ℃"], ["制作时间", "1200 tick"], ["失败产物", "污染混合物"], ["核心材料", "灵性草药 · 占卜水晶"], ["品质材料", "月华水（+0.2）"]],
     long: "依次投入灵性草药、占卜水晶与可选月华水，空手点击启动 1200 tick 炼制。营火、灵魂营火、火与岩浆提供不同温度；系统按全程平均温度和顺序结算完美（×1.2）、完整（×1.0）、瑕疵（×0.7）或污染失败。成品保存品质并在服用后影响扮演消化。" },
+  { type: "potion", id: "lord_of_mysteries:spectator_potion_9", name: "观众魔药 · 序列9", en: "Spectator Potion Seq.9",
+    summary: "踏入观众途径的起点魔药，服用后获得 112 灵性上限、情绪读取与行为预判。",
+    tags: ["魔药", "观众", "序列9", "M2"],
+    details: [["途径", "观众"], ["温度", "60 - 80 ℃"], ["制作时间", "1200 tick"],
+      ["核心材料", "灵性草药 · 发酵蛛眼"], ["品质材料", "蜂蜜瓶（+0.2）"], ["晋升要求", "普通人"]],
+    long: "依次投入灵性草药、发酵蛛眼与可选蜂蜜瓶炼制。材料顺序、全程平均温度和可选品质材料共同决定成品品质；错误混入其他魔药材料会生成污染混合物。" },
+  { type: "potion", id: "lord_of_mysteries:spectator_potion_8", name: "读心者魔药 · 序列8", en: "Telepathist Potion Seq.8",
+    summary: "观众途径的第二阶段魔药，只有完全消化序列 9 后才能安全服用。",
+    tags: ["魔药", "观众", "序列8", "M2"],
+    details: [["途径", "观众"], ["温度", "60 - 80 ℃"], ["制作时间", "1200 tick"],
+      ["核心材料", "灵性草药 · 书"], ["品质材料", "紫水晶碎片（+0.2）"],
+      ["晋升要求", "观众序列9 · 消化度100%"]],
+    long: "依次投入灵性草药、书与可选紫水晶碎片炼制。服用校验由服务端执行：必须处于观众序列 9 且消化度达到 100%，晋升后灵性上限提升至 138，并解锁表层读心与心理暗示。" },
 
   /* 坩埚 / 方块 */
   { type: "block", id: "lord_of_mysteries:crucible", name: "坩埚", en: "Crucible",
