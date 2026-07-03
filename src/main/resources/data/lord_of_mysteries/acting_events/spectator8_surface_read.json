@@ -1,0 +1,12 @@
+{
+  "id": "lord_of_mysteries:spectator8_surface_read",
+  "pathway": "lord_of_mysteries:spectator",
+  "sequence": 8,
+  "display_name": "读取目标表层意图并据此行动",
+  "base_digestion": 12.0,
+  "novelty_decay_ticks": 2400,
+  "trigger": {
+    "type": "lord_of_mysteries:surface_read"
+  }
+}
+

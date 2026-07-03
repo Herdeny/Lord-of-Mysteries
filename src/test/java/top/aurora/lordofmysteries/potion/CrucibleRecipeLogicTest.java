@@ -43,4 +43,34 @@ class CrucibleRecipeLogicTest {
                 CrucibleRecipeLogic.SPIRIT_HERB,
                 CrucibleRecipeLogic.DIVINATION_CRYSTAL), 105f));
     }
+
+    @Test
+    void spectatorSequenceNineRecipeProducesSpectatorPotion() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.SPIRIT_HERB,
+                CrucibleRecipeLogic.FERMENTED_SPIDER_EYE,
+                CrucibleRecipeLogic.HONEY_BOTTLE), 70f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.SPECTATOR_9, result.potion());
+        assertEquals(PotionQuality.PERFECT, result.quality());
+    }
+
+    @Test
+    void spectatorSequenceEightRecipeProducesTelepathistPotion() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.SPIRIT_HERB,
+                CrucibleRecipeLogic.BOOK,
+                CrucibleRecipeLogic.AMETHYST_SHARD), 70f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.SPECTATOR_8, result.potion());
+        assertEquals(PotionQuality.PERFECT, result.quality());
+    }
+
+    @Test
+    void mixingIngredientsAcrossRecipesContaminatesBatch() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.SPIRIT_HERB,
+                CrucibleRecipeLogic.BOOK,
+                CrucibleRecipeLogic.HONEY_BOTTLE), 70f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.CONTAMINATED, result.potion());
+        assertEquals(PotionQuality.CONTAMINATED, result.quality());
+    }
 }

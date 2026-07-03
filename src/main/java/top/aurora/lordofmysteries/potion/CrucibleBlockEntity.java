@@ -11,6 +11,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
@@ -127,10 +128,16 @@ public final class CrucibleBlockEntity extends BlockEntity {
                     return id == null ? "" : id.toString();
                 })
                 .toList();
-        PotionQuality quality = CrucibleRecipeLogic.evaluate(ids, averageTemperature);
-        result = quality == PotionQuality.CONTAMINATED
-                ? new ItemStack(ModItems.CONTAMINATED_MIXTURE.get())
-                : SeerPotionItem.create(ModItems.SEER_POTION_9.get(), quality);
+        CrucibleRecipeLogic.BrewResult brew =
+                CrucibleRecipeLogic.evaluateRecipe(ids, averageTemperature);
+        result = switch (brew.potion()) {
+            case SEER_9 -> SeerPotionItem.create(ModItems.SEER_POTION_9.get(), brew.quality());
+            case SPECTATOR_9 ->
+                    SeerPotionItem.create(ModItems.SPECTATOR_POTION_9.get(), brew.quality());
+            case SPECTATOR_8 ->
+                    SeerPotionItem.create(ModItems.SPECTATOR_POTION_8.get(), brew.quality());
+            case CONTAMINATED -> new ItemStack(ModItems.CONTAMINATED_MIXTURE.get());
+        };
         brewing = false;
     }
 
@@ -147,7 +154,11 @@ public final class CrucibleBlockEntity extends BlockEntity {
     private static boolean isIngredient(ItemStack stack) {
         return stack.is(ModItems.SPIRIT_HERB.get())
                 || stack.is(ModItems.DIVINATION_CRYSTAL.get())
-                || stack.is(ModItems.MOONWATER.get());
+                || stack.is(ModItems.MOONWATER.get())
+                || stack.is(Items.FERMENTED_SPIDER_EYE)
+                || stack.is(Items.HONEY_BOTTLE)
+                || stack.is(Items.BOOK)
+                || stack.is(Items.AMETHYST_SHARD);
     }
 
     private int firstEmptySlot() {

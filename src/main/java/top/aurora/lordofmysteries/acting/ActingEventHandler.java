@@ -10,7 +10,6 @@ import top.aurora.lordofmysteries.core.config.ServerConfig;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.PotionQuality;
-import top.aurora.lordofmysteries.potion.SeerPotionItem;
 
 public final class ActingEventHandler {
 
@@ -18,7 +17,11 @@ public final class ActingEventHandler {
 
     public static float trigger(ServerPlayer player, ActingEvent event, @Nullable Entity target) {
         PlayerMysteryData data = MysteryCapability.get(player);
-        if (!SeerPotionItem.SEER_PATHWAY.equals(data.pathway) || data.sequence != 9) return 0f;
+        if (data.pathway == null
+                || !event.pathway().equals(data.pathway.getPath())
+                || data.sequence != event.sequence()) {
+            return 0f;
+        }
 
         long now = player.level().getGameTime();
         String historyKey = event.id();

@@ -22,7 +22,7 @@ public final class PMNetwork {
 
     private PMNetwork() {}
 
-    private static final String PROTOCOL_VERSION = "1";
+    private static final String PROTOCOL_VERSION = "2";
 
     /** SimpleChannel 实例；ChannelId 稳定，客户端/服务端版本必须一致。 */
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
@@ -53,6 +53,21 @@ public final class PMNetwork {
                 .encoder(PlayerMysteryStatusS2CPacket::encode)
                 .decoder(PlayerMysteryStatusS2CPacket::decode)
                 .consumerMainThread(PlayerMysteryStatusS2CPacket::handle)
+                .add();
+        CHANNEL.messageBuilder(ToggleEmotionReadC2SPacket.class, id++)
+                .encoder(ToggleEmotionReadC2SPacket::encode)
+                .decoder(ToggleEmotionReadC2SPacket::decode)
+                .consumerMainThread(ToggleEmotionReadC2SPacket::handle)
+                .add();
+        CHANNEL.messageBuilder(UseSurfaceReadC2SPacket.class, id++)
+                .encoder(UseSurfaceReadC2SPacket::encode)
+                .decoder(UseSurfaceReadC2SPacket::decode)
+                .consumerMainThread(UseSurfaceReadC2SPacket::handle)
+                .add();
+        CHANNEL.messageBuilder(UseMentalSuggestionC2SPacket.class, id++)
+                .encoder(UseMentalSuggestionC2SPacket::encode)
+                .decoder(UseMentalSuggestionC2SPacket::decode)
+                .consumerMainThread(UseMentalSuggestionC2SPacket::handle)
                 .add();
     }
 }

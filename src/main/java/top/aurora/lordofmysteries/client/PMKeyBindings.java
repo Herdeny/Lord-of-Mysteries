@@ -44,10 +44,34 @@ public final class PMKeyBindings {
             InputConstants.KEY_N,
             CATEGORY);
 
+    public static final KeyMapping TOGGLE_EMOTION_READ = new KeyMapping(
+            "key.lord_of_mysteries.toggle_emotion_read",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_G,
+            CATEGORY);
+
+    public static final KeyMapping USE_SURFACE_READ = new KeyMapping(
+            "key.lord_of_mysteries.use_surface_read",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_H,
+            CATEGORY);
+
+    public static final KeyMapping USE_MENTAL_SUGGESTION = new KeyMapping(
+            "key.lord_of_mysteries.use_mental_suggestion",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_J,
+            CATEGORY);
+
     /** 通过 mod 总线注册；由 {@code ClientModEvents} 调用。 */
     public static void register(RegisterKeyMappingsEvent event) {
         event.register(TOGGLE_SPIRIT_VISION);
         event.register(USE_DIVINATION);
         event.register(OPEN_STATUS);
+        event.register(TOGGLE_EMOTION_READ);
+        event.register(USE_SURFACE_READ);
+        event.register(USE_MENTAL_SUGGESTION);
     }
 }

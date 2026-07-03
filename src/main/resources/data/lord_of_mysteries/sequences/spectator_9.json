@@ -1,0 +1,18 @@
+{
+  "id": "lord_of_mysteries:spectator_9",
+  "pathway": "lord_of_mysteries:spectator",
+  "sequence": 9,
+  "spirituality_max_bonus": 12,
+  "abilities": [
+    "lord_of_mysteries:emotion_read",
+    "lord_of_mysteries:behavior_prediction",
+    "lord_of_mysteries:composure"
+  ],
+  "acting_events": [
+    "lord_of_mysteries:spectator9_predict_5attacks",
+    "lord_of_mysteries:spectator9_observe_without_fight"
+  ],
+  "potion_id": "lord_of_mysteries:spectator_potion_9",
+  "digestion_target": 100.0
+}
+

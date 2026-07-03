@@ -29,7 +29,9 @@ class PlayerMysteryDataTest {
         assertEquals(0f, d.spirituality);
         assertEquals(100f, d.spiritualityMax);
         assertEquals(0f, d.pollution);
-        assertEquals(1, d.schemaVersion);
+        assertEquals(2, d.schemaVersion);
+        assertFalse(d.emotionReadActive);
+        assertTrue(d.actingCounters.isEmpty());
     }
 
     /** 只有序列值不足以成为非凡者，必须同时拥有途径 ID。 */

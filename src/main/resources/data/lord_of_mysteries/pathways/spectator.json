@@ -1,0 +1,10 @@
+{
+  "id": "lord_of_mysteries:spectator",
+  "display_name": "观众途径",
+  "color": "#4FC3A1",
+  "sequences": [9, 8],
+  "spirituality_base": 100,
+  "spirituality_per_sequence": 13,
+  "description": "以观察、预测和精神干预见长，强调多人辅助与清晰反馈"
+}
+

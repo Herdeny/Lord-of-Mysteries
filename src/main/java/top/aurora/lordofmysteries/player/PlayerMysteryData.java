@@ -45,6 +45,10 @@ public class PlayerMysteryData {
     public long dangerIntuitionCooldownEndTick = 0L;
     public long breakdownCooldownEndTick = 0L;
     public long mentalTraumaEndTick = 0L;
+    public boolean emotionReadActive = false;
+    public long behaviorPredictionCooldownEndTick = 0L;
+    public long surfaceReadCooldownEndTick = 0L;
+    public long mentalSuggestionCooldownEndTick = 0L;
 
     // 知识系统。保存玩家已经解锁的知识条目 ID，供手册、仪式和配方门槛读取。
     public Set<ResourceLocation> knownKnowledge = new HashSet<>();
@@ -52,12 +56,13 @@ public class PlayerMysteryData {
     // 扮演事件历史（事件ID → 最后触发的 gameTime）。
     // key 暂用 String 便于直接作为 CompoundTag 键，value 用服务器 gameTime 做冷却/衰减判断。
     public Map<String, Long> actingHistory = new HashMap<>();
+    public Map<String, Integer> actingCounters = new HashMap<>();
 
     // 组织声望（组织ID → 声望值）。组织 ID 仍使用 ResourceLocation，支持数据包新增组织。
     public Map<ResourceLocation, Integer> orgReputation = new HashMap<>();
 
     // 序列化版本号（用于迁移）。未来字段改名或结构升级时，可根据旧版本补默认值。
-    public int schemaVersion = 1;
+    public int schemaVersion = 2;
 
     /** 默认构造器需要保留，Capability Provider 和测试都会直接创建空数据。 */
     public PlayerMysteryData() {}
@@ -91,8 +96,13 @@ public class PlayerMysteryData {
         this.dangerIntuitionCooldownEndTick = src.dangerIntuitionCooldownEndTick;
         this.breakdownCooldownEndTick = src.breakdownCooldownEndTick;
         this.mentalTraumaEndTick = src.mentalTraumaEndTick;
+        this.emotionReadActive = src.emotionReadActive;
+        this.behaviorPredictionCooldownEndTick = src.behaviorPredictionCooldownEndTick;
+        this.surfaceReadCooldownEndTick = src.surfaceReadCooldownEndTick;
+        this.mentalSuggestionCooldownEndTick = src.mentalSuggestionCooldownEndTick;
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
         this.actingHistory = new HashMap<>(src.actingHistory);
+        this.actingCounters = new HashMap<>(src.actingCounters);
         this.orgReputation = new HashMap<>(src.orgReputation);
         this.schemaVersion = src.schemaVersion;
     }
@@ -120,6 +130,10 @@ public class PlayerMysteryData {
         tag.putLong("danger_intuition_cd_end", dangerIntuitionCooldownEndTick);
         tag.putLong("breakdown_cd_end", breakdownCooldownEndTick);
         tag.putLong("mental_trauma_end", mentalTraumaEndTick);
+        tag.putBoolean("emotion_read_active", emotionReadActive);
+        tag.putLong("behavior_prediction_cd_end", behaviorPredictionCooldownEndTick);
+        tag.putLong("surface_read_cd_end", surfaceReadCooldownEndTick);
+        tag.putLong("mental_suggestion_cd_end", mentalSuggestionCooldownEndTick);
         tag.putInt("schema_version", schemaVersion);
 
         ListTag known = new ListTag();
@@ -131,6 +145,10 @@ public class PlayerMysteryData {
         // CompoundTag 的键天然是字符串，适合保存“事件 ID -> 最后触发时间”的稀疏表。
         actingHistory.forEach(acting::putLong);
         tag.put("acting_history", acting);
+
+        CompoundTag counters = new CompoundTag();
+        actingCounters.forEach(counters::putInt);
+        tag.put("acting_counters", counters);
 
         CompoundTag rep = new CompoundTag();
         // ResourceLocation 不能直接作为 NBT 键，转成 namespace:path 字符串存储。
@@ -161,6 +179,10 @@ public class PlayerMysteryData {
         dangerIntuitionCooldownEndTick = tag.getLong("danger_intuition_cd_end");
         breakdownCooldownEndTick = tag.getLong("breakdown_cd_end");
         mentalTraumaEndTick = tag.getLong("mental_trauma_end");
+        emotionReadActive = tag.getBoolean("emotion_read_active");
+        behaviorPredictionCooldownEndTick = tag.getLong("behavior_prediction_cd_end");
+        surfaceReadCooldownEndTick = tag.getLong("surface_read_cd_end");
+        mentalSuggestionCooldownEndTick = tag.getLong("mental_suggestion_cd_end");
         schemaVersion = tag.contains("schema_version") ? tag.getInt("schema_version") : 1;
 
         knownKnowledge.clear();
@@ -174,6 +196,10 @@ public class PlayerMysteryData {
         actingHistory.clear();
         CompoundTag acting = tag.getCompound("acting_history");
         for (String key : acting.getAllKeys()) actingHistory.put(key, acting.getLong(key));
+
+        actingCounters.clear();
+        CompoundTag counters = tag.getCompound("acting_counters");
+        for (String key : counters.getAllKeys()) actingCounters.put(key, counters.getInt(key));
 
         orgReputation.clear();
         CompoundTag rep = tag.getCompound("org_reputation");

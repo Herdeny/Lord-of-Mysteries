@@ -1,0 +1,12 @@
+{
+  "id": "lord_of_mysteries:spectator8_mental_suggestion",
+  "pathway": "lord_of_mysteries:spectator",
+  "sequence": 8,
+  "display_name": "以明确反馈完成一次心理暗示",
+  "base_digestion": 15.0,
+  "novelty_decay_ticks": 4800,
+  "trigger": {
+    "type": "lord_of_mysteries:mental_suggestion",
+    "requires_visible_feedback": true
+  }
+}

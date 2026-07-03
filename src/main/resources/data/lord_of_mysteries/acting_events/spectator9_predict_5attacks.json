@@ -1,0 +1,13 @@
+{
+  "id": "lord_of_mysteries:spectator9_predict_5attacks",
+  "pathway": "lord_of_mysteries:spectator",
+  "sequence": 9,
+  "display_name": "连续准确预测五次攻击",
+  "base_digestion": 10.0,
+  "novelty_decay_ticks": 2400,
+  "trigger": {
+    "type": "lord_of_mysteries:behavior_prediction_streak",
+    "count": 5
+  }
+}
+
