@@ -19,7 +19,7 @@ import top.aurora.lordofmysteries.network.PMNetwork;
  * Project Mystery —《诡秘之主》Minecraft Mod 入口。
  *
  * 技术基线：Minecraft 1.20.1 · Forge 47.4.x · Java 17
- * 设计文档：docs/Project_Mystery_Mod_Design_Doc_v0.4
+ * 设计基线：docs/DESIGN_BASELINE.md（Project Mystery v0.6）
  *
  * M0 阶段目标：建立工程基础，验证核心技术路线（玩家数据 Capability、
  * 灵性同步、灵视渲染）。后续模块按设计文档第 16 节逐步填充。

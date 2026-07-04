@@ -47,7 +47,17 @@ public final class RitualAltarBlock extends BaseEntityBlock {
                     "message.lord_of_mysteries.ritual.sealed"));
             return InteractionResult.CONSUME;
         }
-        if (held.isEmpty() && level instanceof ServerLevel serverLevel && altar.start(serverLevel)) {
+        if (held.isEmpty()
+                && altar.state() == RitualStateMachine.State.INVOKING) {
+            player.sendSystemMessage(Component.translatable(
+                    "message.lord_of_mysteries.ritual.progress",
+                    Math.max(1, (RitualAltarBlockEntity.INVOCATION_TICKS
+                            - altar.invocationTicks()) / 20)));
+            return InteractionResult.CONSUME;
+        }
+        if (held.isEmpty()
+                && level instanceof ServerLevel serverLevel
+                && altar.start(serverLevel, player)) {
             player.sendSystemMessage(Component.translatable(
                     "message.lord_of_mysteries.ritual.started"));
             return InteractionResult.CONSUME;

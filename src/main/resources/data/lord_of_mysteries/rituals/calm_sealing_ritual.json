@@ -4,7 +4,19 @@
   "structure": {
     "type": "lord_of_mysteries:altar_circle",
     "radius": 3,
-    "center_block": "lord_of_mysteries:ritual_altar"
+    "center_block": "lord_of_mysteries:ritual_altar",
+    "marker_block": "lord_of_mysteries:ritual_chalk_mark",
+    "required_markers": 8,
+    "offsets": [
+      [3, 0],
+      [-3, 0],
+      [0, 3],
+      [0, -3],
+      [2, 2],
+      [2, -2],
+      [-2, 2],
+      [-2, -2]
+    ]
   },
   "environment": {
     "time": "night",

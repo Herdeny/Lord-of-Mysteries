@@ -17,6 +17,7 @@
   "item.lord_of_mysteries.eternal_matchbox": "Eternal Matchbox",
 
   "block.lord_of_mysteries.ritual_altar": "Ritual Altar",
+  "block.lord_of_mysteries.ritual_chalk_mark": "Ritual Chalk Mark",
   "block.lord_of_mysteries.crucible": "Crucible",
   "block.lord_of_mysteries.hunter_snare": "Hunter Snare",
 
@@ -111,8 +112,16 @@
   "screen.lord_of_mysteries.status.no_knowledge": "No occult knowledge has been recorded",
   "message.lord_of_mysteries.ritual.material_added": "A material was placed on the ritual altar",
   "message.lord_of_mysteries.ritual.started": "The calming seal begins and the surrounding spirituality settles",
+  "message.lord_of_mysteries.ritual.progress": "The ritual continues; about %s seconds remain",
   "message.lord_of_mysteries.ritual.sealed": "The seal is complete; the Eternal Matchbox falls silent",
-  "message.lord_of_mysteries.ritual.requirements": "Requires a clear night: Eternal Matchbox, 3 Pure Water, 5 Blue Orchids, and 8 White Candles",
+  "message.lord_of_mysteries.ritual.requirements": "Requires a clear night, eight chalk marks at radius 3, Eternal Matchbox, 3 Pure Water, 5 Blue Orchids, and 8 White Candles",
+  "message.lord_of_mysteries.ritual.structure_broken": "The ritual pattern broke; materials were preserved and the ritual was cancelled",
+  "message.lord_of_mysteries.ritual.cancelled": "Ritual conditions failed; materials were preserved",
+  "message.lord_of_mysteries.ritual.perfect": "Perfect ritual: the seal is exceptionally stable",
+  "message.lord_of_mysteries.ritual.success": "Ritual succeeded: the seal is stable",
+  "message.lord_of_mysteries.ritual.failure": "Ritual failed: polluted smoke enters your mind (insanity pressure +10)",
+  "message.lord_of_mysteries.ritual.severe_failure": "Severe ritual failure: a spirit breached the pattern and pollution increased by 15",
+  "message.lord_of_mysteries.ritual.catastrophe": "Ritual catastrophe: an explosion and breakdown entity arrived together; pollution increased by 25",
   "message.lord_of_mysteries.artifact.sealed": "This artifact cannot be used while sealed",
   "tooltip.lord_of_mysteries.artifact.sealed": "Sealed: both effect and cost are suppressed"
 }

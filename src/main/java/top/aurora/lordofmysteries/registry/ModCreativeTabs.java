@@ -53,6 +53,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.HUNTER_SNARE_ITEM.get());
                         output.accept(ModItems.ETERNAL_MATCHBOX.get());
                         output.accept(ModItems.RITUAL_ALTAR_ITEM.get());
+                        output.accept(ModItems.RITUAL_CHALK_MARK_ITEM.get());
                         output.accept(ModItems.CRUCIBLE_ITEM.get());
                     })
                     .build());

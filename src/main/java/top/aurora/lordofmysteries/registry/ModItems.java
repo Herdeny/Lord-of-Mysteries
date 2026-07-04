@@ -87,6 +87,10 @@ public final class ModItems {
     // 这里通过 RegistryObject.get() 关联方块，Forge 会在合适阶段解析真实 Block 实例。
     public static final RegistryObject<Item> RITUAL_ALTAR_ITEM = ITEMS.register("ritual_altar",
             () -> new BlockItem(ModBlocks.RITUAL_ALTAR.get(), new Item.Properties()));
+    public static final RegistryObject<Item> RITUAL_CHALK_MARK_ITEM =
+            ITEMS.register("ritual_chalk_mark",
+                    () -> new BlockItem(
+                            ModBlocks.RITUAL_CHALK_MARK.get(), new Item.Properties()));
 
     // 坩埚方块物品；未来打开 GUI、保存配方状态的是方块实体，不是这个 BlockItem。
     public static final RegistryObject<Item> CRUCIBLE_ITEM = ITEMS.register("crucible",

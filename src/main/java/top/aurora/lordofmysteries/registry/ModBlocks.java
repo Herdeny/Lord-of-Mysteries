@@ -11,6 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.potion.CrucibleBlock;
 import top.aurora.lordofmysteries.ritual.RitualAltarBlock;
+import top.aurora.lordofmysteries.ritual.RitualChalkMarkBlock;
 import top.aurora.lordofmysteries.hunter.HunterSnareBlock;
 
 /**
@@ -48,6 +49,14 @@ public final class ModBlocks {
                     .mapColor(MapColor.METAL)
                     .strength(3.5f, 6.0f)
                     .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> RITUAL_CHALK_MARK =
+            BLOCKS.register("ritual_chalk_mark",
+                    () -> new RitualChalkMarkBlock(BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.QUARTZ)
+                            .strength(0.1f)
+                            .noCollission()
+                            .noOcclusion()));
 
     public static final RegistryObject<Block> HUNTER_SNARE = BLOCKS.register("hunter_snare",
             () -> new HunterSnareBlock(BlockBehaviour.Properties.of()
