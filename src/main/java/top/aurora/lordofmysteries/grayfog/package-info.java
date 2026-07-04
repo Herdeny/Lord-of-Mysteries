@@ -1,6 +1,6 @@
 /**
  * 灰雾维度与交易(§10): GrayFogDimension/GrayFogTradeMarket/TarotSession
  *
- * <p>Project Mystery 设计文档 v0.4 §17 规划的模块占位，M0 仅建立结构，按 M1-M5 逐步填充。
+ * <p>Project Mystery v0.6 M4 / EP1 模块；M1-M3 禁止提前把灰雾预研标记为已完成。
  */
 package top.aurora.lordofmysteries.grayfog;

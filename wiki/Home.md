@@ -3,14 +3,21 @@
 > 在未知中承担风险，通过扮演消化力量，逐步成为非凡者。
 
 <!-- project-status:start -->
-- 当前版本：**`0.2.0-1.20.1`**
-- 开发阶段：**M2 开发 Alpha**（M2）
+- 当前版本：**`0.2.1-1.20.1`**
+- 开发阶段：**M1 开发 Alpha**（M1）
 - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-- 最后更新：**2026-07-04 07:55:25 UTC+01:00**（`2026-07-04T06:55:25Z`）
+- 最后更新：**2026-07-04 08:28:01 UTC+01:00**（`2026-07-04T07:28:01Z`）
 <!-- project-status:end -->
 
 Project Mystery 是受《诡秘之主》启发的非官方、非商业 Minecraft Forge 同人模组。
 仓库现有代码是唯一实现基线，当前设计基线为 v0.6，设计文档只作为机制与数值参考。
+
+## 当前路线
+
+当前按 v0.6 硬门禁处于 **M1：占卜家序列 9-7 纵切**。序列 9 已可玩，序列 8 小丑、
+序列 7 魔术师和一小时切片仍待完成。观众/猎人序列 9-8 与通用仪式底座作为后续阶段
+预研保留，但不代表 M2 已验收。完整路线见
+[ROADMAP.md](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/ROADMAP.md)。
 
 ## 当前可玩路径
 
@@ -58,6 +65,8 @@ Project Mystery 是受《诡秘之主》启发的非官方、非商业 Minecraft
 
 - [安装与构建](Installation-and-Build)
 - [开发状态](Development-Status)
+- [完整路线图](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/ROADMAP.md)
+- [原创化名称与素材映射](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/IP_MAPPING.md)
 - [版本与发布](Versioning-and-Releases)
 - [在线资料站](https://herdeny.github.io/Lord-of-Mysteries/)
 - [README](https://github.com/Herdeny/Lord-of-Mysteries#readme)

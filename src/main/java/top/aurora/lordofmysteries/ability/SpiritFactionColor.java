@@ -67,7 +67,7 @@ public enum SpiritFactionColor {
 
         if (entity instanceof Animal || entity instanceof WaterAnimal) return YELLOW;
 
-        // 灰雾/灵体实体的 tag 会在 M2/M3 引入；此处兜底为 GRAY。
+        // 灵体实体在 MVP 扩展，灰雾实体按 v0.6 延至 M4；此处统一兜底为 GRAY。
         if (entity.getType().getDescriptionId().contains("spirit")) return GRAY;
 
         return entity instanceof Mob ? YELLOW : GRAY;

@@ -11,6 +11,13 @@
 - [ ] Original asset
 - [ ] Build / CI / Repository maintenance
 
+## 路线影响
+
+- 目标里程碑：`M1 / M2 / M3 / M4 / M5 / M6 / M7 / 不适用`
+- [ ] 变更符合 `roadmap.json` 的当前阶段门禁
+- [ ] 后续阶段预研未被标记为当前里程碑已完成
+- [ ] 如调整路线，只修改了 `roadmap.json` 并重新生成同步文件
+
 ## 验证
 
 - [ ] `./gradlew clean build` 通过
@@ -19,6 +26,7 @@
 - [ ] 已更新相关文档、配置和本地化
 - [ ] 已同步更新 `README.md`、`docs/`、`wiki/` 与 `CHANGELOG.md`，或确认本变更不影响这些内容
 - [ ] 若版本/阶段发生变化，已更新 `project-status.json` 并运行 `python scripts/sync_project_metadata.py`
+- [ ] 若路线发生变化，已更新 `roadmap.json`
 - [ ] `python scripts/sync_project_metadata.py --check` 通过
 
 验证环境与步骤：

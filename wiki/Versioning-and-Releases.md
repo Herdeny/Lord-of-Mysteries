@@ -1,10 +1,10 @@
 # 版本与发布
 
 <!-- project-status:start -->
-- 当前版本：**`0.2.0-1.20.1`**
-- 开发阶段：**M2 开发 Alpha**（M2）
+- 当前版本：**`0.2.1-1.20.1`**
+- 开发阶段：**M1 开发 Alpha**（M1）
 - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-- 最后更新：**2026-07-04 07:55:25 UTC+01:00**（`2026-07-04T06:55:25Z`）
+- 最后更新：**2026-07-04 08:28:01 UTC+01:00**（`2026-07-04T07:28:01Z`）
 <!-- project-status:end -->
 
 ## 版本格式
@@ -21,7 +21,9 @@
 
 主仓库的
 [`project-status.json`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/project-status.json)
-是版本号、开发阶段和更新时间的唯一来源。
+是版本号、开发阶段和更新时间的唯一来源；
+[`roadmap.json`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/roadmap.json)
+是设计版本、里程碑、门禁和内容规模目标的唯一来源。
 
 同步命令：
 
@@ -38,6 +40,7 @@ python scripts/sync_project_metadata.py --check
 ## 自动同步
 
 - Documentation Consistency 检查 README、Pages 和 Wiki 源文件。
+- `ROADMAP.md`、README 路线表、Wiki 里程碑和 Pages 路线卡由 `roadmap.json` 自动生成。
 - Pages 工作流发布 `docs/`。
 - Wiki Sync 工作流把主仓库 `wiki/` 同步到 GitHub Wiki 独立仓库。
 - Build 从 `project-status.json` 读取 Mod 版本。

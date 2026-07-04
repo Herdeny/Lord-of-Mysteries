@@ -1,6 +1,6 @@
 /**
  * 组织与声望(§11): OrganizationRegistry/ReputationSystem/OrgQuestProvider
  *
- * <p>Project Mystery 设计文档 v0.4 §17 规划的模块占位，M0 仅建立结构，按 M1-M5 逐步填充。
+ * <p>Project Mystery v0.6 M3-M5 模块，先完成值夜者任务线，再扩展教会与组织战争。
  */
 package top.aurora.lordofmysteries.organization;

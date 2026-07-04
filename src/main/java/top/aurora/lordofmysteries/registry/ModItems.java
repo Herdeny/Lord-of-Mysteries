@@ -15,7 +15,7 @@ import top.aurora.lordofmysteries.potion.HunterPotionItem;
 import top.aurora.lordofmysteries.artifact.EternalMatchboxItem;
 
 /**
- * 物品注册（Forge 1.20.1）。M0 放占位材料 + 方块物品，验证管线 + 创造模式标签。
+ * 物品注册（Forge 1.20.1）。包含材料、魔药、封印物和方块物品。
  *
  * <p>本类只负责“声明有哪些物品”。物品行为、右键逻辑、能力触发等应放到对应
  * Item 子类或事件处理器中，避免注册类承担过多业务逻辑。
@@ -35,18 +35,18 @@ public final class ModItems {
     /**
      * 创建无特殊行为的普通物品。
      *
-     * <p>M0 阶段很多材料只需要能注册、能显示、能被配方或数据 JSON 引用。等某个
+     * <p>基础材料只需要能注册、显示并被配方或数据 JSON 引用。等某个
      * 物品需要耐久、右键、NBT 或发光效果时，再替换为专门的 Item 子类。
      */
     private static RegistryObject<Item> simple(String name) {
         return ITEMS.register(name, () -> new Item(new Item.Properties()));
     }
 
-    // —— 占位材料（§4.1 ~40 材料的起点）——
+    // —— 基础材料（v0.6 MVP 材料池的当前子集）——
     // 基础灵性材料。后续可作为采集、掉落、交易、魔药制作的共同输入。
     public static final RegistryObject<Item> SPIRIT_HERB = simple("spirit_herb");
 
-    // 占卜和序列 9 魔药用材料。M1/M2 可接入占卜系统或仪式聚焦逻辑。
+    // 占卜和序列 9 魔药用材料。
     public static final RegistryObject<Item> DIVINATION_CRYSTAL = simple("divination_crystal");
 
     // 月相/夜晚相关材料，占位给魔药品质加成和仪式媒介使用。
@@ -77,8 +77,7 @@ public final class ModItems {
             "hunter_potion_8",
             () -> new HunterPotionItem(new Item.Properties(), 8));
 
-    // —— 封印物占位（§9.2 #1 永燃火柴盒）——
-    // 目前只是普通物品；封印物主动效果、负面代价和封印状态会在 artifact 模块实现。
+    // —— 封印物（当前实现永燃火柴盒）——
     public static final RegistryObject<Item> ETERNAL_MATCHBOX = ITEMS.register("eternal_matchbox",
             () -> new EternalMatchboxItem(new Item.Properties().durability(16).rarity(Rarity.RARE)));
 

@@ -5,7 +5,7 @@
 
 ## 开始之前
 
-1. 阅读 `README.md`、`NOTICE.md`、`ASSET_LICENSE.md` 和
+1. 阅读 `README.md`、`ROADMAP.md`、`NOTICE.md`、`ASSET_LICENSE.md` 和
    `docs/IP_MAPPING.md`。
 2. 对较大的功能或世界观内容，先创建 Feature request 或 Content proposal。
 3. 不要提交小说原文、官方插画、反编译资源、游戏提取资产、未授权字体/音乐或
@@ -32,14 +32,16 @@ Windows 可使用对应的 `gradlew.bat`。
    `chore/...`。
 2. 一个 Pull Request 只解决一个清晰问题。
 3. 补充或更新相关测试、数据文件和文档。
-4. 玩家可见功能必须同步更新 `README.md`、`docs/`、`wiki/` 和
+4. 变更必须符合 `roadmap.json` 的当前里程碑门禁；后续阶段预研不得标记为当前阶段完成。
+5. 玩家可见功能必须同步更新 `README.md`、`docs/`、`wiki/` 和
    `CHANGELOG.md`；版本、阶段或更新时间变化时修改 `project-status.json`。
-5. 运行 `python scripts/sync_project_metadata.py`，并确保
+6. 路线变化只修改 `roadmap.json`，不要手工维护 README、Pages 或 Wiki 的路线表。
+7. 运行 `python scripts/sync_project_metadata.py`，并确保
    `python scripts/sync_project_metadata.py --check` 通过。
-6. 确保 `./gradlew clean build` 通过。
-7. 使用清晰的提交信息，推荐 Conventional Commits，例如
+8. 确保 `./gradlew clean build` 通过。
+9. 使用清晰的提交信息，推荐 Conventional Commits，例如
    `feat(ritual): add failure feedback`。
-8. 填写 Pull Request 模板，关联 Issue，并说明游戏内验证结果。
+10. 填写 Pull Request 模板，关联 Issue，并说明游戏内验证结果。
 
 `main` 只通过 Pull Request 更新。合并前需要 CI 通过、讨论已解决，并由维护者
 审核。维护者通常使用 squash merge。

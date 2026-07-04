@@ -1,6 +1,6 @@
 /**
  * 知识手册(§16.1): KnowledgeRegistry/KnowledgeCodex/KnowledgeUnlockEvent
  *
- * <p>Project Mystery 设计文档 v0.4 §17 规划的模块占位，M0 仅建立结构，按 M1-M5 逐步填充。
+ * <p>Project Mystery v0.6 核心模块，M2 冻结知识数据契约，M3-M5 扩展内容量。
  */
 package top.aurora.lordofmysteries.knowledge;

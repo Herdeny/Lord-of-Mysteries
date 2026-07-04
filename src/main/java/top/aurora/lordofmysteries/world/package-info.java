@@ -1,6 +1,6 @@
 /**
  * 世界生成与事件(§12-13): WorldStructures/WorldEventScheduler/ServerMysteryState
  *
- * <p>Project Mystery 设计文档 v0.4 §17 规划的模块占位，M0 仅建立结构，按 M1-M5 逐步填充。
+ * <p>Project Mystery v0.6 世界模块，M2-M3 完成 MVP 结构事件，M5-M6 扩展高阶内容。
  */
 package top.aurora.lordofmysteries.world;

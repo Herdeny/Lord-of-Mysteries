@@ -1,6 +1,6 @@
 /**
  * 扮演事件系统(§6.2): ActingEventRegistry/ActingTracker/ActingEventData/NoveltyDecaySystem
  *
- * <p>Project Mystery 设计文档 v0.4 §17 规划的模块占位，M0 仅建立结构，按 M1-M5 逐步填充。
+ * <p>Project Mystery v0.6 核心模块，按 {@code roadmap.json} 的 M1-M7 门禁逐步扩展。
  */
 package top.aurora.lordofmysteries.acting;

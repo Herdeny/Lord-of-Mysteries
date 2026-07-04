@@ -1,0 +1,15 @@
+category,current_design_name,internal_id,original_public_name,target_milestone,status
+project,Lord of Mysteries,project_mystery,Project Mystery,M1,neutral_codename_adopted
+pathway,Seer,seer,TBD,M2,pending
+pathway,Spectator,spectator,TBD,M2,pending
+pathway,Hunter,hunter,TBD,M2,pending
+pathway,Thief,thief,TBD,M2,pending
+pathway,Apprentice,apprentice,TBD,M2,pending
+sequence,Clown,clown,TBD,M2,pending
+sequence,Magician,magician,TBD,M2,pending
+organization,Nighthawks,nighthawks,TBD,M3,pending
+organization,Aurora Order,aurora_order,TBD,M3,pending
+space,Gray Fog and Sefirah Castle,gray_fog,TBD,M4,pending
+item,Beyonder Characteristic,beyonder_characteristic,TBD,M4,pending
+item,Sealed Artifact,sealed_artifact,TBD,M3,pending
+location,Backlund,major_city,TBD,M6,pending

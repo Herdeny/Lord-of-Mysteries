@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 import top.aurora.lordofmysteries.ProjectMystery;
 
 /**
- * 创造模式物品栏（Forge 1.20.1）。把本 mod 的占位物品收纳到一个标签页，便于开发期测试。
+ * 创造模式物品栏（Forge 1.20.1）。收纳本 Mod 当前可用物品，便于开发与验收。
  *
  * <p>创造模式标签本身也是注册表对象。它引用的图标和展示物品都通过 RegistryObject
  * 延迟获取，这样不会在注册过早阶段强行初始化 Item。
@@ -26,7 +26,7 @@ public final class ModCreativeTabs {
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ProjectMystery.MOD_ID);
 
     /**
-     * 主标签页：展示当前 M0 能直接拿到的全部占位物品和方块物品。
+     * 主标签页：展示当前可用材料、魔药、封印物和功能方块。
      *
      * <p>翻译键为 {@code itemGroup.lord_of_mysteries.main}，对应 lang/*.json。
      */

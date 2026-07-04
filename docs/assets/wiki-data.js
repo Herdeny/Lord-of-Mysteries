@@ -6,6 +6,7 @@
 
 window.LOM = window.LOM || {};
 var projectMeta = window.LOM_PROJECT_META || {};
+var roadmapMeta = window.LOM_ROADMAP_META || {};
 
 /* ── 项目元信息 ── */
 LOM.meta = {
@@ -28,25 +29,8 @@ LOM.meta = {
   ]
 };
 
-/* ── 里程碑路线图 ── */
-LOM.roadmap = [
-  { id: "M0", title: "技术验证（框架）", state: "done",
-    points: ["Forge 1.20.1 完整工程 + Gradle wrapper", "玩家 Capability 数据载荷 + NBT 持久化 + 死亡跨维度继承",
-      "灵性自然恢复 / 污染分级检定骨架", "13 个模块包 + 数据驱动 JSON 示例", "中英双语本地化", "compileJava test → BUILD SUCCESSFUL"] },
-  { id: "M1", title: "占卜家序列9功能闭环", state: "done",
-    points: ["三能力、占卜可信度与服务端访问控制", "扮演事件、消化公式与反刷取衰减",
-      "可交互坩埚、热源温控、四档品质与服药晋升", "污染分级、三种失控模式与专属失控体",
-      "永燃火柴盒 + 净化封印仪式", "N 键档案 + 废弃调查员营地基础"] },
-  { id: "M2", title: "三途径序列9-8", state: "active",
-    points: ["观众与猎人序列 9-8 已实装", "通用仪式底座与净化封印五档结算已实装",
-      "占卜家序列 8 + 多人一致性测试", "灰雾空间基础版"] },
-  { id: "M3", title: "序列7与世界扩展", state: "planned",
-    points: ["三途径序列 7 + 偷盗者 / 学徒 9-7", "阶段 Boss + 任务链", "首发结构 + 世界事件"] },
-  { id: "M4", title: "MVP 1.0", state: "planned",
-    points: ["平衡 / 性能 / 兼容 / 存档迁移", "完整本地化"] },
-  { id: "M5", title: "深化扩展", state: "planned",
-    points: ["序列 6-5、途径扩至 10 条", "组织深化 + 塔罗会完整功能"] }
-];
+/* ── 里程碑路线图（由 roadmap.json 生成） ── */
+LOM.roadmap = roadmapMeta.milestones || [];
 
 /* ── 三途径概览 ── */
 LOM.pathwaysOverview = [
@@ -56,32 +40,32 @@ LOM.pathwaysOverview = [
   { id: "hunter", name: "猎人", en: "Hunter", accent: "#cc5b4d",
     desc: "力量与战斗的途径。序列 9 擅长追踪、陷阱与荒野生存，序列 8 以挑衅、激怒和战斗意志控制战局。",
     traits: ["追踪", "陷阱", "挑衅", "战斗意志"],
-    spirit: "序列9 118 · 序列8 142", status: "M2 序列9-8实装" },
+    spirit: "序列9 118 · 序列8 142", status: "已实装 · M2预研" },
   { id: "spectator", name: "观众", en: "Spectator", accent: "#6bcad0",
     desc: "精神与心灵的途径。序列 9 读取情绪并预判行为，序列 8 可读取表层思维并施加可抵抗的心理暗示。",
     traits: ["情绪读取", "行为预判", "表层读心", "心理暗示"],
-    spirit: "序列9 112 · 序列8 138", status: "M2 序列9-8实装" },
+    spirit: "序列9 112 · 序列8 138", status: "已实装 · M2预研" },
   { id: "apprentice", name: "学徒", en: "Apprentice", accent: "#d4af37",
-    desc: "知识与元素的途径。掌控元素、空间与造物，博学而多能。M3 规划。",
-    traits: ["元素", "造物", "空间", "博学"], baseSpirit: 100, growth: 24, status: "M3 规划" },
+    desc: "知识与元素的途径。掌控元素、空间与造物，博学而多能。v0.6 M2 规划。",
+    traits: ["元素", "造物", "空间", "博学"], baseSpirit: 100, growth: 24, status: "M2 规划" },
   { id: "thief", name: "偷盗者", en: "Thief", accent: "#74b86f",
-    desc: "敏捷与幸运的途径。身法、潜行、概率操纵，机敏而难以捉摸。M3 规划。",
-    traits: ["敏捷", "潜行", "幸运", "概率"], baseSpirit: 100, growth: 20, status: "M3 规划" }
+    desc: "敏捷与幸运的途径。身法、潜行、概率操纵，机敏而难以捉摸。v0.6 M2 规划。",
+    traits: ["敏捷", "潜行", "幸运", "概率"], baseSpirit: 100, growth: 20, status: "M2 规划" }
 ];
 
-/* ── 占卜家序列阶梯（9→0，M1 聚焦序列9） ── */
+/* ── 占卜家序列阶梯（9→0，v0.6 M1 聚焦序列9-7） ── */
 LOM.seerSequences = [
   { seq: 9, name: "占卜家 Seer", state: "active", spiritMax: 122,
     abilities: ["灵视", "危险直觉", "简易占卜"],
     desc: "序列起点。初窥灵界，能感知超凡气息、预警致命危险、进行简易占卜。M1 完整实装。" },
   { seq: 8, name: "小丑 Clown", state: "planned", spiritMax: 144,
-    abilities: ["敏捷强化", "戏法", "误导"], desc: "身手敏捷，擅长戏法与误导。M2 规划。" },
-  { seq: 7, name: "魔术师 Magician", state: "planned", spiritMax: 168,
-    abilities: ["造物幻象", "催眠暗示", "道具戏法"], desc: "以幻象与暗示操纵感知。M3 规划。" },
-  { seq: 6, name: "无面人 Faceless", state: "planned", spiritMax: 200,
-    abilities: ["易容", "拟态", "身份夺取"], desc: "可完美易容与拟态。M5 规划。" },
-  { seq: 5, name: "秘偶大师 Marionettist", state: "planned", spiritMax: 240,
-    abilities: ["秘偶操控", "傀儡", "远程操纵"], desc: "操控秘偶与傀儡。M5 规划。" },
+    abilities: ["纸牌飞刃", "完美平衡", "表情操控", "直觉预判"], desc: "v0.6 M1 待实现。" },
+  { seq: 7, name: "魔术师 Magician", state: "planned", spiritMax: 175,
+    abilities: ["火焰跳跃", "替身纸人", "空气子弹", "舞台幻术"], desc: "v0.6 M1 待实现。" },
+  { seq: 6, name: "无面人 Faceless", state: "planned", spiritMax: 212,
+    abilities: ["完全变形", "形体记录", "声线模仿"], desc: "v0.6 M4 / EP1 规划。" },
+  { seq: 5, name: "秘偶大师 Marionettist", state: "planned", spiritMax: 265,
+    abilities: ["灵体之线", "秘偶操控", "傀儡收纳"], desc: "v0.6 M4 / EP1 规划。" },
   { seq: 4, name: "预言家 Scryer", state: "future", spiritMax: 300,
     abilities: ["强化预言", "命运窥探"], desc: "更高维度的预知。规划中。" },
   { seq: 3, name: "占卜之王 (待定)", state: "future", spiritMax: 380, abilities: ["—"], desc: "高序列，暂未设计。" },
@@ -96,7 +80,7 @@ LOM.spectatorSequences = [
     desc: "持续观察目标情绪，并在战斗中预判来袭行为。M2 已实装。" },
   { pathway: "观众", seq: 8, name: "读心者 Telepathist", state: "active", spiritMax: 138,
     abilities: ["表层读心", "心理暗示", "精神抵抗"],
-    desc: "读取目标当前表层状态，并施加带可见反馈和玩家抵抗窗口的心理暗示。M2 已实装。" }
+    desc: "读取目标当前表层状态，并施加带可见反馈和玩家抵抗窗口的心理暗示。已实装，作为 M2 预研保留。" }
 ];
 
 LOM.hunterSequences = [
@@ -315,8 +299,8 @@ LOM.entries = [
   /* 组织 */
   { type: "org", id: "org_nighthawks", name: "值夜者", en: "Nighthawks",
     summary: "守序的非凡者组织，清剿失控与灵界威胁，玩家可积累声望。",
-    tags: ["组织", "守序", "规划"], details: [["立场", "守序 / 治安"], ["声望", "orgReputation 记录"], ["里程碑", "M2+ 深化"]],
-    long: "值夜者是维护凡俗与非凡秩序的组织。玩家协助清剿失控体、封印危险物可积累声望，解锁委托与资源。M1 已在数据结构中预留 orgReputation，深化在 M2+。" },
+    tags: ["组织", "守序", "规划"], details: [["立场", "守序 / 治安"], ["声望", "orgReputation 记录"], ["里程碑", "M3 MVP 公测"]],
+    long: "值夜者是维护凡俗与非凡秩序的组织。玩家协助清剿失控体、封印危险物可积累声望，解锁委托与资源。数据结构已预留 orgReputation，完整任务线按 v0.6 安排在 M3。" },
   { type: "org", id: "org_aurora", name: "极光会", en: "Aurora Order",
     summary: "追寻知识与晋升之路的非凡者结社。（呼应极光宇宙设定的彩蛋组织）",
     tags: ["组织", "知识", "规划"], details: [["立场", "求知 / 晋升"], ["里程碑", "M5 深化"]],
@@ -324,9 +308,9 @@ LOM.entries = [
 
   /* 世界 / 空间 */
   { type: "world", id: "grayfog", name: "灰雾空间", en: "The Gray Fog",
-    summary: "介于现实与灵界之间的诡秘空间，高序列非凡者的舞台。M2 基础版。",
-    tags: ["空间", "灰雾", "规划"], details: [["性质", "半灵界维度"], ["里程碑", "M2 基础版"]],
-    long: "灰雾是弥漫在世界之上的神秘空间，隐藏着信息、交易与危险。高序列占卜家可窥探甚至进入灰雾。M2 将实现基础版本。" }
+    summary: "介于现实与灵界之间的诡秘空间，高序列非凡者的舞台。M4 / EP1 规划。",
+    tags: ["空间", "灰雾", "规划"], details: [["性质", "半灵界维度"], ["里程碑", "M4 / EP1"]],
+    long: "灰雾是弥漫在世界之上的神秘空间，隐藏着信息、交易与危险。v0.6 将灰雾源堡与塔罗会安排在 M4 / EP1，M1-M3 不提前计入完成度。" }
 ];
 
 /* ── 分类标签映射 ── */

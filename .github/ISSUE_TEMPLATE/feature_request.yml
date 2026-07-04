@@ -40,6 +40,22 @@ body:
     id: alternatives
     attributes:
       label: 替代方案与取舍
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: 建议里程碑
+      description: 请按 ROADMAP.md 选择；不确定时选“需要维护者判断”
+      options:
+        - M1 / 占卜家序列 9-7 纵切
+        - M2 / 五途径序列 9-7 与 MVP 内测
+        - M3 / MVP 公测内容层
+        - M4 / EP1 序列 6-5
+        - M5 / EP2 半神与组织战争
+        - M6 / EP3 灵界与大城市
+        - M7 / 社区生态与 API 1.0
+        - 需要维护者判断
+    validations:
+      required: true
   - type: textarea
     id: compatibility
     attributes:
@@ -51,6 +67,8 @@ body:
       label: 提交确认
       options:
         - label: 我已搜索重复建议并阅读路线图
+          required: true
+        - label: 我理解当前里程碑门禁，后续阶段提案不会绕过前置验收
           required: true
         - label: 建议不依赖复制小说原文、官方插画或未授权资源
           required: true

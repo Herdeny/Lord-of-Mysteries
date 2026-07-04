@@ -21,8 +21,7 @@ import top.aurora.lordofmysteries.network.PMNetwork;
  * 技术基线：Minecraft 1.20.1 · Forge 47.4.x · Java 17
  * 设计基线：docs/DESIGN_BASELINE.md（Project Mystery v0.6）
  *
- * M0 阶段目标：建立工程基础，验证核心技术路线（玩家数据 Capability、
- * 灵性同步、灵视渲染）。后续模块按设计文档第 16 节逐步填充。
+ * 当前按 v0.6 路线推进 M1 占卜家序列 9-7 纵切；完整门禁由 roadmap.json 定义。
  *
  * 注：1.20.1 没有 NeoForge 的 Attachments API，玩家数据走 Forge Capability。
  *
@@ -79,7 +78,7 @@ public class ProjectMystery {
      * Forge 通用初始化阶段回调。
      *
      * <p>注意：此时注册表已经建立，但部分跨线程任务应通过 event.enqueueWork(...)
-     * 安排到主线程执行。M0 暂时只输出日志，确认生命周期能正常走到这里。
+     * 安排到主线程执行。当前在此注册网络协议并输出初始化状态。
      */
     private void commonSetup(final FMLCommonSetupEvent event) {
         // 网络包必须在主线程注册（SimpleChannel 内部会做线程检查）。

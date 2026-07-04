@@ -42,6 +42,21 @@ body:
       label: 数值、风险与平衡
     validations:
       required: true
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: 目标里程碑
+      options:
+        - M1 / 占卜家序列 9-7 纵切
+        - M2 / 五途径序列 9-7 与 MVP 内测
+        - M3 / MVP 公测内容层
+        - M4 / EP1 序列 6-5
+        - M5 / EP2 半神与组织战争
+        - M6 / EP3 灵界与大城市
+        - M7 / 社区生态与 API 1.0
+        - 需要维护者判断
+    validations:
+      required: true
   - type: textarea
     id: provenance
     attributes:
@@ -64,5 +79,7 @@ body:
         - label: 我有权提交所附文字、图片、音频和其他材料
           required: true
         - label: 我同意按项目适用许可证提供原创贡献
+          required: true
+        - label: 我已阅读 ROADMAP.md，提案不会绕过当前阶段门禁
           required: true
 

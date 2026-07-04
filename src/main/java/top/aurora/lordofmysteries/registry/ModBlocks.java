@@ -15,8 +15,8 @@ import top.aurora.lordofmysteries.ritual.RitualChalkMarkBlock;
 import top.aurora.lordofmysteries.hunter.HunterSnareBlock;
 
 /**
- * 方块注册（Forge 1.20.1）。M0 放仪式祭坛与坩埚的占位方块，验证注册管线。
- * 坩埚的 BlockEntity 绑定在 {@link ModBlockEntities}（M1 落地）。
+ * 方块注册（Forge 1.20.1）。当前包含坩埚、仪式祭坛、阵纹与猎人捕兽夹。
+ * 方块实体绑定集中在 {@link ModBlockEntities}。
  *
  * <p>本类只注册基础 Block。需要保存状态、每 tick 工作、打开菜单的方块，应在后续
  * 阶段拆出 Block 子类和 BlockEntity，而不是把复杂逻辑塞进这里。
@@ -32,8 +32,7 @@ public final class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, ProjectMystery.MOD_ID);
 
-    // 仪式祭坛（§18.5 ritual_altar）。
-    // M0 使用原版 Block 验证注册、模型和掉落工具要求；M1/M2 可替换为 RitualAltarBlock。
+    // 仪式祭坛：承载多方块阵列、材料、状态机和结算。
     public static final RegistryObject<Block> RITUAL_ALTAR = BLOCKS.register("ritual_altar",
             () -> new RitualAltarBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE)
@@ -42,8 +41,7 @@ public final class ModBlocks {
                     // 要求正确工具才掉落，便于后续接入方块标签和镐类工具等级。
                     .requiresCorrectToolForDrops()));
 
-    // 坩埚（§7.2 CrucibleBlockEntity 的载体）。
-    // 目前只是普通方块；魔药制作状态、材料槽和 tick 逻辑会转移到 CrucibleBlockEntity。
+    // 坩埚：CrucibleBlockEntity 的交互载体。
     public static final RegistryObject<Block> CRUCIBLE = BLOCKS.register("crucible",
             () -> new CrucibleBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.METAL)
