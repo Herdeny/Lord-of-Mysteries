@@ -11,6 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.potion.CrucibleBlock;
 import top.aurora.lordofmysteries.ritual.RitualAltarBlock;
+import top.aurora.lordofmysteries.hunter.HunterSnareBlock;
 
 /**
  * 方块注册（Forge 1.20.1）。M0 放仪式祭坛与坩埚的占位方块，验证注册管线。
@@ -47,4 +48,10 @@ public final class ModBlocks {
                     .mapColor(MapColor.METAL)
                     .strength(3.5f, 6.0f)
                     .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> HUNTER_SNARE = BLOCKS.register("hunter_snare",
+            () -> new HunterSnareBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(0.6f)
+                    .noOcclusion()));
 }

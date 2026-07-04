@@ -29,8 +29,12 @@ class PlayerMysteryDataTest {
         assertEquals(0f, d.spirituality);
         assertEquals(100f, d.spiritualityMax);
         assertEquals(0f, d.pollution);
-        assertEquals(2, d.schemaVersion);
+        assertEquals(3, d.schemaVersion);
         assertFalse(d.emotionReadActive);
+        assertEquals("", d.hunterTrackedTarget);
+        assertEquals(0L, d.provokeCooldownEndTick);
+        assertEquals(0L, d.enrageCooldownEndTick);
+        assertEquals(0L, d.battleWillCooldownEndTick);
         assertTrue(d.actingCounters.isEmpty());
     }
 

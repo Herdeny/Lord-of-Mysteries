@@ -1,0 +1,19 @@
+{
+  "id": "lord_of_mysteries:hunter_8",
+  "pathway": "lord_of_mysteries:hunter",
+  "sequence": 8,
+  "spirituality_max_bonus": 42,
+  "initial_insanity_pressure": 12,
+  "abilities": [
+    "lord_of_mysteries:provoke",
+    "lord_of_mysteries:enrage",
+    "lord_of_mysteries:battle_will"
+  ],
+  "acting_events": [
+    "lord_of_mysteries:hunter8_provoke_three",
+    "lord_of_mysteries:hunter8_enrage",
+    "lord_of_mysteries:hunter8_battle_will"
+  ],
+  "potion_id": "lord_of_mysteries:hunter_potion_8",
+  "digestion_target": 100.0
+}

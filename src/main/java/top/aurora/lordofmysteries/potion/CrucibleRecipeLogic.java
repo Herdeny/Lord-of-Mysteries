@@ -11,6 +11,10 @@ public final class CrucibleRecipeLogic {
     public static final String HONEY_BOTTLE = "minecraft:honey_bottle";
     public static final String BOOK = "minecraft:book";
     public static final String AMETHYST_SHARD = "minecraft:amethyst_shard";
+    public static final String BONE = "minecraft:bone";
+    public static final String RABBIT_FOOT = "minecraft:rabbit_foot";
+    public static final String GUNPOWDER = "minecraft:gunpowder";
+    public static final String REDSTONE = "minecraft:redstone";
     public static final float IDEAL_TEMPERATURE = 70f;
 
     private CrucibleRecipeLogic() {}
@@ -65,6 +69,8 @@ public final class CrucibleRecipeLogic {
         SEER_9,
         SPECTATOR_9,
         SPECTATOR_8,
+        HUNTER_9,
+        HUNTER_8,
         CONTAMINATED
     }
 
@@ -78,7 +84,9 @@ public final class CrucibleRecipeLogic {
         SEER(BrewedPotion.SEER_9, SPIRIT_HERB, DIVINATION_CRYSTAL, MOONWATER),
         SPECTATOR(BrewedPotion.SPECTATOR_9,
                 SPIRIT_HERB, FERMENTED_SPIDER_EYE, HONEY_BOTTLE),
-        TELEPATHIST(BrewedPotion.SPECTATOR_8, SPIRIT_HERB, BOOK, AMETHYST_SHARD);
+        TELEPATHIST(BrewedPotion.SPECTATOR_8, SPIRIT_HERB, BOOK, AMETHYST_SHARD),
+        HUNTER(BrewedPotion.HUNTER_9, SPIRIT_HERB, BONE, RABBIT_FOOT),
+        PROVOKER(BrewedPotion.HUNTER_8, SPIRIT_HERB, GUNPOWDER, REDSTONE);
 
         private final BrewedPotion potion;
         private final String first;

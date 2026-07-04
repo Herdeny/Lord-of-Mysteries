@@ -65,6 +65,20 @@ public final class PMKeyBindings {
             InputConstants.KEY_J,
             CATEGORY);
 
+    public static final KeyMapping USE_PROVOKE = new KeyMapping(
+            "key.lord_of_mysteries.use_provoke",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_K,
+            CATEGORY);
+
+    public static final KeyMapping USE_ENRAGE = new KeyMapping(
+            "key.lord_of_mysteries.use_enrage",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_L,
+            CATEGORY);
+
     /** 通过 mod 总线注册；由 {@code ClientModEvents} 调用。 */
     public static void register(RegisterKeyMappingsEvent event) {
         event.register(TOGGLE_SPIRIT_VISION);
@@ -73,5 +87,7 @@ public final class PMKeyBindings {
         event.register(TOGGLE_EMOTION_READ);
         event.register(USE_SURFACE_READ);
         event.register(USE_MENTAL_SUGGESTION);
+        event.register(USE_PROVOKE);
+        event.register(USE_ENRAGE);
     }
 }

@@ -1,0 +1,11 @@
+{
+  "id": "lord_of_mysteries:hunter8_enrage",
+  "pathway": "lord_of_mysteries:hunter",
+  "sequence": 8,
+  "display_name": "在战斗中成功激怒目标",
+  "base_digestion": 12.0,
+  "novelty_decay_ticks": 2400,
+  "trigger": {
+    "type": "lord_of_mysteries:enrage_applied"
+  }
+}

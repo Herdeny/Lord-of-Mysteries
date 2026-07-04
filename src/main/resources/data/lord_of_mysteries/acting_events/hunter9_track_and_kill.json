@@ -1,0 +1,12 @@
+{
+  "id": "lord_of_mysteries:hunter9_track_and_kill",
+  "pathway": "lord_of_mysteries:hunter",
+  "sequence": 9,
+  "display_name": "持续追踪后独自完成狩猎",
+  "base_digestion": 15.0,
+  "novelty_decay_ticks": 4800,
+  "trigger": {
+    "type": "lord_of_mysteries:tracked_kill",
+    "minimum_tracking_ticks": 600
+  }
+}

@@ -73,4 +73,33 @@ class CrucibleRecipeLogicTest {
         assertEquals(CrucibleRecipeLogic.BrewedPotion.CONTAMINATED, result.potion());
         assertEquals(PotionQuality.CONTAMINATED, result.quality());
     }
+
+    @Test
+    void hunterSequenceNineRecipeProducesHunterPotion() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.SPIRIT_HERB,
+                CrucibleRecipeLogic.BONE,
+                CrucibleRecipeLogic.RABBIT_FOOT), 70f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.HUNTER_9, result.potion());
+        assertEquals(PotionQuality.PERFECT, result.quality());
+    }
+
+    @Test
+    void hunterSequenceEightRecipeProducesProvokerPotion() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.SPIRIT_HERB,
+                CrucibleRecipeLogic.GUNPOWDER,
+                CrucibleRecipeLogic.REDSTONE), 70f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.HUNTER_8, result.potion());
+        assertEquals(PotionQuality.PERFECT, result.quality());
+    }
+
+    @Test
+    void hunterCrossRecipeIngredientsContaminateBatch() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.SPIRIT_HERB,
+                CrucibleRecipeLogic.BONE,
+                CrucibleRecipeLogic.REDSTONE), 70f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.CONTAMINATED, result.potion());
+    }
 }

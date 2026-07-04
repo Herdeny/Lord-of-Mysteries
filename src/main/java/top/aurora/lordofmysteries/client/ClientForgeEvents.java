@@ -13,6 +13,8 @@ import top.aurora.lordofmysteries.network.RequestMysteryStatusC2SPacket;
 import top.aurora.lordofmysteries.network.ToggleEmotionReadC2SPacket;
 import top.aurora.lordofmysteries.network.UseMentalSuggestionC2SPacket;
 import top.aurora.lordofmysteries.network.UseSurfaceReadC2SPacket;
+import top.aurora.lordofmysteries.network.UseProvokeC2SPacket;
+import top.aurora.lordofmysteries.network.UseEnrageC2SPacket;
 
 /**
  * 客户端游戏总线事件（Forge 1.20.1）。
@@ -49,6 +51,12 @@ public final class ClientForgeEvents {
         }
         while (PMKeyBindings.USE_MENTAL_SUGGESTION.consumeClick()) {
             PMNetwork.CHANNEL.sendToServer(new UseMentalSuggestionC2SPacket());
+        }
+        while (PMKeyBindings.USE_PROVOKE.consumeClick()) {
+            PMNetwork.CHANNEL.sendToServer(new UseProvokeC2SPacket());
+        }
+        while (PMKeyBindings.USE_ENRAGE.consumeClick()) {
+            PMNetwork.CHANNEL.sendToServer(new UseEnrageC2SPacket());
         }
     }
 }

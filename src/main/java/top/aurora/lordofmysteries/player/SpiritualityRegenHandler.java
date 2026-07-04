@@ -8,6 +8,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import top.aurora.lordofmysteries.ProjectMystery;
+import top.aurora.lordofmysteries.ability.HunterAbilityLogic;
+import top.aurora.lordofmysteries.potion.HunterPotionItem;
 
 /**
  * 灵性自然恢复（Forge 1.20.1，设计文档 §5.2）。
@@ -52,6 +54,11 @@ public final class SpiritualityRegenHandler {
 
         if (!inCombat && goodLight && lowPressure) {
             float regenRate = getRegenRate(data.pathway, data.sequence);
+            if (HunterPotionItem.HUNTER_PATHWAY.equals(data.pathway)) {
+                regenRate = HunterAbilityLogic.spiritualityRegen(
+                        regenRate, data.sequence,
+                        player.level().canSeeSky(player.blockPosition()));
+            }
             if (player.level().getGameTime() < data.mentalTraumaEndTick) regenRate *= 0.5f;
             // 恢复值必须被上限截断，避免长时间 tick 后超过 spiritualityMax。
             data.spirituality = Math.min(data.spiritualityMax, data.spirituality + regenRate);

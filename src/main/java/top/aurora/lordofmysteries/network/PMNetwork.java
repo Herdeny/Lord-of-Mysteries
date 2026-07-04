@@ -22,7 +22,7 @@ public final class PMNetwork {
 
     private PMNetwork() {}
 
-    private static final String PROTOCOL_VERSION = "2";
+    private static final String PROTOCOL_VERSION = "3";
 
     /** SimpleChannel 实例；ChannelId 稳定，客户端/服务端版本必须一致。 */
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
@@ -68,6 +68,16 @@ public final class PMNetwork {
                 .encoder(UseMentalSuggestionC2SPacket::encode)
                 .decoder(UseMentalSuggestionC2SPacket::decode)
                 .consumerMainThread(UseMentalSuggestionC2SPacket::handle)
+                .add();
+        CHANNEL.messageBuilder(UseProvokeC2SPacket.class, id++)
+                .encoder(UseProvokeC2SPacket::encode)
+                .decoder(UseProvokeC2SPacket::decode)
+                .consumerMainThread(UseProvokeC2SPacket::handle)
+                .add();
+        CHANNEL.messageBuilder(UseEnrageC2SPacket.class, id++)
+                .encoder(UseEnrageC2SPacket::encode)
+                .decoder(UseEnrageC2SPacket::decode)
+                .consumerMainThread(UseEnrageC2SPacket::handle)
                 .add();
     }
 }

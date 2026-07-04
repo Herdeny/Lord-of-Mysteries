@@ -61,7 +61,7 @@
     var stats = [
       [entries.length, "图鉴条目"],
       [(D.pathwaysOverview || []).length, "途径"],
-      [(D.seerSequences || []).length + (D.spectatorSequences || []).length, "序列条目"],
+      [(D.seerSequences || []).length + (D.spectatorSequences || []).length + (D.hunterSequences || []).length, "序列条目"],
       [entries.filter(function (e) { return e.type === "ability"; }).length, "能力"],
       [(D.roadmap || []).length, "开发里程碑"]
     ];
@@ -107,7 +107,7 @@
   var ladder = $("#seq-ladder");
   var playableSequences = (D.seerSequences || []).map(function (s) {
     return Object.assign({ pathway: "占卜家" }, s);
-  }).concat(D.spectatorSequences || []);
+  }).concat(D.spectatorSequences || [], D.hunterSequences || []);
   if (ladder) playableSequences.forEach(function (s) {
     var row = el("div", "seq-row " + (s.state === "active" ? "active" : (s.state === "future" ? "future" : "")));
     row.innerHTML =
@@ -123,8 +123,8 @@
   var loop = $("#loop");
   if (loop) [
     ["炼制魔药", "在坩埚中按途径配方精确控温投料，材料顺序与温度共同决定成品品质。"],
-    ["服用晋升", "选择占卜家或观众途径，获得对应序列能力；高阶魔药由服务端校验晋升资格。"],
-    ["扮演消化", "按当前序列身份行动，通过占卜、观察、预判或精神能力把消化度推向 100%。"],
+    ["服用晋升", "选择占卜家、观众或猎人途径，获得对应序列能力；高阶魔药由服务端校验晋升资格。"],
+    ["扮演消化", "按当前序列身份行动，通过占卜、观察、追踪、陷阱或战斗控制把消化度推向 100%。"],
     ["管理风险", "监控灵性、污染与失控压力，避免污染满值触发失控与失控体。"],
     ["晋升下一序列", "消化满额后炼制更高阶魔药，向序列 8 及更高迈进。"]
   ].forEach(function (p) {

@@ -1,0 +1,12 @@
+{
+  "id": "lord_of_mysteries:hunter8_provoke_three",
+  "pathway": "lord_of_mysteries:hunter",
+  "sequence": 8,
+  "display_name": "同时吸引至少三个敌人的注意",
+  "base_digestion": 15.0,
+  "novelty_decay_ticks": 3600,
+  "trigger": {
+    "type": "lord_of_mysteries:provoke_targets",
+    "minimum": 3
+  }
+}

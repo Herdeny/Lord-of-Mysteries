@@ -48,6 +48,9 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.SEER_POTION_9.get());
                         output.accept(ModItems.SPECTATOR_POTION_9.get());
                         output.accept(ModItems.SPECTATOR_POTION_8.get());
+                        output.accept(ModItems.HUNTER_POTION_9.get());
+                        output.accept(ModItems.HUNTER_POTION_8.get());
+                        output.accept(ModItems.HUNTER_SNARE_ITEM.get());
                         output.accept(ModItems.ETERNAL_MATCHBOX.get());
                         output.accept(ModItems.RITUAL_ALTAR_ITEM.get());
                         output.accept(ModItems.CRUCIBLE_ITEM.get());

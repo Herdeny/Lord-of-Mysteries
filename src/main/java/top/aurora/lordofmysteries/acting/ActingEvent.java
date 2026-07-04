@@ -13,7 +13,17 @@ public enum ActingEvent {
     SPECTATOR8_SURFACE_READ("spectator", 8,
             "spectator8_surface_read", 12f, 2400L),
     SPECTATOR8_MENTAL_SUGGESTION("spectator", 8,
-            "spectator8_mental_suggestion", 15f, 4800L);
+            "spectator8_mental_suggestion", 15f, 4800L),
+    HUNTER9_TRACK_AND_KILL("hunter", 9,
+            "hunter9_track_and_kill", 15f, 4800L),
+    HUNTER9_TRAP_SETUP("hunter", 9,
+            "hunter9_trap_setup", 12f, 3600L),
+    HUNTER8_PROVOKE_THREE("hunter", 8,
+            "hunter8_provoke_three", 15f, 3600L),
+    HUNTER8_ENRAGE("hunter", 8,
+            "hunter8_enrage", 12f, 2400L),
+    HUNTER8_BATTLE_WILL("hunter", 8,
+            "hunter8_battle_will", 15f, 4800L);
 
     private final String pathway;
     private final int sequence;

@@ -49,6 +49,13 @@ public class PlayerMysteryData {
     public long behaviorPredictionCooldownEndTick = 0L;
     public long surfaceReadCooldownEndTick = 0L;
     public long mentalSuggestionCooldownEndTick = 0L;
+    public String hunterTrackedTarget = "";
+    public long hunterTrackingStartTick = 0L;
+    public long hunterTrackingEndTick = 0L;
+    public long provokeCooldownEndTick = 0L;
+    public long enrageCooldownEndTick = 0L;
+    public long battleWillCooldownEndTick = 0L;
+    public long battleWillEndTick = 0L;
 
     // 知识系统。保存玩家已经解锁的知识条目 ID，供手册、仪式和配方门槛读取。
     public Set<ResourceLocation> knownKnowledge = new HashSet<>();
@@ -62,7 +69,7 @@ public class PlayerMysteryData {
     public Map<ResourceLocation, Integer> orgReputation = new HashMap<>();
 
     // 序列化版本号（用于迁移）。未来字段改名或结构升级时，可根据旧版本补默认值。
-    public int schemaVersion = 2;
+    public int schemaVersion = 3;
 
     /** 默认构造器需要保留，Capability Provider 和测试都会直接创建空数据。 */
     public PlayerMysteryData() {}
@@ -100,6 +107,13 @@ public class PlayerMysteryData {
         this.behaviorPredictionCooldownEndTick = src.behaviorPredictionCooldownEndTick;
         this.surfaceReadCooldownEndTick = src.surfaceReadCooldownEndTick;
         this.mentalSuggestionCooldownEndTick = src.mentalSuggestionCooldownEndTick;
+        this.hunterTrackedTarget = src.hunterTrackedTarget;
+        this.hunterTrackingStartTick = src.hunterTrackingStartTick;
+        this.hunterTrackingEndTick = src.hunterTrackingEndTick;
+        this.provokeCooldownEndTick = src.provokeCooldownEndTick;
+        this.enrageCooldownEndTick = src.enrageCooldownEndTick;
+        this.battleWillCooldownEndTick = src.battleWillCooldownEndTick;
+        this.battleWillEndTick = src.battleWillEndTick;
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
         this.actingHistory = new HashMap<>(src.actingHistory);
         this.actingCounters = new HashMap<>(src.actingCounters);
@@ -134,6 +148,13 @@ public class PlayerMysteryData {
         tag.putLong("behavior_prediction_cd_end", behaviorPredictionCooldownEndTick);
         tag.putLong("surface_read_cd_end", surfaceReadCooldownEndTick);
         tag.putLong("mental_suggestion_cd_end", mentalSuggestionCooldownEndTick);
+        tag.putString("hunter_tracked_target", hunterTrackedTarget);
+        tag.putLong("hunter_tracking_start", hunterTrackingStartTick);
+        tag.putLong("hunter_tracking_end", hunterTrackingEndTick);
+        tag.putLong("provoke_cd_end", provokeCooldownEndTick);
+        tag.putLong("enrage_cd_end", enrageCooldownEndTick);
+        tag.putLong("battle_will_cd_end", battleWillCooldownEndTick);
+        tag.putLong("battle_will_end", battleWillEndTick);
         tag.putInt("schema_version", schemaVersion);
 
         ListTag known = new ListTag();
@@ -183,6 +204,14 @@ public class PlayerMysteryData {
         behaviorPredictionCooldownEndTick = tag.getLong("behavior_prediction_cd_end");
         surfaceReadCooldownEndTick = tag.getLong("surface_read_cd_end");
         mentalSuggestionCooldownEndTick = tag.getLong("mental_suggestion_cd_end");
+        hunterTrackedTarget = tag.contains("hunter_tracked_target")
+                ? tag.getString("hunter_tracked_target") : "";
+        hunterTrackingStartTick = tag.getLong("hunter_tracking_start");
+        hunterTrackingEndTick = tag.getLong("hunter_tracking_end");
+        provokeCooldownEndTick = tag.getLong("provoke_cd_end");
+        enrageCooldownEndTick = tag.getLong("enrage_cd_end");
+        battleWillCooldownEndTick = tag.getLong("battle_will_cd_end");
+        battleWillEndTick = tag.getLong("battle_will_end");
         schemaVersion = tag.contains("schema_version") ? tag.getInt("schema_version") : 1;
 
         knownKnowledge.clear();

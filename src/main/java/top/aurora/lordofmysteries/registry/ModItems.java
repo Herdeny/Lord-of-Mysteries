@@ -11,6 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.potion.SpectatorPotionItem;
+import top.aurora.lordofmysteries.potion.HunterPotionItem;
 import top.aurora.lordofmysteries.artifact.EternalMatchboxItem;
 
 /**
@@ -69,6 +70,12 @@ public final class ModItems {
     public static final RegistryObject<Item> SPECTATOR_POTION_8 = ITEMS.register(
             "spectator_potion_8",
             () -> new SpectatorPotionItem(new Item.Properties(), 8));
+    public static final RegistryObject<Item> HUNTER_POTION_9 = ITEMS.register(
+            "hunter_potion_9",
+            () -> new HunterPotionItem(new Item.Properties(), 9));
+    public static final RegistryObject<Item> HUNTER_POTION_8 = ITEMS.register(
+            "hunter_potion_8",
+            () -> new HunterPotionItem(new Item.Properties(), 8));
 
     // —— 封印物占位（§9.2 #1 永燃火柴盒）——
     // 目前只是普通物品；封印物主动效果、负面代价和封印状态会在 artifact 模块实现。
@@ -84,4 +91,7 @@ public final class ModItems {
     // 坩埚方块物品；未来打开 GUI、保存配方状态的是方块实体，不是这个 BlockItem。
     public static final RegistryObject<Item> CRUCIBLE_ITEM = ITEMS.register("crucible",
             () -> new BlockItem(ModBlocks.CRUCIBLE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> HUNTER_SNARE_ITEM = ITEMS.register(
+            "hunter_snare",
+            () -> new BlockItem(ModBlocks.HUNTER_SNARE.get(), new Item.Properties()));
 }

@@ -1,0 +1,17 @@
+{
+  "id": "lord_of_mysteries:hunter_9",
+  "pathway": "lord_of_mysteries:hunter",
+  "sequence": 9,
+  "spirituality_max_bonus": 18,
+  "abilities": [
+    "lord_of_mysteries:tracking",
+    "lord_of_mysteries:trap_mastery",
+    "lord_of_mysteries:wilderness_sense"
+  ],
+  "acting_events": [
+    "lord_of_mysteries:hunter9_track_and_kill",
+    "lord_of_mysteries:hunter9_trap_setup"
+  ],
+  "potion_id": "lord_of_mysteries:hunter_potion_9",
+  "digestion_target": 100.0
+}

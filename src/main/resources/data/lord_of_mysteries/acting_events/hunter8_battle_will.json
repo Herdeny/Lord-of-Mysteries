@@ -1,0 +1,11 @@
+{
+  "id": "lord_of_mysteries:hunter8_battle_will",
+  "pathway": "lord_of_mysteries:hunter",
+  "sequence": 8,
+  "display_name": "在多名敌人围攻下保持战意",
+  "base_digestion": 15.0,
+  "novelty_decay_ticks": 4800,
+  "trigger": {
+    "type": "lord_of_mysteries:battle_will"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "lord_of_mysteries:hunter_potion_8",
+  "target_pathway": "lord_of_mysteries:hunter",
+  "target_sequence": 8,
+  "requires": {
+    "pathway": "lord_of_mysteries:hunter",
+    "sequence": 9,
+    "digestion": 100.0
+  },
+  "ingredients": [
+    { "item": "lord_of_mysteries:spirit_herb", "order": 1, "required": true },
+    { "item": "minecraft:gunpowder", "order": 2, "required": true },
+    { "item": "minecraft:redstone", "order": 3, "required": false, "quality_bonus": 0.2 }
+  ],
+  "temperature_range": [60, 80],
+  "brewing_time_ticks": 1200,
+  "failure_result": "lord_of_mysteries:contaminated_mixture"
+}
