@@ -1,8 +1,11 @@
 # Project Mystery Design Document v0.6
 
-> 文档状态：仓库执行版  
-> 设计来源：`Project_Mystery_Design_Doc_v0_6.md.pdf`（2026-07-04）  
-> 工程基线：Minecraft 1.20.1 · Forge 47.4.20 · Java 17  
+> 文档状态：仓库执行版
+>
+> 设计来源：`Project_Mystery_Design_Doc_v0_6.md.pdf`（2026-07-04）
+>
+> 工程基线：Minecraft 1.20.1 · Forge 47.4.20 · Java 17
+>
 > 冲突规则：仓库现有实现、测试和兼容性约束优先于设计示例。
 
 本文档将 v0.6 长篇设计稿整理为可检索、可评审、可随代码维护的 Markdown 基线。完整阶段状态由
