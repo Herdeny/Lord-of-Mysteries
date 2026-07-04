@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 class PotionAdvancementRulesTest {
 
     private static final String SPECTATOR = "lord_of_mysteries:spectator";
+    private static final String SEER = "lord_of_mysteries:seer";
 
     @Test
     void commonerCanDrinkSequenceNinePotion() {
@@ -26,6 +27,13 @@ class PotionAdvancementRulesTest {
     void sequenceEightRequiresMatchingDigestedSequenceNine() {
         assertFalse(PotionAdvancementRules.canAdvance(SPECTATOR, 9, 99.9f, SPECTATOR, 8));
         assertTrue(PotionAdvancementRules.canAdvance(SPECTATOR, 9, 100f, SPECTATOR, 8));
+    }
+
+    @Test
+    void sequenceSevenRequiresMatchingDigestedSequenceEight() {
+        assertFalse(PotionAdvancementRules.canAdvance(SEER, 8, 99.9f, SEER, 7));
+        assertTrue(PotionAdvancementRules.canAdvance(SEER, 8, 100f, SEER, 7));
+        assertFalse(PotionAdvancementRules.canAdvance(SEER, 9, 100f, SEER, 7));
     }
 }
 

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:lilac" },
+    { "item": "minecraft:fern" }
+  ],
+  "result": { "item": "lord_of_mysteries:heather", "count": 2 }
+}

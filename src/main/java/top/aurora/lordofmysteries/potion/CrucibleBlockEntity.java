@@ -132,6 +132,8 @@ public final class CrucibleBlockEntity extends BlockEntity {
                 CrucibleRecipeLogic.evaluateRecipe(ids, averageTemperature);
         result = switch (brew.potion()) {
             case SEER_9 -> SeerPotionItem.create(ModItems.SEER_POTION_9.get(), brew.quality());
+            case SEER_8 -> SeerPotionItem.create(ModItems.SEER_POTION_8.get(), brew.quality());
+            case SEER_7 -> SeerPotionItem.create(ModItems.SEER_POTION_7.get(), brew.quality());
             case SPECTATOR_9 ->
                     SeerPotionItem.create(ModItems.SPECTATOR_POTION_9.get(), brew.quality());
             case SPECTATOR_8 ->
@@ -159,6 +161,12 @@ public final class CrucibleBlockEntity extends BlockEntity {
         return stack.is(ModItems.SPIRIT_HERB.get())
                 || stack.is(ModItems.DIVINATION_CRYSTAL.get())
                 || stack.is(ModItems.MOONWATER.get())
+                || stack.is(ModItems.DEEP_GRAY_SPIRIT_TEAR.get())
+                || stack.is(ModItems.HEATHER.get())
+                || stack.is(ModItems.SPIRIT_ALCOHOL.get())
+                || stack.is(ModItems.SHAPESHIFTER_SERPENT_GLAND.get())
+                || stack.is(ModItems.ASH_POWDER.get())
+                || stack.is(ModItems.SILVER_FILINGS.get())
                 || stack.is(Items.FERMENTED_SPIDER_EYE)
                 || stack.is(Items.HONEY_BOTTLE)
                 || stack.is(Items.BOOK)

@@ -5,6 +5,7 @@
 - 设计版本：Project Mystery v0.6
 - 审计日期：2026-07-04
 - 用户提供源文件：`Project_Mystery_Design_Doc_v0_6.md.pdf`
+- 仓库 Markdown 执行版：`docs/Project_Mystery_Design_Doc_v0.6.md`
 - 工程基线：Minecraft 1.20.1、Forge 47.4.20、Java 17
 
 仓库现有实现始终优先于设计文档。设计文档中的 NeoForge、新版 Minecraft API、
@@ -32,5 +33,5 @@ v0.6 的正式路线是 M0–M7，不再沿用旧的“M2 灰雾基础版 / M4 M
 - M7：22 途径社区共创与 Addon API 1.0。
 
 路线数据的唯一来源是 `roadmap.json`，完整输出见 `ROADMAP.md`。当前仓库按新门禁处于
-M1；观众/猎人序列 9-8 和通用仪式底座保留为后续阶段预研，不会被删除或伪装成
-M1 已验收。
+M1；占卜家序列 9-7 代码纵切已经完成，一小时生存与专用服务器平衡记录仍待验收。
+观众/猎人序列 9-8 和通用仪式底座保留为后续阶段预研，不会被删除或伪装成 M2 已验收。

@@ -1,9 +1,13 @@
 package top.aurora.lordofmysteries.entity;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Zombie;
@@ -30,6 +34,28 @@ public final class SeerBreakdownEntity extends Zombie {
             target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80, 0, false, false));
             target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 0, false, false));
         }
+        if (tickCount % 100 == 0) {
+            level().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(24d),
+                    player -> player.isAlive()).forEach(player ->
+                    player.sendSystemMessage(Component.translatable(
+                            "message.lord_of_mysteries.breakdown.coordinate_leak",
+                            player.getName(),
+                            player.getBlockX(), player.getBlockY(), player.getBlockZ())));
+        }
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
+                && getRandom().nextFloat() < 0.2f) {
+            if (level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.PORTAL,
+                        getX(), getY() + 0.8d, getZ(),
+                        18, 0.4d, 0.7d, 0.4d, 0.08d);
+            }
+            return false;
+        }
+        return super.hurt(source, amount);
     }
 
     @Override

@@ -25,6 +25,22 @@
           "looting_multiplier": 0.1
         }
       ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "lord_of_mysteries:deep_gray_spirit_tear"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance_with_looting",
+          "chance": 0.6,
+          "looting_multiplier": 0.1
+        }
+      ]
     }
   ]
 }

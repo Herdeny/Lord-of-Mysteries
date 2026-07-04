@@ -1,0 +1,8 @@
+{
+  "id": "lord_of_mysteries:magician7_deceive_mob",
+  "pathway": "seer",
+  "sequence": 7,
+  "base_digestion": 15,
+  "trigger": "stage_illusion_diverts_three_mobs",
+  "novelty_decay_ticks": 4800
+}

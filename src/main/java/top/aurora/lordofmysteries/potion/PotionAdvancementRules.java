@@ -9,9 +9,9 @@ public final class PotionAdvancementRules {
         if (targetSequence == 9) {
             return (currentPathway == null || currentPathway.isBlank()) && currentSequence < 0;
         }
-        if (targetSequence == 8) {
+        if (targetSequence >= 4 && targetSequence <= 8) {
             return targetPathway.equals(currentPathway)
-                    && currentSequence == 9
+                    && currentSequence == targetSequence + 1
                     && digestion >= 100f;
         }
         return false;

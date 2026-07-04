@@ -14,6 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import top.aurora.lordofmysteries.core.MysteryRegistries;
 import top.aurora.lordofmysteries.core.config.ServerConfig;
 import top.aurora.lordofmysteries.network.PMNetwork;
+import top.aurora.lordofmysteries.registry.ModEntities;
 
 /**
  * Project Mystery —《诡秘之主》Minecraft Mod 入口。
@@ -82,7 +83,10 @@ public class ProjectMystery {
      */
     private void commonSetup(final FMLCommonSetupEvent event) {
         // 网络包必须在主线程注册（SimpleChannel 内部会做线程检查）。
-        event.enqueueWork(PMNetwork::register);
+        event.enqueueWork(() -> {
+            PMNetwork.register();
+            ModEntities.registerSpawnPlacements();
+        });
         LOGGER.info("[Project Mystery] commonSetup 完成。MOD_ID={}", MOD_ID);
     }
 }

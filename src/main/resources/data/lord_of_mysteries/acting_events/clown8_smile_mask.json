@@ -1,0 +1,8 @@
+{
+  "id": "lord_of_mysteries:clown8_smile_mask",
+  "pathway": "seer",
+  "sequence": 8,
+  "base_digestion": 15,
+  "trigger": "win_combat_above_50_pressure",
+  "novelty_decay_ticks": 4800
+}

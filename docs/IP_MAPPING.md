@@ -23,6 +23,7 @@
 | 途径 | 学徒 / Apprentice | `apprentice` | 待定 | M2 待决策 |
 | 序列 | 小丑 | `clown` | 待定 | M2 待决策 |
 | 序列 | 魔术师 | `magician` | 待定 | M2 待决策 |
+| 生物 | 幻形蛇 | `shapeshifter_serpent` | 待定 | M2 待决策 |
 | 组织 | 值夜者 | `nighthawks` | 待定 | M3 待决策 |
 | 组织 | 极光会 | `aurora_order` | 待定 | M3 待决策 |
 | 空间 | 灰雾 / 源堡 | `gray_fog` | 待定 | M4 前必须完成 |

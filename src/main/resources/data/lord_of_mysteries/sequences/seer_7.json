@@ -1,0 +1,21 @@
+{
+  "id": "lord_of_mysteries:seer_7",
+  "pathway": "lord_of_mysteries:seer",
+  "sequence": 7,
+  "spirituality_max": 175,
+  "potion_pressure": 15,
+  "acting_principle": "准备真正的退路，再让所有人只看见奇迹。",
+  "abilities": [
+    "lord_of_mysteries:flame_leap",
+    "lord_of_mysteries:paper_substitute",
+    "lord_of_mysteries:air_bullet",
+    "lord_of_mysteries:stage_illusion"
+  ],
+  "acting_events": [
+    "lord_of_mysteries:magician7_grand_escape",
+    "lord_of_mysteries:magician7_flashy_entry",
+    "lord_of_mysteries:magician7_deceive_mob"
+  ],
+  "potion_id": "lord_of_mysteries:seer_potion_7",
+  "digestion_target": 100.0
+}

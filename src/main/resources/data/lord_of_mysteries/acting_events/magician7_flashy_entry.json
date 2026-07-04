@@ -1,0 +1,8 @@
+{
+  "id": "lord_of_mysteries:magician7_flashy_entry",
+  "pathway": "seer",
+  "sequence": 7,
+  "base_digestion": 12,
+  "trigger": "air_bullet_within_five_seconds_of_flame_leap",
+  "novelty_decay_ticks": 3600
+}

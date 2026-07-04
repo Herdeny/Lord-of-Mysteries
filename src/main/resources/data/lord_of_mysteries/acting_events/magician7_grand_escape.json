@@ -1,0 +1,8 @@
+{
+  "id": "lord_of_mysteries:magician7_grand_escape",
+  "pathway": "seer",
+  "sequence": 7,
+  "base_digestion": 20,
+  "trigger": "paper_substitute_avoids_lethal_damage",
+  "novelty_decay_ticks": 6000
+}

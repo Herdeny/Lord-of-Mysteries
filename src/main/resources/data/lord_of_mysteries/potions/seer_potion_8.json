@@ -1,0 +1,13 @@
+{
+  "id": "lord_of_mysteries:seer_potion_8",
+  "target_pathway": "lord_of_mysteries:seer",
+  "target_sequence": 8,
+  "ingredients": [
+    { "item": "lord_of_mysteries:deep_gray_spirit_tear", "order": 1, "required": true },
+    { "item": "lord_of_mysteries:heather", "order": 2, "required": true },
+    { "item": "lord_of_mysteries:spirit_alcohol", "order": 3, "required": false, "quality_bonus": 0.2 }
+  ],
+  "temperature_range": [55, 75],
+  "brewing_time_ticks": 1800,
+  "failure_result": "lord_of_mysteries:contaminated_mixture"
+}

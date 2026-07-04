@@ -1,0 +1,21 @@
+{
+  "id": "lord_of_mysteries:seer_8",
+  "pathway": "lord_of_mysteries:seer",
+  "sequence": 8,
+  "spirituality_max": 144,
+  "potion_pressure": 12,
+  "acting_principle": "以笑容掌控痛苦，以平衡驾驭危险。",
+  "abilities": [
+    "lord_of_mysteries:card_blade",
+    "lord_of_mysteries:perfect_balance",
+    "lord_of_mysteries:expression_control",
+    "lord_of_mysteries:intuitive_dodge"
+  ],
+  "acting_events": [
+    "lord_of_mysteries:clown8_performance",
+    "lord_of_mysteries:clown8_smile_mask",
+    "lord_of_mysteries:clown8_dodge_master"
+  ],
+  "potion_id": "lord_of_mysteries:seer_potion_8",
+  "digestion_target": 100.0
+}

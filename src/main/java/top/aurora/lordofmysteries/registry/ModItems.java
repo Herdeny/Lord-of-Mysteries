@@ -7,12 +7,14 @@ import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.potion.SpectatorPotionItem;
 import top.aurora.lordofmysteries.potion.HunterPotionItem;
 import top.aurora.lordofmysteries.artifact.EternalMatchboxItem;
+import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
 
 /**
  * 物品注册（Forge 1.20.1）。包含材料、魔药、封印物和方块物品。
@@ -53,6 +55,25 @@ public final class ModItems {
     public static final RegistryObject<Item> MOONWATER = simple("moonwater");
     public static final RegistryObject<Item> PURE_WATER = simple("pure_water");
     public static final RegistryObject<Item> WHITE_CANDLE = simple("white_candle");
+    public static final RegistryObject<Item> DEEP_GRAY_SPIRIT_TEAR =
+            simple("deep_gray_spirit_tear");
+    public static final RegistryObject<Item> HEATHER = simple("heather");
+    public static final RegistryObject<Item> SPIRIT_ALCOHOL = simple("spirit_alcohol");
+    public static final RegistryObject<Item> SHAPESHIFTER_SERPENT_GLAND =
+            simple("shapeshifter_serpent_gland");
+    public static final RegistryObject<Item> ASH_POWDER = simple("ash_powder");
+    public static final RegistryObject<Item> SILVER_FILINGS = simple("silver_filings");
+    public static final RegistryObject<Item> MYSTIC_PLAYING_CARDS = ITEMS.register(
+            "mystic_playing_cards",
+            () -> new Item(new Item.Properties().stacksTo(64).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> PAPER_FIGURINE = ITEMS.register(
+            "paper_figurine",
+            () -> new Item(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> SHAPESHIFTER_SERPENT_SPAWN_EGG = ITEMS.register(
+            "shapeshifter_serpent_spawn_egg",
+            () -> new ForgeSpawnEggItem(
+                    ModEntities.SHAPESHIFTER_SERPENT, 0x32323A, 0x9C6CCF,
+                    new Item.Properties()));
 
     // 制作失败或污染反应的产物，用于验证失败结果和污染系统链路。
     public static final RegistryObject<Item> CONTAMINATED_MIXTURE = simple("contaminated_mixture");
@@ -61,9 +82,13 @@ public final class ModItems {
             () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> INVESTIGATOR_NOTES = ITEMS.register(
             "investigator_notes",
-            () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+            () -> new InvestigatorNotesItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> SEER_POTION_9 = ITEMS.register("seer_potion_9",
-            () -> new SeerPotionItem(new Item.Properties()));
+            () -> new SeerPotionItem(new Item.Properties(), 9));
+    public static final RegistryObject<Item> SEER_POTION_8 = ITEMS.register("seer_potion_8",
+            () -> new SeerPotionItem(new Item.Properties(), 8));
+    public static final RegistryObject<Item> SEER_POTION_7 = ITEMS.register("seer_potion_7",
+            () -> new SeerPotionItem(new Item.Properties(), 7));
     public static final RegistryObject<Item> SPECTATOR_POTION_9 = ITEMS.register(
             "spectator_potion_9",
             () -> new SpectatorPotionItem(new Item.Properties(), 9));

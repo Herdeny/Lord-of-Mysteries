@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:charcoal" },
+    { "item": "minecraft:flint" }
+  ],
+  "result": { "item": "lord_of_mysteries:ash_powder", "count": 4 }
+}

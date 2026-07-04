@@ -55,6 +55,26 @@ class CrucibleRecipeLogicTest {
     }
 
     @Test
+    void clownRecipeUsesGentleHeat() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.DEEP_GRAY_SPIRIT_TEAR,
+                CrucibleRecipeLogic.HEATHER,
+                CrucibleRecipeLogic.SPIRIT_ALCOHOL), 65f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.SEER_8, result.potion());
+        assertEquals(PotionQuality.PERFECT, result.quality());
+    }
+
+    @Test
+    void magicianRecipeUsesStrongHeat() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.SHAPESHIFTER_SERPENT_GLAND,
+                CrucibleRecipeLogic.ASH_POWDER,
+                CrucibleRecipeLogic.SILVER_FILINGS), 90f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.SEER_7, result.potion());
+        assertEquals(PotionQuality.PERFECT, result.quality());
+    }
+
+    @Test
     void spectatorSequenceEightRecipeProducesTelepathistPotion() {
         CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
                 CrucibleRecipeLogic.SPIRIT_HERB,

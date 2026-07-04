@@ -48,7 +48,7 @@ public final class SpectatorPotionItem extends Item {
                         && data.sequence == 9 && data.digestion < 100f
                         ? "message.lord_of_mysteries.potion.digestion_incomplete"
                         : "message.lord_of_mysteries.potion.incompatible";
-                player.sendSystemMessage(Component.translatable(key));
+                player.sendSystemMessage(Component.translatable(key, targetSequence));
                 return InteractionResultHolder.fail(stack);
             }
         }

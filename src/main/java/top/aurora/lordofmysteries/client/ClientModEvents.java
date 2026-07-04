@@ -6,6 +6,7 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraft.client.renderer.entity.ZombieRenderer;
+import net.minecraft.client.renderer.entity.CaveSpiderRenderer;
 
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.registry.ModEntities;
@@ -29,5 +30,7 @@ public final class ClientModEvents {
     @SubscribeEvent
     public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntities.SEER_BREAKDOWN.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(
+                ModEntities.SHAPESHIFTER_SERPENT.get(), CaveSpiderRenderer::new);
     }
 }

@@ -29,12 +29,15 @@ class PlayerMysteryDataTest {
         assertEquals(0f, d.spirituality);
         assertEquals(100f, d.spiritualityMax);
         assertEquals(0f, d.pollution);
-        assertEquals(3, d.schemaVersion);
+        assertEquals(4, d.schemaVersion);
         assertFalse(d.emotionReadActive);
         assertEquals("", d.hunterTrackedTarget);
         assertEquals(0L, d.provokeCooldownEndTick);
         assertEquals(0L, d.enrageCooldownEndTick);
         assertEquals(0L, d.battleWillCooldownEndTick);
+        assertEquals(0L, d.paperSubstituteArmedEndTick);
+        assertEquals("", d.paperSubstituteDimension);
+        assertEquals(0, d.clownDodgeCount);
         assertTrue(d.actingCounters.isEmpty());
     }
 
@@ -52,5 +55,28 @@ class PlayerMysteryDataTest {
         PlayerMysteryData d = new PlayerMysteryData();
         d.sequence = -1;
         assertFalse(d.isExtraordinary());
+    }
+
+    @Test
+    void sequenceSevenAbilityStateSurvivesCapabilityCopy() {
+        PlayerMysteryData source = new PlayerMysteryData();
+        source.paperSubstituteArmedEndTick = 900L;
+        source.paperSubstituteDimension = "minecraft:overworld";
+        source.paperSubstituteX = 12.5d;
+        source.paperSubstituteY = 70d;
+        source.paperSubstituteZ = -4.5d;
+        source.flameLeapCooldownEndTick = 400L;
+        source.clownDodgeCount = 4;
+
+        PlayerMysteryData copied = new PlayerMysteryData();
+        copied.copyFrom(source);
+
+        assertEquals(900L, copied.paperSubstituteArmedEndTick);
+        assertEquals("minecraft:overworld", copied.paperSubstituteDimension);
+        assertEquals(12.5d, copied.paperSubstituteX);
+        assertEquals(70d, copied.paperSubstituteY);
+        assertEquals(-4.5d, copied.paperSubstituteZ);
+        assertEquals(400L, copied.flameLeapCooldownEndTick);
+        assertEquals(4, copied.clownDodgeCount);
     }
 }

@@ -1,0 +1,8 @@
+{
+  "id": "lord_of_mysteries:clown8_dodge_master",
+  "pathway": "seer",
+  "sequence": 8,
+  "base_digestion": 10,
+  "trigger": "five_intuitive_dodges",
+  "novelty_decay_ticks": 3600
+}

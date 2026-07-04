@@ -75,6 +75,9 @@ public final class MysteryStatusScreen extends Screen {
                         x + 8, y + i * 14, 0xFFB8B0C5, false);
             }
         }
+        graphics.drawCenteredString(font, Component.translatable(
+                "screen.lord_of_mysteries.status.guide_hint"),
+                width / 2, top + 240, 0xFF8E8798);
         super.render(graphics, mouseX, mouseY, partialTick);
     }
 

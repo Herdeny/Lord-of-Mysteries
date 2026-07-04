@@ -1,17 +1,36 @@
-# 纹理待补（M0 占位）
+# 原创美术待办
 
-当前模型引用了以下纹理路径，但 PNG 文件尚未制作。缺纹理时游戏内会显示
-紫黑方块（missing texture），不影响编译与逻辑测试。
+当前功能模型统一引用原版纹理作为可见性回退，不包含原作或其他游戏提取素材。
+公开测试前应按 `ASSET_LICENSE.md` 制作原创像素资源并记录作者与许可。
 
-## item/（16×16 PNG）
-- spirit_herb.png
-- divination_crystal.png
-- moonwater.png
-- contaminated_mixture.png
-- eternal_matchbox.png
+## M1 物品
 
-## block/（16×16 PNG）
-- ritual_altar.png
-- crucible.png
+- `spirit_herb.png`
+- `divination_crystal.png`
+- `moonwater.png`
+- `deep_gray_spirit_tear.png`
+- `heather.png`
+- `spirit_alcohol.png`
+- `shapeshifter_serpent_gland.png`
+- `ash_powder.png`
+- `silver_filings.png`
+- `mystic_playing_cards.png`
+- `paper_figurine.png`
+- `seer_potion_9.png`
+- `seer_potion_8.png`
+- `seer_potion_7.png`
+- `investigator_notes.png`
 
-> 美术风格待第 23 节决策项「美术风格」确定后统一制作。
+## M1 方块
+
+- `ritual_altar.png`
+- `ritual_chalk_mark.png`
+- `crucible.png`
+- `hunter_snare.png`
+
+## M1 生物
+
+- 占卜家失控体“疯言先知”：当前使用僵尸渲染。
+- 幻形蛇：当前使用洞穴蜘蛛渲染。
+
+建议规格：物品与方块 16×16 或 32×32 PNG；生物贴图遵循原版模型 UV，禁止直接复用官方 IP 素材。

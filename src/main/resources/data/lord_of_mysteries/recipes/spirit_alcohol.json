@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:honey_bottle" },
+    { "item": "minecraft:sugar" },
+    { "item": "minecraft:glow_berries" }
+  ],
+  "result": { "item": "lord_of_mysteries:spirit_alcohol" }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:iron_nugget" },
+    { "item": "minecraft:quartz" }
+  ],
+  "result": { "item": "lord_of_mysteries:silver_filings", "count": 2 }
+}

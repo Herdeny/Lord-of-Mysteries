@@ -79,6 +79,41 @@ public final class PMKeyBindings {
             InputConstants.KEY_L,
             CATEGORY);
 
+    public static final KeyMapping USE_CARD_BLADE = new KeyMapping(
+            "key.lord_of_mysteries.use_card_blade",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_R,
+            CATEGORY);
+
+    public static final KeyMapping USE_FLAME_LEAP = new KeyMapping(
+            "key.lord_of_mysteries.use_flame_leap",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_Z,
+            CATEGORY);
+
+    public static final KeyMapping ARM_PAPER_SUBSTITUTE = new KeyMapping(
+            "key.lord_of_mysteries.arm_paper_substitute",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_X,
+            CATEGORY);
+
+    public static final KeyMapping USE_AIR_BULLET = new KeyMapping(
+            "key.lord_of_mysteries.use_air_bullet",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_C,
+            CATEGORY);
+
+    public static final KeyMapping USE_STAGE_ILLUSION = new KeyMapping(
+            "key.lord_of_mysteries.use_stage_illusion",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_M,
+            CATEGORY);
+
     /** 通过 mod 总线注册；由 {@code ClientModEvents} 调用。 */
     public static void register(RegisterKeyMappingsEvent event) {
         event.register(TOGGLE_SPIRIT_VISION);
@@ -89,5 +124,10 @@ public final class PMKeyBindings {
         event.register(USE_MENTAL_SUGGESTION);
         event.register(USE_PROVOKE);
         event.register(USE_ENRAGE);
+        event.register(USE_CARD_BLADE);
+        event.register(USE_FLAME_LEAP);
+        event.register(ARM_PAPER_SUBSTITUTE);
+        event.register(USE_AIR_BULLET);
+        event.register(USE_STAGE_ILLUSION);
     }
 }

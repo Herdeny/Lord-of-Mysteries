@@ -1,0 +1,8 @@
+{
+  "id": "lord_of_mysteries:clown8_performance",
+  "pathway": "seer",
+  "sequence": 8,
+  "base_digestion": 12,
+  "trigger": "card_volley_with_two_witnesses",
+  "novelty_decay_ticks": 3600
+}

@@ -56,6 +56,20 @@ public class PlayerMysteryData {
     public long enrageCooldownEndTick = 0L;
     public long battleWillCooldownEndTick = 0L;
     public long battleWillEndTick = 0L;
+    public long cardBladeCooldownEndTick = 0L;
+    public long clownDodgeCooldownEndTick = 0L;
+    public int clownDodgeCount = 0;
+    public long expressionControlCooldownEndTick = 0L;
+    public long flameLeapCooldownEndTick = 0L;
+    public long flameLeapStrikeEndTick = 0L;
+    public long paperSubstituteCooldownEndTick = 0L;
+    public long paperSubstituteArmedEndTick = 0L;
+    public String paperSubstituteDimension = "";
+    public double paperSubstituteX = 0d;
+    public double paperSubstituteY = 0d;
+    public double paperSubstituteZ = 0d;
+    public long airBulletCooldownEndTick = 0L;
+    public long stageIllusionCooldownEndTick = 0L;
 
     // 知识系统。保存玩家已经解锁的知识条目 ID，供手册、仪式和配方门槛读取。
     public Set<ResourceLocation> knownKnowledge = new HashSet<>();
@@ -69,7 +83,7 @@ public class PlayerMysteryData {
     public Map<ResourceLocation, Integer> orgReputation = new HashMap<>();
 
     // 序列化版本号（用于迁移）。未来字段改名或结构升级时，可根据旧版本补默认值。
-    public int schemaVersion = 3;
+    public int schemaVersion = 4;
 
     /** 默认构造器需要保留，Capability Provider 和测试都会直接创建空数据。 */
     public PlayerMysteryData() {}
@@ -114,6 +128,20 @@ public class PlayerMysteryData {
         this.enrageCooldownEndTick = src.enrageCooldownEndTick;
         this.battleWillCooldownEndTick = src.battleWillCooldownEndTick;
         this.battleWillEndTick = src.battleWillEndTick;
+        this.cardBladeCooldownEndTick = src.cardBladeCooldownEndTick;
+        this.clownDodgeCooldownEndTick = src.clownDodgeCooldownEndTick;
+        this.clownDodgeCount = src.clownDodgeCount;
+        this.expressionControlCooldownEndTick = src.expressionControlCooldownEndTick;
+        this.flameLeapCooldownEndTick = src.flameLeapCooldownEndTick;
+        this.flameLeapStrikeEndTick = src.flameLeapStrikeEndTick;
+        this.paperSubstituteCooldownEndTick = src.paperSubstituteCooldownEndTick;
+        this.paperSubstituteArmedEndTick = src.paperSubstituteArmedEndTick;
+        this.paperSubstituteDimension = src.paperSubstituteDimension;
+        this.paperSubstituteX = src.paperSubstituteX;
+        this.paperSubstituteY = src.paperSubstituteY;
+        this.paperSubstituteZ = src.paperSubstituteZ;
+        this.airBulletCooldownEndTick = src.airBulletCooldownEndTick;
+        this.stageIllusionCooldownEndTick = src.stageIllusionCooldownEndTick;
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
         this.actingHistory = new HashMap<>(src.actingHistory);
         this.actingCounters = new HashMap<>(src.actingCounters);
@@ -155,6 +183,20 @@ public class PlayerMysteryData {
         tag.putLong("enrage_cd_end", enrageCooldownEndTick);
         tag.putLong("battle_will_cd_end", battleWillCooldownEndTick);
         tag.putLong("battle_will_end", battleWillEndTick);
+        tag.putLong("card_blade_cd_end", cardBladeCooldownEndTick);
+        tag.putLong("clown_dodge_cd_end", clownDodgeCooldownEndTick);
+        tag.putInt("clown_dodge_count", clownDodgeCount);
+        tag.putLong("expression_control_cd_end", expressionControlCooldownEndTick);
+        tag.putLong("flame_leap_cd_end", flameLeapCooldownEndTick);
+        tag.putLong("flame_leap_strike_end", flameLeapStrikeEndTick);
+        tag.putLong("paper_substitute_cd_end", paperSubstituteCooldownEndTick);
+        tag.putLong("paper_substitute_armed_end", paperSubstituteArmedEndTick);
+        tag.putString("paper_substitute_dimension", paperSubstituteDimension);
+        tag.putDouble("paper_substitute_x", paperSubstituteX);
+        tag.putDouble("paper_substitute_y", paperSubstituteY);
+        tag.putDouble("paper_substitute_z", paperSubstituteZ);
+        tag.putLong("air_bullet_cd_end", airBulletCooldownEndTick);
+        tag.putLong("stage_illusion_cd_end", stageIllusionCooldownEndTick);
         tag.putInt("schema_version", schemaVersion);
 
         ListTag known = new ListTag();
@@ -212,6 +254,21 @@ public class PlayerMysteryData {
         enrageCooldownEndTick = tag.getLong("enrage_cd_end");
         battleWillCooldownEndTick = tag.getLong("battle_will_cd_end");
         battleWillEndTick = tag.getLong("battle_will_end");
+        cardBladeCooldownEndTick = tag.getLong("card_blade_cd_end");
+        clownDodgeCooldownEndTick = tag.getLong("clown_dodge_cd_end");
+        clownDodgeCount = tag.getInt("clown_dodge_count");
+        expressionControlCooldownEndTick = tag.getLong("expression_control_cd_end");
+        flameLeapCooldownEndTick = tag.getLong("flame_leap_cd_end");
+        flameLeapStrikeEndTick = tag.getLong("flame_leap_strike_end");
+        paperSubstituteCooldownEndTick = tag.getLong("paper_substitute_cd_end");
+        paperSubstituteArmedEndTick = tag.getLong("paper_substitute_armed_end");
+        paperSubstituteDimension = tag.contains("paper_substitute_dimension")
+                ? tag.getString("paper_substitute_dimension") : "";
+        paperSubstituteX = tag.getDouble("paper_substitute_x");
+        paperSubstituteY = tag.getDouble("paper_substitute_y");
+        paperSubstituteZ = tag.getDouble("paper_substitute_z");
+        airBulletCooldownEndTick = tag.getLong("air_bullet_cd_end");
+        stageIllusionCooldownEndTick = tag.getLong("stage_illusion_cd_end");
         schemaVersion = tag.contains("schema_version") ? tag.getInt("schema_version") : 1;
 
         knownKnowledge.clear();
