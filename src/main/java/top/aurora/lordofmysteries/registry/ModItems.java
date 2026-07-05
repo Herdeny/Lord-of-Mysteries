@@ -16,6 +16,7 @@ import top.aurora.lordofmysteries.potion.HunterPotionItem;
 import top.aurora.lordofmysteries.artifact.EternalMatchboxItem;
 import top.aurora.lordofmysteries.artifact.CalmingIncenseItem;
 import top.aurora.lordofmysteries.artifact.SpiritLanternItem;
+import top.aurora.lordofmysteries.artifact.ProtectiveCharmItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorCompassItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
 
@@ -110,6 +111,10 @@ public final class ModItems {
             "spirit_lantern",
             () -> new SpiritLanternItem(
                     new Item.Properties().durability(64).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> PROTECTIVE_CHARM = ITEMS.register(
+            "protective_charm",
+            () -> new ProtectiveCharmItem(
+                    new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> SEER_POTION_9 = ITEMS.register("seer_potion_9",
             () -> new SeerPotionItem(new Item.Properties(), 9));
     public static final RegistryObject<Item> SEER_POTION_8 = ITEMS.register("seer_potion_8",

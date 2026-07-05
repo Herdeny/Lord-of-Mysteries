@@ -17,6 +17,7 @@ import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.knowledge.InvestigatorCompassItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
 import top.aurora.lordofmysteries.knowledge.M1Readiness;
+import top.aurora.lordofmysteries.knowledge.KnowledgeText;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.registry.ModItems;
@@ -48,9 +49,11 @@ public final class ProjectMysteryCommands {
                 .then(Commands.literal("rules").executes(context ->
                         showLines(context.getSource().getPlayerOrException(), "rules", 5)))
                 .then(Commands.literal("items").executes(context ->
-                        showLines(context.getSource().getPlayerOrException(), "items", 5)))
+                        showLines(context.getSource().getPlayerOrException(), "items", 6)))
                 .then(Commands.literal("bestiary").executes(context ->
                         showLines(context.getSource().getPlayerOrException(), "bestiary", 4)))
+                .then(Commands.literal("journal").executes(context ->
+                        showJournal(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("m1check").executes(context ->
                         showM1Check(context.getSource().getPlayerOrException()))));
     }
@@ -59,7 +62,8 @@ public final class ProjectMysteryCommands {
         PlayerMysteryData data = MysteryCapability.get(player);
         player.sendSystemMessage(Component.translatable(
                 "command.lord_of_mysteries.status",
-                data.pathway == null ? "commoner" : data.pathway.getPath(),
+                Component.translatable(KnowledgeText.pathwayTranslationKey(
+                        data.pathway == null ? "" : data.pathway.toString())),
                 data.sequence,
                 Math.round(data.spirituality),
                 Math.round(data.spiritualityMax),
@@ -98,5 +102,26 @@ public final class ProjectMysteryCommands {
                     .withStyle(ChatFormatting.GRAY));
         }
         return count;
+    }
+
+    private static int showJournal(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        player.sendSystemMessage(Component.translatable(
+                "command.lord_of_mysteries.journal.title")
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
+        if (data.knownKnowledge.isEmpty()) {
+            player.sendSystemMessage(Component.translatable(
+                    "command.lord_of_mysteries.journal.empty")
+                    .withStyle(ChatFormatting.GRAY));
+            return 0;
+        }
+        data.knownKnowledge.stream()
+                .map(Object::toString)
+                .sorted()
+                .limit(20)
+                .forEach(id -> player.sendSystemMessage(Component.literal("• ")
+                        .append(Component.translatable(KnowledgeText.translationKey(id)))
+                        .withStyle(ChatFormatting.GRAY)));
+        return data.knownKnowledge.size();
     }
 }

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "PCP",
+    " S "
+  ],
+  "key": {
+    "S": { "item": "lord_of_mysteries:spirit_salt" },
+    "P": { "item": "minecraft:paper" },
+    "C": { "item": "lord_of_mysteries:white_candle" }
+  },
+  "result": {
+    "item": "lord_of_mysteries:protective_charm",
+    "count": 2
+  }
+}

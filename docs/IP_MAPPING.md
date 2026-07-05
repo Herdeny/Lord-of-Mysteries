@@ -29,6 +29,7 @@
 | 物品 | 调查员罗盘 | `investigator_compass` | Investigator's Compass / 调查员罗盘 | 原创新增，无映射需求 |
 | 物品 | 镇静熏香 | `calming_incense` | Calming Incense / 镇静熏香 | 原创新增，无映射需求 |
 | 物品 | 灵视提灯 | `spirit_lantern` | Spirit Lantern / 灵视提灯 | 原创新增，无映射需求 |
+| 物品 | 精神守护符 | `protective_charm` | Protective Charm / 精神守护符 | 原创新增，无映射需求 |
 | 组织 | 值夜者 | `nighthawks` | 待定 | M3 待决策 |
 | 组织 | 极光会 | `aurora_order` | 待定 | M3 待决策 |
 | 空间 | 灰雾 / 源堡 | `gray_fog` | 待定 | M4 前必须完成 |

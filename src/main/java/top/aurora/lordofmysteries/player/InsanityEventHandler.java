@@ -14,6 +14,7 @@ import net.minecraft.world.effect.MobEffects;
 import top.aurora.lordofmysteries.core.config.ServerConfig;
 import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
 import top.aurora.lordofmysteries.registry.ModEntities;
+import top.aurora.lordofmysteries.artifact.ProtectiveCharmService;
 
 public final class InsanityEventHandler {
 
@@ -39,6 +40,7 @@ public final class InsanityEventHandler {
     }
 
     public static void triggerSevereEvent(ServerPlayer player, PlayerMysteryData data) {
+        if (ProtectiveCharmService.tryAbsorbSevereEvent(player)) return;
         data.insanityPressure = Math.min(100f, data.insanityPressure + 10f);
         player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 300, 1, false, false));
         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1, false, false));

@@ -29,7 +29,7 @@ class PlayerMysteryDataTest {
         assertEquals(0f, d.spirituality);
         assertEquals(100f, d.spiritualityMax);
         assertEquals(0f, d.pollution);
-        assertEquals(4, d.schemaVersion);
+        assertEquals(5, d.schemaVersion);
         assertFalse(d.emotionReadActive);
         assertEquals("", d.hunterTrackedTarget);
         assertEquals(0L, d.provokeCooldownEndTick);
@@ -38,6 +38,7 @@ class PlayerMysteryDataTest {
         assertEquals(0L, d.paperSubstituteArmedEndTick);
         assertEquals("", d.paperSubstituteDimension);
         assertEquals(0, d.clownDodgeCount);
+        assertEquals(Long.MIN_VALUE, d.lastRestRecoveryDay);
         assertTrue(d.actingCounters.isEmpty());
     }
 
@@ -67,6 +68,7 @@ class PlayerMysteryDataTest {
         source.paperSubstituteZ = -4.5d;
         source.flameLeapCooldownEndTick = 400L;
         source.clownDodgeCount = 4;
+        source.lastRestRecoveryDay = 12L;
 
         PlayerMysteryData copied = new PlayerMysteryData();
         copied.copyFrom(source);
@@ -78,5 +80,6 @@ class PlayerMysteryDataTest {
         assertEquals(-4.5d, copied.paperSubstituteZ);
         assertEquals(400L, copied.flameLeapCooldownEndTick);
         assertEquals(4, copied.clownDodgeCount);
+        assertEquals(12L, copied.lastRestRecoveryDay);
     }
 }

@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 import top.aurora.lordofmysteries.network.PlayerMysteryStatusS2CPacket;
+import top.aurora.lordofmysteries.knowledge.KnowledgeText;
 
 public final class MysteryStatusScreen extends Screen {
 
@@ -41,7 +42,8 @@ public final class MysteryStatusScreen extends Screen {
         }
 
         line(graphics, x, y, "screen.lord_of_mysteries.status.pathway",
-                status.pathway() + " · " + status.sequence());
+                Component.translatable(KnowledgeText.pathwayTranslationKey(
+                        status.pathway())).getString() + " · " + status.sequence());
         y += 18;
         line(graphics, x, y, "screen.lord_of_mysteries.status.spirituality",
                 oneDecimal(status.spirituality()) + " / " + oneDecimal(status.spiritualityMax()));
@@ -71,7 +73,9 @@ public final class MysteryStatusScreen extends Screen {
         } else {
             int limit = Math.min(5, status.knownKnowledge().size());
             for (int i = 0; i < limit; i++) {
-                graphics.drawString(font, "• " + status.knownKnowledge().get(i),
+                graphics.drawString(font, Component.literal("• ").append(
+                                Component.translatable(KnowledgeText.translationKey(
+                                        status.knownKnowledge().get(i)))),
                         x + 8, y + i * 14, 0xFFB8B0C5, false);
             }
         }

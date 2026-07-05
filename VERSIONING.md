@@ -12,7 +12,7 @@ Gradle 构建、README、GitHub Pages 和 GitHub Wiki 必须与两者一致。
 <SemVer>-<Minecraft 版本>
 ```
 
-当前示例：`0.4.0-1.20.1`。
+当前示例：`0.5.0-1.20.1`。
 
 ## 版本规则
 

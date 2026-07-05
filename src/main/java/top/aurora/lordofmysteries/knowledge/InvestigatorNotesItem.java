@@ -61,6 +61,7 @@ public final class InvestigatorNotesItem extends Item {
             send(serverPlayer, "guide.lord_of_mysteries.other_pathway");
         }
         send(serverPlayer, "guide.lord_of_mysteries.field_rules");
+        send(serverPlayer, "guide.lord_of_mysteries.recovery");
         send(serverPlayer, "guide.lord_of_mysteries.status_key");
     }
 

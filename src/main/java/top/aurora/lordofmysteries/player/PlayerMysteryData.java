@@ -70,6 +70,7 @@ public class PlayerMysteryData {
     public double paperSubstituteZ = 0d;
     public long airBulletCooldownEndTick = 0L;
     public long stageIllusionCooldownEndTick = 0L;
+    public long lastRestRecoveryDay = Long.MIN_VALUE;
 
     // 知识系统。保存玩家已经解锁的知识条目 ID，供手册、仪式和配方门槛读取。
     public Set<ResourceLocation> knownKnowledge = new HashSet<>();
@@ -83,7 +84,7 @@ public class PlayerMysteryData {
     public Map<ResourceLocation, Integer> orgReputation = new HashMap<>();
 
     // 序列化版本号（用于迁移）。未来字段改名或结构升级时，可根据旧版本补默认值。
-    public int schemaVersion = 4;
+    public int schemaVersion = 5;
 
     /** 默认构造器需要保留，Capability Provider 和测试都会直接创建空数据。 */
     public PlayerMysteryData() {}
@@ -142,6 +143,7 @@ public class PlayerMysteryData {
         this.paperSubstituteZ = src.paperSubstituteZ;
         this.airBulletCooldownEndTick = src.airBulletCooldownEndTick;
         this.stageIllusionCooldownEndTick = src.stageIllusionCooldownEndTick;
+        this.lastRestRecoveryDay = src.lastRestRecoveryDay;
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
         this.actingHistory = new HashMap<>(src.actingHistory);
         this.actingCounters = new HashMap<>(src.actingCounters);
@@ -197,6 +199,7 @@ public class PlayerMysteryData {
         tag.putDouble("paper_substitute_z", paperSubstituteZ);
         tag.putLong("air_bullet_cd_end", airBulletCooldownEndTick);
         tag.putLong("stage_illusion_cd_end", stageIllusionCooldownEndTick);
+        tag.putLong("last_rest_recovery_day", lastRestRecoveryDay);
         tag.putInt("schema_version", schemaVersion);
 
         ListTag known = new ListTag();
@@ -269,6 +272,8 @@ public class PlayerMysteryData {
         paperSubstituteZ = tag.getDouble("paper_substitute_z");
         airBulletCooldownEndTick = tag.getLong("air_bullet_cd_end");
         stageIllusionCooldownEndTick = tag.getLong("stage_illusion_cd_end");
+        lastRestRecoveryDay = tag.contains("last_rest_recovery_day")
+                ? tag.getLong("last_rest_recovery_day") : Long.MIN_VALUE;
         schemaVersion = tag.contains("schema_version") ? tag.getInt("schema_version") : 1;
 
         knownKnowledge.clear();

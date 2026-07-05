@@ -77,6 +77,20 @@
               }
             }
           ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lord_of_mysteries:protective_charm",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
         }
       ]
     }

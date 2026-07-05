@@ -3,10 +3,10 @@
 > 在未知中承担风险，通过扮演消化力量，逐步成为非凡者。
 
 <!-- project-status:start -->
-- 当前版本：**`0.4.0-1.20.1`**
+- 当前版本：**`0.5.0-1.20.1`**
 - 开发阶段：**M1 验收 Beta**（M1）
 - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-- 最后更新：**2026-07-05 01:48:51 UTC+01:00**（`2026-07-05T00:48:51Z`）
+- 最后更新：**2026-07-05 09:25:26 UTC+01:00**（`2026-07-05T08:25:26Z`）
 <!-- project-status:end -->
 
 Project Mystery 是受《诡秘之主》启发的非官方、非商业 Minecraft Forge 同人模组。
@@ -34,7 +34,7 @@ Project Mystery 是受《诡秘之主》启发的非官方、非商业 Minecraft
 - 六项新扮演事件、幻形蛇和强化后的疯言先知失控体。
 - 首次登录获得调查手稿与罗盘，右键分别查看阶段目标和营地方位。
 - 灵体微光、灰烬傀儡、灵视提灯、镇静熏香与可再生材料掉落。
-- 八段教程成就和 `/pm m1check` 共同标记纵切进度。
+- 九段教程成就、`/pm m1check` 与本地化调查日志共同标记纵切进度。
 
 ## 探索、物品与规则
 
@@ -44,7 +44,10 @@ Project Mystery 是受《诡秘之主》启发的非官方、非商业 Minecraft
 - **灵视提灯**：显形 16 格内敌对生物 10 秒；消耗 3 灵性或增加 2 压力。
 - **灵体微光**：周期抽取灵性，掉落灵性盐与概率深灰灵体之泪。
 - **灰烬傀儡**：攻击附带虚弱和缓慢，掉落灰烬丝线与概率灰烬粉。
-- **调查命令**：`/pm guide`、`status`、`camp`、`m1check`、`rules`、`items`、`bestiary`。
+- **完整睡眠**：每个游戏日首次整夜睡眠降低 20 压力，提前离床不触发。
+- **精神守护符**：自动抵消一次重度精神事件；污染达到 100 时不能阻止完整失控。
+- **调查日志**：首次击杀四类特殊生物解锁档案，`/pm journal` 查看本地化知识。
+- **调查命令**：`/pm guide`、`status`、`camp`、`m1check`、`rules`、`items`、`bestiary`、`journal`。
 
 ### 观众序列 9 → 读心者序列 8
 
@@ -77,12 +80,13 @@ Project Mystery 是受《诡秘之主》启发的非官方、非商业 Minecraft
 - 坩埚多配方、顺序、温度、品质和交叉污染。
 - 灵性、污染、失控压力、三种失控模式和独立失控体。
 - 永燃火柴盒、多方块净化封印仪式、调查员营地和非凡者档案。
-- 中英双语、八段教程成就、十二条随机低语、76 项单元测试和完整 CI 检查。
+- 中英双语、九段教程成就、十二条随机低语、81 项单元测试和完整 CI 检查。
 
 ## 导航
 
 - [安装与构建](Installation-and-Build)
 - [入门与占卜家 9–7](Getting-Started)
+- [精神风险与调查日志](Risk-and-Investigation)
 - [M1 一小时验收清单](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M1_ACCEPTANCE_CHECKLIST.md)
 - [开发状态](Development-Status)
 - [完整路线图](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/ROADMAP.md)

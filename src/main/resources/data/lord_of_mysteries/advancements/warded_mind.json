@@ -1,0 +1,18 @@
+{
+  "parent": "lord_of_mysteries:field_kit",
+  "display": {
+    "icon": { "item": "lord_of_mysteries:protective_charm" },
+    "title": { "translate": "advancement.lord_of_mysteries.warded_mind.title" },
+    "description": { "translate": "advancement.lord_of_mysteries.warded_mind.description" }
+  },
+  "criteria": {
+    "charm": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": ["lord_of_mysteries:protective_charm"] }
+        ]
+      }
+    }
+  }
+}
