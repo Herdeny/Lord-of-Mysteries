@@ -1,0 +1,18 @@
+{
+  "parent": "lord_of_mysteries:become_seer",
+  "display": {
+    "icon": { "item": "lord_of_mysteries:shapeshifter_serpent_gland" },
+    "title": { "translate": "advancement.lord_of_mysteries.hunt_the_unseen.title" },
+    "description": { "translate": "advancement.lord_of_mysteries.hunt_the_unseen.description" }
+  },
+  "criteria": {
+    "serpent": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "lord_of_mysteries:shapeshifter_serpent"
+        }
+      }
+    }
+  }
+}

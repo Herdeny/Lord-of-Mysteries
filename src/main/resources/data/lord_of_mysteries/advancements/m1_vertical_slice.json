@@ -1,0 +1,22 @@
+{
+  "parent": "lord_of_mysteries:become_clown",
+  "display": {
+    "icon": { "item": "lord_of_mysteries:seer_potion_7" },
+    "title": { "translate": "advancement.lord_of_mysteries.m1_vertical_slice.title" },
+    "description": { "translate": "advancement.lord_of_mysteries.m1_vertical_slice.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "drink": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": { "items": ["lord_of_mysteries:seer_potion_7"] }
+      }
+    }
+  },
+  "rewards": {
+    "experience": 300
+  }
+}

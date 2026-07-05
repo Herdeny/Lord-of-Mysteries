@@ -1,0 +1,18 @@
+{
+  "parent": "lord_of_mysteries:root",
+  "display": {
+    "icon": { "item": "lord_of_mysteries:investigator_compass" },
+    "title": { "translate": "advancement.lord_of_mysteries.follow_the_needle.title" },
+    "description": { "translate": "advancement.lord_of_mysteries.follow_the_needle.description" }
+  },
+  "criteria": {
+    "compass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": ["lord_of_mysteries:investigator_compass"] }
+        ]
+      }
+    }
+  }
+}

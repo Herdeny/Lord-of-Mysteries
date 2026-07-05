@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#minecraft:is_overworld",
+  "spawners": {
+    "type": "lord_of_mysteries:spirit_wisp",
+    "weight": 3,
+    "minCount": 1,
+    "maxCount": 2
+  }
+}

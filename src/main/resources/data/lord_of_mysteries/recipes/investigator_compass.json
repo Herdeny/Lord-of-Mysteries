@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:compass" },
+    { "item": "minecraft:paper" },
+    { "item": "minecraft:amethyst_shard" }
+  ],
+  "result": { "item": "lord_of_mysteries:investigator_compass" }
+}

@@ -1,0 +1,18 @@
+{
+  "parent": "lord_of_mysteries:follow_the_needle",
+  "display": {
+    "icon": { "item": "lord_of_mysteries:seer_potion_9" },
+    "title": { "translate": "advancement.lord_of_mysteries.first_formula.title" },
+    "description": { "translate": "advancement.lord_of_mysteries.first_formula.description" }
+  },
+  "criteria": {
+    "potion": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": ["lord_of_mysteries:seer_potion_9"] }
+        ]
+      }
+    }
+  }
+}

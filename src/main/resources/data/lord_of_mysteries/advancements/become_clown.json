@@ -1,0 +1,17 @@
+{
+  "parent": "lord_of_mysteries:become_seer",
+  "display": {
+    "icon": { "item": "lord_of_mysteries:mystic_playing_cards" },
+    "title": { "translate": "advancement.lord_of_mysteries.become_clown.title" },
+    "description": { "translate": "advancement.lord_of_mysteries.become_clown.description" },
+    "frame": "goal"
+  },
+  "criteria": {
+    "drink": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": { "items": ["lord_of_mysteries:seer_potion_8"] }
+      }
+    }
+  }
+}

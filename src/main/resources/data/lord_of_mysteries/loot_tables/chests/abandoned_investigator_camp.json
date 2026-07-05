@@ -47,8 +47,36 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:compass",
-          "weight": 1
+          "name": "lord_of_mysteries:investigator_compass",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lord_of_mysteries:calming_incense",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lord_of_mysteries:spirit_salt",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
         }
       ]
     }

@@ -1,0 +1,20 @@
+{
+  "parent": "lord_of_mysteries:follow_the_needle",
+  "display": {
+    "icon": { "item": "lord_of_mysteries:spirit_lantern" },
+    "title": { "translate": "advancement.lord_of_mysteries.field_kit.title" },
+    "description": { "translate": "advancement.lord_of_mysteries.field_kit.description" }
+  },
+  "criteria": {
+    "kit": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": ["lord_of_mysteries:investigator_compass"] },
+          { "items": ["lord_of_mysteries:spirit_lantern"] },
+          { "items": ["lord_of_mysteries:calming_incense"] }
+        ]
+      }
+    }
+  }
+}

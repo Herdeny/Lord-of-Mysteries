@@ -14,6 +14,9 @@ import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.potion.SpectatorPotionItem;
 import top.aurora.lordofmysteries.potion.HunterPotionItem;
 import top.aurora.lordofmysteries.artifact.EternalMatchboxItem;
+import top.aurora.lordofmysteries.artifact.CalmingIncenseItem;
+import top.aurora.lordofmysteries.artifact.SpiritLanternItem;
+import top.aurora.lordofmysteries.knowledge.InvestigatorCompassItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
 
 /**
@@ -63,6 +66,8 @@ public final class ModItems {
             simple("shapeshifter_serpent_gland");
     public static final RegistryObject<Item> ASH_POWDER = simple("ash_powder");
     public static final RegistryObject<Item> SILVER_FILINGS = simple("silver_filings");
+    public static final RegistryObject<Item> SPIRIT_SALT = simple("spirit_salt");
+    public static final RegistryObject<Item> ASHEN_THREAD = simple("ashen_thread");
     public static final RegistryObject<Item> MYSTIC_PLAYING_CARDS = ITEMS.register(
             "mystic_playing_cards",
             () -> new Item(new Item.Properties().stacksTo(64).rarity(Rarity.UNCOMMON)));
@@ -74,6 +79,16 @@ public final class ModItems {
             () -> new ForgeSpawnEggItem(
                     ModEntities.SHAPESHIFTER_SERPENT, 0x32323A, 0x9C6CCF,
                     new Item.Properties()));
+    public static final RegistryObject<Item> SPIRIT_WISP_SPAWN_EGG = ITEMS.register(
+            "spirit_wisp_spawn_egg",
+            () -> new ForgeSpawnEggItem(
+                    ModEntities.SPIRIT_WISP, 0xA6E8FF, 0x5F61A8,
+                    new Item.Properties()));
+    public static final RegistryObject<Item> ASHEN_PUPPET_SPAWN_EGG = ITEMS.register(
+            "ashen_puppet_spawn_egg",
+            () -> new ForgeSpawnEggItem(
+                    ModEntities.ASHEN_PUPPET, 0x4A4541, 0xB09A82,
+                    new Item.Properties()));
 
     // 制作失败或污染反应的产物，用于验证失败结果和污染系统链路。
     public static final RegistryObject<Item> CONTAMINATED_MIXTURE = simple("contaminated_mixture");
@@ -83,6 +98,18 @@ public final class ModItems {
     public static final RegistryObject<Item> INVESTIGATOR_NOTES = ITEMS.register(
             "investigator_notes",
             () -> new InvestigatorNotesItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> INVESTIGATOR_COMPASS = ITEMS.register(
+            "investigator_compass",
+            () -> new InvestigatorCompassItem(
+                    new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> CALMING_INCENSE = ITEMS.register(
+            "calming_incense",
+            () -> new CalmingIncenseItem(
+                    new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> SPIRIT_LANTERN = ITEMS.register(
+            "spirit_lantern",
+            () -> new SpiritLanternItem(
+                    new Item.Properties().durability(64).rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> SEER_POTION_9 = ITEMS.register("seer_potion_9",
             () -> new SeerPotionItem(new Item.Properties(), 9));
     public static final RegistryObject<Item> SEER_POTION_8 = ITEMS.register("seer_potion_8",

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:sugar" },
+    { "item": "minecraft:amethyst_shard" },
+    { "item": "lord_of_mysteries:deep_gray_spirit_tear" }
+  ],
+  "result": { "item": "lord_of_mysteries:spirit_salt", "count": 4 }
+}

@@ -1,0 +1,17 @@
+{
+  "parent": "lord_of_mysteries:first_formula",
+  "display": {
+    "icon": { "item": "minecraft:amethyst_shard" },
+    "title": { "translate": "advancement.lord_of_mysteries.become_seer.title" },
+    "description": { "translate": "advancement.lord_of_mysteries.become_seer.description" },
+    "frame": "goal"
+  },
+  "criteria": {
+    "drink": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": { "items": ["lord_of_mysteries:seer_potion_9"] }
+      }
+    }
+  }
+}

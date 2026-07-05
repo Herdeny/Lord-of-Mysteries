@@ -31,6 +31,11 @@ public final class InvestigatorNotesItem extends Item {
             return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
         }
 
+        showGuide(serverPlayer);
+        return InteractionResultHolder.success(stack);
+    }
+
+    public static void showGuide(ServerPlayer serverPlayer) {
         PlayerMysteryData data = MysteryCapability.get(serverPlayer);
         serverPlayer.sendSystemMessage(Component.translatable(
                 "guide.lord_of_mysteries.title").withStyle(ChatFormatting.LIGHT_PURPLE));
@@ -38,6 +43,8 @@ public final class InvestigatorNotesItem extends Item {
             send(serverPlayer, "guide.lord_of_mysteries.commoner.1");
             send(serverPlayer, "guide.lord_of_mysteries.commoner.2");
             send(serverPlayer, "guide.lord_of_mysteries.commoner.3");
+            send(serverPlayer, "guide.lord_of_mysteries.commoner.4");
+            send(serverPlayer, "guide.lord_of_mysteries.commoner.5");
         } else if (SeerPotionItem.SEER_PATHWAY.equals(data.pathway)) {
             send(serverPlayer, "guide.lord_of_mysteries.seer." + data.sequence);
             send(serverPlayer, "guide.lord_of_mysteries.seer.controls");
@@ -53,8 +60,8 @@ public final class InvestigatorNotesItem extends Item {
         } else {
             send(serverPlayer, "guide.lord_of_mysteries.other_pathway");
         }
+        send(serverPlayer, "guide.lord_of_mysteries.field_rules");
         send(serverPlayer, "guide.lord_of_mysteries.status_key");
-        return InteractionResultHolder.success(stack);
     }
 
     private static void send(ServerPlayer player, String key, Object... args) {

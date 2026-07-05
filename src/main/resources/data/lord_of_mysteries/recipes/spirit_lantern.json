@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "STS",
+    "TLT",
+    "STS"
+  ],
+  "key": {
+    "S": { "item": "lord_of_mysteries:spirit_salt" },
+    "T": { "item": "lord_of_mysteries:ashen_thread" },
+    "L": { "item": "minecraft:soul_lantern" }
+  },
+  "result": { "item": "lord_of_mysteries:spirit_lantern" }
+}

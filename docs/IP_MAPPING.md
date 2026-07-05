@@ -24,6 +24,11 @@
 | 序列 | 小丑 | `clown` | 待定 | M2 待决策 |
 | 序列 | 魔术师 | `magician` | 待定 | M2 待决策 |
 | 生物 | 幻形蛇 | `shapeshifter_serpent` | 待定 | M2 待决策 |
+| 生物 | 灵体微光 | `spirit_wisp` | Spirit Wisp / 灵体微光 | 原创新增，无映射需求 |
+| 生物 | 灰烬傀儡 | `ashen_puppet` | Ashen Puppet / 灰烬傀儡 | 原创新增，无映射需求 |
+| 物品 | 调查员罗盘 | `investigator_compass` | Investigator's Compass / 调查员罗盘 | 原创新增，无映射需求 |
+| 物品 | 镇静熏香 | `calming_incense` | Calming Incense / 镇静熏香 | 原创新增，无映射需求 |
+| 物品 | 灵视提灯 | `spirit_lantern` | Spirit Lantern / 灵视提灯 | 原创新增，无映射需求 |
 | 组织 | 值夜者 | `nighthawks` | 待定 | M3 待决策 |
 | 组织 | 极光会 | `aurora_order` | 待定 | M3 待决策 |
 | 空间 | 灰雾 / 源堡 | `gray_fog` | 待定 | M4 前必须完成 |

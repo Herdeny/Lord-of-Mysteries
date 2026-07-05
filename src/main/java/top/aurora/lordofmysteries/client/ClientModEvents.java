@@ -7,6 +7,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraft.client.renderer.entity.CaveSpiderRenderer;
+import net.minecraft.client.renderer.entity.HuskRenderer;
+import net.minecraft.client.renderer.entity.VexRenderer;
 
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.registry.ModEntities;
@@ -32,5 +34,7 @@ public final class ClientModEvents {
         event.registerEntityRenderer(ModEntities.SEER_BREAKDOWN.get(), ZombieRenderer::new);
         event.registerEntityRenderer(
                 ModEntities.SHAPESHIFTER_SERPENT.get(), CaveSpiderRenderer::new);
+        event.registerEntityRenderer(ModEntities.SPIRIT_WISP.get(), VexRenderer::new);
+        event.registerEntityRenderer(ModEntities.ASHEN_PUPPET.get(), HuskRenderer::new);
     }
 }

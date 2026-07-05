@@ -32,6 +32,8 @@ public final class PlayerGuideHandler {
 
         ItemStack notes = new ItemStack(ModItems.INVESTIGATOR_NOTES.get());
         if (!player.getInventory().add(notes)) player.drop(notes, false);
+        ItemStack compass = new ItemStack(ModItems.INVESTIGATOR_COMPASS.get());
+        if (!player.getInventory().add(compass)) player.drop(compass, false);
         player.sendSystemMessage(Component.translatable(
                 "message.lord_of_mysteries.guide.welcome")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));

@@ -1,0 +1,20 @@
+{
+  "display": {
+    "icon": { "item": "lord_of_mysteries:investigator_notes" },
+    "title": { "translate": "advancement.lord_of_mysteries.root.title" },
+    "description": { "translate": "advancement.lord_of_mysteries.root.description" },
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "notes": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": ["lord_of_mysteries:investigator_notes"] }
+        ]
+      }
+    }
+  }
+}

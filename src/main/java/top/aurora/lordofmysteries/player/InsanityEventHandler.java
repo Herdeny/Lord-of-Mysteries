@@ -27,7 +27,7 @@ public final class InsanityEventHandler {
                 SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.AMBIENT, 0.35f, 0.55f);
         player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 100, 0, false, false));
         player.sendSystemMessage(Component.translatable(
-                "message.lord_of_mysteries.insanity.mild").withStyle(ChatFormatting.DARK_GRAY));
+                whisperKey(player, "mild")).withStyle(ChatFormatting.DARK_GRAY));
     }
 
     public static void triggerModerateEvent(ServerPlayer player, PlayerMysteryData data) {
@@ -35,7 +35,7 @@ public final class InsanityEventHandler {
         player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 160, 0, false, false));
         player.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200, 0, false, false));
         player.sendSystemMessage(Component.translatable(
-                "message.lord_of_mysteries.insanity.moderate").withStyle(ChatFormatting.DARK_PURPLE));
+                whisperKey(player, "moderate")).withStyle(ChatFormatting.DARK_PURPLE));
     }
 
     public static void triggerSevereEvent(ServerPlayer player, PlayerMysteryData data) {
@@ -43,7 +43,7 @@ public final class InsanityEventHandler {
         player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 300, 1, false, false));
         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1, false, false));
         player.sendSystemMessage(Component.translatable(
-                "message.lord_of_mysteries.insanity.severe").withStyle(ChatFormatting.RED));
+                whisperKey(player, "severe")).withStyle(ChatFormatting.RED));
     }
 
     public static void triggerBreakdown(ServerPlayer player, PlayerMysteryData data) {
@@ -103,5 +103,10 @@ public final class InsanityEventHandler {
         body.setGlowingTag(true);
         body.setTarget(player);
         level.addFreshEntity(body);
+    }
+
+    private static String whisperKey(ServerPlayer player, String severity) {
+        return "message.lord_of_mysteries.insanity." + severity + "."
+                + player.getRandom().nextInt(4);
     }
 }
