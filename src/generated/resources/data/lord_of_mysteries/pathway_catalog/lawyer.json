@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:lawyer",
+  "group": "order",
+  "display_name_key": "pathway.lord_of_mysteries.lawyer",
+  "description_key": "pathway.lord_of_mysteries.lawyer.description",
+  "color": "#92400E",
+  "status": "planned",
+  "implemented_sequences": []
+}

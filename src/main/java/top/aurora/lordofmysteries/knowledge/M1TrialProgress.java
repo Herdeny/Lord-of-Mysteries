@@ -4,20 +4,23 @@ public final class M1TrialProgress {
 
     public static final long REQUIRED_TICKS = 72000L;
     public static final int REQUIRED_OCCULT_KILLS = 3;
+    public static final int REQUIRED_ACTING_EVENTS = 2;
     public static final float REQUIRED_RISK_PEAK = 25f;
 
     private M1TrialProgress() {}
 
     public static Result evaluate(long elapsedTicks, boolean campVisited, int bestSequence,
-                                  int occultKills, float maxPressure, float maxPollution) {
+                                  int occultKills, int actingEvents,
+                                  float maxPressure, float maxPollution) {
         boolean durationComplete = elapsedTicks >= REQUIRED_TICKS;
         boolean sequenceComplete = bestSequence >= 0 && bestSequence <= 7;
         boolean killsComplete = occultKills >= REQUIRED_OCCULT_KILLS;
+        boolean actingComplete = actingEvents >= REQUIRED_ACTING_EVENTS;
         boolean riskObserved = Math.max(maxPressure, maxPollution) >= REQUIRED_RISK_PEAK;
         int completed = count(durationComplete, campVisited, sequenceComplete,
-                killsComplete, riskObserved);
+                killsComplete, actingComplete, riskObserved);
         return new Result(durationComplete, campVisited, sequenceComplete,
-                killsComplete, riskObserved, completed, completed == 5);
+                killsComplete, actingComplete, riskObserved, completed, completed == 6);
     }
 
     public static String formatDuration(long ticks) {
@@ -37,6 +40,7 @@ public final class M1TrialProgress {
             boolean campVisited,
             boolean sequenceComplete,
             boolean killsComplete,
+            boolean actingComplete,
             boolean riskObserved,
             int completedGoals,
             boolean passed) {}

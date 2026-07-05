@@ -15,6 +15,7 @@ on:
       - "docs/**"
       - "wiki/**"
       - "scripts/sync_project_metadata.py"
+      - "scripts/gen_datapack.py"
       - "build.gradle"
       - ".github/workflows/docs-consistency.yml"
   pull_request:
@@ -28,6 +29,7 @@ on:
       - "docs/**"
       - "wiki/**"
       - "scripts/sync_project_metadata.py"
+      - "scripts/gen_datapack.py"
       - "build.gradle"
       - ".github/workflows/docs-consistency.yml"
   workflow_dispatch:
@@ -48,6 +50,9 @@ jobs:
       - name: Verify generated metadata
         run: python3 scripts/sync_project_metadata.py --check
 
+      - name: Verify generated datapack
+        run: python3 scripts/gen_datapack.py --check
+
       - name: Validate JSON
         run: |
           python3 - <<'PY'
@@ -55,6 +60,7 @@ jobs:
           from pathlib import Path
 
           files = list(Path("src/main/resources").rglob("*.json"))
+          files.extend(Path("src/generated/resources").rglob("*.json"))
           files.append(Path("project-status.json"))
           files.append(Path("roadmap.json"))
           for path in files:

@@ -1,16 +1,16 @@
 # 开发状态
 
 <!-- project-status:start -->
-- 当前版本：**`0.6.0-1.20.1`**
-- 开发阶段：**M1 验收 Beta**（M1）
+- 当前版本：**`0.7.0-1.20.1`**
+- 开发阶段：**M1 验收 Beta / M2 预研**（M1）
 - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-- 最后更新：**2026-07-05 10:09:10 UTC+01:00**（`2026-07-05T09:09:10Z`）
+- 最后更新：**2026-07-05 15:53:58 UTC+01:00**（`2026-07-05T14:53:58Z`）
 <!-- project-status:end -->
 
 ## 里程碑
 
 <!-- roadmap:start -->
-> 设计基线：**v0.6** · 当前里程碑：**M1**
+> 设计基线：**v0.8** · 当前里程碑：**M1**
 
 | 里程碑 | 阶段 | 状态 | 目标 |
 |---|---|---|---|
@@ -26,11 +26,14 @@
 > 门禁规则：当前里程碑验收未完成前，不得把后续阶段预研标记为该阶段已完成。
 <!-- roadmap:end -->
 
-当前按 v0.6 硬门禁处于 M1 验收：占卜家序列 9–7 的代码纵切、材料、生物、能力、
+当前按 v0.8 硬门禁处于 M1 验收：占卜家序列 9–7 的代码纵切、材料、生物、能力、
 扮演、确定性新手营地、野外风险工具、睡眠恢复、精神守护符、三类自然生物、
-本地化调查日志、九段教程成就、Capability schema 6 试炼追踪器、生物弱点反制和指引命令已完成；
+本地化调查日志、九章神秘学手账、九段教程成就、Capability schema 7 六目标试炼追踪器、生物弱点反制和指引命令已完成；
 一小时生存、死亡/重连和专用服务器平衡记录仍是验收缺口。
 观众/猎人序列 9–8 与通用仪式底座作为后续阶段预研保留。
+
+M2 已开始预研：22 途径 CSV 主表、数据生成器、首批三种生成配方、四类知识经济物品和
+四条调查传闻已经落地。偷盗者/学徒只标记为 `m2_foundation`，当前不可玩。
 
 ## 当前限制
 
@@ -49,3 +52,4 @@
 - GitHub Build、CodeQL、Documentation Consistency、Pages、Wiki Sync
 - M1 记录表：[`docs/M1_ACCEPTANCE_CHECKLIST.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M1_ACCEPTANCE_CHECKLIST.md)
 - M1 追踪器：[`docs/M1_TRIAL_TRACKER.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M1_TRIAL_TRACKER.md)
+- v0.8/M2 预研：[`docs/Project_Mystery_Design_Doc_v0.8.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/Project_Mystery_Design_Doc_v0.8.md)

@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:criminal",
+  "group": "mother_tree",
+  "display_name_key": "pathway.lord_of_mysteries.criminal",
+  "description_key": "pathway.lord_of_mysteries.criminal.description",
+  "color": "#7F1D1D",
+  "status": "future",
+  "implemented_sequences": []
+}

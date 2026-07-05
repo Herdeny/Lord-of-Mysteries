@@ -68,4 +68,9 @@ public final class M1TrialTracker {
         PlayerMysteryData data = MysteryCapability.get(player);
         if (data.m1TrialActive) data.m1TrialCharmsConsumed++;
     }
+
+    public static void recordActing(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.m1TrialActive) data.m1TrialActingEvents++;
+    }
 }

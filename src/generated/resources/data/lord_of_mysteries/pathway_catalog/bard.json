@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:bard",
+  "group": "chaos_sea",
+  "display_name_key": "pathway.lord_of_mysteries.bard",
+  "description_key": "pathway.lord_of_mysteries.bard.description",
+  "color": "#F59E0B",
+  "status": "planned",
+  "implemented_sequences": []
+}

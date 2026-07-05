@@ -11,6 +11,9 @@ on:
       - "gradle/**"
       - "project-status.json"
       - "scripts/sync_project_metadata.py"
+      - "scripts/gen_datapack.py"
+      - "docs/pathways_master.csv"
+      - "docs/recipes_master.csv"
       - "build.gradle"
       - "settings.gradle"
       - "gradle.properties"
@@ -23,6 +26,9 @@ on:
       - "gradle/**"
       - "project-status.json"
       - "scripts/sync_project_metadata.py"
+      - "scripts/gen_datapack.py"
+      - "docs/pathways_master.csv"
+      - "docs/recipes_master.csv"
       - "build.gradle"
       - "settings.gradle"
       - "gradle.properties"
@@ -55,6 +61,9 @@ jobs:
 
       - name: Verify project metadata
         run: python3 scripts/sync_project_metadata.py --check
+
+      - name: Verify generated datapack
+        run: python3 scripts/gen_datapack.py --check
 
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew

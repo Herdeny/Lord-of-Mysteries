@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:sailor",
+  "group": "chaos_sea",
+  "display_name_key": "pathway.lord_of_mysteries.sailor",
+  "description_key": "pathway.lord_of_mysteries.sailor.description",
+  "color": "#0EA5E9",
+  "status": "planned",
+  "implemented_sequences": []
+}

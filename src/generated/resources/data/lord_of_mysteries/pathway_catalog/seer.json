@@ -1,0 +1,13 @@
+{
+  "id": "lord_of_mysteries:seer",
+  "group": "sefirah",
+  "display_name_key": "pathway.lord_of_mysteries.seer",
+  "description_key": "pathway.lord_of_mysteries.seer.description",
+  "color": "#8B5CF6",
+  "status": "implemented",
+  "implemented_sequences": [
+    9,
+    8,
+    7
+  ]
+}

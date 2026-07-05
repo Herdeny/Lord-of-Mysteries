@@ -1,10 +1,10 @@
 # 入门与占卜家序列 9–7
 
-> 当前版本：0.6.0-1.20.1
+> 当前版本：0.7.0-1.20.1
 >
-> 设计基线：v0.6 · M1
+> 设计基线：v0.8 · M1 验收 / M2 预研
 
-首次登录会获得《调查员残缺手稿》和调查员罗盘。右键手稿查看下一步，右键罗盘寻找营地，
+首次登录会获得《神秘学手账》和调查员罗盘。右键手账查看下一步，右键罗盘寻找营地，
 按 `N` 打开非凡者档案。
 
 ## 首十分钟
@@ -54,6 +54,7 @@
 | 命令 | 用途 |
 |---|---|
 | `/pm guide` | 当前阶段目标 |
+| `/pm handbook [1-9]` | 九章手账目录与已解锁章节 |
 | `/pm status` | 状态数值 |
 | `/pm camp` | 营地方向与坐标 |
 | `/pm m1check` | 下一晋升门槛 |
@@ -62,13 +63,19 @@
 | `/pm bestiary` | 生物档案 |
 | `/pm journal` | 已解锁能力、准则、规则与生物档案 |
 | `/pm trial start` | 开始一小时验收 |
-| `/pm trial status` | 查看五项目标与附加统计 |
+| `/pm trial status` | 查看六项目标与附加统计 |
 | `/pm trial stop` | 停止并保留记录 |
 | `/pm trial reset` | 清空记录 |
 
 九段教程成就从“帷幕微动”推进到“M1 纵切”；首次击杀特殊生物会写入调查日志。完整一小时记录表见
 [M1 验收清单](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M1_ACCEPTANCE_CHECKLIST.md)；
 追踪器字段与使用方法见 [M1 一小时试炼追踪器](M1-Trial-Tracker)。
+
+## M2 预研入口
+
+调查营地可能出现配方残页。右键残页会依次解锁两条途径传闻、调查委托和雾都镇区知识；
+任意传闻都会开放 `/pm handbook 7`。空白手稿、神秘墨水与雾都晨报已可制作，
+但偷盗者、学徒、雾都和委托仍是预研，不是已完成玩法。
 
 完整手册见
 [`docs/GETTING_STARTED.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/GETTING_STARTED.md)。

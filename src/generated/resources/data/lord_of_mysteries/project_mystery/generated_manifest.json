@@ -1,0 +1,10 @@
+{
+  "design_version": "v0.8",
+  "generator": "scripts/gen_datapack.py",
+  "sources": [
+    "docs/pathways_master.csv",
+    "docs/recipes_master.csv"
+  ],
+  "pathway_count": 22,
+  "generated_recipe_count": 3
+}

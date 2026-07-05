@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:apothecary",
+  "group": "mother",
+  "display_name_key": "pathway.lord_of_mysteries.apothecary",
+  "description_key": "pathway.lord_of_mysteries.apothecary.description",
+  "color": "#E11D48",
+  "status": "planned",
+  "implemented_sequences": []
+}

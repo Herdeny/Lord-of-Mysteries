@@ -1,6 +1,6 @@
 /*
  * Lord of Mysteries Wiki — 数据源
- * 与项目 data/*.json 和当前设计基线 v0.6 同源整理。
+ * 与项目 data/*.json、CSV 主表和当前设计基线 v0.8 同源整理。
  * 纯静态数据，GitHub Pages 直接加载，无需构建。
  */
 
@@ -46,26 +46,26 @@ LOM.pathwaysOverview = [
     traits: ["情绪读取", "行为预判", "表层读心", "心理暗示"],
     spirit: "序列9 112 · 序列8 138", status: "已实装 · M2预研" },
   { id: "apprentice", name: "学徒", en: "Apprentice", accent: "#d4af37",
-    desc: "知识与元素的途径。掌控元素、空间与造物，博学而多能。v0.6 M2 规划。",
-    traits: ["元素", "造物", "空间", "博学"], baseSpirit: 100, growth: 24, status: "M2 规划" },
+    desc: "空间、记录与逃脱的途径。v0.8 已进入 M2 数据和传闻预研，尚不可玩。",
+    traits: ["空间", "记录", "逃脱", "门径"], baseSpirit: 100, growth: 24, status: "M2 数据预研" },
   { id: "thief", name: "偷盗者", en: "Thief", accent: "#74b86f",
-    desc: "敏捷与幸运的途径。身法、潜行、概率操纵，机敏而难以捉摸。v0.6 M2 规划。",
-    traits: ["敏捷", "潜行", "幸运", "概率"], baseSpirit: 100, growth: 20, status: "M2 规划" }
+    desc: "窃取、欺诈与解密的途径。v0.8 已进入 M2 数据和传闻预研，尚不可玩。",
+    traits: ["窃取", "欺诈", "解密", "隐匿"], baseSpirit: 100, growth: 20, status: "M2 数据预研" }
 ];
 
-/* ── 占卜家序列阶梯（9→0，v0.6 M1 聚焦序列9-7） ── */
+/* ── 占卜家序列阶梯（9→0，v0.8 M1 聚焦序列9-7） ── */
 LOM.seerSequences = [
   { seq: 9, name: "占卜家 Seer", state: "active", spiritMax: 122,
     abilities: ["灵视", "危险直觉", "简易占卜"],
     desc: "序列起点。初窥灵界，能感知超凡气息、预警致命危险、进行简易占卜。M1 完整实装。" },
   { seq: 8, name: "小丑 Clown", state: "active", spiritMax: 144,
-    abilities: ["纸牌飞刃", "完美平衡", "表情操控", "直觉预判"], desc: "v0.6 M1 已实装；通过表演、压力战斗和连续闪避消化。" },
+    abilities: ["纸牌飞刃", "完美平衡", "表情操控", "直觉预判"], desc: "v0.8 M1 已实装；通过表演、压力战斗和连续闪避消化。" },
   { seq: 7, name: "魔术师 Magician", state: "active", spiritMax: 175,
-    abilities: ["火焰跳跃", "替身纸人", "空气子弹", "舞台幻术"], desc: "v0.6 M1 已实装；代码纵切完成，等待一小时平衡验收。" },
+    abilities: ["火焰跳跃", "替身纸人", "空气子弹", "舞台幻术"], desc: "v0.8 M1 已实装；代码纵切完成，等待一小时平衡验收。" },
   { seq: 6, name: "无面人 Faceless", state: "planned", spiritMax: 212,
-    abilities: ["完全变形", "形体记录", "声线模仿"], desc: "v0.6 M4 / EP1 规划。" },
+    abilities: ["完全变形", "形体记录", "声线模仿"], desc: "v0.8 M4 / EP1 规划。" },
   { seq: 5, name: "秘偶大师 Marionettist", state: "planned", spiritMax: 265,
-    abilities: ["灵体之线", "秘偶操控", "傀儡收纳"], desc: "v0.6 M4 / EP1 规划。" },
+    abilities: ["灵体之线", "秘偶操控", "傀儡收纳"], desc: "v0.8 M4 / EP1 规划。" },
   { seq: 4, name: "预言家 Scryer", state: "future", spiritMax: 300,
     abilities: ["强化预言", "命运窥探"], desc: "更高维度的预知。规划中。" },
   { seq: 3, name: "占卜之王 (待定)", state: "future", spiritMax: 380, abilities: ["—"], desc: "高序列，暂未设计。" },
@@ -77,7 +77,7 @@ LOM.seerSequences = [
 LOM.spectatorSequences = [
   { pathway: "观众", seq: 9, name: "观众 Spectator", state: "active", spiritMax: 112,
     abilities: ["情绪读取", "行为预判", "镇定"],
-    desc: "持续观察目标情绪，并在战斗中预判来袭行为。M2 已实装。" },
+    desc: "持续观察目标情绪，并在战斗中预判来袭行为。已实现，作为 M2 预研保留。" },
   { pathway: "观众", seq: 8, name: "读心者 Telepathist", state: "active", spiritMax: 138,
     abilities: ["表层读心", "心理暗示", "精神抵抗"],
     desc: "读取目标当前表层状态，并施加带可见反馈和玩家抵抗窗口的心理暗示。已实装，作为 M2 预研保留。" }
@@ -86,10 +86,10 @@ LOM.spectatorSequences = [
 LOM.hunterSequences = [
   { pathway: "猎人", seq: 9, name: "猎人 Hunter", state: "active", spiritMax: 118,
     abilities: ["战斗追踪", "陷阱精通", "荒野感知"],
-    desc: "攻击后追踪目标，布置专属捕兽夹，并在户外感知附近敌对目标。M2 已实装。" },
+    desc: "攻击后追踪目标，布置专属捕兽夹，并在户外感知附近敌对目标。已实现，作为 M2 预研保留。" },
   { pathway: "猎人", seq: 8, name: "挑衅者 Provoker", state: "active", spiritMax: 142,
     abilities: ["挑衅", "激怒", "战斗意志"],
-    desc: "吸引低抗性敌人仇恨、激怒单个目标，并在被围攻时获得减伤。M2 已实装。" }
+    desc: "吸引低抗性敌人仇恨、激怒单个目标，并在被围攻时获得减伤。已实现，作为 M2 预研保留。" }
 ];
 
 /* ── 详细条目（卡片 + 详情弹窗） ── */
@@ -157,9 +157,9 @@ LOM.entries = [
     details: [["获得", "首次登录 / 营地 / 合成"], ["配方", "指南针 + 纸 + 紫水晶"], ["使用", "右键 / /pm camp"]],
     long: "营地 SavedData 已记录位置时指向最近记录；尚无营地时计算出生点外 10–16 区块的确定性目标。反馈包含八方向、直线距离和坐标，绑定后显示附魔光泽。" },
   { type: "system", id: "lord_of_mysteries:guide_commands", name: "调查指引命令", en: "Investigator Guide Commands",
-    summary: "九组无需管理员权限的自助命令，覆盖阶段、状态、营地、规则、资料与验收记录。",
+    summary: "十组无需管理员权限的自助命令，覆盖阶段、手账、状态、营地、资料与验收记录。",
     tags: ["系统", "命令", "引导", "M1"],
-    details: [["阶段", "/pm guide · /pm m1check"], ["状态", "/pm status"], ["探索", "/pm camp"], ["资料", "/pm rules · /pm items · /pm bestiary · /pm journal"], ["验收", "/pm trial start|status|stop|reset"]],
+    details: [["阶段", "/pm guide · /pm m1check"], ["手账", "/pm handbook [1-9]"], ["状态", "/pm status"], ["探索", "/pm camp"], ["资料", "/pm rules · /pm items · /pm bestiary · /pm journal"], ["验收", "/pm trial start|status|stop|reset"]],
     long: "命令由服务端权威执行并发送本地化文本。普通资料命令不修改状态；试炼命令只管理验收记录，不授予途径、序列或物品。" },
   { type: "system", id: "lord_of_mysteries:tutorial_advancements", name: "M1 教程成就链", en: "M1 Tutorial Advancement Chain",
     summary: "九段成就从获得手稿、准备精神守护一直记录到晋升序列 7 魔术师。",
@@ -172,10 +172,20 @@ LOM.entries = [
     details: [["睡眠", "每日首次整夜睡眠 压力 -20"], ["守护符", "自动抵消一次重度事件"], ["边界", "污染 100 仍触发完整失控"], ["日志", "/pm journal · 首次击杀自动发现"]],
     long: "恢复日期写入 Capability schema 5，防止同日重复刷取。四类特殊生物首次被玩家击杀时写入 knownKnowledge；状态面板与调查日志通过语言键显示知识名称，不再暴露内部资源 ID。" },
   { type: "system", id: "lord_of_mysteries:m1_trial_tracker", name: "M1 一小时试炼追踪器", en: "M1 One-Hour Trial Tracker",
-    summary: "持久化记录一小时纵切的五项目标和死亡、恢复、守护符三项平衡统计。",
+    summary: "持久化记录一小时纵切的六项目标和死亡、恢复、守护符三项平衡统计。",
     tags: ["系统", "验收", "命令", "持久化", "M1"],
-    details: [["命令", "/pm trial start|status|stop|reset"], ["目标", "一小时 · 营地 · 序列7 · 3次狩猎 · 风险峰值25"], ["附加", "死亡 · 睡眠恢复 · 守护符消耗"], ["存档", "Capability schema 6"]],
-    long: "追踪器使用服务端世界时间和权威事件自动记录。状态在死亡、跨维度、重登与服务器重启后保留；5/5 只提供机器证据，不能替代专用服务器、死亡重连与人工平衡验收。" },
+    details: [["命令", "/pm trial start|status|stop|reset"], ["目标", "一小时 · 营地 · 序列7 · 3次狩猎 · 2次扮演 · 风险峰值25"], ["附加", "死亡 · 睡眠恢复 · 守护符消耗"], ["存档", "Capability schema 7"]],
+    long: "追踪器使用服务端世界时间和权威事件自动记录，只有正收益扮演计数。状态在死亡、跨维度、重登与服务器重启后保留；6/6 只提供机器证据，不能替代专用服务器、死亡重连与人工平衡验收。" },
+  { type: "system", id: "lord_of_mysteries:occult_handbook", name: "九章神秘学手账", en: "Nine-Chapter Occult Handbook",
+    summary: "主动查询式引导系统，按普通人、途径、传闻和未来邀请逐步解锁九章。",
+    tags: ["系统", "引导", "知识", "M1"],
+    details: [["命令", "/pm handbook [1-9]"], ["默认", "城市 · 成为非凡者 · 风险 · 途径"], ["状态解锁", "扮演 · 占卜 · 仪式"], ["传闻解锁", "钱与生计"], ["未来", "灰雾"]],
+    long: "保留 investigator_notes 稳定物品 ID，但显示为神秘学手账。当前使用聊天章节作为无客户端依赖的可玩实现，后续可升级为翻页 UI。" },
+  { type: "system", id: "lord_of_mysteries:v08_datapack_pipeline", name: "v0.8 数据生产线", en: "v0.8 Datapack Pipeline",
+    summary: "CSV 主表驱动 22 途径目录和首批 M2 配方，Gradle 自动生成并执行一致性检查。",
+    tags: ["系统", "数据包", "CSV", "M2"],
+    details: [["途径", "docs/pathways_master.csv · 22 条"], ["配方", "docs/recipes_master.csv"], ["生成", "scripts/gen_datapack.py"], ["产物", "26 个 JSON"], ["门禁", "Gradle processResources + check"]],
+    long: "v0.8 D9 的首批落地。人工维护 CSV 和生成器，生成 JSON 进入 src/generated/resources；直接编辑生成文件不是受支持的工作流。" },
   { type: "entity", id: "lord_of_mysteries:shapeshifter_serpent", name: "幻形蛇", en: "Shapeshifter Serpent",
     summary: "主世界低概率生成的隐匿非凡生物，靠近玩家后显形并掉落魔术师主材料。",
     tags: ["生物", "材料", "序列7", "M1"],
@@ -379,6 +389,26 @@ LOM.entries = [
     tags: ["物品", "防护", "压力", "M1"],
     details: [["触发", "重度精神事件"], ["效果", "抵消压力、混乱和缓慢"], ["配方", "纸×2 + 灵性盐×2 + 白蜡烛"], ["限制", "不能阻止污染 100 的完整失控"]],
     long: "守护符只拦截周期性重度精神侵入，不修改污染值，也不会干预完整失控结算。触发时自动从背包消耗并播放紫色附魔粒子与水晶音效。" },
+  { type: "item", id: "lord_of_mysteries:blank_manuscript", name: "空白手稿", en: "Blank Manuscript",
+    summary: "M2 知识经济的基础文书，由 v0.8 CSV 数据生产线生成配方。",
+    tags: ["物品", "文书", "M2", "生成配方"],
+    details: [["配方", "纸×3 + 线 → 2"], ["来源", "docs/recipes_master.csv"], ["用途", "后续配方与委托文书"]],
+    long: "当前作为可获取的数据生产垂直切片，不提前提供任务或配方复制收益。" },
+  { type: "item", id: "lord_of_mysteries:mystic_ink", name: "神秘墨水", en: "Mystic Ink",
+    summary: "由普通墨水、荧光墨水和紫水晶制成的 M2 文书试剂。",
+    tags: ["物品", "材料", "M2", "生成配方"],
+    details: [["配方", "墨囊 + 荧光墨囊 + 紫水晶 → 2"], ["用途", "雾都晨报 / 后续知识文书"]],
+    long: "该物品验证配方主表、自动生成、注册、模型、本地化和创造栏的完整生产链。" },
+  { type: "item", id: "lord_of_mysteries:formula_fragment", name: "配方残页", en: "Formula Fragment",
+    summary: "调查营地战利品，右键解锁一条尚未掌握的 M2 途径或雾都传闻。",
+    tags: ["物品", "知识", "传闻", "M2"],
+    details: [["来源", "调查营地"], ["使用", "右键"], ["知识池", "偷盗者 · 学徒 · 委托 · 雾都"], ["重复", "知识耗尽后不消耗"]],
+    long: "残页建立了知识经济的第一条可玩闭环。它只开放调查日志和手账章节，不会授予途径、序列、能力或任务完成度。" },
+  { type: "item", id: "lord_of_mysteries:newspaper", name: "雾都晨报", en: "Mist City Morning Post",
+    summary: "雾都生活系统的首批内容载体，当前作为可制作文书进入物品循环。",
+    tags: ["物品", "报纸", "雾都", "M2"],
+    details: [["配方", "纸×3 + 神秘墨水"], ["当前", "文书物品"], ["后续", "传闻池 · 委托钩子 · 世界事件"]],
+    long: "v0.8 规划的报纸生成、传闻和委托钩子仍待实现；当前物品不宣称这些系统已经完成。" },
 
   /* 封印物 */
   { type: "artifact", id: "lord_of_mysteries:eternal_matchbox", name: "封印物 · 永燃火柴盒", en: "Eternal Matchbox",
@@ -405,7 +435,7 @@ LOM.entries = [
   { type: "org", id: "org_nighthawks", name: "值夜者", en: "Nighthawks",
     summary: "守序的非凡者组织，清剿失控与灵界威胁，玩家可积累声望。",
     tags: ["组织", "守序", "规划"], details: [["立场", "守序 / 治安"], ["声望", "orgReputation 记录"], ["里程碑", "M3 MVP 公测"]],
-    long: "值夜者是维护凡俗与非凡秩序的组织。玩家协助清剿失控体、封印危险物可积累声望，解锁委托与资源。数据结构已预留 orgReputation，完整任务线按 v0.6 安排在 M3。" },
+    long: "值夜者是维护凡俗与非凡秩序的组织。玩家协助清剿失控体、封印危险物可积累声望，解锁委托与资源。数据结构已预留 orgReputation，完整任务线按 v0.8 安排在 M3。" },
   { type: "org", id: "org_aurora", name: "极光会", en: "Aurora Order",
     summary: "追寻知识与晋升之路的非凡者结社。（呼应极光宇宙设定的彩蛋组织）",
     tags: ["组织", "知识", "规划"], details: [["立场", "求知 / 晋升"], ["里程碑", "M5 深化"]],
@@ -415,7 +445,7 @@ LOM.entries = [
   { type: "world", id: "grayfog", name: "灰雾空间", en: "The Gray Fog",
     summary: "介于现实与灵界之间的诡秘空间，高序列非凡者的舞台。M4 / EP1 规划。",
     tags: ["空间", "灰雾", "规划"], details: [["性质", "半灵界维度"], ["里程碑", "M4 / EP1"]],
-    long: "灰雾是弥漫在世界之上的神秘空间，隐藏着信息、交易与危险。v0.6 将灰雾源堡与塔罗会安排在 M4 / EP1，M1-M3 不提前计入完成度。" }
+    long: "灰雾是弥漫在世界之上的神秘空间，隐藏着信息、交易与危险。v0.8 将灰雾源堡与塔罗会安排在 M4 / EP1，M1-M3 不提前计入完成度。" }
 ];
 
 /* ── 分类标签映射 ── */

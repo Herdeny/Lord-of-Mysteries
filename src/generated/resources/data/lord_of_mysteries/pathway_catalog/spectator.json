@@ -1,0 +1,12 @@
+{
+  "id": "lord_of_mysteries:spectator",
+  "group": "chaos_sea",
+  "display_name_key": "pathway.lord_of_mysteries.spectator",
+  "description_key": "pathway.lord_of_mysteries.spectator.description",
+  "color": "#EC4899",
+  "status": "implemented",
+  "implemented_sequences": [
+    9,
+    8
+  ]
+}

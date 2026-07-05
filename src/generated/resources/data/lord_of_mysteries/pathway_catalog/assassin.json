@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:assassin",
+  "group": "calamity",
+  "display_name_key": "pathway.lord_of_mysteries.assassin",
+  "description_key": "pathway.lord_of_mysteries.assassin.description",
+  "color": "#BE123C",
+  "status": "planned",
+  "implemented_sequences": []
+}

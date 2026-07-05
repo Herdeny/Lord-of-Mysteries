@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:corpse_collector",
+  "group": "night",
+  "display_name_key": "pathway.lord_of_mysteries.corpse_collector",
+  "description_key": "pathway.lord_of_mysteries.corpse_collector.description",
+  "color": "#78716C",
+  "status": "planned",
+  "implemented_sequences": []
+}

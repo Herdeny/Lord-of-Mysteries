@@ -12,7 +12,7 @@ Gradle 构建、README、GitHub Pages 和 GitHub Wiki 必须与两者一致。
 <SemVer>-<Minecraft 版本>
 ```
 
-当前示例：`0.6.0-1.20.1`。
+当前示例：`0.7.0-1.20.1`。
 
 ## 版本规则
 
@@ -25,16 +25,18 @@ Gradle 构建、README、GitHub Pages 和 GitHub Wiki 必须与两者一致。
 ## 每次功能更新
 
 1. 修改代码、资源、测试和本地化。
-2. 更新 `project-status.json` 的版本、阶段和两个更新时间字段。
-3. 更新 `CHANGELOG.md`、`README.md`、`docs/` 和 `wiki/` 中的功能内容。
-4. 执行：
+2. 数据内容优先修改 CSV 主表并运行 `python scripts/gen_datapack.py`。
+3. 更新 `project-status.json` 的版本、阶段和两个更新时间字段。
+4. 更新 `CHANGELOG.md`、`README.md`、`docs/` 和 `wiki/` 中的功能内容。
+5. 执行：
 
    ```bash
+   python scripts/gen_datapack.py --check
    python scripts/sync_project_metadata.py
    ./gradlew clean build
    ```
 
-5. 确认 Documentation Consistency、Build、CodeQL、Pages 和 Wiki Sync 均通过。
+6. 确认 Documentation Consistency、Build、CodeQL、Pages 和 Wiki Sync 均通过。
 
 CI 会执行 `python scripts/sync_project_metadata.py --check`。元数据不一致时禁止合并。
 

@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:warrior",
+  "group": "night",
+  "display_name_key": "pathway.lord_of_mysteries.warrior",
+  "description_key": "pathway.lord_of_mysteries.warrior.description",
+  "color": "#A16207",
+  "status": "planned",
+  "implemented_sequences": []
+}

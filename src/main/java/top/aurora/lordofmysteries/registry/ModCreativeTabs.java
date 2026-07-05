@@ -50,6 +50,10 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.SILVER_FILINGS.get());
                         output.accept(ModItems.SPIRIT_SALT.get());
                         output.accept(ModItems.ASHEN_THREAD.get());
+                        output.accept(ModItems.BLANK_MANUSCRIPT.get());
+                        output.accept(ModItems.MYSTIC_INK.get());
+                        output.accept(ModItems.FORMULA_FRAGMENT.get());
+                        output.accept(ModItems.NEWSPAPER.get());
                         output.accept(ModItems.MYSTIC_PLAYING_CARDS.get());
                         output.accept(ModItems.PAPER_FIGURINE.get());
                         output.accept(ModItems.SHAPESHIFTER_SERPENT_SPAWN_EGG.get());

@@ -29,7 +29,7 @@ class PlayerMysteryDataTest {
         assertEquals(0f, d.spirituality);
         assertEquals(100f, d.spiritualityMax);
         assertEquals(0f, d.pollution);
-        assertEquals(6, d.schemaVersion);
+        assertEquals(PlayerMysteryData.CURRENT_SCHEMA_VERSION, d.schemaVersion);
         assertFalse(d.emotionReadActive);
         assertEquals("", d.hunterTrackedTarget);
         assertEquals(0L, d.provokeCooldownEndTick);
@@ -78,6 +78,7 @@ class PlayerMysteryDataTest {
         source.m1TrialCampVisited = true;
         source.m1TrialBestSequence = 7;
         source.m1TrialOccultKills = 3;
+        source.m1TrialActingEvents = 2;
         source.m1TrialMaxPressure = 42f;
 
         PlayerMysteryData copied = new PlayerMysteryData();
@@ -97,6 +98,7 @@ class PlayerMysteryDataTest {
         assertTrue(copied.m1TrialCampVisited);
         assertEquals(7, copied.m1TrialBestSequence);
         assertEquals(3, copied.m1TrialOccultKills);
+        assertEquals(2, copied.m1TrialActingEvents);
         assertEquals(42f, copied.m1TrialMaxPressure);
     }
 }

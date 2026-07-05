@@ -1,0 +1,12 @@
+{
+  "id": "lord_of_mysteries:hunter",
+  "group": "calamity",
+  "display_name_key": "pathway.lord_of_mysteries.hunter",
+  "description_key": "pathway.lord_of_mysteries.hunter.description",
+  "color": "#DC2626",
+  "status": "implemented",
+  "implemented_sequences": [
+    9,
+    8
+  ]
+}

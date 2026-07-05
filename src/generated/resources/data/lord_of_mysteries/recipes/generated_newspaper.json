@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "lord_of_mysteries:mystic_ink"
+    }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:newspaper",
+    "count": 1
+  }
+}

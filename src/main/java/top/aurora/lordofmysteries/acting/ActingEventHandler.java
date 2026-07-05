@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
 import top.aurora.lordofmysteries.core.config.ServerConfig;
+import top.aurora.lordofmysteries.knowledge.M1TrialTracker;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.PotionQuality;
@@ -38,6 +39,7 @@ public final class ActingEventHandler {
                 ServerConfig.DIGESTION_MULTIPLIER.get().floatValue());
         data.digestion = Math.max(0f, Math.min(100f, data.digestion + gain));
         data.actingHistory.put(historyKey, now);
+        if (gain > 0f) M1TrialTracker.recordActing(player);
 
         if (ServerConfig.SHOW_EXACT_DIGESTION.get()) {
             player.sendSystemMessage(Component.translatable(

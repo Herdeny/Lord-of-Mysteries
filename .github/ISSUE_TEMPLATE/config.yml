@@ -2,7 +2,7 @@ blank_issues_enabled: false
 contact_links:
   - name: Roadmap / 开发路线
     url: https://github.com/Herdeny/Lord-of-Mysteries/blob/main/ROADMAP.md
-    about: 提案前先确认 v0.6 里程碑、前置门禁与验收范围
+    about: 提案前先确认 v0.8 里程碑、前置门禁与验收范围
   - name: Wiki / 使用文档
     url: https://github.com/Herdeny/Lord-of-Mysteries/wiki
     about: 安装、玩法和常见说明

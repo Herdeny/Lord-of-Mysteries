@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:savant",
+  "group": "knowledge",
+  "display_name_key": "pathway.lord_of_mysteries.savant",
+  "description_key": "pathway.lord_of_mysteries.savant.description",
+  "color": "#0891B2",
+  "status": "planned",
+  "implemented_sequences": []
+}

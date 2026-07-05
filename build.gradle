@@ -77,6 +77,26 @@ minecraft {
 // 数据生成产出加入资源
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+def pythonExecutable = System.getProperty('os.name').toLowerCase().contains('windows')
+        ? 'python' : 'python3'
+
+tasks.register('generateProjectMysteryData', Exec) {
+    group = 'project mystery'
+    description = 'Generates v0.8 pathway catalog and managed datapack recipes.'
+    commandLine pythonExecutable, 'scripts/gen_datapack.py'
+    inputs.files 'scripts/gen_datapack.py',
+            'docs/pathways_master.csv',
+            'docs/recipes_master.csv'
+    outputs.dir 'src/generated/resources/data/lord_of_mysteries'
+}
+
+tasks.register('checkProjectMysteryData', Exec) {
+    group = 'verification'
+    description = 'Checks generated v0.8 datapack resources are current.'
+    dependsOn 'generateProjectMysteryData'
+    commandLine pythonExecutable, 'scripts/gen_datapack.py', '--check'
+}
+
 repositories {
     mavenLocal()
 }
@@ -96,6 +116,7 @@ dependencies {
 
 // mods.toml 占位符替换
 tasks.named('processResources', ProcessResources).configure {
+    dependsOn 'generateProjectMysteryData'
     def modDescriptionFile = file('gradle/mod-description.txt')
     var replaceProperties = [
         minecraft_version      : minecraft_version,
@@ -128,6 +149,10 @@ configurations {
 
 test {
     useJUnitPlatform()
+}
+
+tasks.named('check').configure {
+    dependsOn 'checkProjectMysteryData'
 }
 
 jar {

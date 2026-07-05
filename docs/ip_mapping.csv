@@ -5,6 +5,23 @@ pathway,Spectator,spectator,TBD,M2,pending
 pathway,Hunter,hunter,TBD,M2,pending
 pathway,Thief,thief,TBD,M2,pending
 pathway,Apprentice,apprentice,TBD,M2,pending
+pathway,Secret Supplicant,secret_supplicant,TBD,M5,pending
+pathway,Bard,bard,TBD,M5,pending
+pathway,Sailor,sailor,TBD,M5,pending
+pathway,Reader,reader,TBD,M5,pending
+pathway,Sleepless,sleepless,TBD,M5,pending
+pathway,Corpse Collector,corpse_collector,TBD,M5,pending
+pathway,Warrior,warrior,TBD,M6,pending
+pathway,Assassin,assassin,TBD,M6,pending
+pathway,Planter,planter,TBD,M6,pending
+pathway,Apothecary,apothecary,TBD,M6,pending
+pathway,Lawyer,lawyer,TBD,M7,pending
+pathway,Arbiter,arbiter,TBD,M7,pending
+pathway,Criminal,criminal,TBD,M7,pending
+pathway,Prisoner,prisoner,TBD,M7,pending
+pathway,Mystery Pryer,mystery_pryer,TBD,M7,pending
+pathway,Savant,savant,TBD,M7,pending
+pathway,Monster,monster,TBD,M7,pending
 sequence,Clown,clown,TBD,M2,pending
 sequence,Magician,magician,TBD,M2,pending
 creature,Shapeshifter Serpent,shapeshifter_serpent,TBD,M2,pending

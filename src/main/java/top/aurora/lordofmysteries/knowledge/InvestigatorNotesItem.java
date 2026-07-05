@@ -65,6 +65,57 @@ public final class InvestigatorNotesItem extends Item {
         send(serverPlayer, "guide.lord_of_mysteries.status_key");
     }
 
+    public static int showHandbookOverview(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        player.sendSystemMessage(Component.translatable(
+                "guide.lord_of_mysteries.handbook.title")
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
+        int unlocked = 0;
+        for (int chapter = 1; chapter <= GuideJournalProgress.CHAPTER_COUNT; chapter++) {
+            boolean available = isChapterUnlocked(data, chapter);
+            if (available) unlocked++;
+            player.sendSystemMessage(Component.literal(available ? "◆ " : "◇ ")
+                    .append(Component.translatable(
+                            "guide.lord_of_mysteries.handbook.chapter."
+                                    + chapter + ".title"))
+                    .withStyle(available ? ChatFormatting.AQUA : ChatFormatting.DARK_GRAY));
+        }
+        player.sendSystemMessage(Component.translatable(
+                "guide.lord_of_mysteries.handbook.hint", unlocked,
+                GuideJournalProgress.CHAPTER_COUNT)
+                .withStyle(ChatFormatting.GRAY));
+        return unlocked;
+    }
+
+    public static int showHandbookChapter(ServerPlayer player, int chapter) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (!isChapterUnlocked(data, chapter)) {
+            player.sendSystemMessage(Component.translatable(
+                    "guide.lord_of_mysteries.handbook.locked")
+                    .withStyle(ChatFormatting.DARK_GRAY));
+            return 0;
+        }
+        player.sendSystemMessage(Component.translatable(
+                "guide.lord_of_mysteries.handbook.chapter." + chapter + ".title")
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
+        player.sendSystemMessage(Component.translatable(
+                "guide.lord_of_mysteries.handbook.chapter." + chapter + ".summary")
+                .withStyle(ChatFormatting.GRAY));
+        return 1;
+    }
+
+    private static boolean isChapterUnlocked(PlayerMysteryData data, int chapter) {
+        boolean seer = SeerPotionItem.SEER_PATHWAY.equals(data.pathway);
+        boolean hasM2Rumor = data.knownKnowledge.stream()
+                .anyMatch(id -> id.getPath().startsWith("knowledge/m2/"));
+        boolean hasGrayFogInvitation = data.knownKnowledge.stream()
+                .anyMatch(id -> id.getPath().equals(
+                        "knowledge/m4/gray_fog_invitation"));
+        return GuideJournalProgress.isUnlocked(
+                chapter, data.isExtraordinary(), seer,
+                hasM2Rumor, hasGrayFogInvitation);
+    }
+
     private static void send(ServerPlayer player, String key, Object... args) {
         player.sendSystemMessage(Component.translatable(key, args)
                 .withStyle(ChatFormatting.GRAY));

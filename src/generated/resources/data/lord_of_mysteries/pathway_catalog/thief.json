@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:thief",
+  "group": "sefirah",
+  "display_name_key": "pathway.lord_of_mysteries.thief",
+  "description_key": "pathway.lord_of_mysteries.thief.description",
+  "color": "#64748B",
+  "status": "m2_foundation",
+  "implemented_sequences": []
+}

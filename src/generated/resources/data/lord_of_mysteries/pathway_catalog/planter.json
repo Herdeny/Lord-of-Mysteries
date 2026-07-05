@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:planter",
+  "group": "mother",
+  "display_name_key": "pathway.lord_of_mysteries.planter",
+  "description_key": "pathway.lord_of_mysteries.planter.description",
+  "color": "#65A30D",
+  "status": "planned",
+  "implemented_sequences": []
+}

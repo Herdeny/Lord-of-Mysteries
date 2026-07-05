@@ -22,6 +22,8 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class PlayerMysteryData {
 
+    public static final int CURRENT_SCHEMA_VERSION = 7;
+
     // 途径 & 序列。
     // pathway 使用 ResourceLocation 以便完全数据驱动，例如 lord_of_mysteries:seer。
     public ResourceLocation pathway = null; // null = 普通人，尚未服食魔药/进入途径
@@ -80,6 +82,7 @@ public class PlayerMysteryData {
     public int m1TrialDeaths = 0;
     public int m1TrialRestRecoveries = 0;
     public int m1TrialCharmsConsumed = 0;
+    public int m1TrialActingEvents = 0;
     public float m1TrialMaxPressure = 0f;
     public float m1TrialMaxPollution = 0f;
 
@@ -95,7 +98,7 @@ public class PlayerMysteryData {
     public Map<ResourceLocation, Integer> orgReputation = new HashMap<>();
 
     // 序列化版本号（用于迁移）。未来字段改名或结构升级时，可根据旧版本补默认值。
-    public int schemaVersion = 6;
+    public int schemaVersion = CURRENT_SCHEMA_VERSION;
 
     /** 默认构造器需要保留，Capability Provider 和测试都会直接创建空数据。 */
     public PlayerMysteryData() {}
@@ -164,13 +167,14 @@ public class PlayerMysteryData {
         this.m1TrialDeaths = src.m1TrialDeaths;
         this.m1TrialRestRecoveries = src.m1TrialRestRecoveries;
         this.m1TrialCharmsConsumed = src.m1TrialCharmsConsumed;
+        this.m1TrialActingEvents = src.m1TrialActingEvents;
         this.m1TrialMaxPressure = src.m1TrialMaxPressure;
         this.m1TrialMaxPollution = src.m1TrialMaxPollution;
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
         this.actingHistory = new HashMap<>(src.actingHistory);
         this.actingCounters = new HashMap<>(src.actingCounters);
         this.orgReputation = new HashMap<>(src.orgReputation);
-        this.schemaVersion = src.schemaVersion;
+        this.schemaVersion = CURRENT_SCHEMA_VERSION;
     }
 
     // —— NBT 序列化 ——
@@ -231,6 +235,7 @@ public class PlayerMysteryData {
         tag.putInt("m1_trial_deaths", m1TrialDeaths);
         tag.putInt("m1_trial_rest_recoveries", m1TrialRestRecoveries);
         tag.putInt("m1_trial_charms_consumed", m1TrialCharmsConsumed);
+        tag.putInt("m1_trial_acting_events", m1TrialActingEvents);
         tag.putFloat("m1_trial_max_pressure", m1TrialMaxPressure);
         tag.putFloat("m1_trial_max_pollution", m1TrialMaxPollution);
         tag.putInt("schema_version", schemaVersion);
@@ -317,9 +322,10 @@ public class PlayerMysteryData {
         m1TrialDeaths = tag.getInt("m1_trial_deaths");
         m1TrialRestRecoveries = tag.getInt("m1_trial_rest_recoveries");
         m1TrialCharmsConsumed = tag.getInt("m1_trial_charms_consumed");
+        m1TrialActingEvents = tag.getInt("m1_trial_acting_events");
         m1TrialMaxPressure = tag.getFloat("m1_trial_max_pressure");
         m1TrialMaxPollution = tag.getFloat("m1_trial_max_pollution");
-        schemaVersion = tag.contains("schema_version") ? tag.getInt("schema_version") : 1;
+        schemaVersion = CURRENT_SCHEMA_VERSION;
 
         knownKnowledge.clear();
         ListTag known = tag.getList("known_knowledge", Tag.TAG_STRING);

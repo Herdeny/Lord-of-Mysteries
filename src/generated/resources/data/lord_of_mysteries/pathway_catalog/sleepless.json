@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:sleepless",
+  "group": "night",
+  "display_name_key": "pathway.lord_of_mysteries.sleepless",
+  "description_key": "pathway.lord_of_mysteries.sleepless.description",
+  "color": "#312E81",
+  "status": "planned",
+  "implemented_sequences": []
+}

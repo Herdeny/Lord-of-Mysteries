@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:monster",
+  "group": "fate",
+  "display_name_key": "pathway.lord_of_mysteries.monster",
+  "description_key": "pathway.lord_of_mysteries.monster.description",
+  "color": "#CA8A04",
+  "status": "future",
+  "implemented_sequences": []
+}

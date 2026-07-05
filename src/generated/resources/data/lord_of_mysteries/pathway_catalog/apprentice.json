@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:apprentice",
+  "group": "sefirah",
+  "display_name_key": "pathway.lord_of_mysteries.apprentice",
+  "description_key": "pathway.lord_of_mysteries.apprentice.description",
+  "color": "#60A5FA",
+  "status": "m2_foundation",
+  "implemented_sequences": []
+}

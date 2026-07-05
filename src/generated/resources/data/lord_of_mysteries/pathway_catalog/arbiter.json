@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:arbiter",
+  "group": "order",
+  "display_name_key": "pathway.lord_of_mysteries.arbiter",
+  "description_key": "pathway.lord_of_mysteries.arbiter.description",
+  "color": "#1D4ED8",
+  "status": "planned",
+  "implemented_sequences": []
+}

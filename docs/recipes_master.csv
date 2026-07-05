@@ -1,0 +1,4 @@
+recipe_id,carrier,result_id,result_count,ingredients,unlock,jei_visible,notes
+generated_blank_manuscript,bench,lord_of_mysteries:blank_manuscript,2,minecraft:paper*3;minecraft:string*1,free,true,M2 knowledge economy base
+generated_mystic_ink,bench,lord_of_mysteries:mystic_ink,2,minecraft:ink_sac*1;minecraft:glow_ink_sac*1;minecraft:amethyst_shard*1,free,true,M2 manuscript reagent
+generated_newspaper,bench,lord_of_mysteries:newspaper,1,minecraft:paper*3;lord_of_mysteries:mystic_ink*1,free,true,M2 Mist City livelihood prop

@@ -1,6 +1,7 @@
 package top.aurora.lordofmysteries.command;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.knowledge.InvestigatorCompassItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
+import top.aurora.lordofmysteries.knowledge.GuideJournalProgress;
 import top.aurora.lordofmysteries.knowledge.KnowledgeText;
 import top.aurora.lordofmysteries.knowledge.M1Readiness;
 import top.aurora.lordofmysteries.knowledge.M1TrialProgress;
@@ -41,6 +43,14 @@ public final class ProjectMysteryCommands {
                     InvestigatorNotesItem.showGuide(context.getSource().getPlayerOrException());
                     return 1;
                 }))
+                .then(Commands.literal("handbook")
+                        .executes(context -> InvestigatorNotesItem.showHandbookOverview(
+                                context.getSource().getPlayerOrException()))
+                        .then(Commands.argument("chapter", IntegerArgumentType.integer(
+                                        1, GuideJournalProgress.CHAPTER_COUNT))
+                                .executes(context -> InvestigatorNotesItem.showHandbookChapter(
+                                        context.getSource().getPlayerOrException(),
+                                        IntegerArgumentType.getInteger(context, "chapter")))))
                 .then(Commands.literal("status").executes(context ->
                         showStatus(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("camp").executes(context -> {
@@ -155,6 +165,7 @@ public final class ProjectMysteryCommands {
                 data.m1TrialCampVisited,
                 data.m1TrialBestSequence,
                 data.m1TrialOccultKills,
+                data.m1TrialActingEvents,
                 data.m1TrialMaxPressure,
                 data.m1TrialMaxPollution);
         player.sendSystemMessage(Component.translatable(
@@ -171,6 +182,8 @@ public final class ProjectMysteryCommands {
                 data.m1TrialBestSequence < 0 ? "-" : data.m1TrialBestSequence);
         sendTrialGoal(player, result.killsComplete(), "kills",
                 data.m1TrialOccultKills, M1TrialProgress.REQUIRED_OCCULT_KILLS);
+        sendTrialGoal(player, result.actingComplete(), "acting",
+                data.m1TrialActingEvents, M1TrialProgress.REQUIRED_ACTING_EVENTS);
         sendTrialGoal(player, result.riskObserved(), "risk",
                 Math.round(data.m1TrialMaxPressure), Math.round(data.m1TrialMaxPollution));
         player.sendSystemMessage(Component.translatable(
@@ -212,6 +225,7 @@ public final class ProjectMysteryCommands {
         data.m1TrialDeaths = 0;
         data.m1TrialRestRecoveries = 0;
         data.m1TrialCharmsConsumed = 0;
+        data.m1TrialActingEvents = 0;
         data.m1TrialMaxPressure = 0f;
         data.m1TrialMaxPollution = 0f;
     }

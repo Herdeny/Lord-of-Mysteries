@@ -91,6 +91,16 @@
               }
             }
           ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lord_of_mysteries:formula_fragment",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lord_of_mysteries:newspaper",
+          "weight": 2
         }
       ]
     }

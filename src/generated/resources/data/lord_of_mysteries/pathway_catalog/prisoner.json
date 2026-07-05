@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:prisoner",
+  "group": "mother_tree",
+  "display_name_key": "pathway.lord_of_mysteries.prisoner",
+  "description_key": "pathway.lord_of_mysteries.prisoner.description",
+  "color": "#4C1D95",
+  "status": "future",
+  "implemented_sequences": []
+}

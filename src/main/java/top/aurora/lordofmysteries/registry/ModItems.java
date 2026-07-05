@@ -19,6 +19,7 @@ import top.aurora.lordofmysteries.artifact.SpiritLanternItem;
 import top.aurora.lordofmysteries.artifact.ProtectiveCharmItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorCompassItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
+import top.aurora.lordofmysteries.knowledge.FormulaFragmentItem;
 
 /**
  * 物品注册（Forge 1.20.1）。包含材料、魔药、封印物和方块物品。
@@ -48,7 +49,7 @@ public final class ModItems {
         return ITEMS.register(name, () -> new Item(new Item.Properties()));
     }
 
-    // —— 基础材料（v0.6 MVP 材料池的当前子集）——
+    // —— 基础材料（v0.8 长期材料池的当前可玩子集）——
     // 基础灵性材料。后续可作为采集、掉落、交易、魔药制作的共同输入。
     public static final RegistryObject<Item> SPIRIT_HERB = simple("spirit_herb");
 
@@ -69,6 +70,16 @@ public final class ModItems {
     public static final RegistryObject<Item> SILVER_FILINGS = simple("silver_filings");
     public static final RegistryObject<Item> SPIRIT_SALT = simple("spirit_salt");
     public static final RegistryObject<Item> ASHEN_THREAD = simple("ashen_thread");
+    public static final RegistryObject<Item> BLANK_MANUSCRIPT =
+            simple("blank_manuscript");
+    public static final RegistryObject<Item> MYSTIC_INK = simple("mystic_ink");
+    public static final RegistryObject<Item> FORMULA_FRAGMENT = ITEMS.register(
+            "formula_fragment",
+            () -> new FormulaFragmentItem(
+                    new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> NEWSPAPER = ITEMS.register(
+            "newspaper",
+            () -> new Item(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> MYSTIC_PLAYING_CARDS = ITEMS.register(
             "mystic_playing_cards",
             () -> new Item(new Item.Properties().stacksTo(64).rarity(Rarity.UNCOMMON)));

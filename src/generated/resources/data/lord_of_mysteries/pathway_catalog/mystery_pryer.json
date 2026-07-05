@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:mystery_pryer",
+  "group": "knowledge",
+  "display_name_key": "pathway.lord_of_mysteries.mystery_pryer",
+  "description_key": "pathway.lord_of_mysteries.mystery_pryer.description",
+  "color": "#A21CAF",
+  "status": "planned",
+  "implemented_sequences": []
+}

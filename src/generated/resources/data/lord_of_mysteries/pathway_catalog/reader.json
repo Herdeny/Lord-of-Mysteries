@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:reader",
+  "group": "chaos_sea",
+  "display_name_key": "pathway.lord_of_mysteries.reader",
+  "description_key": "pathway.lord_of_mysteries.reader.description",
+  "color": "#38BDF8",
+  "status": "planned",
+  "implemented_sequences": []
+}
