@@ -10,6 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import top.aurora.lordofmysteries.ProjectMystery;
+import top.aurora.lordofmysteries.knowledge.M1TrialTracker;
 
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class RestRecoveryHandler {
@@ -33,6 +34,7 @@ public final class RestRecoveryHandler {
         data.insanityPressure = RestRecoveryRules.pressureAfterRest(before);
         data.lastRestRecoveryDay = currentDay;
         data.knownKnowledge.add(SAFE_REST);
+        M1TrialTracker.recordRest(player);
         player.sendSystemMessage(Component.translatable(
                 "message.lord_of_mysteries.rest.recovered",
                 Math.round(before - data.insanityPressure),

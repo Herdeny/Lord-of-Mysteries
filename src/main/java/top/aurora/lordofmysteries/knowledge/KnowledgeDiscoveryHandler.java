@@ -24,15 +24,19 @@ public final class KnowledgeDiscoveryHandler {
     public static void onLivingDeath(LivingDeathEvent event) {
         if (!(event.getSource().getEntity() instanceof ServerPlayer player)) return;
         EntityType<?> type = event.getEntity().getType();
+        String path = null;
         if (type == ModEntities.SHAPESHIFTER_SERPENT.get()) {
-            discover(player, "bestiary/shapeshifter_serpent");
+            path = "bestiary/shapeshifter_serpent";
         } else if (type == ModEntities.SPIRIT_WISP.get()) {
-            discover(player, "bestiary/spirit_wisp");
+            path = "bestiary/spirit_wisp";
         } else if (type == ModEntities.ASHEN_PUPPET.get()) {
-            discover(player, "bestiary/ashen_puppet");
+            path = "bestiary/ashen_puppet";
         } else if (type == ModEntities.SEER_BREAKDOWN.get()) {
-            discover(player, "bestiary/seer_breakdown");
+            path = "bestiary/seer_breakdown";
         }
+        if (path == null) return;
+        M1TrialTracker.recordOccultKill(player);
+        discover(player, path);
     }
 
     private static void discover(ServerPlayer player, String path) {

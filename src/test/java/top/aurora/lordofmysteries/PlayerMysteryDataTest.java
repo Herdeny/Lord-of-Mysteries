@@ -29,7 +29,7 @@ class PlayerMysteryDataTest {
         assertEquals(0f, d.spirituality);
         assertEquals(100f, d.spiritualityMax);
         assertEquals(0f, d.pollution);
-        assertEquals(5, d.schemaVersion);
+        assertEquals(6, d.schemaVersion);
         assertFalse(d.emotionReadActive);
         assertEquals("", d.hunterTrackedTarget);
         assertEquals(0L, d.provokeCooldownEndTick);
@@ -39,6 +39,9 @@ class PlayerMysteryDataTest {
         assertEquals("", d.paperSubstituteDimension);
         assertEquals(0, d.clownDodgeCount);
         assertEquals(Long.MIN_VALUE, d.lastRestRecoveryDay);
+        assertFalse(d.m1TrialActive);
+        assertEquals(-1, d.m1TrialBestSequence);
+        assertEquals(0L, d.m1TrialElapsedTicks);
         assertTrue(d.actingCounters.isEmpty());
     }
 
@@ -69,6 +72,13 @@ class PlayerMysteryDataTest {
         source.flameLeapCooldownEndTick = 400L;
         source.clownDodgeCount = 4;
         source.lastRestRecoveryDay = 12L;
+        source.m1TrialActive = true;
+        source.m1TrialStartTick = 100L;
+        source.m1TrialElapsedTicks = 200L;
+        source.m1TrialCampVisited = true;
+        source.m1TrialBestSequence = 7;
+        source.m1TrialOccultKills = 3;
+        source.m1TrialMaxPressure = 42f;
 
         PlayerMysteryData copied = new PlayerMysteryData();
         copied.copyFrom(source);
@@ -81,5 +91,12 @@ class PlayerMysteryDataTest {
         assertEquals(400L, copied.flameLeapCooldownEndTick);
         assertEquals(4, copied.clownDodgeCount);
         assertEquals(12L, copied.lastRestRecoveryDay);
+        assertTrue(copied.m1TrialActive);
+        assertEquals(100L, copied.m1TrialStartTick);
+        assertEquals(200L, copied.m1TrialElapsedTicks);
+        assertTrue(copied.m1TrialCampVisited);
+        assertEquals(7, copied.m1TrialBestSequence);
+        assertEquals(3, copied.m1TrialOccultKills);
+        assertEquals(42f, copied.m1TrialMaxPressure);
     }
 }

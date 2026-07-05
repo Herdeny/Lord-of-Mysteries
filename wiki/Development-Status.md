@@ -1,10 +1,10 @@
 # 开发状态
 
 <!-- project-status:start -->
-- 当前版本：**`0.5.0-1.20.1`**
+- 当前版本：**`0.6.0-1.20.1`**
 - 开发阶段：**M1 验收 Beta**（M1）
 - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-- 最后更新：**2026-07-05 09:25:26 UTC+01:00**（`2026-07-05T08:25:26Z`）
+- 最后更新：**2026-07-05 10:09:10 UTC+01:00**（`2026-07-05T09:09:10Z`）
 <!-- project-status:end -->
 
 ## 里程碑
@@ -28,7 +28,7 @@
 
 当前按 v0.6 硬门禁处于 M1 验收：占卜家序列 9–7 的代码纵切、材料、生物、能力、
 扮演、确定性新手营地、野外风险工具、睡眠恢复、精神守护符、三类自然生物、
-本地化调查日志、九段教程成就和指引命令已完成；
+本地化调查日志、九段教程成就、Capability schema 6 试炼追踪器、生物弱点反制和指引命令已完成；
 一小时生存、死亡/重连和专用服务器平衡记录仍是验收缺口。
 观众/猎人序列 9–8 与通用仪式底座作为后续阶段预研保留。
 
@@ -38,7 +38,7 @@
 - 占卜家失控体、幻形蛇、灵体微光和灰烬傀儡暂时复用原版模型。
 - 当前只接入净化封印仪式；尊名呼名、晋升饮药窗口与多人参与加成尚未实现。
 - 调查营地入口已可稳定定位，但仍是轻量程序结构。
-- 占卜家序列 9–7 尚未完成真实一小时切片和专用服务器回归。
+- 占卜家序列 9–7 已具备自动验收记录，但尚未完成真实一小时切片和专用服务器回归。
 - 专用像素美术仍待制作。
 
 ## 验证基线
@@ -48,3 +48,4 @@
 - `./gradlew clean build`
 - GitHub Build、CodeQL、Documentation Consistency、Pages、Wiki Sync
 - M1 记录表：[`docs/M1_ACCEPTANCE_CHECKLIST.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M1_ACCEPTANCE_CHECKLIST.md)
+- M1 追踪器：[`docs/M1_TRIAL_TRACKER.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M1_TRIAL_TRACKER.md)

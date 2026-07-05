@@ -16,10 +16,13 @@ import net.minecraftforge.fml.common.Mod;
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.knowledge.InvestigatorCompassItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
-import top.aurora.lordofmysteries.knowledge.M1Readiness;
 import top.aurora.lordofmysteries.knowledge.KnowledgeText;
+import top.aurora.lordofmysteries.knowledge.M1Readiness;
+import top.aurora.lordofmysteries.knowledge.M1TrialProgress;
+import top.aurora.lordofmysteries.knowledge.M1TrialTracker;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
+import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.registry.ModItems;
 
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -55,7 +58,16 @@ public final class ProjectMysteryCommands {
                 .then(Commands.literal("journal").executes(context ->
                         showJournal(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("m1check").executes(context ->
-                        showM1Check(context.getSource().getPlayerOrException()))));
+                        showM1Check(context.getSource().getPlayerOrException())))
+                .then(Commands.literal("trial")
+                        .then(Commands.literal("start").executes(context ->
+                                startTrial(context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("status").executes(context ->
+                                showTrial(context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("stop").executes(context ->
+                                stopTrial(context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("reset").executes(context ->
+                                resetTrial(context.getSource().getPlayerOrException())))));
     }
 
     private static int showStatus(ServerPlayer player) {
@@ -83,6 +95,125 @@ public final class ProjectMysteryCommands {
                 "command.lord_of_mysteries.m1check." + stage.name().toLowerCase())
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
         return 1;
+    }
+
+    private static int startTrial(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.m1TrialActive) {
+            player.sendSystemMessage(Component.translatable(
+                    "command.lord_of_mysteries.trial.already_active")
+                    .withStyle(ChatFormatting.YELLOW));
+            return 0;
+        }
+        clearTrial(data);
+        data.m1TrialActive = true;
+        data.m1TrialStartTick = player.level().getGameTime();
+        if (SeerPotionItem.SEER_PATHWAY.equals(data.pathway)) {
+            data.m1TrialBestSequence = data.sequence;
+        }
+        M1TrialTracker.refresh(player, data);
+        player.sendSystemMessage(Component.translatable(
+                "command.lord_of_mysteries.trial.started")
+                .withStyle(ChatFormatting.GOLD));
+        showTrial(player);
+        return 1;
+    }
+
+    private static int stopTrial(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (!data.m1TrialActive) {
+            player.sendSystemMessage(Component.translatable(
+                    "command.lord_of_mysteries.trial.not_active")
+                    .withStyle(ChatFormatting.YELLOW));
+            return 0;
+        }
+        M1TrialTracker.refresh(player, data);
+        data.m1TrialElapsedTicks = trialElapsed(player, data);
+        data.m1TrialStartTick = 0L;
+        data.m1TrialActive = false;
+        player.sendSystemMessage(Component.translatable(
+                "command.lord_of_mysteries.trial.stopped")
+                .withStyle(ChatFormatting.YELLOW));
+        showTrial(player);
+        return 1;
+    }
+
+    private static int resetTrial(ServerPlayer player) {
+        clearTrial(MysteryCapability.get(player));
+        player.sendSystemMessage(Component.translatable(
+                "command.lord_of_mysteries.trial.reset")
+                .withStyle(ChatFormatting.GRAY));
+        return 1;
+    }
+
+    private static int showTrial(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.m1TrialActive) M1TrialTracker.refresh(player, data);
+        long elapsed = trialElapsed(player, data);
+        M1TrialProgress.Result result = M1TrialProgress.evaluate(
+                elapsed,
+                data.m1TrialCampVisited,
+                data.m1TrialBestSequence,
+                data.m1TrialOccultKills,
+                data.m1TrialMaxPressure,
+                data.m1TrialMaxPollution);
+        player.sendSystemMessage(Component.translatable(
+                "command.lord_of_mysteries.trial.title",
+                M1TrialProgress.formatDuration(elapsed),
+                Component.translatable(data.m1TrialActive
+                        ? "command.lord_of_mysteries.trial.active"
+                        : "command.lord_of_mysteries.trial.inactive"))
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
+        sendTrialGoal(player, result.durationComplete(), "duration",
+                M1TrialProgress.formatDuration(elapsed));
+        sendTrialGoal(player, result.campVisited(), "camp");
+        sendTrialGoal(player, result.sequenceComplete(), "sequence",
+                data.m1TrialBestSequence < 0 ? "-" : data.m1TrialBestSequence);
+        sendTrialGoal(player, result.killsComplete(), "kills",
+                data.m1TrialOccultKills, M1TrialProgress.REQUIRED_OCCULT_KILLS);
+        sendTrialGoal(player, result.riskObserved(), "risk",
+                Math.round(data.m1TrialMaxPressure), Math.round(data.m1TrialMaxPollution));
+        player.sendSystemMessage(Component.translatable(
+                "command.lord_of_mysteries.trial.stats",
+                data.m1TrialDeaths,
+                data.m1TrialRestRecoveries,
+                data.m1TrialCharmsConsumed)
+                .withStyle(ChatFormatting.DARK_GRAY));
+        player.sendSystemMessage(Component.translatable(
+                result.passed()
+                        ? "command.lord_of_mysteries.trial.passed"
+                        : "command.lord_of_mysteries.trial.pending",
+                result.completedGoals())
+                .withStyle(result.passed() ? ChatFormatting.GREEN : ChatFormatting.YELLOW));
+        return Math.max(1, result.completedGoals());
+    }
+
+    private static void sendTrialGoal(ServerPlayer player, boolean complete,
+                                      String goal, Object... args) {
+        player.sendSystemMessage(Component.literal(complete ? "✔ " : "· ")
+                .append(Component.translatable(
+                        "command.lord_of_mysteries.trial.goal." + goal, args))
+                .withStyle(complete ? ChatFormatting.GREEN : ChatFormatting.GRAY));
+    }
+
+    private static long trialElapsed(ServerPlayer player, PlayerMysteryData data) {
+        if (!data.m1TrialActive) return data.m1TrialElapsedTicks;
+        return data.m1TrialElapsedTicks + Math.max(
+                0L, player.level().getGameTime() - data.m1TrialStartTick);
+    }
+
+    private static void clearTrial(PlayerMysteryData data) {
+        data.m1TrialActive = false;
+        data.m1TrialStartTick = 0L;
+        data.m1TrialElapsedTicks = 0L;
+        data.m1TrialCampVisited = false;
+        data.m1TrialBestSequence = -1;
+        data.m1TrialOccultKills = 0;
+        data.m1TrialDeaths = 0;
+        data.m1TrialRestRecoveries = 0;
+        data.m1TrialCharmsConsumed = 0;
+        data.m1TrialMaxPressure = 0f;
+        data.m1TrialMaxPollution = 0f;
     }
 
     private static ItemStack findCompass(ServerPlayer player) {

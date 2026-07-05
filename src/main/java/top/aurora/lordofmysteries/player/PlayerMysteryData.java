@@ -71,6 +71,17 @@ public class PlayerMysteryData {
     public long airBulletCooldownEndTick = 0L;
     public long stageIllusionCooldownEndTick = 0L;
     public long lastRestRecoveryDay = Long.MIN_VALUE;
+    public boolean m1TrialActive = false;
+    public long m1TrialStartTick = 0L;
+    public long m1TrialElapsedTicks = 0L;
+    public boolean m1TrialCampVisited = false;
+    public int m1TrialBestSequence = -1;
+    public int m1TrialOccultKills = 0;
+    public int m1TrialDeaths = 0;
+    public int m1TrialRestRecoveries = 0;
+    public int m1TrialCharmsConsumed = 0;
+    public float m1TrialMaxPressure = 0f;
+    public float m1TrialMaxPollution = 0f;
 
     // 知识系统。保存玩家已经解锁的知识条目 ID，供手册、仪式和配方门槛读取。
     public Set<ResourceLocation> knownKnowledge = new HashSet<>();
@@ -84,7 +95,7 @@ public class PlayerMysteryData {
     public Map<ResourceLocation, Integer> orgReputation = new HashMap<>();
 
     // 序列化版本号（用于迁移）。未来字段改名或结构升级时，可根据旧版本补默认值。
-    public int schemaVersion = 5;
+    public int schemaVersion = 6;
 
     /** 默认构造器需要保留，Capability Provider 和测试都会直接创建空数据。 */
     public PlayerMysteryData() {}
@@ -144,6 +155,17 @@ public class PlayerMysteryData {
         this.airBulletCooldownEndTick = src.airBulletCooldownEndTick;
         this.stageIllusionCooldownEndTick = src.stageIllusionCooldownEndTick;
         this.lastRestRecoveryDay = src.lastRestRecoveryDay;
+        this.m1TrialActive = src.m1TrialActive;
+        this.m1TrialStartTick = src.m1TrialStartTick;
+        this.m1TrialElapsedTicks = src.m1TrialElapsedTicks;
+        this.m1TrialCampVisited = src.m1TrialCampVisited;
+        this.m1TrialBestSequence = src.m1TrialBestSequence;
+        this.m1TrialOccultKills = src.m1TrialOccultKills;
+        this.m1TrialDeaths = src.m1TrialDeaths;
+        this.m1TrialRestRecoveries = src.m1TrialRestRecoveries;
+        this.m1TrialCharmsConsumed = src.m1TrialCharmsConsumed;
+        this.m1TrialMaxPressure = src.m1TrialMaxPressure;
+        this.m1TrialMaxPollution = src.m1TrialMaxPollution;
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
         this.actingHistory = new HashMap<>(src.actingHistory);
         this.actingCounters = new HashMap<>(src.actingCounters);
@@ -200,6 +222,17 @@ public class PlayerMysteryData {
         tag.putLong("air_bullet_cd_end", airBulletCooldownEndTick);
         tag.putLong("stage_illusion_cd_end", stageIllusionCooldownEndTick);
         tag.putLong("last_rest_recovery_day", lastRestRecoveryDay);
+        tag.putBoolean("m1_trial_active", m1TrialActive);
+        tag.putLong("m1_trial_start_tick", m1TrialStartTick);
+        tag.putLong("m1_trial_elapsed_ticks", m1TrialElapsedTicks);
+        tag.putBoolean("m1_trial_camp_visited", m1TrialCampVisited);
+        tag.putInt("m1_trial_best_sequence", m1TrialBestSequence);
+        tag.putInt("m1_trial_occult_kills", m1TrialOccultKills);
+        tag.putInt("m1_trial_deaths", m1TrialDeaths);
+        tag.putInt("m1_trial_rest_recoveries", m1TrialRestRecoveries);
+        tag.putInt("m1_trial_charms_consumed", m1TrialCharmsConsumed);
+        tag.putFloat("m1_trial_max_pressure", m1TrialMaxPressure);
+        tag.putFloat("m1_trial_max_pollution", m1TrialMaxPollution);
         tag.putInt("schema_version", schemaVersion);
 
         ListTag known = new ListTag();
@@ -274,6 +307,18 @@ public class PlayerMysteryData {
         stageIllusionCooldownEndTick = tag.getLong("stage_illusion_cd_end");
         lastRestRecoveryDay = tag.contains("last_rest_recovery_day")
                 ? tag.getLong("last_rest_recovery_day") : Long.MIN_VALUE;
+        m1TrialActive = tag.getBoolean("m1_trial_active");
+        m1TrialStartTick = tag.getLong("m1_trial_start_tick");
+        m1TrialElapsedTicks = tag.getLong("m1_trial_elapsed_ticks");
+        m1TrialCampVisited = tag.getBoolean("m1_trial_camp_visited");
+        m1TrialBestSequence = tag.contains("m1_trial_best_sequence")
+                ? tag.getInt("m1_trial_best_sequence") : -1;
+        m1TrialOccultKills = tag.getInt("m1_trial_occult_kills");
+        m1TrialDeaths = tag.getInt("m1_trial_deaths");
+        m1TrialRestRecoveries = tag.getInt("m1_trial_rest_recoveries");
+        m1TrialCharmsConsumed = tag.getInt("m1_trial_charms_consumed");
+        m1TrialMaxPressure = tag.getFloat("m1_trial_max_pressure");
+        m1TrialMaxPollution = tag.getFloat("m1_trial_max_pollution");
         schemaVersion = tag.contains("schema_version") ? tag.getInt("schema_version") : 1;
 
         knownKnowledge.clear();

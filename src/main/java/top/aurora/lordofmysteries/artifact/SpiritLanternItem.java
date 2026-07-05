@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import top.aurora.lordofmysteries.ability.SpiritualityCost;
+import top.aurora.lordofmysteries.entity.ShapeshifterSerpentEntity;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 
@@ -53,6 +54,9 @@ public final class SpiritLanternItem extends Item {
         for (Monster monster : revealed) {
             monster.addEffect(new MobEffectInstance(
                     MobEffects.GLOWING, 200, 0, false, false, true));
+            if (monster instanceof ShapeshifterSerpentEntity serpent) {
+                serpent.revealFor(200);
+            }
         }
 
         stack.hurtAndBreak(1, serverPlayer, broken -> broken.broadcastBreakEvent(hand));

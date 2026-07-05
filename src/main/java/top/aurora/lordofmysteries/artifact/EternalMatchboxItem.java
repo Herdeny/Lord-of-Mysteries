@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
+import top.aurora.lordofmysteries.entity.SpiritWispEntity;
 
 public final class EternalMatchboxItem extends Item {
 
@@ -66,7 +67,8 @@ public final class EternalMatchboxItem extends Item {
             return InteractionResult.FAIL;
         }
         if (!player.level().isClientSide()) {
-            float damage = target instanceof SeerBreakdownEntity ? 12f : 6f;
+            float damage = target instanceof SeerBreakdownEntity
+                    || target instanceof SpiritWispEntity ? 12f : 6f;
             target.hurt(player.damageSources().magic(), damage);
             target.setSecondsOnFire(5);
             payCost(player);

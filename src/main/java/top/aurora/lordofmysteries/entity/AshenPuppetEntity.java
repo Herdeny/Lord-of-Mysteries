@@ -17,6 +17,19 @@ public final class AshenPuppetEntity extends Husk {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        if (level().isClientSide() || tickCount % 40 != 0
+                || !isInWaterRainOrBubble()) return;
+        hurt(damageSources().drown(), 2f);
+        if (level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.ASH,
+                    getX(), getY() + 1d, getZ(),
+                    16, 0.35d, 0.55d, 0.35d, 0.03d);
+        }
+    }
+
+    @Override
     public boolean doHurtTarget(Entity target) {
         boolean hit = super.doHurtTarget(target);
         if (hit && target instanceof LivingEntity living) {

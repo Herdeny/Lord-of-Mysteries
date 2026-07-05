@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 
+import top.aurora.lordofmysteries.knowledge.M1TrialTracker;
 import top.aurora.lordofmysteries.registry.ModItems;
 
 public final class ProtectiveCharmService {
@@ -20,6 +21,7 @@ public final class ProtectiveCharmService {
             ItemStack stack = player.getInventory().getItem(slot);
             if (!stack.is(ModItems.PROTECTIVE_CHARM.get())) continue;
             if (!player.getAbilities().instabuild) stack.shrink(1);
+            M1TrialTracker.recordCharm(player);
             player.sendSystemMessage(Component.translatable(
                     "message.lord_of_mysteries.protective_charm.absorbed")
                     .withStyle(ChatFormatting.LIGHT_PURPLE));

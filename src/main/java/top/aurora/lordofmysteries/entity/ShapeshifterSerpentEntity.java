@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 public final class ShapeshifterSerpentEntity extends CaveSpider {
 
     private boolean revealed;
+    private long forcedRevealUntilTick;
 
     public ShapeshifterSerpentEntity(
             EntityType<? extends ShapeshifterSerpentEntity> type, Level level) {
@@ -23,11 +24,13 @@ public final class ShapeshifterSerpentEntity extends CaveSpider {
         if (level().isClientSide() || tickCount % 10 != 0) return;
 
         Player nearby = level().getNearestPlayer(this, 7d);
-        boolean shouldReveal = nearby != null && nearby.isAlive() && !nearby.isCreative();
+        boolean forcedReveal = level().getGameTime() < forcedRevealUntilTick;
+        boolean shouldReveal = forcedReveal
+                || nearby != null && nearby.isAlive() && !nearby.isCreative();
         if (shouldReveal && !revealed) {
             revealed = true;
             setInvisible(false);
-            setTarget(nearby);
+            if (nearby != null && !nearby.isCreative()) setTarget(nearby);
             if (level() instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(ParticleTypes.POOF,
                         getX(), getY() + 0.4d, getZ(),
@@ -37,5 +40,12 @@ public final class ShapeshifterSerpentEntity extends CaveSpider {
             revealed = false;
             setInvisible(true);
         }
+    }
+
+    public void revealFor(int durationTicks) {
+        forcedRevealUntilTick = Math.max(
+                forcedRevealUntilTick, level().getGameTime() + durationTicks);
+        revealed = true;
+        setInvisible(false);
     }
 }
