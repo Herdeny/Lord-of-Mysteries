@@ -5,5 +5,7 @@
   "description_key": "pathway.lord_of_mysteries.apprentice.description",
   "color": "#60A5FA",
   "status": "m2_foundation",
-  "implemented_sequences": []
+  "implemented_sequences": [
+    9
+  ]
 }

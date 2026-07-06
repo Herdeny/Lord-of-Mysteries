@@ -19,6 +19,7 @@ import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
+import top.aurora.lordofmysteries.potion.M2PathwayPotionItem;
 
 /**
  * 灵视被动能力（批次1，设计文档 §6）。
@@ -39,6 +40,7 @@ public final class SpiritVisionHandler {
 
     /** 每秒扣费值（0.8 灵性/s）。 */
     public static final float DRAIN_PER_SECOND = 0.8f;
+    public static final float APPRENTICE_DRAIN_PER_SECOND = 0.9f;
     /** 半径（格）。 */
     public static final double SCAN_RADIUS = 32.0;
 
@@ -49,23 +51,27 @@ public final class SpiritVisionHandler {
      */
     public static Boolean toggle(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
-        if (!SeerPotionItem.SEER_PATHWAY.equals(data.pathway) || data.sequence < 0 || data.sequence > 9) {
+        if (!hasSpiritVision(data)) {
             return null;
         }
 
         if (data.spiritVisionActive) {
             data.spiritVisionActive = false;
-            player.sendSystemMessage(Component.literal("§7[灵视] 已关闭"));
+            player.sendSystemMessage(Component.translatable(
+                    "message.lord_of_mysteries.spirit_vision.disabled"));
             return Boolean.FALSE;
         }
 
         // 开启前至少要有 1 灵性；否则给出提示但不打开。
         if (data.spirituality < 1f) {
-            player.sendSystemMessage(Component.literal("§c灵性不足，无法开启灵视"));
+            player.sendSystemMessage(Component.translatable(
+                    "message.lord_of_mysteries.spirit_vision.insufficient"));
             return Boolean.FALSE;
         }
         data.spiritVisionActive = true;
-        player.sendSystemMessage(Component.literal("§b[灵视] 已开启（0.8/s）"));
+        float cost = drainFor(data);
+        player.sendSystemMessage(Component.translatable(
+                "message.lord_of_mysteries.spirit_vision.enabled", cost));
         return Boolean.TRUE;
     }
 
@@ -83,9 +89,10 @@ public final class SpiritVisionHandler {
 
         // 每 20 tick 扣 0.8：等价于 0.8/s。这个粒度对玩家可感（HUD 1秒变化一次），也省算力。
         if (sp.tickCount % 20 == 0) {
-            if (!SpiritualityCost.tryConsume(data, DRAIN_PER_SECOND)) {
+            if (!SpiritualityCost.tryConsume(data, drainFor(data))) {
                 data.spiritVisionActive = false;
-                sp.sendSystemMessage(Component.literal("§c灵性耗尽，灵视自动关闭"));
+                sp.sendSystemMessage(Component.translatable(
+                        "message.lord_of_mysteries.spirit_vision.exhausted"));
                 return;
             }
         }
@@ -127,4 +134,17 @@ public final class SpiritVisionHandler {
 
     /** 实体 ID → 颜色的轻量记录。网络包用。 */
     public record EntityColor(int entityId, SpiritFactionColor color) {}
+
+    private static boolean hasSpiritVision(PlayerMysteryData data) {
+        return data.sequence >= 0
+                && data.sequence <= 9
+                && (SeerPotionItem.SEER_PATHWAY.equals(data.pathway)
+                    || M2PathwayPotionItem.Pathway.APPRENTICE.id()
+                            .equals(data.pathway));
+    }
+
+    private static float drainFor(PlayerMysteryData data) {
+        return M2PathwayPotionItem.Pathway.APPRENTICE.id().equals(data.pathway)
+                ? APPRENTICE_DRAIN_PER_SECOND : DRAIN_PER_SECOND;
+    }
 }

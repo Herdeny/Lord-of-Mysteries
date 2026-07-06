@@ -12,9 +12,10 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 
 import top.aurora.lordofmysteries.core.config.ServerConfig;
-import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
+import net.minecraft.world.entity.Mob;
 import top.aurora.lordofmysteries.registry.ModEntities;
 import top.aurora.lordofmysteries.artifact.ProtectiveCharmService;
+import top.aurora.lordofmysteries.potion.M2PathwayPotionItem;
 
 public final class InsanityEventHandler {
 
@@ -74,7 +75,7 @@ public final class InsanityEventHandler {
         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 600, 10, false, false));
         player.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 600, 4, false, false));
         player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 300, 0, false, false));
-        spawnBreakdownBody(player);
+        spawnBreakdownBody(player, data);
         player.sendSystemMessage(Component.translatable(
                 "message.lord_of_mysteries.insanity.breakdown_recoverable")
                 .withStyle(ChatFormatting.DARK_RED));
@@ -94,13 +95,25 @@ public final class InsanityEventHandler {
                 .withStyle(ChatFormatting.DARK_RED));
     }
 
-    private static void spawnBreakdownBody(ServerPlayer player) {
+    private static void spawnBreakdownBody(ServerPlayer player,
+                                           PlayerMysteryData data) {
         if (!(player.level() instanceof ServerLevel level)) return;
-        SeerBreakdownEntity body = ModEntities.SEER_BREAKDOWN.get().create(level);
+        Mob body;
+        String translationKey;
+        if (M2PathwayPotionItem.Pathway.THIEF.id().equals(data.pathway)) {
+            body = ModEntities.THIEF_BREAKDOWN.get().create(level);
+            translationKey = "entity.lord_of_mysteries.thief_breakdown";
+        } else if (M2PathwayPotionItem.Pathway.APPRENTICE.id().equals(data.pathway)) {
+            body = ModEntities.APPRENTICE_BREAKDOWN.get().create(level);
+            translationKey = "entity.lord_of_mysteries.apprentice_breakdown";
+        } else {
+            body = ModEntities.SEER_BREAKDOWN.get().create(level);
+            translationKey = "entity.lord_of_mysteries.seer_breakdown";
+        }
         if (body == null) return;
         body.moveTo(player.getX() + 1.5, player.getY(), player.getZ() + 1.5,
                 player.getYRot(), player.getXRot());
-        body.setCustomName(Component.translatable("entity.lord_of_mysteries.seer_breakdown"));
+        body.setCustomName(Component.translatable(translationKey));
         body.setCustomNameVisible(true);
         body.setGlowingTag(true);
         body.setTarget(player);

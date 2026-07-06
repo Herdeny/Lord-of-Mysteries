@@ -8,6 +8,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,6 +22,8 @@ import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
 import top.aurora.lordofmysteries.entity.ShapeshifterSerpentEntity;
 import top.aurora.lordofmysteries.entity.SpiritWispEntity;
 import top.aurora.lordofmysteries.entity.AshenPuppetEntity;
+import top.aurora.lordofmysteries.entity.ThiefBreakdownEntity;
+import top.aurora.lordofmysteries.entity.ApprenticeBreakdownEntity;
 
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModEntities {
@@ -36,6 +39,22 @@ public final class ModEntities {
                             .sized(0.6f, 1.95f)
                             .clientTrackingRange(8)
                             .build(ProjectMystery.MOD_ID + ":seer_breakdown"));
+
+    public static final RegistryObject<EntityType<ThiefBreakdownEntity>> THIEF_BREAKDOWN =
+            ENTITIES.register("thief_breakdown", () ->
+                    EntityType.Builder.of(ThiefBreakdownEntity::new, MobCategory.MONSTER)
+                            .sized(0.6f, 1.95f)
+                            .clientTrackingRange(8)
+                            .build(ProjectMystery.MOD_ID + ":thief_breakdown"));
+
+    public static final RegistryObject<EntityType<ApprenticeBreakdownEntity>>
+            APPRENTICE_BREAKDOWN = ENTITIES.register("apprentice_breakdown", () ->
+                    EntityType.Builder.of(
+                                    ApprenticeBreakdownEntity::new,
+                                    MobCategory.MONSTER)
+                            .sized(0.6f, 2.9f)
+                            .clientTrackingRange(8)
+                            .build(ProjectMystery.MOD_ID + ":apprentice_breakdown"));
 
     public static final RegistryObject<EntityType<ShapeshifterSerpentEntity>>
             SHAPESHIFTER_SERPENT = ENTITIES.register("shapeshifter_serpent", () ->
@@ -65,6 +84,19 @@ public final class ModEntities {
                 .add(Attributes.ATTACK_DAMAGE, 6.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.30)
                 .add(Attributes.ARMOR, 4.0)
+                .add(Attributes.FOLLOW_RANGE, 32.0)
+                .build());
+        event.put(THIEF_BREAKDOWN.get(), Zombie.createAttributes()
+                .add(Attributes.MAX_HEALTH, 28.0)
+                .add(Attributes.ATTACK_DAMAGE, 5.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.34)
+                .add(Attributes.ARMOR, 2.0)
+                .add(Attributes.FOLLOW_RANGE, 32.0)
+                .build());
+        event.put(APPRENTICE_BREAKDOWN.get(), EnderMan.createAttributes()
+                .add(Attributes.MAX_HEALTH, 34.0)
+                .add(Attributes.ATTACK_DAMAGE, 6.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.30)
                 .add(Attributes.FOLLOW_RANGE, 32.0)
                 .build());
         event.put(SHAPESHIFTER_SERPENT.get(), Spider.createAttributes()

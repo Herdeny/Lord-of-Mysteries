@@ -32,7 +32,7 @@ LOM.meta = {
 /* ── 里程碑路线图（由 roadmap.json 生成） ── */
 LOM.roadmap = roadmapMeta.milestones || [];
 
-/* ── 三途径概览 ── */
+/* ── 五途径概览 ── */
 LOM.pathwaysOverview = [
   { id: "seer", name: "占卜家", en: "Seer", accent: "#7c5cff",
     desc: "以观察、占卜与灵视见长。序列 9–7 已形成魔药、扮演、战斗、材料与引导纵切。",
@@ -46,11 +46,11 @@ LOM.pathwaysOverview = [
     traits: ["情绪读取", "行为预判", "表层读心", "心理暗示"],
     spirit: "序列9 112 · 序列8 138", status: "已实装 · M2预研" },
   { id: "apprentice", name: "学徒", en: "Apprentice", accent: "#d4af37",
-    desc: "空间、记录与逃脱的途径。v0.8 已进入 M2 数据和传闻预研，尚不可玩。",
-    traits: ["空间", "记录", "逃脱", "门径"], baseSpirit: 100, growth: 24, status: "M2 数据预研" },
+    desc: "空间、记录与逃脱的途径。序列 9 已具备灵性视野、空间戏法和知识副本循环。",
+    traits: ["空间", "记录", "知识副本", "门径"], spirit: "序列9 115", status: "序列9已实装 · M2预研" },
   { id: "thief", name: "偷盗者", en: "Thief", accent: "#74b86f",
-    desc: "窃取、欺诈与解密的途径。v0.8 已进入 M2 数据和传闻预研，尚不可玩。",
-    traits: ["窃取", "欺诈", "解密", "隐匿"], baseSpirit: 100, growth: 20, status: "M2 数据预研" }
+    desc: "窃取、欺诈与解密的途径。序列 9 已具备行窃、潜影和应急脱身循环。",
+    traits: ["窃取", "潜影", "脱身", "隐匿"], spirit: "序列9 108", status: "序列9已实装 · M2预研" }
 ];
 
 /* ── 占卜家序列阶梯（9→0，v0.8 M1 聚焦序列9-7） ── */
@@ -90,6 +90,15 @@ LOM.hunterSequences = [
   { pathway: "猎人", seq: 8, name: "挑衅者 Provoker", state: "active", spiritMax: 142,
     abilities: ["挑衅", "激怒", "战斗意志"],
     desc: "吸引低抗性敌人仇恨、激怒单个目标，并在被围攻时获得减伤。已实现，作为 M2 预研保留。" }
+];
+
+LOM.foundationSequences = [
+  { pathway: "偷盗者", seq: 9, name: "偷盗者 Thief", state: "active", spiritMax: 108,
+    abilities: ["妙手空空", "潜影步", "应急脱身"],
+    desc: "服务端抽样目标掉落，带察觉概率、五分钟目标锁与默认关闭的 PvP 行窃。" },
+  { pathway: "学徒", seq: 9, name: "学徒 Apprentice", state: "active", spiritMax: 115,
+    abilities: ["灵性视野", "小空间戏法", "稳定灵墨"],
+    desc: "移动短距离掉落物，并把已知稳定知识制作成可交易、可学习的灵墨副本。" }
 ];
 
 /* ── 详细条目（卡片 + 详情弹窗） ── */
@@ -174,7 +183,7 @@ LOM.entries = [
   { type: "system", id: "lord_of_mysteries:m1_trial_tracker", name: "M1 一小时试炼追踪器", en: "M1 One-Hour Trial Tracker",
     summary: "持久化记录一小时纵切的六项目标和死亡、恢复、守护符三项平衡统计。",
     tags: ["系统", "验收", "命令", "持久化", "M1"],
-    details: [["命令", "/pm trial start|status|stop|reset"], ["目标", "一小时 · 营地 · 序列7 · 3次狩猎 · 2次扮演 · 风险峰值25"], ["附加", "死亡 · 睡眠恢复 · 守护符消耗"], ["存档", "Capability schema 7"]],
+    details: [["命令", "/pm trial start|status|stop|reset"], ["目标", "一小时 · 营地 · 序列7 · 3次狩猎 · 2次扮演 · 风险峰值25"], ["附加", "死亡 · 睡眠恢复 · 守护符消耗"], ["存档", "Capability schema 8"]],
     long: "追踪器使用服务端世界时间和权威事件自动记录，只有正收益扮演计数。状态在死亡、跨维度、重登与服务器重启后保留；6/6 只提供机器证据，不能替代专用服务器、死亡重连与人工平衡验收。" },
   { type: "system", id: "lord_of_mysteries:occult_handbook", name: "九章神秘学手账", en: "Nine-Chapter Occult Handbook",
     summary: "主动查询式引导系统，按普通人、途径、传闻和未来邀请逐步解锁九章。",
@@ -184,7 +193,7 @@ LOM.entries = [
   { type: "system", id: "lord_of_mysteries:v08_datapack_pipeline", name: "v0.8 数据生产线", en: "v0.8 Datapack Pipeline",
     summary: "CSV 主表驱动 22 途径目录和首批 M2 配方，Gradle 自动生成并执行一致性检查。",
     tags: ["系统", "数据包", "CSV", "M2"],
-    details: [["途径", "docs/pathways_master.csv · 22 条"], ["配方", "docs/recipes_master.csv"], ["生成", "scripts/gen_datapack.py"], ["产物", "26 个 JSON"], ["门禁", "Gradle processResources + check"]],
+    details: [["途径", "docs/pathways_master.csv · 22 条"], ["配方", "docs/recipes_master.csv · 5 条"], ["生成", "scripts/gen_datapack.py"], ["产物", "28 个 JSON"], ["门禁", "Gradle processResources + check"]],
     long: "v0.8 D9 的首批落地。人工维护 CSV 和生成器，生成 JSON 进入 src/generated/resources；直接编辑生成文件不是受支持的工作流。" },
   { type: "entity", id: "lord_of_mysteries:shapeshifter_serpent", name: "幻形蛇", en: "Shapeshifter Serpent",
     summary: "主世界低概率生成的隐匿非凡生物，靠近玩家后显形并掉落魔术师主材料。",
@@ -201,6 +210,16 @@ LOM.entries = [
     tags: ["生物", "亡灵", "材料", "M1"],
     details: [["生成", "主世界，权重 5"], ["生命", "24"], ["攻击", "5"], ["弱点", "水/雨/气泡中每 2 秒受 2 伤害"], ["掉落", "灰烬丝线 / 灰烬粉"]],
     long: "灰烬傀儡承担低序列材料守门者角色。它比普通僵尸更耐打但更慢，攻击附带 5 秒虚弱和 3 秒缓慢；水、雨与气泡会持续侵蚀它，当前复用尸壳渲染。" },
+  { type: "entity", id: "lord_of_mysteries:thief_breakdown", name: "窃影失控体", en: "Shadow-Thief Breakdown",
+    summary: "偷盗者完整失控后留下的高速异常体，会以烟幕、致盲和闪避扰乱追击者。",
+    tags: ["生物", "失控体", "偷盗者", "序列9", "M2"],
+    details: [["来源", "偷盗者完整失控"], ["行为", "高速近战 · 周期烟幕"], ["反制", "魔法与环境伤害不触发闪避"], ["掉落", "影栖鼬之爪 · 灵性盐"]],
+    long: "窃影失控体复用僵尸模型作为功能占位。它会周期性令附近玩家致盲，并有 15% 概率闪避普通伤害；魔法和环境伤害仍正常结算。" },
+  { type: "entity", id: "lord_of_mysteries:apprentice_breakdown", name: "裂门失控体", en: "Rift-Door Breakdown",
+    summary: "学徒完整失控形成的空间异常体，以末影移动、减速和混乱压缩玩家的安全距离。",
+    tags: ["生物", "失控体", "学徒", "序列9", "M2"],
+    details: [["来源", "学徒完整失控"], ["行为", "空间移动 · 近战"], ["压制", "减速 · 混乱"], ["掉落", "星辉苔藓 · 神秘墨水"]],
+    long: "裂门失控体复用末影人模型并持续释放传送门粒子。它保留空间移动能力，同时通过近身减速与混乱迫使玩家重新选择交战位置。" },
   { type: "ability", id: "lord_of_mysteries:emotion_read", name: "情绪读取", en: "Emotion Read",
     summary: "观众序列 9 主动开关能力。持续读取视线目标情绪，每秒消耗 0.5 灵性。",
     tags: ["能力", "观众", "序列9", "M2"],
@@ -252,6 +271,31 @@ LOM.entries = [
     tags: ["能力", "猎人", "序列8", "被动", "M2"],
     details: [["触发", "至少 3 名敌人锁定"], ["减伤", "15%"], ["持续", "10 秒"], ["冷却", "45 秒"]],
     long: "服务端周期性统计 16 格内锁定玩家的生物。条件满足且冷却就绪时触发，持续时间内对生物造成的来袭伤害统一乘以 0.85。" },
+  { type: "ability", id: "lord_of_mysteries:sleight_of_hand", name: "妙手空空", en: "Sleight of Hand",
+    summary: "偷盗者序列 9 主能力，从近距离目标的战利品池抽取一件物品。",
+    tags: ["能力", "偷盗者", "序列9", "主动", "M2"],
+    details: [["按键", "Y"], ["灵性消耗", "12"], ["冷却", "8 秒"], ["范围", "3 格"], ["防刷", "同一目标 5 分钟"]],
+    long: "目标、距离、冷却、灵性和掉落抽样全部由服务端校验。玩家行窃默认由 pvp_theft_enabled=false 禁止；行动存在被察觉概率，不提供无风险资源复制。" },
+  { type: "ability", id: "lord_of_mysteries:shadow_step", name: "潜影步", en: "Shadow Step",
+    summary: "偷盗者序列 9 潜行能力，持续消耗灵性换取更快、更隐蔽的移动。",
+    tags: ["能力", "偷盗者", "序列9", "持续", "M2"],
+    details: [["触发", "潜行"], ["灵性消耗", "0.8 / 秒"], ["效果", "移动加速"], ["扮演", "连续 30 秒不受伤"]],
+    long: "潜影步由服务端按秒扣费，灵性不足时自动结束。连续保持潜行且 30 秒内未受伤会推进“幽灵般穿行”的扮演事件。" },
+  { type: "ability", id: "lord_of_mysteries:emergency_escape", name: "应急脱身", en: "Emergency Escape",
+    summary: "偷盗者序列 9 的短距离撤离动作，向后翻滚并获得极短受伤保护。",
+    tags: ["能力", "偷盗者", "序列9", "位移", "M2"],
+    details: [["按键", "U"], ["灵性消耗", "15"], ["冷却", "30 秒"], ["效果", "后撤翻滚"], ["保护", "0.5 秒"]],
+    long: "位移方向基于玩家朝向反向计算，并由服务端结算速度和短暂无敌窗口；能力用于打断危险接触，不提供长距离穿墙。" },
+  { type: "ability", id: "lord_of_mysteries:space_trick", name: "小空间戏法", en: "Minor Spatial Trick",
+    summary: "学徒序列 9 主能力，把视野内最近的掉落物拉到玩家身边。",
+    tags: ["能力", "学徒", "序列9", "主动", "M2"],
+    details: [["按键", "Y"], ["灵性消耗", "8"], ["冷却", "10 秒"], ["范围", "6 格"], ["目标", "可见掉落物"]],
+    long: "服务端选择六格内最近且可见的 ItemEntity，再执行短距离空间移动。它不穿越容器权限，也不会复制或直接修改物品数量。" },
+  { type: "ability", id: "lord_of_mysteries:stable_ink", name: "稳定灵墨", en: "Stable Spirit Ink",
+    summary: "学徒序列 9 将已知知识制作成可交易副本，供其他玩家阅读解锁。",
+    tags: ["能力", "学徒", "序列9", "知识", "M2"],
+    details: [["按键", "U"], ["灵性消耗", "10"], ["冷却", "15 秒"], ["材料", "空白手稿 + 神秘墨水"], ["产物", "灵墨知识副本"]],
+    long: "知识 ID 和作者 UUID 写入物品 NBT。其他玩家阅读副本后解锁对应知识；作者在线时收到“传授知识”扮演收益，作者本人不能通过反复阅读刷取进度。" },
 
   /* 系统机制 system */
   { type: "system", id: "credibility", name: "占卜可信度", en: "Divination Credibility",
@@ -324,6 +368,16 @@ LOM.entries = [
       ["核心材料", "灵性草药 · 火药"], ["品质材料", "红石（+0.2）"],
       ["晋升要求", "猎人序列9 · 消化度100%"]],
     long: "依次投入灵性草药、火药与可选红石炼制。服务端要求玩家处于猎人序列 9 且消化度达到 100%；晋升后灵性上限提升至 142、失控压力增加 12，并解锁挑衅、激怒与战斗意志。" },
+  { type: "potion", id: "lord_of_mysteries:thief_potion_9", name: "偷盗者魔药 · 序列9", en: "Thief Potion Seq.9",
+    summary: "踏入偷盗者途径的起点魔药，解锁行窃、潜影和应急脱身。",
+    tags: ["魔药", "偷盗者", "序列9", "M2"],
+    details: [["途径", "偷盗者"], ["理想温度", "68 ℃"], ["制作时间", "1200 tick"], ["材料顺序", "影栖鼬之爪 · 发酵蛛眼 · 灵性酒精"], ["灵性上限", "108"]],
+    long: "服用后写入偷盗者途径序列 9，增加 10 点失控压力，并解锁对应知识和快捷键。材料顺序、平均温度与坩埚品质规则继续沿用现有服务端魔药管线。" },
+  { type: "potion", id: "lord_of_mysteries:apprentice_potion_9", name: "学徒魔药 · 序列9", en: "Apprentice Potion Seq.9",
+    summary: "踏入学徒途径的起点魔药，解锁灵性视野、空间戏法和知识副本。",
+    tags: ["魔药", "学徒", "序列9", "M2"],
+    details: [["途径", "学徒"], ["理想温度", "72 ℃"], ["制作时间", "1200 tick"], ["材料顺序", "星辉苔藓 · 紫水晶 · 神秘墨水"], ["灵性上限", "115"]],
+    long: "服用后写入学徒途径序列 9，增加 9 点失控压力。学徒灵性视野每秒消耗 0.9 灵性；知识复制仍要求玩家先通过探索掌握稳定知识。" },
 
   /* 坩埚 / 方块 */
   { type: "block", id: "lord_of_mysteries:crucible", name: "坩埚", en: "Crucible",
@@ -399,6 +453,21 @@ LOM.entries = [
     tags: ["物品", "材料", "M2", "生成配方"],
     details: [["配方", "墨囊 + 荧光墨囊 + 紫水晶 → 2"], ["用途", "雾都晨报 / 后续知识文书"]],
     long: "该物品验证配方主表、自动生成、注册、模型、本地化和创造栏的完整生产链。" },
+  { type: "item", id: "lord_of_mysteries:shadow_marten_claw", name: "影栖鼬之爪", en: "Shadow Marten Claw",
+    summary: "偷盗者序列 9 的主材料，可从调查营地或数据驱动合成配方获得。",
+    tags: ["物品", "材料", "偷盗者", "M2"],
+    details: [["来源", "调查营地"], ["配方", "兔子脚 + 黑色染料 + 灵性盐"], ["用途", "偷盗者序列9魔药"]],
+    long: "该材料由 recipes_master.csv 驱动生成配方，确保营地探索和确定性制作两条获取路径同时存在。" },
+  { type: "item", id: "lord_of_mysteries:starlight_moss", name: "星辉苔藓", en: "Starlight Moss",
+    summary: "学徒序列 9 的主材料，可从调查营地或数据驱动合成配方获得。",
+    tags: ["物品", "材料", "学徒", "M2"],
+    details: [["来源", "调查营地"], ["配方", "荧光地衣×2 + 紫水晶 + 月华水"], ["用途", "学徒序列9魔药"]],
+    long: "星辉苔藓把现有月华水资源接入学徒魔药循环，并由同一 CSV 生产线生成配方、清单与校验产物。" },
+  { type: "item", id: "lord_of_mysteries:knowledge_copy", name: "灵墨知识副本", en: "Spirit-Ink Knowledge Copy",
+    summary: "记录知识 ID 与作者身份的可交易文书，供另一名玩家阅读学习。",
+    tags: ["物品", "知识", "多人", "学徒", "M2"],
+    details: [["制作", "学徒序列9按 U"], ["材料", "空白手稿 + 神秘墨水 + 10 灵性"], ["数据", "KnowledgeId + Author UUID"], ["收益", "读者解锁知识 · 作者推进扮演"]],
+    long: "副本把探索所得知识转化为多人协作资源。服务端验证知识是否存在、读者是否已掌握以及作者身份，避免客户端伪造和自我重复刷取。" },
   { type: "item", id: "lord_of_mysteries:formula_fragment", name: "配方残页", en: "Formula Fragment",
     summary: "调查营地战利品，右键解锁一条尚未掌握的 M2 途径或雾都传闻。",
     tags: ["物品", "知识", "传闻", "M2"],

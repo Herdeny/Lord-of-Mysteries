@@ -1,0 +1,12 @@
+{
+  "id": "lord_of_mysteries:apprentice9_field_note",
+  "pathway": "lord_of_mysteries:apprentice",
+  "sequence": 9,
+  "display_name": "在三种不同群系完成见闻记录",
+  "base_digestion": 8.0,
+  "novelty_decay_ticks": 6000,
+  "trigger": {
+    "type": "lord_of_mysteries:distinct_biomes",
+    "minimum": 3
+  }
+}

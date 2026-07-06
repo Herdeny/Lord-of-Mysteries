@@ -23,6 +23,11 @@ public final class CrucibleRecipeLogic {
             "lord_of_mysteries:shapeshifter_serpent_gland";
     public static final String ASH_POWDER = "lord_of_mysteries:ash_powder";
     public static final String SILVER_FILINGS = "lord_of_mysteries:silver_filings";
+    public static final String SHADOW_MARTEN_CLAW =
+            "lord_of_mysteries:shadow_marten_claw";
+    public static final String STARLIGHT_MOSS =
+            "lord_of_mysteries:starlight_moss";
+    public static final String MYSTIC_INK = "lord_of_mysteries:mystic_ink";
     public static final float IDEAL_TEMPERATURE = 70f;
 
     private CrucibleRecipeLogic() {}
@@ -81,6 +86,8 @@ public final class CrucibleRecipeLogic {
         SPECTATOR_8,
         HUNTER_9,
         HUNTER_8,
+        THIEF_9,
+        APPRENTICE_9,
         CONTAMINATED
     }
 
@@ -102,7 +109,11 @@ public final class CrucibleRecipeLogic {
                 SPIRIT_HERB, BOOK, AMETHYST_SHARD, 70f),
         HUNTER(BrewedPotion.HUNTER_9, SPIRIT_HERB, BONE, RABBIT_FOOT, 70f),
         PROVOKER(BrewedPotion.HUNTER_8,
-                SPIRIT_HERB, GUNPOWDER, REDSTONE, 70f);
+                SPIRIT_HERB, GUNPOWDER, REDSTONE, 70f),
+        THIEF(BrewedPotion.THIEF_9,
+                SHADOW_MARTEN_CLAW, FERMENTED_SPIDER_EYE, SPIRIT_ALCOHOL, 68f),
+        APPRENTICE(BrewedPotion.APPRENTICE_9,
+                STARLIGHT_MOSS, AMETHYST_SHARD, MYSTIC_INK, 72f);
 
         private final BrewedPotion potion;
         private final String first;

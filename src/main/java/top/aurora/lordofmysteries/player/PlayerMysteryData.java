@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 7;
+    public static final int CURRENT_SCHEMA_VERSION = 8;
 
     // 途径 & 序列。
     // pathway 使用 ResourceLocation 以便完全数据驱动，例如 lord_of_mysteries:seer。
@@ -72,6 +72,10 @@ public class PlayerMysteryData {
     public double paperSubstituteZ = 0d;
     public long airBulletCooldownEndTick = 0L;
     public long stageIllusionCooldownEndTick = 0L;
+    public long thiefPilferCooldownEndTick = 0L;
+    public long thiefEscapeCooldownEndTick = 0L;
+    public long apprenticeTrickCooldownEndTick = 0L;
+    public long apprenticeCopyCooldownEndTick = 0L;
     public long lastRestRecoveryDay = Long.MIN_VALUE;
     public boolean m1TrialActive = false;
     public long m1TrialStartTick = 0L;
@@ -157,6 +161,10 @@ public class PlayerMysteryData {
         this.paperSubstituteZ = src.paperSubstituteZ;
         this.airBulletCooldownEndTick = src.airBulletCooldownEndTick;
         this.stageIllusionCooldownEndTick = src.stageIllusionCooldownEndTick;
+        this.thiefPilferCooldownEndTick = src.thiefPilferCooldownEndTick;
+        this.thiefEscapeCooldownEndTick = src.thiefEscapeCooldownEndTick;
+        this.apprenticeTrickCooldownEndTick = src.apprenticeTrickCooldownEndTick;
+        this.apprenticeCopyCooldownEndTick = src.apprenticeCopyCooldownEndTick;
         this.lastRestRecoveryDay = src.lastRestRecoveryDay;
         this.m1TrialActive = src.m1TrialActive;
         this.m1TrialStartTick = src.m1TrialStartTick;
@@ -225,6 +233,10 @@ public class PlayerMysteryData {
         tag.putDouble("paper_substitute_z", paperSubstituteZ);
         tag.putLong("air_bullet_cd_end", airBulletCooldownEndTick);
         tag.putLong("stage_illusion_cd_end", stageIllusionCooldownEndTick);
+        tag.putLong("thief_pilfer_cd_end", thiefPilferCooldownEndTick);
+        tag.putLong("thief_escape_cd_end", thiefEscapeCooldownEndTick);
+        tag.putLong("apprentice_trick_cd_end", apprenticeTrickCooldownEndTick);
+        tag.putLong("apprentice_copy_cd_end", apprenticeCopyCooldownEndTick);
         tag.putLong("last_rest_recovery_day", lastRestRecoveryDay);
         tag.putBoolean("m1_trial_active", m1TrialActive);
         tag.putLong("m1_trial_start_tick", m1TrialStartTick);
@@ -310,6 +322,10 @@ public class PlayerMysteryData {
         paperSubstituteZ = tag.getDouble("paper_substitute_z");
         airBulletCooldownEndTick = tag.getLong("air_bullet_cd_end");
         stageIllusionCooldownEndTick = tag.getLong("stage_illusion_cd_end");
+        thiefPilferCooldownEndTick = tag.getLong("thief_pilfer_cd_end");
+        thiefEscapeCooldownEndTick = tag.getLong("thief_escape_cd_end");
+        apprenticeTrickCooldownEndTick = tag.getLong("apprentice_trick_cd_end");
+        apprenticeCopyCooldownEndTick = tag.getLong("apprentice_copy_cd_end");
         lastRestRecoveryDay = tag.contains("last_rest_recovery_day")
                 ? tag.getLong("last_rest_recovery_day") : Long.MIN_VALUE;
         m1TrialActive = tag.getBoolean("m1_trial_active");

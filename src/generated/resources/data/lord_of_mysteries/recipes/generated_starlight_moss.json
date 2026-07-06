@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:glow_lichen"
+    },
+    {
+      "item": "minecraft:glow_lichen"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "lord_of_mysteries:moonwater"
+    }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:starlight_moss",
+    "count": 2
+  }
+}

@@ -29,7 +29,19 @@ public enum ActingEvent {
     HUNTER8_ENRAGE("hunter", 8,
             "hunter8_enrage", 12f, 2400L),
     HUNTER8_BATTLE_WILL("hunter", 8,
-            "hunter8_battle_will", 15f, 4800L);
+            "hunter8_battle_will", 15f, 4800L),
+    THIEF9_FIRST_STEAL("thief", 9,
+            "thief9_first_steal", 10f, 2400L),
+    THIEF9_GHOST("thief", 9,
+            "thief9_ghost", 15f, 6000L),
+    THIEF9_PICK_TARGET("thief", 9,
+            "thief9_pick_target", 12f, 4800L),
+    APPRENTICE9_BOOKWORM("apprentice", 9,
+            "apprentice9_bookworm", 10f, 2400L),
+    APPRENTICE9_TEACH("apprentice", 9,
+            "apprentice9_teach", 12f, 4800L),
+    APPRENTICE9_FIELD_NOTE("apprentice", 9,
+            "apprentice9_field_note", 8f, 6000L);
 
     private final String pathway;
     private final int sequence;

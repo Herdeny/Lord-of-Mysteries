@@ -142,6 +142,10 @@ public final class CrucibleBlockEntity extends BlockEntity {
                     SeerPotionItem.create(ModItems.HUNTER_POTION_9.get(), brew.quality());
             case HUNTER_8 ->
                     SeerPotionItem.create(ModItems.HUNTER_POTION_8.get(), brew.quality());
+            case THIEF_9 ->
+                    SeerPotionItem.create(ModItems.THIEF_POTION_9.get(), brew.quality());
+            case APPRENTICE_9 ->
+                    SeerPotionItem.create(ModItems.APPRENTICE_POTION_9.get(), brew.quality());
             case CONTAMINATED -> new ItemStack(ModItems.CONTAMINATED_MIXTURE.get());
         };
         brewing = false;
@@ -167,6 +171,9 @@ public final class CrucibleBlockEntity extends BlockEntity {
                 || stack.is(ModItems.SHAPESHIFTER_SERPENT_GLAND.get())
                 || stack.is(ModItems.ASH_POWDER.get())
                 || stack.is(ModItems.SILVER_FILINGS.get())
+                || stack.is(ModItems.SHADOW_MARTEN_CLAW.get())
+                || stack.is(ModItems.STARLIGHT_MOSS.get())
+                || stack.is(ModItems.MYSTIC_INK.get())
                 || stack.is(Items.FERMENTED_SPIDER_EYE)
                 || stack.is(Items.HONEY_BOTTLE)
                 || stack.is(Items.BOOK)

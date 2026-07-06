@@ -1,0 +1,12 @@
+{
+  "id": "lord_of_mysteries:thief9_ghost",
+  "pathway": "lord_of_mysteries:thief",
+  "sequence": 9,
+  "display_name": "保持潜影步且未受伤三十秒",
+  "base_digestion": 15.0,
+  "novelty_decay_ticks": 6000,
+  "trigger": {
+    "type": "lord_of_mysteries:shadow_step",
+    "duration_ticks": 600
+  }
+}

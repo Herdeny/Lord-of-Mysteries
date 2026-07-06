@@ -80,6 +80,10 @@ class PlayerMysteryDataTest {
         source.m1TrialOccultKills = 3;
         source.m1TrialActingEvents = 2;
         source.m1TrialMaxPressure = 42f;
+        source.thiefPilferCooldownEndTick = 300L;
+        source.thiefEscapeCooldownEndTick = 600L;
+        source.apprenticeTrickCooldownEndTick = 200L;
+        source.apprenticeCopyCooldownEndTick = 400L;
 
         PlayerMysteryData copied = new PlayerMysteryData();
         copied.copyFrom(source);
@@ -100,5 +104,9 @@ class PlayerMysteryDataTest {
         assertEquals(3, copied.m1TrialOccultKills);
         assertEquals(2, copied.m1TrialActingEvents);
         assertEquals(42f, copied.m1TrialMaxPressure);
+        assertEquals(300L, copied.thiefPilferCooldownEndTick);
+        assertEquals(600L, copied.thiefEscapeCooldownEndTick);
+        assertEquals(200L, copied.apprenticeTrickCooldownEndTick);
+        assertEquals(400L, copied.apprenticeCopyCooldownEndTick);
     }
 }

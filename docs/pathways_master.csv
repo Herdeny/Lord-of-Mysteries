@@ -1,7 +1,7 @@
 pathway_id,group,display_name_key,description_key,color,status,implemented_sequences
 seer,sefirah,pathway.lord_of_mysteries.seer,pathway.lord_of_mysteries.seer.description,#8B5CF6,implemented,9;8;7
-apprentice,sefirah,pathway.lord_of_mysteries.apprentice,pathway.lord_of_mysteries.apprentice.description,#60A5FA,m2_foundation,
-thief,sefirah,pathway.lord_of_mysteries.thief,pathway.lord_of_mysteries.thief.description,#64748B,m2_foundation,
+apprentice,sefirah,pathway.lord_of_mysteries.apprentice,pathway.lord_of_mysteries.apprentice.description,#60A5FA,m2_foundation,9
+thief,sefirah,pathway.lord_of_mysteries.thief,pathway.lord_of_mysteries.thief.description,#64748B,m2_foundation,9
 spectator,chaos_sea,pathway.lord_of_mysteries.spectator,pathway.lord_of_mysteries.spectator.description,#EC4899,implemented,9;8
 secret_supplicant,chaos_sea,pathway.lord_of_mysteries.secret_supplicant,pathway.lord_of_mysteries.secret_supplicant.description,#7C3AED,planned,
 bard,chaos_sea,pathway.lord_of_mysteries.bard,pathway.lord_of_mysteries.bard.description,#F59E0B,planned,

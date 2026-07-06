@@ -61,7 +61,7 @@
     var stats = [
       [entries.length, "图鉴条目"],
       [(D.pathwaysOverview || []).length, "途径"],
-      [(D.seerSequences || []).length + (D.spectatorSequences || []).length + (D.hunterSequences || []).length, "序列条目"],
+      [(D.seerSequences || []).length + (D.spectatorSequences || []).length + (D.hunterSequences || []).length + (D.foundationSequences || []).length, "序列条目"],
       [entries.filter(function (e) { return e.type === "ability"; }).length, "能力"],
       [(D.roadmap || []).length, "开发里程碑"]
     ];
@@ -107,7 +107,7 @@
   var ladder = $("#seq-ladder");
   var playableSequences = (D.seerSequences || []).map(function (s) {
     return Object.assign({ pathway: "占卜家" }, s);
-  }).concat(D.spectatorSequences || [], D.hunterSequences || []);
+  }).concat(D.spectatorSequences || [], D.hunterSequences || [], D.foundationSequences || []);
   if (ladder) playableSequences.forEach(function (s) {
     var row = el("div", "seq-row " + (s.state === "active" ? "active" : (s.state === "future" ? "future" : "")));
     row.innerHTML =

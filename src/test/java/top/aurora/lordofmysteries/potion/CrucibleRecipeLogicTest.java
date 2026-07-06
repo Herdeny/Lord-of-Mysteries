@@ -122,4 +122,24 @@ class CrucibleRecipeLogicTest {
                 CrucibleRecipeLogic.REDSTONE), 70f);
         assertEquals(CrucibleRecipeLogic.BrewedPotion.CONTAMINATED, result.potion());
     }
+
+    @Test
+    void thiefRecipeUsesShadowClawAndSpiritAlcohol() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.SHADOW_MARTEN_CLAW,
+                CrucibleRecipeLogic.FERMENTED_SPIDER_EYE,
+                CrucibleRecipeLogic.SPIRIT_ALCOHOL), 68f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.THIEF_9, result.potion());
+        assertEquals(PotionQuality.PERFECT, result.quality());
+    }
+
+    @Test
+    void apprenticeRecipeUsesStarlightMossAndMysticInk() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.STARLIGHT_MOSS,
+                CrucibleRecipeLogic.AMETHYST_SHARD,
+                CrucibleRecipeLogic.MYSTIC_INK), 72f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.APPRENTICE_9, result.potion());
+        assertEquals(PotionQuality.PERFECT, result.quality());
+    }
 }

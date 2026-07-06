@@ -1,0 +1,12 @@
+{
+  "id": "lord_of_mysteries:thief9_first_steal",
+  "pathway": "lord_of_mysteries:thief",
+  "sequence": 9,
+  "display_name": "第一次在目标察觉前得手",
+  "base_digestion": 10.0,
+  "novelty_decay_ticks": 2400,
+  "trigger": {
+    "type": "lord_of_mysteries:pilfer_success",
+    "minimum_successes": 1
+  }
+}

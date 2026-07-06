@@ -1,0 +1,13 @@
+{
+  "id": "lord_of_mysteries:thief_potion_9",
+  "target_pathway": "lord_of_mysteries:thief",
+  "target_sequence": 9,
+  "ingredients": [
+    { "item": "lord_of_mysteries:shadow_marten_claw", "order": 1, "required": true },
+    { "item": "minecraft:fermented_spider_eye", "order": 2, "required": true },
+    { "item": "lord_of_mysteries:spirit_alcohol", "order": 3, "required": false, "quality_bonus": 0.2 }
+  ],
+  "temperature_range": [53, 83],
+  "brewing_time_ticks": 1200,
+  "failure_result": "lord_of_mysteries:contaminated_mixture"
+}

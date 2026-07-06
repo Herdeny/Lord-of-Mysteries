@@ -1,0 +1,11 @@
+{
+  "id": "lord_of_mysteries:thief9_pick_target",
+  "pathway": "lord_of_mysteries:thief",
+  "sequence": 9,
+  "display_name": "准确挑中携带贵重物的目标",
+  "base_digestion": 12.0,
+  "novelty_decay_ticks": 4800,
+  "trigger": {
+    "type": "lord_of_mysteries:pilfer_valuable"
+  }
+}

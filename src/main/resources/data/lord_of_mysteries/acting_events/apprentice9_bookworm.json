@@ -1,0 +1,12 @@
+{
+  "id": "lord_of_mysteries:apprentice9_bookworm",
+  "pathway": "lord_of_mysteries:apprentice",
+  "sequence": 9,
+  "display_name": "单日读懂三份新残页",
+  "base_digestion": 10.0,
+  "novelty_decay_ticks": 2400,
+  "trigger": {
+    "type": "lord_of_mysteries:daily_knowledge_reads",
+    "minimum": 3
+  }
+}

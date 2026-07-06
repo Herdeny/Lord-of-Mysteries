@@ -1,0 +1,11 @@
+{
+  "id": "lord_of_mysteries:apprentice9_teach",
+  "pathway": "lord_of_mysteries:apprentice",
+  "sequence": 9,
+  "display_name": "知识副本被另一名玩家成功阅读",
+  "base_digestion": 12.0,
+  "novelty_decay_ticks": 4800,
+  "trigger": {
+    "type": "lord_of_mysteries:knowledge_copy_used"
+  }
+}

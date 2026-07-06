@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraft.client.renderer.entity.CaveSpiderRenderer;
 import net.minecraft.client.renderer.entity.HuskRenderer;
 import net.minecraft.client.renderer.entity.VexRenderer;
+import net.minecraft.client.renderer.entity.EndermanRenderer;
 
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.registry.ModEntities;
@@ -32,6 +33,9 @@ public final class ClientModEvents {
     @SubscribeEvent
     public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntities.SEER_BREAKDOWN.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.THIEF_BREAKDOWN.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(
+                ModEntities.APPRENTICE_BREAKDOWN.get(), EndermanRenderer::new);
         event.registerEntityRenderer(
                 ModEntities.SHAPESHIFTER_SERPENT.get(), CaveSpiderRenderer::new);
         event.registerEntityRenderer(ModEntities.SPIRIT_WISP.get(), VexRenderer::new);

@@ -16,7 +16,9 @@ import top.aurora.lordofmysteries.network.UseSurfaceReadC2SPacket;
 import top.aurora.lordofmysteries.network.UseProvokeC2SPacket;
 import top.aurora.lordofmysteries.network.UseEnrageC2SPacket;
 import top.aurora.lordofmysteries.network.UseSeerAbilityC2SPacket;
+import top.aurora.lordofmysteries.network.UseM2FoundationAbilityC2SPacket;
 import top.aurora.lordofmysteries.ability.SeerAbilityHandler;
+import top.aurora.lordofmysteries.ability.M2FoundationAbilityHandler;
 
 /**
  * 客户端游戏总线事件（Forge 1.20.1）。
@@ -75,9 +77,19 @@ public final class ClientForgeEvents {
         while (PMKeyBindings.USE_STAGE_ILLUSION.consumeClick()) {
             sendSeer(SeerAbilityHandler.Ability.STAGE_ILLUSION);
         }
+        while (PMKeyBindings.USE_M2_PRIMARY.consumeClick()) {
+            sendM2(M2FoundationAbilityHandler.AbilitySlot.PRIMARY);
+        }
+        while (PMKeyBindings.USE_M2_SECONDARY.consumeClick()) {
+            sendM2(M2FoundationAbilityHandler.AbilitySlot.SECONDARY);
+        }
     }
 
     private static void sendSeer(SeerAbilityHandler.Ability ability) {
         PMNetwork.CHANNEL.sendToServer(new UseSeerAbilityC2SPacket(ability));
+    }
+
+    private static void sendM2(M2FoundationAbilityHandler.AbilitySlot slot) {
+        PMNetwork.CHANNEL.sendToServer(new UseM2FoundationAbilityC2SPacket(slot));
     }
 }

@@ -32,6 +32,9 @@ public final class ServerConfig {
     /** 是否允许玩家对玩家使用精神类能力；服务器可用它控制 PVP 强度。 */
     public static final ForgeConfigSpec.BooleanValue PVP_MENTAL_ABILITIES;
 
+    /** 是否允许偷盗者从其他玩家快捷栏行窃；默认关闭，避免未经同意的物品转移。 */
+    public static final ForgeConfigSpec.BooleanValue PVP_THEFT_ENABLED;
+
     /** 仪式爆燃、封印物事故等爆炸效果是否破坏方块。 */
     public static final ForgeConfigSpec.BooleanValue EXPLOSION_BLOCK_DAMAGE;
 
@@ -61,6 +64,8 @@ public final class ServerConfig {
                 .define("breakdown_mode", "recoverable");
         PVP_MENTAL_ABILITIES = b.comment("是否允许 PvP 精神能力")
                 .define("pvp_mental_abilities", true);
+        PVP_THEFT_ENABLED = b.comment("是否允许偷盗者从玩家非手持快捷栏行窃")
+                .define("pvp_theft_enabled", false);
         EXPLOSION_BLOCK_DAMAGE = b.comment("爆燃陷阱是否破坏方块")
                 .define("explosion_block_damage", false);
         GRAYFOG_ENABLED = b.comment("灰雾空间开关")

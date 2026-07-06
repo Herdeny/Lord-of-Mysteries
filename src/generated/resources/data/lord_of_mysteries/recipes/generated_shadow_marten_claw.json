@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:rabbit_foot"
+    },
+    {
+      "item": "minecraft:black_dye"
+    },
+    {
+      "item": "lord_of_mysteries:spirit_salt"
+    }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:shadow_marten_claw",
+    "count": 1
+  }
+}

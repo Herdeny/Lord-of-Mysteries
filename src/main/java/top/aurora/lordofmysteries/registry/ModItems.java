@@ -13,6 +13,7 @@ import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.potion.SpectatorPotionItem;
 import top.aurora.lordofmysteries.potion.HunterPotionItem;
+import top.aurora.lordofmysteries.potion.M2PathwayPotionItem;
 import top.aurora.lordofmysteries.artifact.EternalMatchboxItem;
 import top.aurora.lordofmysteries.artifact.CalmingIncenseItem;
 import top.aurora.lordofmysteries.artifact.SpiritLanternItem;
@@ -20,6 +21,7 @@ import top.aurora.lordofmysteries.artifact.ProtectiveCharmItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorCompassItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
 import top.aurora.lordofmysteries.knowledge.FormulaFragmentItem;
+import top.aurora.lordofmysteries.knowledge.KnowledgeCopyItem;
 
 /**
  * 物品注册（Forge 1.20.1）。包含材料、魔药、封印物和方块物品。
@@ -70,6 +72,10 @@ public final class ModItems {
     public static final RegistryObject<Item> SILVER_FILINGS = simple("silver_filings");
     public static final RegistryObject<Item> SPIRIT_SALT = simple("spirit_salt");
     public static final RegistryObject<Item> ASHEN_THREAD = simple("ashen_thread");
+    public static final RegistryObject<Item> SHADOW_MARTEN_CLAW =
+            simple("shadow_marten_claw");
+    public static final RegistryObject<Item> STARLIGHT_MOSS =
+            simple("starlight_moss");
     public static final RegistryObject<Item> BLANK_MANUSCRIPT =
             simple("blank_manuscript");
     public static final RegistryObject<Item> MYSTIC_INK = simple("mystic_ink");
@@ -80,6 +86,10 @@ public final class ModItems {
     public static final RegistryObject<Item> NEWSPAPER = ITEMS.register(
             "newspaper",
             () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> KNOWLEDGE_COPY = ITEMS.register(
+            "knowledge_copy",
+            () -> new KnowledgeCopyItem(
+                    new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> MYSTIC_PLAYING_CARDS = ITEMS.register(
             "mystic_playing_cards",
             () -> new Item(new Item.Properties().stacksTo(64).rarity(Rarity.UNCOMMON)));
@@ -101,6 +111,16 @@ public final class ModItems {
             () -> new ForgeSpawnEggItem(
                     ModEntities.ASHEN_PUPPET, 0x4A4541, 0xB09A82,
                     new Item.Properties()));
+    public static final RegistryObject<Item> THIEF_BREAKDOWN_SPAWN_EGG = ITEMS.register(
+            "thief_breakdown_spawn_egg",
+            () -> new ForgeSpawnEggItem(
+                    ModEntities.THIEF_BREAKDOWN, 0x24252A, 0x64748B,
+                    new Item.Properties()));
+    public static final RegistryObject<Item> APPRENTICE_BREAKDOWN_SPAWN_EGG =
+            ITEMS.register("apprentice_breakdown_spawn_egg",
+                    () -> new ForgeSpawnEggItem(
+                            ModEntities.APPRENTICE_BREAKDOWN, 0x171B2E, 0x60A5FA,
+                            new Item.Properties()));
 
     // 制作失败或污染反应的产物，用于验证失败结果和污染系统链路。
     public static final RegistryObject<Item> CONTAMINATED_MIXTURE = simple("contaminated_mixture");
@@ -144,6 +164,14 @@ public final class ModItems {
     public static final RegistryObject<Item> HUNTER_POTION_8 = ITEMS.register(
             "hunter_potion_8",
             () -> new HunterPotionItem(new Item.Properties(), 8));
+    public static final RegistryObject<Item> THIEF_POTION_9 = ITEMS.register(
+            "thief_potion_9",
+            () -> new M2PathwayPotionItem(
+                    new Item.Properties(), M2PathwayPotionItem.Pathway.THIEF));
+    public static final RegistryObject<Item> APPRENTICE_POTION_9 = ITEMS.register(
+            "apprentice_potion_9",
+            () -> new M2PathwayPotionItem(
+                    new Item.Properties(), M2PathwayPotionItem.Pathway.APPRENTICE));
 
     // —— 封印物（当前实现永燃火柴盒）——
     public static final RegistryObject<Item> ETERNAL_MATCHBOX = ITEMS.register("eternal_matchbox",

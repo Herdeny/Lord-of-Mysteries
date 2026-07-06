@@ -5,5 +5,7 @@
   "description_key": "pathway.lord_of_mysteries.thief.description",
   "color": "#64748B",
   "status": "m2_foundation",
-  "implemented_sequences": []
+  "implemented_sequences": [
+    9
+  ]
 }

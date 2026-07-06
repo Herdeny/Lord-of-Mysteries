@@ -16,8 +16,11 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import top.aurora.lordofmysteries.ProjectMystery;
+import top.aurora.lordofmysteries.acting.ActingEvent;
+import top.aurora.lordofmysteries.acting.ActingEventHandler;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
+import top.aurora.lordofmysteries.potion.M2PathwayPotionItem;
 
 public final class FormulaFragmentItem extends Item {
 
@@ -52,6 +55,7 @@ public final class FormulaFragmentItem extends Item {
         }
 
         data.knownKnowledge.add(discovered);
+        trackApprenticeReading(serverPlayer, data);
         if (!serverPlayer.getAbilities().instabuild) stack.shrink(1);
         serverPlayer.sendSystemMessage(Component.translatable(
                 "message.lord_of_mysteries.formula_fragment.deciphered",
@@ -71,5 +75,27 @@ public final class FormulaFragmentItem extends Item {
     private static ResourceLocation knowledge(String path) {
         return ResourceLocation.fromNamespaceAndPath(
                 ProjectMystery.MOD_ID, "knowledge/" + path);
+    }
+
+    private static void trackApprenticeReading(ServerPlayer player,
+                                               PlayerMysteryData data) {
+        if (!M2PathwayPotionItem.Pathway.APPRENTICE.id().equals(data.pathway)
+                || data.sequence != 9) {
+            return;
+        }
+        int day = (int) (player.level().getDayTime() / 24000L);
+        int previousDay = data.actingCounters.getOrDefault(
+                "apprentice9:reading_day", Integer.MIN_VALUE);
+        if (previousDay != day) {
+            data.actingCounters.put("apprentice9:reading_day", day);
+            data.actingCounters.put("apprentice9:daily_reads", 0);
+        }
+        int reads = data.actingCounters.merge(
+                "apprentice9:daily_reads", 1, Integer::sum);
+        if (reads >= 3) {
+            data.actingCounters.put("apprentice9:daily_reads", 0);
+            ActingEventHandler.trigger(
+                    player, ActingEvent.APPRENTICE9_BOOKWORM, null);
+        }
     }
 }

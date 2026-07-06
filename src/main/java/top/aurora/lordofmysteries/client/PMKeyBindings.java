@@ -114,6 +114,20 @@ public final class PMKeyBindings {
             InputConstants.KEY_M,
             CATEGORY);
 
+    public static final KeyMapping USE_M2_PRIMARY = new KeyMapping(
+            "key.lord_of_mysteries.use_m2_primary",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_Y,
+            CATEGORY);
+
+    public static final KeyMapping USE_M2_SECONDARY = new KeyMapping(
+            "key.lord_of_mysteries.use_m2_secondary",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_U,
+            CATEGORY);
+
     /** 通过 mod 总线注册；由 {@code ClientModEvents} 调用。 */
     public static void register(RegisterKeyMappingsEvent event) {
         event.register(TOGGLE_SPIRIT_VISION);
@@ -129,5 +143,7 @@ public final class PMKeyBindings {
         event.register(ARM_PAPER_SUBSTITUTE);
         event.register(USE_AIR_BULLET);
         event.register(USE_STAGE_ILLUSION);
+        event.register(USE_M2_PRIMARY);
+        event.register(USE_M2_SECONDARY);
     }
 }
