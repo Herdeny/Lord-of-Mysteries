@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:psychiatrist7_cloak",
+  "pathway": "lord_of_mysteries:spectator",
+  "sequence": 7,
+  "display_name": "在敌意附近维持三十秒心理隐身",
+  "base_digestion": 15.0,
+  "novelty_decay_ticks": 6000,
+  "trigger": { "type": "lord_of_mysteries:psychological_cloak" }
+}

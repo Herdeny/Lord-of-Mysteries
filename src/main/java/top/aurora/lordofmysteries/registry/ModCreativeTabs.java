@@ -52,6 +52,8 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.ASHEN_THREAD.get());
                         output.accept(ModItems.SHADOW_MARTEN_CLAW.get());
                         output.accept(ModItems.STARLIGHT_MOSS.get());
+                        output.accept(ModItems.DREAM_SCALE_FRAGMENT.get());
+                        output.accept(ModItems.EMBER_SALAMANDER_GLAND.get());
                         output.accept(ModItems.BLANK_MANUSCRIPT.get());
                         output.accept(ModItems.MYSTIC_INK.get());
                         output.accept(ModItems.FORMULA_FRAGMENT.get());
@@ -64,6 +66,8 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.ASHEN_PUPPET_SPAWN_EGG.get());
                         output.accept(ModItems.THIEF_BREAKDOWN_SPAWN_EGG.get());
                         output.accept(ModItems.APPRENTICE_BREAKDOWN_SPAWN_EGG.get());
+                        output.accept(ModItems.PSYCHIATRIST_BREAKDOWN_SPAWN_EGG.get());
+                        output.accept(ModItems.PYROMANIAC_BREAKDOWN_SPAWN_EGG.get());
                         output.accept(ModItems.CONTAMINATED_MIXTURE.get());
                         output.accept(ModItems.BROKEN_CHARACTERISTIC.get());
                         output.accept(ModItems.INVESTIGATOR_NOTES.get());
@@ -76,8 +80,10 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.SEER_POTION_7.get());
                         output.accept(ModItems.SPECTATOR_POTION_9.get());
                         output.accept(ModItems.SPECTATOR_POTION_8.get());
+                        output.accept(ModItems.SPECTATOR_POTION_7.get());
                         output.accept(ModItems.HUNTER_POTION_9.get());
                         output.accept(ModItems.HUNTER_POTION_8.get());
+                        output.accept(ModItems.HUNTER_POTION_7.get());
                         output.accept(ModItems.THIEF_POTION_9.get());
                         output.accept(ModItems.APPRENTICE_POTION_9.get());
                         output.accept(ModItems.HUNTER_SNARE_ITEM.get());

@@ -1,0 +1,18 @@
+{
+  "id": "lord_of_mysteries:spectator_potion_7",
+  "target_pathway": "lord_of_mysteries:spectator",
+  "target_sequence": 7,
+  "requires": {
+    "pathway": "lord_of_mysteries:spectator",
+    "sequence": 8,
+    "digestion": 100.0
+  },
+  "ingredients": [
+    { "item": "lord_of_mysteries:dream_scale_fragment", "order": 1, "required": true },
+    { "item": "minecraft:fermented_spider_eye", "order": 2, "required": true },
+    { "item": "lord_of_mysteries:mystic_ink", "order": 3, "required": false, "quality_bonus": 0.2 }
+  ],
+  "temperature_range": [59, 89],
+  "brewing_time_ticks": 1200,
+  "failure_result": "lord_of_mysteries:contaminated_mixture"
+}

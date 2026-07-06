@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:pyromaniac7_walk_through_fire",
+  "pathway": "lord_of_mysteries:hunter",
+  "sequence": 7,
+  "display_name": "在烈火中持续行动十秒",
+  "base_digestion": 15.0,
+  "novelty_decay_ticks": 6000,
+  "trigger": { "type": "lord_of_mysteries:walk_through_fire" }
+}

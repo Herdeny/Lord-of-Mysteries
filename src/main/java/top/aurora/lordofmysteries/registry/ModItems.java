@@ -76,6 +76,10 @@ public final class ModItems {
             simple("shadow_marten_claw");
     public static final RegistryObject<Item> STARLIGHT_MOSS =
             simple("starlight_moss");
+    public static final RegistryObject<Item> DREAM_SCALE_FRAGMENT =
+            simple("dream_scale_fragment");
+    public static final RegistryObject<Item> EMBER_SALAMANDER_GLAND =
+            simple("ember_salamander_gland");
     public static final RegistryObject<Item> BLANK_MANUSCRIPT =
             simple("blank_manuscript");
     public static final RegistryObject<Item> MYSTIC_INK = simple("mystic_ink");
@@ -121,6 +125,16 @@ public final class ModItems {
                     () -> new ForgeSpawnEggItem(
                             ModEntities.APPRENTICE_BREAKDOWN, 0x171B2E, 0x60A5FA,
                             new Item.Properties()));
+    public static final RegistryObject<Item> PSYCHIATRIST_BREAKDOWN_SPAWN_EGG =
+            ITEMS.register("psychiatrist_breakdown_spawn_egg",
+                    () -> new ForgeSpawnEggItem(
+                            ModEntities.PSYCHIATRIST_BREAKDOWN,
+                            0x3D2548, 0xD084C6, new Item.Properties()));
+    public static final RegistryObject<Item> PYROMANIAC_BREAKDOWN_SPAWN_EGG =
+            ITEMS.register("pyromaniac_breakdown_spawn_egg",
+                    () -> new ForgeSpawnEggItem(
+                            ModEntities.PYROMANIAC_BREAKDOWN,
+                            0x33130A, 0xFF6A00, new Item.Properties()));
 
     // 制作失败或污染反应的产物，用于验证失败结果和污染系统链路。
     public static final RegistryObject<Item> CONTAMINATED_MIXTURE = simple("contaminated_mixture");
@@ -158,12 +172,18 @@ public final class ModItems {
     public static final RegistryObject<Item> SPECTATOR_POTION_8 = ITEMS.register(
             "spectator_potion_8",
             () -> new SpectatorPotionItem(new Item.Properties(), 8));
+    public static final RegistryObject<Item> SPECTATOR_POTION_7 = ITEMS.register(
+            "spectator_potion_7",
+            () -> new SpectatorPotionItem(new Item.Properties(), 7));
     public static final RegistryObject<Item> HUNTER_POTION_9 = ITEMS.register(
             "hunter_potion_9",
             () -> new HunterPotionItem(new Item.Properties(), 9));
     public static final RegistryObject<Item> HUNTER_POTION_8 = ITEMS.register(
             "hunter_potion_8",
             () -> new HunterPotionItem(new Item.Properties(), 8));
+    public static final RegistryObject<Item> HUNTER_POTION_7 = ITEMS.register(
+            "hunter_potion_7",
+            () -> new HunterPotionItem(new Item.Properties(), 7));
     public static final RegistryObject<Item> THIEF_POTION_9 = ITEMS.register(
             "thief_potion_9",
             () -> new M2PathwayPotionItem(

@@ -7,6 +7,7 @@
 - [M1 一小时试炼追踪器](M1-Trial-Tracker)
 - [v0.8 数据生产与 M2 预研](V0.8-Data-Pipeline-and-M2-Research)
 - [偷盗者与学徒序列 9](M2-Sequence-9-Foundation)
+- [心理医生与纵火家序列 7](M2-Sequence-7-Psychiatrist-and-Pyromaniac)
 - [M1 一小时验收](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M1_ACCEPTANCE_CHECKLIST.md)
 - [开发状态](Development-Status)
 - [完整路线图](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/ROADMAP.md)

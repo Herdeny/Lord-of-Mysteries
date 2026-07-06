@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:phantom_membrane"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "lord_of_mysteries:mystic_ink"
+    }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:dream_scale_fragment",
+    "count": 1
+  }
+}

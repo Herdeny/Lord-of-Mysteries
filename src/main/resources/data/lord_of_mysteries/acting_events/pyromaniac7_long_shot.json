@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:pyromaniac7_long_shot",
+  "pathway": "lord_of_mysteries:hunter",
+  "sequence": 7,
+  "display_name": "在十二格外以火焰长枪命中目标",
+  "base_digestion": 12.0,
+  "novelty_decay_ticks": 2400,
+  "trigger": { "type": "lord_of_mysteries:flame_spear_long_shot" }
+}

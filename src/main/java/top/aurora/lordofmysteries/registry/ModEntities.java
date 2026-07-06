@@ -24,6 +24,8 @@ import top.aurora.lordofmysteries.entity.SpiritWispEntity;
 import top.aurora.lordofmysteries.entity.AshenPuppetEntity;
 import top.aurora.lordofmysteries.entity.ThiefBreakdownEntity;
 import top.aurora.lordofmysteries.entity.ApprenticeBreakdownEntity;
+import top.aurora.lordofmysteries.entity.PsychiatristBreakdownEntity;
+import top.aurora.lordofmysteries.entity.PyromaniacBreakdownEntity;
 
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModEntities {
@@ -55,6 +57,29 @@ public final class ModEntities {
                             .sized(0.6f, 2.9f)
                             .clientTrackingRange(8)
                             .build(ProjectMystery.MOD_ID + ":apprentice_breakdown"));
+
+    public static final RegistryObject<EntityType<PsychiatristBreakdownEntity>>
+            PSYCHIATRIST_BREAKDOWN = ENTITIES.register(
+                    "psychiatrist_breakdown", () ->
+                            EntityType.Builder.of(
+                                            PsychiatristBreakdownEntity::new,
+                                            MobCategory.MONSTER)
+                                    .sized(0.6f, 1.95f)
+                                    .clientTrackingRange(8)
+                                    .build(ProjectMystery.MOD_ID
+                                            + ":psychiatrist_breakdown"));
+
+    public static final RegistryObject<EntityType<PyromaniacBreakdownEntity>>
+            PYROMANIAC_BREAKDOWN = ENTITIES.register(
+                    "pyromaniac_breakdown", () ->
+                            EntityType.Builder.of(
+                                            PyromaniacBreakdownEntity::new,
+                                            MobCategory.MONSTER)
+                                    .sized(0.6f, 1.95f)
+                                    .fireImmune()
+                                    .clientTrackingRange(8)
+                                    .build(ProjectMystery.MOD_ID
+                                            + ":pyromaniac_breakdown"));
 
     public static final RegistryObject<EntityType<ShapeshifterSerpentEntity>>
             SHAPESHIFTER_SERPENT = ENTITIES.register("shapeshifter_serpent", () ->
@@ -98,6 +123,20 @@ public final class ModEntities {
                 .add(Attributes.ATTACK_DAMAGE, 6.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.30)
                 .add(Attributes.FOLLOW_RANGE, 32.0)
+                .build());
+        event.put(PSYCHIATRIST_BREAKDOWN.get(), Zombie.createAttributes()
+                .add(Attributes.MAX_HEALTH, 38.0)
+                .add(Attributes.ATTACK_DAMAGE, 6.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.28)
+                .add(Attributes.ARMOR, 4.0)
+                .add(Attributes.FOLLOW_RANGE, 36.0)
+                .build());
+        event.put(PYROMANIAC_BREAKDOWN.get(), Zombie.createAttributes()
+                .add(Attributes.MAX_HEALTH, 40.0)
+                .add(Attributes.ATTACK_DAMAGE, 7.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.30)
+                .add(Attributes.ARMOR, 5.0)
+                .add(Attributes.FOLLOW_RANGE, 36.0)
                 .build());
         event.put(SHAPESHIFTER_SERPENT.get(), Spider.createAttributes()
                 .add(Attributes.MAX_HEALTH, 18.0)

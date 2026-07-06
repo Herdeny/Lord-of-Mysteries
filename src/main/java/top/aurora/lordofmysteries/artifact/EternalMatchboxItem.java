@@ -21,6 +21,10 @@ import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
 import top.aurora.lordofmysteries.entity.SpiritWispEntity;
+import top.aurora.lordofmysteries.entity.ThiefBreakdownEntity;
+import top.aurora.lordofmysteries.entity.ApprenticeBreakdownEntity;
+import top.aurora.lordofmysteries.entity.PsychiatristBreakdownEntity;
+import top.aurora.lordofmysteries.entity.PyromaniacBreakdownEntity;
 
 public final class EternalMatchboxItem extends Item {
 
@@ -68,6 +72,10 @@ public final class EternalMatchboxItem extends Item {
         }
         if (!player.level().isClientSide()) {
             float damage = target instanceof SeerBreakdownEntity
+                    || target instanceof ThiefBreakdownEntity
+                    || target instanceof ApprenticeBreakdownEntity
+                    || target instanceof PsychiatristBreakdownEntity
+                    || target instanceof PyromaniacBreakdownEntity
                     || target instanceof SpiritWispEntity ? 12f : 6f;
             target.hurt(player.damageSources().magic(), damage);
             target.setSecondsOnFire(5);

@@ -40,7 +40,9 @@ import top.aurora.lordofmysteries.core.config.ServerConfig;
 import top.aurora.lordofmysteries.knowledge.KnowledgeCopyItem;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
+import top.aurora.lordofmysteries.potion.HunterPotionItem;
 import top.aurora.lordofmysteries.potion.M2PathwayPotionItem;
+import top.aurora.lordofmysteries.potion.SpectatorPotionItem;
 import top.aurora.lordofmysteries.registry.ModItems;
 
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -72,6 +74,11 @@ public final class M2FoundationAbilityHandler {
 
     public static boolean use(ServerPlayer player, AbilitySlot slot) {
         PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.sequence == 7
+                && (SpectatorPotionItem.SPECTATOR_PATHWAY.equals(data.pathway)
+                    || HunterPotionItem.HUNTER_PATHWAY.equals(data.pathway))) {
+            return M2Sequence7AbilityHandler.use(player, slot);
+        }
         if (M2PathwayPotionItem.Pathway.THIEF.id().equals(data.pathway)
                 && data.sequence == 9) {
             return slot == AbilitySlot.PRIMARY

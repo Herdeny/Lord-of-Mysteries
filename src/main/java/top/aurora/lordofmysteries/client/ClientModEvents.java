@@ -37,6 +37,10 @@ public final class ClientModEvents {
         event.registerEntityRenderer(
                 ModEntities.APPRENTICE_BREAKDOWN.get(), EndermanRenderer::new);
         event.registerEntityRenderer(
+                ModEntities.PSYCHIATRIST_BREAKDOWN.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(
+                ModEntities.PYROMANIAC_BREAKDOWN.get(), HuskRenderer::new);
+        event.registerEntityRenderer(
                 ModEntities.SHAPESHIFTER_SERPENT.get(), CaveSpiderRenderer::new);
         event.registerEntityRenderer(ModEntities.SPIRIT_WISP.get(), VexRenderer::new);
         event.registerEntityRenderer(ModEntities.ASHEN_PUPPET.get(), HuskRenderer::new);

@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 8;
+    public static final int CURRENT_SCHEMA_VERSION = 9;
 
     // 途径 & 序列。
     // pathway 使用 ResourceLocation 以便完全数据驱动，例如 lord_of_mysteries:seer。
@@ -76,6 +76,10 @@ public class PlayerMysteryData {
     public long thiefEscapeCooldownEndTick = 0L;
     public long apprenticeTrickCooldownEndTick = 0L;
     public long apprenticeCopyCooldownEndTick = 0L;
+    public long psychPacifyCooldownEndTick = 0L;
+    public long psychShockCooldownEndTick = 0L;
+    public long pyroSpearCooldownEndTick = 0L;
+    public long pyroRingCooldownEndTick = 0L;
     public long lastRestRecoveryDay = Long.MIN_VALUE;
     public boolean m1TrialActive = false;
     public long m1TrialStartTick = 0L;
@@ -165,6 +169,10 @@ public class PlayerMysteryData {
         this.thiefEscapeCooldownEndTick = src.thiefEscapeCooldownEndTick;
         this.apprenticeTrickCooldownEndTick = src.apprenticeTrickCooldownEndTick;
         this.apprenticeCopyCooldownEndTick = src.apprenticeCopyCooldownEndTick;
+        this.psychPacifyCooldownEndTick = src.psychPacifyCooldownEndTick;
+        this.psychShockCooldownEndTick = src.psychShockCooldownEndTick;
+        this.pyroSpearCooldownEndTick = src.pyroSpearCooldownEndTick;
+        this.pyroRingCooldownEndTick = src.pyroRingCooldownEndTick;
         this.lastRestRecoveryDay = src.lastRestRecoveryDay;
         this.m1TrialActive = src.m1TrialActive;
         this.m1TrialStartTick = src.m1TrialStartTick;
@@ -237,6 +245,10 @@ public class PlayerMysteryData {
         tag.putLong("thief_escape_cd_end", thiefEscapeCooldownEndTick);
         tag.putLong("apprentice_trick_cd_end", apprenticeTrickCooldownEndTick);
         tag.putLong("apprentice_copy_cd_end", apprenticeCopyCooldownEndTick);
+        tag.putLong("psych_pacify_cd_end", psychPacifyCooldownEndTick);
+        tag.putLong("psych_shock_cd_end", psychShockCooldownEndTick);
+        tag.putLong("pyro_spear_cd_end", pyroSpearCooldownEndTick);
+        tag.putLong("pyro_ring_cd_end", pyroRingCooldownEndTick);
         tag.putLong("last_rest_recovery_day", lastRestRecoveryDay);
         tag.putBoolean("m1_trial_active", m1TrialActive);
         tag.putLong("m1_trial_start_tick", m1TrialStartTick);
@@ -326,6 +338,10 @@ public class PlayerMysteryData {
         thiefEscapeCooldownEndTick = tag.getLong("thief_escape_cd_end");
         apprenticeTrickCooldownEndTick = tag.getLong("apprentice_trick_cd_end");
         apprenticeCopyCooldownEndTick = tag.getLong("apprentice_copy_cd_end");
+        psychPacifyCooldownEndTick = tag.getLong("psych_pacify_cd_end");
+        psychShockCooldownEndTick = tag.getLong("psych_shock_cd_end");
+        pyroSpearCooldownEndTick = tag.getLong("pyro_spear_cd_end");
+        pyroRingCooldownEndTick = tag.getLong("pyro_ring_cd_end");
         lastRestRecoveryDay = tag.contains("last_rest_recovery_day")
                 ? tag.getLong("last_rest_recovery_day") : Long.MIN_VALUE;
         m1TrialActive = tag.getBoolean("m1_trial_active");

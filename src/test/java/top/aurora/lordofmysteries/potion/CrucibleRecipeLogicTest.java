@@ -142,4 +142,24 @@ class CrucibleRecipeLogicTest {
         assertEquals(CrucibleRecipeLogic.BrewedPotion.APPRENTICE_9, result.potion());
         assertEquals(PotionQuality.PERFECT, result.quality());
     }
+
+    @Test
+    void psychiatristRecipeUsesDreamScaleAndMysticInk() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.DREAM_SCALE_FRAGMENT,
+                CrucibleRecipeLogic.FERMENTED_SPIDER_EYE,
+                CrucibleRecipeLogic.MYSTIC_INK), 74f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.SPECTATOR_7, result.potion());
+        assertEquals(PotionQuality.PERFECT, result.quality());
+    }
+
+    @Test
+    void pyromaniacRecipeUsesSalamanderGlandAndBlazePowder() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.EMBER_SALAMANDER_GLAND,
+                CrucibleRecipeLogic.BLAZE_POWDER,
+                CrucibleRecipeLogic.GUNPOWDER), 82f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.HUNTER_7, result.potion());
+        assertEquals(PotionQuality.PERFECT, result.quality());
+    }
 }

@@ -17,6 +17,9 @@ import org.jetbrains.annotations.Nullable;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
+import top.aurora.lordofmysteries.potion.SpectatorPotionItem;
+import top.aurora.lordofmysteries.potion.HunterPotionItem;
+import top.aurora.lordofmysteries.potion.M2PathwayPotionItem;
 
 public final class InvestigatorNotesItem extends Item {
 
@@ -57,12 +60,41 @@ public final class InvestigatorNotesItem extends Item {
                 send(serverPlayer, "guide.lord_of_mysteries.digestion",
                         Math.round(data.digestion));
             }
+        } else if (SpectatorPotionItem.SPECTATOR_PATHWAY.equals(data.pathway)) {
+            send(serverPlayer,
+                    "guide.lord_of_mysteries.spectator." + data.sequence);
+            send(serverPlayer, "guide.lord_of_mysteries.m2.controls");
+            sendDigestion(serverPlayer, data);
+        } else if (HunterPotionItem.HUNTER_PATHWAY.equals(data.pathway)) {
+            send(serverPlayer,
+                    "guide.lord_of_mysteries.hunter." + data.sequence);
+            send(serverPlayer, "guide.lord_of_mysteries.m2.controls");
+            sendDigestion(serverPlayer, data);
+        } else if (M2PathwayPotionItem.Pathway.THIEF.id().equals(data.pathway)) {
+            send(serverPlayer, "guide.lord_of_mysteries.thief.9");
+            send(serverPlayer, "guide.lord_of_mysteries.m2.controls");
+            sendDigestion(serverPlayer, data);
+        } else if (M2PathwayPotionItem.Pathway.APPRENTICE.id().equals(data.pathway)) {
+            send(serverPlayer, "guide.lord_of_mysteries.apprentice.9");
+            send(serverPlayer, "guide.lord_of_mysteries.m2.controls");
+            sendDigestion(serverPlayer, data);
         } else {
             send(serverPlayer, "guide.lord_of_mysteries.other_pathway");
         }
         send(serverPlayer, "guide.lord_of_mysteries.field_rules");
         send(serverPlayer, "guide.lord_of_mysteries.recovery");
         send(serverPlayer, "guide.lord_of_mysteries.status_key");
+    }
+
+    private static void sendDigestion(ServerPlayer player,
+                                      PlayerMysteryData data) {
+        if (data.digestion >= 100f && data.sequence > 7) {
+            send(player, "guide.lord_of_mysteries.seer.ready",
+                    data.sequence - 1);
+        } else {
+            send(player, "guide.lord_of_mysteries.digestion",
+                    Math.round(data.digestion));
+        }
     }
 
     public static int showHandbookOverview(ServerPlayer player) {

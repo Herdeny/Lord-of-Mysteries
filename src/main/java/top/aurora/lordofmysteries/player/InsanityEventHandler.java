@@ -16,6 +16,8 @@ import net.minecraft.world.entity.Mob;
 import top.aurora.lordofmysteries.registry.ModEntities;
 import top.aurora.lordofmysteries.artifact.ProtectiveCharmService;
 import top.aurora.lordofmysteries.potion.M2PathwayPotionItem;
+import top.aurora.lordofmysteries.potion.HunterPotionItem;
+import top.aurora.lordofmysteries.potion.SpectatorPotionItem;
 
 public final class InsanityEventHandler {
 
@@ -106,6 +108,12 @@ public final class InsanityEventHandler {
         } else if (M2PathwayPotionItem.Pathway.APPRENTICE.id().equals(data.pathway)) {
             body = ModEntities.APPRENTICE_BREAKDOWN.get().create(level);
             translationKey = "entity.lord_of_mysteries.apprentice_breakdown";
+        } else if (SpectatorPotionItem.SPECTATOR_PATHWAY.equals(data.pathway)) {
+            body = ModEntities.PSYCHIATRIST_BREAKDOWN.get().create(level);
+            translationKey = "entity.lord_of_mysteries.psychiatrist_breakdown";
+        } else if (HunterPotionItem.HUNTER_PATHWAY.equals(data.pathway)) {
+            body = ModEntities.PYROMANIAC_BREAKDOWN.get().create(level);
+            translationKey = "entity.lord_of_mysteries.pyromaniac_breakdown";
         } else {
             body = ModEntities.SEER_BREAKDOWN.get().create(level);
             translationKey = "entity.lord_of_mysteries.seer_breakdown";

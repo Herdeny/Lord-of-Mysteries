@@ -28,6 +28,11 @@ public final class CrucibleRecipeLogic {
     public static final String STARLIGHT_MOSS =
             "lord_of_mysteries:starlight_moss";
     public static final String MYSTIC_INK = "lord_of_mysteries:mystic_ink";
+    public static final String DREAM_SCALE_FRAGMENT =
+            "lord_of_mysteries:dream_scale_fragment";
+    public static final String EMBER_SALAMANDER_GLAND =
+            "lord_of_mysteries:ember_salamander_gland";
+    public static final String BLAZE_POWDER = "minecraft:blaze_powder";
     public static final float IDEAL_TEMPERATURE = 70f;
 
     private CrucibleRecipeLogic() {}
@@ -84,8 +89,10 @@ public final class CrucibleRecipeLogic {
         SEER_7,
         SPECTATOR_9,
         SPECTATOR_8,
+        SPECTATOR_7,
         HUNTER_9,
         HUNTER_8,
+        HUNTER_7,
         THIEF_9,
         APPRENTICE_9,
         CONTAMINATED
@@ -107,9 +114,13 @@ public final class CrucibleRecipeLogic {
                 SPIRIT_HERB, FERMENTED_SPIDER_EYE, HONEY_BOTTLE, 70f),
         TELEPATHIST(BrewedPotion.SPECTATOR_8,
                 SPIRIT_HERB, BOOK, AMETHYST_SHARD, 70f),
+        PSYCHIATRIST(BrewedPotion.SPECTATOR_7,
+                DREAM_SCALE_FRAGMENT, FERMENTED_SPIDER_EYE, MYSTIC_INK, 74f),
         HUNTER(BrewedPotion.HUNTER_9, SPIRIT_HERB, BONE, RABBIT_FOOT, 70f),
         PROVOKER(BrewedPotion.HUNTER_8,
                 SPIRIT_HERB, GUNPOWDER, REDSTONE, 70f),
+        PYROMANIAC(BrewedPotion.HUNTER_7,
+                EMBER_SALAMANDER_GLAND, BLAZE_POWDER, GUNPOWDER, 82f),
         THIEF(BrewedPotion.THIEF_9,
                 SHADOW_MARTEN_CLAW, FERMENTED_SPIDER_EYE, SPIRIT_ALCOHOL, 68f),
         APPRENTICE(BrewedPotion.APPRENTICE_9,

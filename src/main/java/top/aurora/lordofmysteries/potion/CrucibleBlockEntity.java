@@ -138,10 +138,14 @@ public final class CrucibleBlockEntity extends BlockEntity {
                     SeerPotionItem.create(ModItems.SPECTATOR_POTION_9.get(), brew.quality());
             case SPECTATOR_8 ->
                     SeerPotionItem.create(ModItems.SPECTATOR_POTION_8.get(), brew.quality());
+            case SPECTATOR_7 ->
+                    SeerPotionItem.create(ModItems.SPECTATOR_POTION_7.get(), brew.quality());
             case HUNTER_9 ->
                     SeerPotionItem.create(ModItems.HUNTER_POTION_9.get(), brew.quality());
             case HUNTER_8 ->
                     SeerPotionItem.create(ModItems.HUNTER_POTION_8.get(), brew.quality());
+            case HUNTER_7 ->
+                    SeerPotionItem.create(ModItems.HUNTER_POTION_7.get(), brew.quality());
             case THIEF_9 ->
                     SeerPotionItem.create(ModItems.THIEF_POTION_9.get(), brew.quality());
             case APPRENTICE_9 ->

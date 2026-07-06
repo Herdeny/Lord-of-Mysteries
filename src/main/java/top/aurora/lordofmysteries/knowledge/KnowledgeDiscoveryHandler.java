@@ -37,6 +37,10 @@ public final class KnowledgeDiscoveryHandler {
             path = "bestiary/thief_breakdown";
         } else if (type == ModEntities.APPRENTICE_BREAKDOWN.get()) {
             path = "bestiary/apprentice_breakdown";
+        } else if (type == ModEntities.PSYCHIATRIST_BREAKDOWN.get()) {
+            path = "bestiary/psychiatrist_breakdown";
+        } else if (type == ModEntities.PYROMANIAC_BREAKDOWN.get()) {
+            path = "bestiary/pyromaniac_breakdown";
         }
         if (path == null) return;
         M1TrialTracker.recordOccultKill(player);

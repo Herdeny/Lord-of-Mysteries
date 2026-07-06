@@ -4,3 +4,5 @@ generated_mystic_ink,bench,lord_of_mysteries:mystic_ink,2,minecraft:ink_sac*1;mi
 generated_newspaper,bench,lord_of_mysteries:newspaper,1,minecraft:paper*3;lord_of_mysteries:mystic_ink*1,free,true,M2 Mist City livelihood prop
 generated_shadow_marten_claw,bench,lord_of_mysteries:shadow_marten_claw,1,minecraft:rabbit_foot*1;minecraft:black_dye*1;lord_of_mysteries:spirit_salt*1,knowledge,true,M2 thief sequence 9 fallback material
 generated_starlight_moss,bench,lord_of_mysteries:starlight_moss,2,minecraft:glow_lichen*2;minecraft:amethyst_shard*1;lord_of_mysteries:moonwater*1,knowledge,true,M2 apprentice sequence 9 fallback material
+generated_dream_scale_fragment,bench,lord_of_mysteries:dream_scale_fragment,1,minecraft:phantom_membrane*1;minecraft:amethyst_shard*1;lord_of_mysteries:mystic_ink*1,knowledge,true,M2 psychiatrist sequence 7 fallback material
+generated_ember_salamander_gland,bench,lord_of_mysteries:ember_salamander_gland,1,minecraft:magma_cream*1;minecraft:blaze_powder*1;lord_of_mysteries:spirit_salt*1,knowledge,true,M2 pyromaniac sequence 7 fallback material

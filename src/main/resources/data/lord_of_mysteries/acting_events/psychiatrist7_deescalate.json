@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:psychiatrist7_deescalate",
+  "pathway": "lord_of_mysteries:spectator",
+  "sequence": 7,
+  "display_name": "令强大目标放下攻击意图",
+  "base_digestion": 12.0,
+  "novelty_decay_ticks": 4800,
+  "trigger": { "type": "lord_of_mysteries:deescalate" }
+}

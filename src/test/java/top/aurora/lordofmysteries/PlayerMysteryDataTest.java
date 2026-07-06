@@ -84,6 +84,10 @@ class PlayerMysteryDataTest {
         source.thiefEscapeCooldownEndTick = 600L;
         source.apprenticeTrickCooldownEndTick = 200L;
         source.apprenticeCopyCooldownEndTick = 400L;
+        source.psychPacifyCooldownEndTick = 500L;
+        source.psychShockCooldownEndTick = 600L;
+        source.pyroSpearCooldownEndTick = 700L;
+        source.pyroRingCooldownEndTick = 800L;
 
         PlayerMysteryData copied = new PlayerMysteryData();
         copied.copyFrom(source);
@@ -108,5 +112,9 @@ class PlayerMysteryDataTest {
         assertEquals(600L, copied.thiefEscapeCooldownEndTick);
         assertEquals(200L, copied.apprenticeTrickCooldownEndTick);
         assertEquals(400L, copied.apprenticeCopyCooldownEndTick);
+        assertEquals(500L, copied.psychPacifyCooldownEndTick);
+        assertEquals(600L, copied.psychShockCooldownEndTick);
+        assertEquals(700L, copied.pyroSpearCooldownEndTick);
+        assertEquals(800L, copied.pyroRingCooldownEndTick);
     }
 }

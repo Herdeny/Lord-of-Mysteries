@@ -32,8 +32,9 @@ public final class HunterPotionItem extends Item {
 
     public HunterPotionItem(Properties properties, int targetSequence) {
         super(properties.stacksTo(1));
-        if (targetSequence != 9 && targetSequence != 8) {
-            throw new IllegalArgumentException("Hunter potion only supports sequences 9 and 8");
+        if (targetSequence < 7 || targetSequence > 9) {
+            throw new IllegalArgumentException(
+                    "Hunter potion only supports sequences 9 through 7");
         }
         this.targetSequence = targetSequence;
     }
@@ -44,8 +45,10 @@ public final class HunterPotionItem extends Item {
         if (!level.isClientSide()) {
             PlayerMysteryData data = MysteryCapability.get(player);
             if (!canAdvance(data)) {
-                String key = targetSequence == 8 && HUNTER_PATHWAY.equals(data.pathway)
-                        && data.sequence == 9 && data.digestion < 100f
+                String key = targetSequence < 9
+                        && HUNTER_PATHWAY.equals(data.pathway)
+                        && data.sequence == targetSequence + 1
+                        && data.digestion < 100f
                         ? "message.lord_of_mysteries.potion.digestion_incomplete"
                         : "message.lord_of_mysteries.potion.incompatible";
                 player.sendSystemMessage(Component.translatable(key, targetSequence));
@@ -66,10 +69,18 @@ public final class HunterPotionItem extends Item {
         PotionQuality quality = SeerPotionItem.getQuality(stack);
         data.pathway = HUNTER_PATHWAY;
         data.sequence = targetSequence;
-        data.spiritualityMax = targetSequence == 9 ? 118f : 142f;
+        data.spiritualityMax = switch (targetSequence) {
+            case 9 -> 118f;
+            case 8 -> 142f;
+            default -> 175f;
+        };
         data.spirituality = data.spiritualityMax;
         data.digestion = 0f;
-        float sequencePressure = targetSequence == 8 ? 12f : 0f;
+        float sequencePressure = switch (targetSequence) {
+            case 8 -> 12f;
+            case 7 -> 20f;
+            default -> 0f;
+        };
         data.insanityPressure = Math.min(100f,
                 data.insanityPressure + Math.max(sequencePressure, quality.initialPressure()));
         data.pollution = Math.min(100f, data.pollution + quality.initialPollution());
@@ -111,6 +122,11 @@ public final class HunterPotionItem extends Item {
             data.knownKnowledge.add(id("knowledge/provoke"));
             data.knownKnowledge.add(id("knowledge/enrage"));
             data.knownKnowledge.add(id("knowledge/battle_will"));
+        }
+        if (targetSequence <= 7) {
+            data.knownKnowledge.add(id("knowledge/flame_spear"));
+            data.knownKnowledge.add(id("knowledge/fire_ring"));
+            data.knownKnowledge.add(id("knowledge/fire_affinity"));
         }
     }
 
