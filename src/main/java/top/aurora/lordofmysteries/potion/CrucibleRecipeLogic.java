@@ -32,7 +32,19 @@ public final class CrucibleRecipeLogic {
             "lord_of_mysteries:dream_scale_fragment";
     public static final String EMBER_SALAMANDER_GLAND =
             "lord_of_mysteries:ember_salamander_gland";
+    public static final String MIRROR_CRAB_SHELL =
+            "lord_of_mysteries:mirror_crab_shell";
+    public static final String ANCIENT_TABLET_SPORE_SAC =
+            "lord_of_mysteries:ancient_tablet_spore_sac";
+    public static final String IRIDESCENT_TRICKBIRD_FEATHER =
+            "lord_of_mysteries:iridescent_trickbird_feather";
+    public static final String METEOR_DUST = "lord_of_mysteries:meteor_dust";
     public static final String BLAZE_POWDER = "minecraft:blaze_powder";
+    public static final String SLIME_BALL = "minecraft:slime_ball";
+    public static final String GOLD_NUGGET = "minecraft:gold_nugget";
+    public static final String MOSS_BLOCK = "minecraft:moss_block";
+    public static final String ENDER_PEARL = "minecraft:ender_pearl";
+    public static final String COMPASS = "minecraft:compass";
     public static final float IDEAL_TEMPERATURE = 70f;
 
     private CrucibleRecipeLogic() {}
@@ -94,7 +106,11 @@ public final class CrucibleRecipeLogic {
         HUNTER_8,
         HUNTER_7,
         THIEF_9,
+        THIEF_8,
+        THIEF_7,
         APPRENTICE_9,
+        APPRENTICE_8,
+        APPRENTICE_7,
         CONTAMINATED
     }
 
@@ -123,8 +139,16 @@ public final class CrucibleRecipeLogic {
                 EMBER_SALAMANDER_GLAND, BLAZE_POWDER, GUNPOWDER, 82f),
         THIEF(BrewedPotion.THIEF_9,
                 SHADOW_MARTEN_CLAW, FERMENTED_SPIDER_EYE, SPIRIT_ALCOHOL, 68f),
+        SWINDLER(BrewedPotion.THIEF_8,
+                MIRROR_CRAB_SHELL, SLIME_BALL, GOLD_NUGGET, 70f),
+        CRYPTOLOGIST(BrewedPotion.THIEF_7,
+                ANCIENT_TABLET_SPORE_SAC, MOSS_BLOCK, REDSTONE, 65f),
         APPRENTICE(BrewedPotion.APPRENTICE_9,
-                STARLIGHT_MOSS, AMETHYST_SHARD, MYSTIC_INK, 72f);
+                STARLIGHT_MOSS, AMETHYST_SHARD, MYSTIC_INK, 72f),
+        TRICKMASTER(BrewedPotion.APPRENTICE_8,
+                IRIDESCENT_TRICKBIRD_FEATHER, ENDER_PEARL, AMETHYST_SHARD, 78f),
+        ASTROLOGER(BrewedPotion.APPRENTICE_7,
+                METEOR_DUST, MOONWATER, COMPASS, 62f);
 
         private final BrewedPotion potion;
         private final String first;

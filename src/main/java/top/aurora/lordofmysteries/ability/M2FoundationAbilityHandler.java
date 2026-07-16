@@ -79,6 +79,11 @@ public final class M2FoundationAbilityHandler {
                     || HunterPotionItem.HUNTER_PATHWAY.equals(data.pathway))) {
             return M2Sequence7AbilityHandler.use(player, slot);
         }
+        if ((M2PathwayPotionItem.Pathway.THIEF.id().equals(data.pathway)
+                || M2PathwayPotionItem.Pathway.APPRENTICE.id().equals(data.pathway))
+                && data.sequence <= 8 && data.sequence >= 7) {
+            return M2AdvancedAbilityHandler.use(player, slot);
+        }
         if (M2PathwayPotionItem.Pathway.THIEF.id().equals(data.pathway)
                 && data.sequence == 9) {
             return slot == AbilitySlot.PRIMARY
@@ -94,7 +99,7 @@ public final class M2FoundationAbilityHandler {
         return false;
     }
 
-    private static boolean pilfer(ServerPlayer player, PlayerMysteryData data) {
+    static boolean pilfer(ServerPlayer player, PlayerMysteryData data) {
         long now = player.level().getGameTime();
         if (!AbilityCooldowns.ready(data.thiefPilferCooldownEndTick, now)) {
             return cooldown(player, data.thiefPilferCooldownEndTick, now);
@@ -132,6 +137,7 @@ public final class M2FoundationAbilityHandler {
         }
 
         data.thiefPilferCooldownEndTick = AbilityCooldowns.start(now, PILFER_COOLDOWN);
+        if (data.sequence == 8) M2AdvancedAbilityHandler.markDirty(data);
         target.getPersistentData().putLong(PILFER_LOCK_TAG, now + TARGET_PILFER_LOCK);
         if (!player.getInventory().add(stolen)) player.drop(stolen, false);
 
@@ -202,8 +208,8 @@ public final class M2FoundationAbilityHandler {
         return stolen;
     }
 
-    private static boolean emergencyEscape(ServerPlayer player,
-                                           PlayerMysteryData data) {
+    static boolean emergencyEscape(ServerPlayer player,
+                                   PlayerMysteryData data) {
         long now = player.level().getGameTime();
         if (!AbilityCooldowns.ready(data.thiefEscapeCooldownEndTick, now)) {
             return cooldown(player, data.thiefEscapeCooldownEndTick, now);
@@ -230,8 +236,8 @@ public final class M2FoundationAbilityHandler {
         return true;
     }
 
-    private static boolean smallSpaceTrick(ServerPlayer player,
-                                           PlayerMysteryData data) {
+    static boolean smallSpaceTrick(ServerPlayer player,
+                                   PlayerMysteryData data) {
         long now = player.level().getGameTime();
         if (!AbilityCooldowns.ready(data.apprenticeTrickCooldownEndTick, now)) {
             return cooldown(player, data.apprenticeTrickCooldownEndTick, now);
@@ -263,8 +269,8 @@ public final class M2FoundationAbilityHandler {
         return true;
     }
 
-    private static boolean copyKnowledge(ServerPlayer player,
-                                         PlayerMysteryData data) {
+    static boolean copyKnowledge(ServerPlayer player,
+                                 PlayerMysteryData data) {
         long now = player.level().getGameTime();
         if (!AbilityCooldowns.ready(data.apprenticeCopyCooldownEndTick, now)) {
             return cooldown(player, data.apprenticeCopyCooldownEndTick, now);
@@ -332,11 +338,11 @@ public final class M2FoundationAbilityHandler {
         }
         PlayerMysteryData data = MysteryCapability.get(player);
         if (M2PathwayPotionItem.Pathway.THIEF.id().equals(data.pathway)
-                && data.sequence == 9) {
+                && data.sequence <= 9 && data.sequence >= 7) {
             tickShadowStep(player, data);
         } else if (player.tickCount % 200 == 0
                 && M2PathwayPotionItem.Pathway.APPRENTICE.id().equals(data.pathway)
-                && data.sequence == 9) {
+                && data.sequence <= 9 && data.sequence >= 7) {
             recordBiome(player, data);
         }
     }

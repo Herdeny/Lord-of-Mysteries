@@ -1,0 +1,15 @@
+{
+  "parent": "lord_of_mysteries:become_swindler",
+  "display": {
+    "icon": { "item": "lord_of_mysteries:thief_potion_7" },
+    "title": { "translate": "advancement.lord_of_mysteries.become_cryptologist.title" },
+    "description": { "translate": "advancement.lord_of_mysteries.become_cryptologist.description" },
+    "frame": "goal"
+  },
+  "criteria": {
+    "drink": {
+      "trigger": "minecraft:consume_item",
+      "conditions": { "item": { "items": ["lord_of_mysteries:thief_potion_7"] } }
+    }
+  }
+}

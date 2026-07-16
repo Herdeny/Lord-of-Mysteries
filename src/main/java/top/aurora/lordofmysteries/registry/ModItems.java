@@ -80,6 +80,14 @@ public final class ModItems {
             simple("dream_scale_fragment");
     public static final RegistryObject<Item> EMBER_SALAMANDER_GLAND =
             simple("ember_salamander_gland");
+    public static final RegistryObject<Item> MIRROR_CRAB_SHELL =
+            simple("mirror_crab_shell");
+    public static final RegistryObject<Item> ANCIENT_TABLET_SPORE_SAC =
+            simple("ancient_tablet_spore_sac");
+    public static final RegistryObject<Item> IRIDESCENT_TRICKBIRD_FEATHER =
+            simple("iridescent_trickbird_feather");
+    public static final RegistryObject<Item> METEOR_DUST =
+            simple("meteor_dust");
     public static final RegistryObject<Item> BLANK_MANUSCRIPT =
             simple("blank_manuscript");
     public static final RegistryObject<Item> MYSTIC_INK = simple("mystic_ink");
@@ -187,11 +195,27 @@ public final class ModItems {
     public static final RegistryObject<Item> THIEF_POTION_9 = ITEMS.register(
             "thief_potion_9",
             () -> new M2PathwayPotionItem(
-                    new Item.Properties(), M2PathwayPotionItem.Pathway.THIEF));
+                    new Item.Properties(), M2PathwayPotionItem.Pathway.THIEF, 9));
+    public static final RegistryObject<Item> THIEF_POTION_8 = ITEMS.register(
+            "thief_potion_8",
+            () -> new M2PathwayPotionItem(
+                    new Item.Properties(), M2PathwayPotionItem.Pathway.THIEF, 8));
+    public static final RegistryObject<Item> THIEF_POTION_7 = ITEMS.register(
+            "thief_potion_7",
+            () -> new M2PathwayPotionItem(
+                    new Item.Properties(), M2PathwayPotionItem.Pathway.THIEF, 7));
     public static final RegistryObject<Item> APPRENTICE_POTION_9 = ITEMS.register(
             "apprentice_potion_9",
             () -> new M2PathwayPotionItem(
-                    new Item.Properties(), M2PathwayPotionItem.Pathway.APPRENTICE));
+                    new Item.Properties(), M2PathwayPotionItem.Pathway.APPRENTICE, 9));
+    public static final RegistryObject<Item> APPRENTICE_POTION_8 = ITEMS.register(
+            "apprentice_potion_8",
+            () -> new M2PathwayPotionItem(
+                    new Item.Properties(), M2PathwayPotionItem.Pathway.APPRENTICE, 8));
+    public static final RegistryObject<Item> APPRENTICE_POTION_7 = ITEMS.register(
+            "apprentice_potion_7",
+            () -> new M2PathwayPotionItem(
+                    new Item.Properties(), M2PathwayPotionItem.Pathway.APPRENTICE, 7));
 
     // —— 封印物（当前实现永燃火柴盒）——
     public static final RegistryObject<Item> ETERNAL_MATCHBOX = ITEMS.register("eternal_matchbox",

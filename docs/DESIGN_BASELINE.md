@@ -3,7 +3,7 @@
 ## 当前来源
 
 - 设计版本：Project Mystery v0.8
-- 审计日期：2026-07-05
+- 最近同步：2026-07-16
 - 用户提供源文件：`Project_Mystery_Design_Doc_v0_8.md`
 - 仓库执行版：`docs/Project_Mystery_Design_Doc_v0.8.md`
 - 工程基线：Minecraft 1.20.1、Forge 47.4.20、Java 17
@@ -27,11 +27,12 @@
 
 - `docs/pathways_master.csv`：22 途径单一主表。
 - `docs/recipes_master.csv`：首批 M2 工作台配方主表。
-- `scripts/gen_datapack.py`：生成 22 条途径目录、3 个配方和 1 个清单。
+- `scripts/gen_datapack.py`：生成 22 条途径目录、11 个配方和 1 个清单，共 34 个资源。
 - Gradle 构建自动执行生成与 `--check`。
 - 神秘学手账九章目录和条件解锁。
-- M1 验收增加“两次有效扮演”目标，Capability schema 升至 7。
+- M1 验收增加“两次有效扮演”目标，当前 Capability schema 为 10。
 - M2 知识经济首批物品与配方残页调查闭环。
+- 五条 MVP 途径序列 9-7 已形成代码可玩预研，仍等待 M2 多人和内容门禁。
 
 ## 路线映射
 

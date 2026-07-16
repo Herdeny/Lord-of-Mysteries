@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:trickmaster8_door_tactics",
+  "pathway": "lord_of_mysteries:apprentice",
+  "sequence": 8,
+  "display_name": "用镜面小门摆脱一次战斗追击",
+  "base_digestion": 15.0,
+  "novelty_decay_ticks": 4800,
+  "trigger": { "type": "lord_of_mysteries:mirror_door_tactics" }
+}

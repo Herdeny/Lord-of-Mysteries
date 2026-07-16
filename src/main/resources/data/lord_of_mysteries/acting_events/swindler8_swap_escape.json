@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:swindler8_swap_escape",
+  "pathway": "lord_of_mysteries:thief",
+  "sequence": 8,
+  "display_name": "换位逃脱正在追杀自己的目标",
+  "base_digestion": 15.0,
+  "novelty_decay_ticks": 4800,
+  "trigger": { "type": "lord_of_mysteries:position_swap_escape" }
+}

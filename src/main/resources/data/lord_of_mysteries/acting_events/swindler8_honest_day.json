@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:swindler8_honest_day",
+  "pathway": "lord_of_mysteries:thief",
+  "sequence": 8,
+  "display_name": "整整一日不行骗也不行窃",
+  "base_digestion": 8.0,
+  "novelty_decay_ticks": 24000,
+  "trigger": { "type": "lord_of_mysteries:honest_day" }
+}

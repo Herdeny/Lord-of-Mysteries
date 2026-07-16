@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 9;
+    public static final int CURRENT_SCHEMA_VERSION = 10;
 
     // 途径 & 序列。
     // pathway 使用 ResourceLocation 以便完全数据驱动，例如 lord_of_mysteries:seer。
@@ -76,6 +76,16 @@ public class PlayerMysteryData {
     public long thiefEscapeCooldownEndTick = 0L;
     public long apprenticeTrickCooldownEndTick = 0L;
     public long apprenticeCopyCooldownEndTick = 0L;
+    public long thiefSwapCooldownEndTick = 0L;
+    public long thiefDecoyCooldownEndTick = 0L;
+    public long thiefRuneCooldownEndTick = 0L;
+    public long thiefLockpickCooldownEndTick = 0L;
+    public long thiefEraseCooldownEndTick = 0L;
+    public long apprenticeRelocateCooldownEndTick = 0L;
+    public long apprenticeLinkCooldownEndTick = 0L;
+    public long apprenticeMirrorCooldownEndTick = 0L;
+    public long apprenticeDivinationCooldownEndTick = 0L;
+    public long apprenticeWardCooldownEndTick = 0L;
     public long psychPacifyCooldownEndTick = 0L;
     public long psychShockCooldownEndTick = 0L;
     public long pyroSpearCooldownEndTick = 0L;
@@ -169,6 +179,16 @@ public class PlayerMysteryData {
         this.thiefEscapeCooldownEndTick = src.thiefEscapeCooldownEndTick;
         this.apprenticeTrickCooldownEndTick = src.apprenticeTrickCooldownEndTick;
         this.apprenticeCopyCooldownEndTick = src.apprenticeCopyCooldownEndTick;
+        this.thiefSwapCooldownEndTick = src.thiefSwapCooldownEndTick;
+        this.thiefDecoyCooldownEndTick = src.thiefDecoyCooldownEndTick;
+        this.thiefRuneCooldownEndTick = src.thiefRuneCooldownEndTick;
+        this.thiefLockpickCooldownEndTick = src.thiefLockpickCooldownEndTick;
+        this.thiefEraseCooldownEndTick = src.thiefEraseCooldownEndTick;
+        this.apprenticeRelocateCooldownEndTick = src.apprenticeRelocateCooldownEndTick;
+        this.apprenticeLinkCooldownEndTick = src.apprenticeLinkCooldownEndTick;
+        this.apprenticeMirrorCooldownEndTick = src.apprenticeMirrorCooldownEndTick;
+        this.apprenticeDivinationCooldownEndTick = src.apprenticeDivinationCooldownEndTick;
+        this.apprenticeWardCooldownEndTick = src.apprenticeWardCooldownEndTick;
         this.psychPacifyCooldownEndTick = src.psychPacifyCooldownEndTick;
         this.psychShockCooldownEndTick = src.psychShockCooldownEndTick;
         this.pyroSpearCooldownEndTick = src.pyroSpearCooldownEndTick;
@@ -245,6 +265,16 @@ public class PlayerMysteryData {
         tag.putLong("thief_escape_cd_end", thiefEscapeCooldownEndTick);
         tag.putLong("apprentice_trick_cd_end", apprenticeTrickCooldownEndTick);
         tag.putLong("apprentice_copy_cd_end", apprenticeCopyCooldownEndTick);
+        tag.putLong("thief_swap_cd_end", thiefSwapCooldownEndTick);
+        tag.putLong("thief_decoy_cd_end", thiefDecoyCooldownEndTick);
+        tag.putLong("thief_rune_cd_end", thiefRuneCooldownEndTick);
+        tag.putLong("thief_lockpick_cd_end", thiefLockpickCooldownEndTick);
+        tag.putLong("thief_erase_cd_end", thiefEraseCooldownEndTick);
+        tag.putLong("apprentice_relocate_cd_end", apprenticeRelocateCooldownEndTick);
+        tag.putLong("apprentice_link_cd_end", apprenticeLinkCooldownEndTick);
+        tag.putLong("apprentice_mirror_cd_end", apprenticeMirrorCooldownEndTick);
+        tag.putLong("apprentice_divination_cd_end", apprenticeDivinationCooldownEndTick);
+        tag.putLong("apprentice_ward_cd_end", apprenticeWardCooldownEndTick);
         tag.putLong("psych_pacify_cd_end", psychPacifyCooldownEndTick);
         tag.putLong("psych_shock_cd_end", psychShockCooldownEndTick);
         tag.putLong("pyro_spear_cd_end", pyroSpearCooldownEndTick);
@@ -338,6 +368,16 @@ public class PlayerMysteryData {
         thiefEscapeCooldownEndTick = tag.getLong("thief_escape_cd_end");
         apprenticeTrickCooldownEndTick = tag.getLong("apprentice_trick_cd_end");
         apprenticeCopyCooldownEndTick = tag.getLong("apprentice_copy_cd_end");
+        thiefSwapCooldownEndTick = tag.getLong("thief_swap_cd_end");
+        thiefDecoyCooldownEndTick = tag.getLong("thief_decoy_cd_end");
+        thiefRuneCooldownEndTick = tag.getLong("thief_rune_cd_end");
+        thiefLockpickCooldownEndTick = tag.getLong("thief_lockpick_cd_end");
+        thiefEraseCooldownEndTick = tag.getLong("thief_erase_cd_end");
+        apprenticeRelocateCooldownEndTick = tag.getLong("apprentice_relocate_cd_end");
+        apprenticeLinkCooldownEndTick = tag.getLong("apprentice_link_cd_end");
+        apprenticeMirrorCooldownEndTick = tag.getLong("apprentice_mirror_cd_end");
+        apprenticeDivinationCooldownEndTick = tag.getLong("apprentice_divination_cd_end");
+        apprenticeWardCooldownEndTick = tag.getLong("apprentice_ward_cd_end");
         psychPacifyCooldownEndTick = tag.getLong("psych_pacify_cd_end");
         psychShockCooldownEndTick = tag.getLong("psych_shock_cd_end");
         pyroSpearCooldownEndTick = tag.getLong("pyro_spear_cd_end");

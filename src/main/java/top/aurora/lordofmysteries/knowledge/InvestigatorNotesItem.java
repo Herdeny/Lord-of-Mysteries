@@ -71,12 +71,22 @@ public final class InvestigatorNotesItem extends Item {
             send(serverPlayer, "guide.lord_of_mysteries.m2.controls");
             sendDigestion(serverPlayer, data);
         } else if (M2PathwayPotionItem.Pathway.THIEF.id().equals(data.pathway)) {
-            send(serverPlayer, "guide.lord_of_mysteries.thief.9");
+            send(serverPlayer,
+                    "guide.lord_of_mysteries.thief." + data.sequence);
             send(serverPlayer, "guide.lord_of_mysteries.m2.controls");
+            if (data.sequence <= 8) {
+                send(serverPlayer,
+                        "guide.lord_of_mysteries.m2.controls.advanced");
+            }
             sendDigestion(serverPlayer, data);
         } else if (M2PathwayPotionItem.Pathway.APPRENTICE.id().equals(data.pathway)) {
-            send(serverPlayer, "guide.lord_of_mysteries.apprentice.9");
+            send(serverPlayer,
+                    "guide.lord_of_mysteries.apprentice." + data.sequence);
             send(serverPlayer, "guide.lord_of_mysteries.m2.controls");
+            if (data.sequence <= 8) {
+                send(serverPlayer,
+                        "guide.lord_of_mysteries.m2.controls.advanced");
+            }
             sendDigestion(serverPlayer, data);
         } else {
             send(serverPlayer, "guide.lord_of_mysteries.other_pathway");

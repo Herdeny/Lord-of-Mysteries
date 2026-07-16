@@ -1,6 +1,6 @@
 # 入门与占卜家序列 9–7
 
-> 当前版本：0.8.1-1.20.1
+> 当前版本：0.8.2-1.20.1
 >
 > 设计基线：v0.8 · M1 验收 / M2 预研
 
@@ -82,7 +82,9 @@
 纵火家使用 `Y` 火焰长枪、`U` 焰环和火焰亲和。详见
 [心理医生与纵火家序列 7](M2-Sequence-7-Psychiatrist-and-Pyromaniac)。
 
-偷盗者/学徒序列 8-7、雾都和委托仍未完成。
+偷盗者/学徒现已补齐序列 8-7：诈骗师/解密学者使用换位、假身、符文、开锁和抹痕；
+戏法大师/占星人使用空间转移、知识链接、镜门、星象预兆和团队庇护。详见
+[偷盗者与学徒序列 8-7](M2-Sequence-8-7-Thief-and-Apprentice)。雾都、委托和调查链仍未完成。
 
 完整手册见
 [`docs/GETTING_STARTED.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/GETTING_STARTED.md)。

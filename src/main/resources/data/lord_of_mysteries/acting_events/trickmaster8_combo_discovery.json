@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:trickmaster8_combo_discovery",
+  "pathway": "lord_of_mysteries:apprentice",
+  "sequence": 8,
+  "display_name": "知识链接推导出新的配方线索",
+  "base_digestion": 18.0,
+  "novelty_decay_ticks": 6000,
+  "trigger": { "type": "lord_of_mysteries:knowledge_link_success" }
+}

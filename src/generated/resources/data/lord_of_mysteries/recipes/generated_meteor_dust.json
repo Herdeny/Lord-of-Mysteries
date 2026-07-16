@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:glowstone_dust"
+    },
+    {
+      "item": "minecraft:glowstone_dust"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "lord_of_mysteries:moonwater"
+    }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:meteor_dust",
+    "count": 2
+  }
+}

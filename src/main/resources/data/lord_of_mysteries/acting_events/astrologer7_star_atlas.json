@@ -1,0 +1,9 @@
+{
+  "id": "lord_of_mysteries:astrologer7_star_atlas",
+  "pathway": "lord_of_mysteries:apprentice",
+  "sequence": 7,
+  "display_name": "记录五种不同月相",
+  "base_digestion": 12.0,
+  "novelty_decay_ticks": 24000,
+  "trigger": { "type": "lord_of_mysteries:moon_atlas", "phases": 5 }
+}

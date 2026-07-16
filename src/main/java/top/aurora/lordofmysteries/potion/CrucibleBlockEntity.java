@@ -148,8 +148,16 @@ public final class CrucibleBlockEntity extends BlockEntity {
                     SeerPotionItem.create(ModItems.HUNTER_POTION_7.get(), brew.quality());
             case THIEF_9 ->
                     SeerPotionItem.create(ModItems.THIEF_POTION_9.get(), brew.quality());
+            case THIEF_8 ->
+                    SeerPotionItem.create(ModItems.THIEF_POTION_8.get(), brew.quality());
+            case THIEF_7 ->
+                    SeerPotionItem.create(ModItems.THIEF_POTION_7.get(), brew.quality());
             case APPRENTICE_9 ->
                     SeerPotionItem.create(ModItems.APPRENTICE_POTION_9.get(), brew.quality());
+            case APPRENTICE_8 ->
+                    SeerPotionItem.create(ModItems.APPRENTICE_POTION_8.get(), brew.quality());
+            case APPRENTICE_7 ->
+                    SeerPotionItem.create(ModItems.APPRENTICE_POTION_7.get(), brew.quality());
             case CONTAMINATED -> new ItemStack(ModItems.CONTAMINATED_MIXTURE.get());
         };
         brewing = false;
@@ -178,6 +186,12 @@ public final class CrucibleBlockEntity extends BlockEntity {
                 || stack.is(ModItems.SHADOW_MARTEN_CLAW.get())
                 || stack.is(ModItems.STARLIGHT_MOSS.get())
                 || stack.is(ModItems.MYSTIC_INK.get())
+                || stack.is(ModItems.DREAM_SCALE_FRAGMENT.get())
+                || stack.is(ModItems.EMBER_SALAMANDER_GLAND.get())
+                || stack.is(ModItems.MIRROR_CRAB_SHELL.get())
+                || stack.is(ModItems.ANCIENT_TABLET_SPORE_SAC.get())
+                || stack.is(ModItems.IRIDESCENT_TRICKBIRD_FEATHER.get())
+                || stack.is(ModItems.METEOR_DUST.get())
                 || stack.is(Items.FERMENTED_SPIDER_EYE)
                 || stack.is(Items.HONEY_BOTTLE)
                 || stack.is(Items.BOOK)
@@ -185,7 +199,13 @@ public final class CrucibleBlockEntity extends BlockEntity {
                 || stack.is(Items.BONE)
                 || stack.is(Items.RABBIT_FOOT)
                 || stack.is(Items.GUNPOWDER)
-                || stack.is(Items.REDSTONE);
+                || stack.is(Items.REDSTONE)
+                || stack.is(Items.BLAZE_POWDER)
+                || stack.is(Items.SLIME_BALL)
+                || stack.is(Items.GOLD_NUGGET)
+                || stack.is(Items.MOSS_BLOCK)
+                || stack.is(Items.ENDER_PEARL)
+                || stack.is(Items.COMPASS);
     }
 
     private int firstEmptySlot() {

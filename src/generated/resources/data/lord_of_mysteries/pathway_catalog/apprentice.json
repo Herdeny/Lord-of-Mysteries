@@ -4,8 +4,10 @@
   "display_name_key": "pathway.lord_of_mysteries.apprentice",
   "description_key": "pathway.lord_of_mysteries.apprentice.description",
   "color": "#60A5FA",
-  "status": "m2_foundation",
+  "status": "implemented",
   "implemented_sequences": [
-    9
+    9,
+    8,
+    7
   ]
 }

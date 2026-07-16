@@ -1,0 +1,18 @@
+{
+  "id": "lord_of_mysteries:thief_potion_8",
+  "target_pathway": "lord_of_mysteries:thief",
+  "target_sequence": 8,
+  "requires": {
+    "pathway": "lord_of_mysteries:thief",
+    "sequence": 9,
+    "digestion": 100.0
+  },
+  "ingredients": [
+    { "item": "lord_of_mysteries:mirror_crab_shell", "order": 1, "required": true },
+    { "item": "minecraft:slime_ball", "order": 2, "required": true },
+    { "item": "minecraft:gold_nugget", "order": 3, "required": false, "quality_bonus": 0.2 }
+  ],
+  "temperature_range": [55, 85],
+  "brewing_time_ticks": 1200,
+  "failure_result": "lord_of_mysteries:contaminated_mixture"
+}

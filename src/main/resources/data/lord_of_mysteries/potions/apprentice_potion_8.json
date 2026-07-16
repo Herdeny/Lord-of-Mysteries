@@ -1,0 +1,18 @@
+{
+  "id": "lord_of_mysteries:apprentice_potion_8",
+  "target_pathway": "lord_of_mysteries:apprentice",
+  "target_sequence": 8,
+  "requires": {
+    "pathway": "lord_of_mysteries:apprentice",
+    "sequence": 9,
+    "digestion": 100.0
+  },
+  "ingredients": [
+    { "item": "lord_of_mysteries:iridescent_trickbird_feather", "order": 1, "required": true },
+    { "item": "minecraft:ender_pearl", "order": 2, "required": true },
+    { "item": "minecraft:amethyst_shard", "order": 3, "required": false, "quality_bonus": 0.2 }
+  ],
+  "temperature_range": [63, 93],
+  "brewing_time_ticks": 1200,
+  "failure_result": "lord_of_mysteries:contaminated_mixture"
+}

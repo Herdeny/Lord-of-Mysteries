@@ -88,6 +88,16 @@ class PlayerMysteryDataTest {
         source.psychShockCooldownEndTick = 600L;
         source.pyroSpearCooldownEndTick = 700L;
         source.pyroRingCooldownEndTick = 800L;
+        source.thiefSwapCooldownEndTick = 901L;
+        source.thiefDecoyCooldownEndTick = 902L;
+        source.thiefRuneCooldownEndTick = 903L;
+        source.thiefLockpickCooldownEndTick = 904L;
+        source.thiefEraseCooldownEndTick = 905L;
+        source.apprenticeRelocateCooldownEndTick = 906L;
+        source.apprenticeLinkCooldownEndTick = 907L;
+        source.apprenticeMirrorCooldownEndTick = 908L;
+        source.apprenticeDivinationCooldownEndTick = 909L;
+        source.apprenticeWardCooldownEndTick = 910L;
 
         PlayerMysteryData copied = new PlayerMysteryData();
         copied.copyFrom(source);
@@ -116,5 +126,15 @@ class PlayerMysteryDataTest {
         assertEquals(600L, copied.psychShockCooldownEndTick);
         assertEquals(700L, copied.pyroSpearCooldownEndTick);
         assertEquals(800L, copied.pyroRingCooldownEndTick);
+        assertEquals(901L, copied.thiefSwapCooldownEndTick);
+        assertEquals(902L, copied.thiefDecoyCooldownEndTick);
+        assertEquals(903L, copied.thiefRuneCooldownEndTick);
+        assertEquals(904L, copied.thiefLockpickCooldownEndTick);
+        assertEquals(905L, copied.thiefEraseCooldownEndTick);
+        assertEquals(906L, copied.apprenticeRelocateCooldownEndTick);
+        assertEquals(907L, copied.apprenticeLinkCooldownEndTick);
+        assertEquals(908L, copied.apprenticeMirrorCooldownEndTick);
+        assertEquals(909L, copied.apprenticeDivinationCooldownEndTick);
+        assertEquals(910L, copied.apprenticeWardCooldownEndTick);
     }
 }

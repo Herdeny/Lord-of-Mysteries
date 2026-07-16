@@ -54,6 +54,10 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.STARLIGHT_MOSS.get());
                         output.accept(ModItems.DREAM_SCALE_FRAGMENT.get());
                         output.accept(ModItems.EMBER_SALAMANDER_GLAND.get());
+                        output.accept(ModItems.MIRROR_CRAB_SHELL.get());
+                        output.accept(ModItems.ANCIENT_TABLET_SPORE_SAC.get());
+                        output.accept(ModItems.IRIDESCENT_TRICKBIRD_FEATHER.get());
+                        output.accept(ModItems.METEOR_DUST.get());
                         output.accept(ModItems.BLANK_MANUSCRIPT.get());
                         output.accept(ModItems.MYSTIC_INK.get());
                         output.accept(ModItems.FORMULA_FRAGMENT.get());
@@ -85,7 +89,11 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.HUNTER_POTION_8.get());
                         output.accept(ModItems.HUNTER_POTION_7.get());
                         output.accept(ModItems.THIEF_POTION_9.get());
+                        output.accept(ModItems.THIEF_POTION_8.get());
+                        output.accept(ModItems.THIEF_POTION_7.get());
                         output.accept(ModItems.APPRENTICE_POTION_9.get());
+                        output.accept(ModItems.APPRENTICE_POTION_8.get());
+                        output.accept(ModItems.APPRENTICE_POTION_7.get());
                         output.accept(ModItems.HUNTER_SNARE_ITEM.get());
                         output.accept(ModItems.ETERNAL_MATCHBOX.get());
                         output.accept(ModItems.RITUAL_ALTAR_ITEM.get());

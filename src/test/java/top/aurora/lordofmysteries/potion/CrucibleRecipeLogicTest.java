@@ -162,4 +162,44 @@ class CrucibleRecipeLogicTest {
         assertEquals(CrucibleRecipeLogic.BrewedPotion.HUNTER_7, result.potion());
         assertEquals(PotionQuality.PERFECT, result.quality());
     }
+
+    @Test
+    void swindlerRecipeUsesMirrorShellAndSlime() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.MIRROR_CRAB_SHELL,
+                CrucibleRecipeLogic.SLIME_BALL,
+                CrucibleRecipeLogic.GOLD_NUGGET), 70f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.THIEF_8, result.potion());
+        assertEquals(PotionQuality.PERFECT, result.quality());
+    }
+
+    @Test
+    void cryptologistRecipeUsesTabletSporesAndMoss() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.ANCIENT_TABLET_SPORE_SAC,
+                CrucibleRecipeLogic.MOSS_BLOCK,
+                CrucibleRecipeLogic.REDSTONE), 65f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.THIEF_7, result.potion());
+        assertEquals(PotionQuality.PERFECT, result.quality());
+    }
+
+    @Test
+    void trickmasterRecipeUsesIridescentFeatherAndPearl() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.IRIDESCENT_TRICKBIRD_FEATHER,
+                CrucibleRecipeLogic.ENDER_PEARL,
+                CrucibleRecipeLogic.AMETHYST_SHARD), 78f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.APPRENTICE_8, result.potion());
+        assertEquals(PotionQuality.PERFECT, result.quality());
+    }
+
+    @Test
+    void astrologerRecipeUsesMeteorDustAndMoonwater() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.METEOR_DUST,
+                CrucibleRecipeLogic.MOONWATER,
+                CrucibleRecipeLogic.COMPASS), 62f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.APPRENTICE_7, result.potion());
+        assertEquals(PotionQuality.PERFECT, result.quality());
+    }
 }
