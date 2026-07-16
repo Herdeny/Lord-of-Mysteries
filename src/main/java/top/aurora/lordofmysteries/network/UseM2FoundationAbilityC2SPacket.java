@@ -25,7 +25,8 @@ public record UseM2FoundationAbilityC2SPacket(
                               Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         ServerPlayer sender = context.getSender();
-        if (sender != null) {
+        if (sender != null && PMNetwork.acceptC2S(
+                sender, NetworkProtocol.USE_M2_FOUNDATION_ABILITY)) {
             M2FoundationAbilityHandler.use(sender, packet.slot());
         }
         context.setPacketHandled(true);

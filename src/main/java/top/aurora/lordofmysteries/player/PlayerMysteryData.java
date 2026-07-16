@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 12;
+    public static final int CURRENT_SCHEMA_VERSION = 13;
 
     // 途径 & 序列。
     // pathway 使用 ResourceLocation 以便完全数据驱动，例如 lord_of_mysteries:seer。
@@ -92,7 +92,7 @@ public class PlayerMysteryData {
     public long pyroRingCooldownEndTick = 0L;
     public long lastRestRecoveryDay = Long.MIN_VALUE;
     public boolean m1TrialActive = false;
-    public long m1TrialStartTick = 0L;
+    public long m1TrialStartTick = -1L;
     public long m1TrialElapsedTicks = 0L;
     public boolean m1TrialCampVisited = false;
     public int m1TrialBestSequence = -1;
@@ -103,6 +103,12 @@ public class PlayerMysteryData {
     public int m1TrialActingEvents = 0;
     public float m1TrialMaxPressure = 0f;
     public float m1TrialMaxPollution = 0f;
+    public int m1TrialReconnects = 0;
+    public int m1TrialServerRestarts = 0;
+    public int m1TrialDimensionChanges = 0;
+    public int m1TrialDeathRecoveries = 0;
+    public boolean m1TrialPendingReconnect = false;
+    public String m1TrialSessionId = "";
 
     public long moneyPence = 0L;
     public String activeCommissionId = "";
@@ -218,6 +224,12 @@ public class PlayerMysteryData {
         this.m1TrialActingEvents = src.m1TrialActingEvents;
         this.m1TrialMaxPressure = src.m1TrialMaxPressure;
         this.m1TrialMaxPollution = src.m1TrialMaxPollution;
+        this.m1TrialReconnects = src.m1TrialReconnects;
+        this.m1TrialServerRestarts = src.m1TrialServerRestarts;
+        this.m1TrialDimensionChanges = src.m1TrialDimensionChanges;
+        this.m1TrialDeathRecoveries = src.m1TrialDeathRecoveries;
+        this.m1TrialPendingReconnect = src.m1TrialPendingReconnect;
+        this.m1TrialSessionId = src.m1TrialSessionId;
         this.moneyPence = src.moneyPence;
         this.activeCommissionId = src.activeCommissionId;
         this.activeQuestChainId = src.activeQuestChainId;
@@ -234,6 +246,7 @@ public class PlayerMysteryData {
         this.actingCounters = new HashMap<>(src.actingCounters);
         this.orgReputation = new HashMap<>(src.orgReputation);
         this.schemaVersion = CURRENT_SCHEMA_VERSION;
+        sanitize();
     }
 
     // —— NBT 序列化 ——
@@ -315,6 +328,12 @@ public class PlayerMysteryData {
         tag.putInt("m1_trial_acting_events", m1TrialActingEvents);
         tag.putFloat("m1_trial_max_pressure", m1TrialMaxPressure);
         tag.putFloat("m1_trial_max_pollution", m1TrialMaxPollution);
+        tag.putInt("m1_trial_reconnects", m1TrialReconnects);
+        tag.putInt("m1_trial_server_restarts", m1TrialServerRestarts);
+        tag.putInt("m1_trial_dimension_changes", m1TrialDimensionChanges);
+        tag.putInt("m1_trial_death_recoveries", m1TrialDeathRecoveries);
+        tag.putBoolean("m1_trial_pending_reconnect", m1TrialPendingReconnect);
+        tag.putString("m1_trial_session_id", m1TrialSessionId);
         tag.putLong("money_pence", moneyPence);
         tag.putString("active_commission", activeCommissionId);
         tag.putString("active_quest_chain", activeQuestChainId);
@@ -428,7 +447,8 @@ public class PlayerMysteryData {
         lastRestRecoveryDay = tag.contains("last_rest_recovery_day")
                 ? tag.getLong("last_rest_recovery_day") : Long.MIN_VALUE;
         m1TrialActive = tag.getBoolean("m1_trial_active");
-        m1TrialStartTick = tag.getLong("m1_trial_start_tick");
+        m1TrialStartTick = tag.contains("m1_trial_start_tick")
+                ? tag.getLong("m1_trial_start_tick") : -1L;
         m1TrialElapsedTicks = tag.getLong("m1_trial_elapsed_ticks");
         m1TrialCampVisited = tag.getBoolean("m1_trial_camp_visited");
         m1TrialBestSequence = tag.contains("m1_trial_best_sequence")
@@ -440,6 +460,13 @@ public class PlayerMysteryData {
         m1TrialActingEvents = tag.getInt("m1_trial_acting_events");
         m1TrialMaxPressure = tag.getFloat("m1_trial_max_pressure");
         m1TrialMaxPollution = tag.getFloat("m1_trial_max_pollution");
+        m1TrialReconnects = tag.getInt("m1_trial_reconnects");
+        m1TrialServerRestarts = tag.getInt("m1_trial_server_restarts");
+        m1TrialDimensionChanges = tag.getInt("m1_trial_dimension_changes");
+        m1TrialDeathRecoveries = tag.getInt("m1_trial_death_recoveries");
+        m1TrialPendingReconnect = tag.getBoolean("m1_trial_pending_reconnect");
+        m1TrialSessionId = tag.contains("m1_trial_session_id")
+                ? tag.getString("m1_trial_session_id") : "";
         moneyPence = tag.getLong("money_pence");
         activeCommissionId = tag.contains("active_commission")
                 ? tag.getString("active_commission") : "";
@@ -492,5 +519,10 @@ public class PlayerMysteryData {
             // 只恢复合法组织 ID；非法键静默丢弃，避免污染运行期数据结构。
             if (rl != null) orgReputation.put(rl, rep.getInt(key));
         }
+        sanitize();
+    }
+
+    public int sanitize() {
+        return PlayerMysteryDataSanitizer.sanitize(this);
     }
 }

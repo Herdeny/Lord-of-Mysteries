@@ -1,6 +1,6 @@
 # 入门与占卜家序列 9–7
 
-> 当前版本：0.8.4-1.20.1
+> 当前版本：0.8.5-1.20.1
 >
 > 设计基线：v0.8 · M1 验收 / M2 预研
 
@@ -66,14 +66,16 @@
 | `/pm items` | 野外装备与调查道具 |
 | `/pm bestiary` | 生物档案 |
 | `/pm journal` | 已解锁能力、准则、规则与生物档案 |
-| `/pm trial start` | 开始一小时验收 |
-| `/pm trial status` | 查看六项目标与附加统计 |
+| `/pm doctor` | 修复数据并检查定义、协议和世界目标 |
+| `/pm trial start|resume` | 开始或继续一小时验收 |
+| `/pm trial status|verify` | 查看并核验六项目标、四项连续性与附加统计 |
 | `/pm trial stop` | 停止并保留记录 |
 | `/pm trial reset` | 清空记录 |
 
 九段教程成就从“帷幕微动”推进到“M1 纵切”；首次击杀特殊生物会写入调查日志。完整一小时记录表见
 [M1 验收清单](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M1_ACCEPTANCE_CHECKLIST.md)；
 追踪器字段与使用方法见 [M1 一小时试炼追踪器](M1-Trial-Tracker)。
+专服、重启和多人步骤见 [专用服务器与多人验证](Dedicated-Server-Test-Matrix)。
 
 ## M2 预研入口
 
@@ -91,7 +93,8 @@
 [偷盗者与学徒序列 8-7](M2-Sequence-8-7-Thief-and-Apprentice)。
 
 雾都前哨、寻猫委托和“失踪调查小队·第一阶段”现已可玩；详情见
-[雾都前哨与调查委托](M2-Commissions-and-Mist-City-Outpost)。完整镇区、神秘学家小屋、真假配方和三解分支仍未完成。
+[雾都前哨与调查委托](M2-Commissions-and-Mist-City-Outpost)。同记分板队伍 2–4 名在线成员可共享目标；
+完整镇区、神秘学家小屋、真假配方、三解分支、离线共享和正式队伍 UI 仍未完成。
 
 完整手册见
 [`docs/GETTING_STARTED.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/GETTING_STARTED.md)。

@@ -20,7 +20,10 @@ public record ToggleEmotionReadC2SPacket() {
                               Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         ServerPlayer sender = context.getSender();
-        if (sender != null) SpectatorAbilityHandler.toggleEmotionRead(sender);
+        if (sender != null && PMNetwork.acceptC2S(
+                sender, NetworkProtocol.TOGGLE_EMOTION_READ)) {
+            SpectatorAbilityHandler.toggleEmotionRead(sender);
+        }
         context.setPacketHandled(true);
     }
 }

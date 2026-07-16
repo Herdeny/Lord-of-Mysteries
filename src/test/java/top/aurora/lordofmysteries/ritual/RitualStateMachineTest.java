@@ -38,4 +38,12 @@ class RitualStateMachineTest {
         assertFalse(machine.finish(true));
         assertEquals(RitualStateMachine.State.FAILED, machine.state());
     }
+
+    @Test
+    void interruptedResolutionRestoresToSafeInvokingState() {
+        RitualStateMachine machine = new RitualStateMachine();
+        machine.restore(RitualStateMachine.State.RESOLVING);
+        assertEquals(RitualStateMachine.State.INVOKING, machine.state());
+        assertTrue(machine.beginResolve());
+    }
 }

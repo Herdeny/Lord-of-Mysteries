@@ -46,4 +46,8 @@ public final class QuestChainDefinitionManager extends SimpleJsonResourceReloadL
     public static QuestChainDefinition get(ResourceLocation id) {
         return definitions.get(id);
     }
+
+    public static Map<ResourceLocation, QuestChainDefinition> all() {
+        return definitions;
+    }
 }

@@ -1,10 +1,13 @@
 package top.aurora.lordofmysteries.knowledge;
 
+import java.util.UUID;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -16,6 +19,8 @@ import top.aurora.lordofmysteries.world.CampGenerationSavedData;
 
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class M1TrialTracker {
+
+    private static final String SERVER_SESSION_ID = UUID.randomUUID().toString();
 
     private M1TrialTracker() {}
 
@@ -30,6 +35,7 @@ public final class M1TrialTracker {
     }
 
     public static void refresh(ServerPlayer player, PlayerMysteryData data) {
+        recordServerSession(data);
         data.m1TrialMaxPressure = Math.max(
                 data.m1TrialMaxPressure, data.insanityPressure);
         data.m1TrialMaxPollution = Math.max(
@@ -54,6 +60,51 @@ public final class M1TrialTracker {
         if (data.m1TrialActive) data.m1TrialDeaths++;
     }
 
+    @SubscribeEvent
+    public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.m1TrialActive) {
+            data.m1TrialElapsedTicks = M1TrialTimer.elapsed(
+                    data.m1TrialElapsedTicks, true, data.m1TrialStartTick,
+                    player.level().getGameTime());
+            data.m1TrialStartTick = -1L;
+            data.m1TrialPendingReconnect = true;
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (!data.m1TrialActive) return;
+        if (data.m1TrialPendingReconnect) {
+            data.m1TrialReconnects++;
+            data.m1TrialPendingReconnect = false;
+        }
+        if (data.m1TrialStartTick < 0L) {
+            data.m1TrialStartTick = player.level().getGameTime();
+        }
+        refresh(player, data);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerChangedDimension(
+            PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.m1TrialActive) data.m1TrialDimensionChanges++;
+    }
+
+    @SubscribeEvent
+    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.m1TrialActive && data.m1TrialDeathRecoveries < data.m1TrialDeaths) {
+            data.m1TrialDeathRecoveries = data.m1TrialDeaths;
+        }
+    }
+
     public static void recordOccultKill(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         if (data.m1TrialActive) data.m1TrialOccultKills++;
@@ -72,5 +123,14 @@ public final class M1TrialTracker {
     public static void recordActing(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         if (data.m1TrialActive) data.m1TrialActingEvents++;
+    }
+
+    private static void recordServerSession(PlayerMysteryData data) {
+        if (data.m1TrialSessionId.isBlank()) {
+            data.m1TrialSessionId = SERVER_SESSION_ID;
+        } else if (!SERVER_SESSION_ID.equals(data.m1TrialSessionId)) {
+            data.m1TrialServerRestarts++;
+            data.m1TrialSessionId = SERVER_SESSION_ID;
+        }
     }
 }

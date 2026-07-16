@@ -28,7 +28,8 @@ public record ToggleSpiritVisionC2SPacket() {
         NetworkEvent.Context ctx = ctxSup.get();
         // consumerMainThread 已经保证在主线程；不需要 enqueueWork。
         ServerPlayer sender = ctx.getSender();
-        if (sender != null) {
+        if (sender != null && PMNetwork.acceptC2S(
+                sender, NetworkProtocol.TOGGLE_SPIRIT_VISION)) {
             SpiritVisionHandler.toggle(sender);
         }
         ctx.setPacketHandled(true);

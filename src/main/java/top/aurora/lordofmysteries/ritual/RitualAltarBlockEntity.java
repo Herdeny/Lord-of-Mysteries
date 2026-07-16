@@ -35,6 +35,7 @@ public final class RitualAltarBlockEntity extends BlockEntity {
     private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
     private final RitualStateMachine machine = new RitualStateMachine();
     private int invocationTicks;
+    private int leaderOfflineTicks;
     private UUID leader;
     private RitualResolutionLogic.Outcome lastOutcome;
 
@@ -76,6 +77,7 @@ public final class RitualAltarBlockEntity extends BlockEntity {
             return false;
         }
         invocationTicks = 0;
+        leaderOfflineTicks = 0;
         leader = player.getUUID();
         boolean started = machine.invoke();
         setChanged();
@@ -88,6 +90,7 @@ public final class RitualAltarBlockEntity extends BlockEntity {
         items.set(0, ItemStack.EMPTY);
         machine.reset();
         leader = null;
+        leaderOfflineTicks = 0;
         lastOutcome = null;
         setChanged();
         return artifact;
@@ -125,6 +128,23 @@ public final class RitualAltarBlockEntity extends BlockEntity {
                 || !(level instanceof ServerLevel serverLevel)) {
             return;
         }
+        ServerPlayer leaderPlayer = altar.leader == null ? null
+                : serverLevel.getServer().getPlayerList().getPlayer(altar.leader);
+        int offlineTicks = leaderPlayer == null ? altar.leaderOfflineTicks + 1 : 0;
+        RitualRecoveryLogic.Action recovery = RitualRecoveryLogic.decide(
+                true, leaderPlayer != null, offlineTicks);
+        if (recovery == RitualRecoveryLogic.Action.PAUSE) {
+            altar.leaderOfflineTicks = offlineTicks;
+            altar.setChanged();
+            return;
+        }
+        if (recovery == RitualRecoveryLogic.Action.CANCEL) {
+            altar.machine.cancel();
+            altar.leaderOfflineTicks = 0;
+            altar.setChanged();
+            return;
+        }
+        altar.leaderOfflineTicks = 0;
         altar.invocationTicks++;
         if (altar.invocationTicks % STRUCTURE_RECHECK_INTERVAL == 0
                 && !MultiBlockRitualDetector.inspect(serverLevel, pos).complete()) {
@@ -153,8 +173,6 @@ public final class RitualAltarBlockEntity extends BlockEntity {
             return;
         }
 
-        ServerPlayer leaderPlayer = altar.leader == null ? null
-                : serverLevel.getServer().getPlayerList().getPlayer(altar.leader);
         boolean qualifiedLeader = leaderPlayer != null
                 && qualifiedLeader(MysteryCapability.get(leaderPlayer));
         float score = RitualResolutionLogic.completionScore(
@@ -301,6 +319,7 @@ public final class RitualAltarBlockEntity extends BlockEntity {
         tag.put("items", list);
         tag.putString("ritual_state", machine.state().name());
         tag.putInt("invocation_ticks", invocationTicks);
+        tag.putInt("leader_offline_ticks", leaderOfflineTicks);
         if (leader != null) tag.putUUID("ritual_leader", leader);
         if (lastOutcome != null) tag.putString("ritual_outcome", lastOutcome.name());
     }
@@ -321,6 +340,7 @@ public final class RitualAltarBlockEntity extends BlockEntity {
             machine.reset();
         }
         invocationTicks = tag.getInt("invocation_ticks");
+        leaderOfflineTicks = Math.max(0, tag.getInt("leader_offline_ticks"));
         leader = tag.hasUUID("ritual_leader") ? tag.getUUID("ritual_leader") : null;
         try {
             lastOutcome = RitualResolutionLogic.Outcome.valueOf(

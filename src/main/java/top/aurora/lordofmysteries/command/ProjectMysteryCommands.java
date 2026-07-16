@@ -7,9 +7,13 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,15 +25,24 @@ import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
 import top.aurora.lordofmysteries.knowledge.GuideJournalProgress;
 import top.aurora.lordofmysteries.knowledge.KnowledgeText;
 import top.aurora.lordofmysteries.knowledge.M1Readiness;
+import top.aurora.lordofmysteries.knowledge.M1TrialContinuity;
 import top.aurora.lordofmysteries.knowledge.M1TrialProgress;
+import top.aurora.lordofmysteries.knowledge.M1TrialTimer;
 import top.aurora.lordofmysteries.knowledge.M1TrialTracker;
+import top.aurora.lordofmysteries.network.NetworkProtocol;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.registry.ModItems;
+import top.aurora.lordofmysteries.commission.CommissionDefinitionManager;
 import top.aurora.lordofmysteries.commission.CommissionService;
+import top.aurora.lordofmysteries.commission.QuestChainDefinitionManager;
+import top.aurora.lordofmysteries.world.AbandonedCampGenerator;
+import top.aurora.lordofmysteries.world.CampGenerationSavedData;
 import top.aurora.lordofmysteries.world.MistCityOutpostGenerator;
+import top.aurora.lordofmysteries.world.MistCityOutpostSavedData;
 import top.aurora.lordofmysteries.world.InvestigationSiteGenerator;
+import top.aurora.lordofmysteries.world.InvestigationSiteSavedData;
 
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ProjectMysteryCommands {
@@ -100,11 +113,17 @@ public final class ProjectMysteryCommands {
                         showJournal(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("m1check").executes(context ->
                         showM1Check(context.getSource().getPlayerOrException())))
+                .then(Commands.literal("doctor").executes(context ->
+                        showDiagnostics(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("trial")
                         .then(Commands.literal("start").executes(context ->
                                 startTrial(context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("resume").executes(context ->
+                                startTrial(context.getSource().getPlayerOrException())))
                         .then(Commands.literal("status").executes(context ->
                                 showTrial(context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("verify").executes(context ->
+                                verifyTrial(context.getSource().getPlayerOrException())))
                         .then(Commands.literal("stop").executes(context ->
                                 stopTrial(context.getSource().getPlayerOrException())))
                         .then(Commands.literal("reset").executes(context ->
@@ -146,7 +165,8 @@ public final class ProjectMysteryCommands {
                     .withStyle(ChatFormatting.YELLOW));
             return 0;
         }
-        clearTrial(data);
+        boolean resumed = hasTrialRecord(data);
+        if (!resumed) clearTrial(data);
         data.m1TrialActive = true;
         data.m1TrialStartTick = player.level().getGameTime();
         if (SeerPotionItem.SEER_PATHWAY.equals(data.pathway)) {
@@ -154,7 +174,9 @@ public final class ProjectMysteryCommands {
         }
         M1TrialTracker.refresh(player, data);
         player.sendSystemMessage(Component.translatable(
-                "command.lord_of_mysteries.trial.started")
+                resumed
+                        ? "command.lord_of_mysteries.trial.resumed"
+                        : "command.lord_of_mysteries.trial.started")
                 .withStyle(ChatFormatting.GOLD));
         showTrial(player);
         return 1;
@@ -170,7 +192,7 @@ public final class ProjectMysteryCommands {
         }
         M1TrialTracker.refresh(player, data);
         data.m1TrialElapsedTicks = trialElapsed(player, data);
-        data.m1TrialStartTick = 0L;
+        data.m1TrialStartTick = -1L;
         data.m1TrialActive = false;
         player.sendSystemMessage(Component.translatable(
                 "command.lord_of_mysteries.trial.stopped")
@@ -229,7 +251,49 @@ public final class ProjectMysteryCommands {
                         : "command.lord_of_mysteries.trial.pending",
                 result.completedGoals())
                 .withStyle(result.passed() ? ChatFormatting.GREEN : ChatFormatting.YELLOW));
+        M1TrialContinuity.Result continuity = M1TrialContinuity.evaluate(
+                data.m1TrialReconnects,
+                data.m1TrialServerRestarts,
+                data.m1TrialDimensionChanges,
+                data.m1TrialDeathRecoveries);
+        sendTrialGoal(player, continuity.reconnectComplete(), "reconnect",
+                data.m1TrialReconnects, M1TrialContinuity.REQUIRED_RECONNECTS);
+        sendTrialGoal(player, continuity.restartComplete(), "restart",
+                data.m1TrialServerRestarts, M1TrialContinuity.REQUIRED_SERVER_RESTARTS);
+        sendTrialGoal(player, continuity.dimensionComplete(), "dimension",
+                data.m1TrialDimensionChanges,
+                M1TrialContinuity.REQUIRED_DIMENSION_CHANGES);
+        sendTrialGoal(player, continuity.deathComplete(), "death_recovery",
+                data.m1TrialDeathRecoveries,
+                M1TrialContinuity.REQUIRED_DEATH_RECOVERIES);
+        player.sendSystemMessage(Component.translatable(
+                continuity.passed()
+                        ? "command.lord_of_mysteries.trial.continuity_passed"
+                        : "command.lord_of_mysteries.trial.continuity_pending",
+                continuity.completedGoals())
+                .withStyle(continuity.passed()
+                        ? ChatFormatting.GREEN : ChatFormatting.YELLOW));
         return Math.max(1, result.completedGoals());
+    }
+
+    private static int verifyTrial(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.m1TrialActive) M1TrialTracker.refresh(player, data);
+        long elapsed = trialElapsed(player, data);
+        M1TrialProgress.Result core = M1TrialProgress.evaluate(
+                elapsed, data.m1TrialCampVisited, data.m1TrialBestSequence,
+                data.m1TrialOccultKills, data.m1TrialActingEvents,
+                data.m1TrialMaxPressure, data.m1TrialMaxPollution);
+        M1TrialContinuity.Result continuity = M1TrialContinuity.evaluate(
+                data.m1TrialReconnects, data.m1TrialServerRestarts,
+                data.m1TrialDimensionChanges, data.m1TrialDeathRecoveries);
+        showTrial(player);
+        boolean verified = core.passed() && continuity.passed();
+        player.sendSystemMessage(Component.translatable(verified
+                        ? "command.lord_of_mysteries.trial.verify_passed"
+                        : "command.lord_of_mysteries.trial.verify_pending")
+                .withStyle(verified ? ChatFormatting.GREEN : ChatFormatting.RED));
+        return verified ? 1 : 0;
     }
 
     private static void sendTrialGoal(ServerPlayer player, boolean complete,
@@ -241,14 +305,25 @@ public final class ProjectMysteryCommands {
     }
 
     private static long trialElapsed(ServerPlayer player, PlayerMysteryData data) {
-        if (!data.m1TrialActive) return data.m1TrialElapsedTicks;
-        return data.m1TrialElapsedTicks + Math.max(
-                0L, player.level().getGameTime() - data.m1TrialStartTick);
+        return M1TrialTimer.elapsed(data.m1TrialElapsedTicks,
+                data.m1TrialActive, data.m1TrialStartTick,
+                player.level().getGameTime());
+    }
+
+    private static boolean hasTrialRecord(PlayerMysteryData data) {
+        return data.m1TrialElapsedTicks > 0L || data.m1TrialCampVisited
+                || data.m1TrialBestSequence >= 0 || data.m1TrialOccultKills > 0
+                || data.m1TrialDeaths > 0 || data.m1TrialRestRecoveries > 0
+                || data.m1TrialCharmsConsumed > 0 || data.m1TrialActingEvents > 0
+                || data.m1TrialMaxPressure > 0f || data.m1TrialMaxPollution > 0f
+                || data.m1TrialReconnects > 0 || data.m1TrialServerRestarts > 0
+                || data.m1TrialDimensionChanges > 0
+                || data.m1TrialDeathRecoveries > 0;
     }
 
     private static void clearTrial(PlayerMysteryData data) {
         data.m1TrialActive = false;
-        data.m1TrialStartTick = 0L;
+        data.m1TrialStartTick = -1L;
         data.m1TrialElapsedTicks = 0L;
         data.m1TrialCampVisited = false;
         data.m1TrialBestSequence = -1;
@@ -259,6 +334,80 @@ public final class ProjectMysteryCommands {
         data.m1TrialActingEvents = 0;
         data.m1TrialMaxPressure = 0f;
         data.m1TrialMaxPollution = 0f;
+        data.m1TrialReconnects = 0;
+        data.m1TrialServerRestarts = 0;
+        data.m1TrialDimensionChanges = 0;
+        data.m1TrialDeathRecoveries = 0;
+        data.m1TrialPendingReconnect = false;
+        data.m1TrialSessionId = "";
+    }
+
+    private static int showDiagnostics(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        int repairs = data.sanitize();
+        int errors = 0;
+        player.sendSystemMessage(Component.translatable(
+                "command.lord_of_mysteries.doctor.title")
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
+        player.sendSystemMessage(Component.translatable(
+                repairs == 0
+                        ? "command.lord_of_mysteries.doctor.player_ok"
+                        : "command.lord_of_mysteries.doctor.player_repaired",
+                repairs).withStyle(repairs == 0
+                        ? ChatFormatting.GREEN : ChatFormatting.YELLOW));
+        player.sendSystemMessage(Component.translatable(
+                "command.lord_of_mysteries.doctor.data",
+                CommissionDefinitionManager.all().size(),
+                QuestChainDefinitionManager.all().size())
+                .withStyle(ChatFormatting.GRAY));
+        player.sendSystemMessage(Component.translatable(
+                "command.lord_of_mysteries.doctor.protocol",
+                NetworkProtocol.VERSION, NetworkProtocol.PACKET_COUNT)
+                .withStyle(ChatFormatting.GRAY));
+
+        if (!data.activeQuestChainId.isBlank()) {
+            ResourceLocation questId = ResourceLocation.tryParse(data.activeQuestChainId);
+            ResourceLocation commissionId = ResourceLocation.tryParse(data.activeCommissionId);
+            boolean valid = questId != null && commissionId != null
+                    && QuestChainDefinitionManager.get(questId) != null
+                    && CommissionDefinitionManager.get(commissionId) != null;
+            if (!valid) errors++;
+            player.sendSystemMessage(Component.translatable(valid
+                            ? "command.lord_of_mysteries.doctor.active_ok"
+                            : "command.lord_of_mysteries.doctor.active_invalid")
+                    .withStyle(valid ? ChatFormatting.GREEN : ChatFormatting.RED));
+        } else {
+            player.sendSystemMessage(Component.translatable(
+                    "command.lord_of_mysteries.doctor.active_none")
+                    .withStyle(ChatFormatting.DARK_GRAY));
+        }
+
+        ServerLevel overworld = player.getServer().getLevel(Level.OVERWORLD);
+        if (overworld == null) {
+            errors++;
+        } else {
+            BlockPos camp = CampGenerationSavedData.get(overworld)
+                    .nearestCamp(player.blockPosition())
+                    .orElseGet(() -> AbandonedCampGenerator.starterCampTarget(overworld));
+            BlockPos outpost = MistCityOutpostSavedData.get(overworld).outpost()
+                    .orElseGet(() -> MistCityOutpostGenerator.starterOutpostTarget(overworld));
+            InvestigationSiteSavedData sites = InvestigationSiteSavedData.get(overworld);
+            BlockPos church = sites.church()
+                    .orElseGet(() -> InvestigationSiteGenerator.churchTarget(overworld));
+            BlockPos cultistCamp = sites.cultistCamp()
+                    .orElseGet(() -> InvestigationSiteGenerator.cultistCampTarget(overworld));
+            player.sendSystemMessage(Component.translatable(
+                    "command.lord_of_mysteries.doctor.world",
+                    camp.getX(), camp.getZ(), outpost.getX(), outpost.getZ(),
+                    church.getX(), church.getZ(), cultistCamp.getX(), cultistCamp.getZ())
+                    .withStyle(ChatFormatting.GRAY));
+        }
+        player.sendSystemMessage(Component.translatable(errors == 0
+                        ? "command.lord_of_mysteries.doctor.passed"
+                        : "command.lord_of_mysteries.doctor.failed",
+                errors).withStyle(errors == 0
+                        ? ChatFormatting.GREEN : ChatFormatting.RED));
+        return errors == 0 ? 1 : 0;
     }
 
     private static ItemStack findCompass(ServerPlayer player) {

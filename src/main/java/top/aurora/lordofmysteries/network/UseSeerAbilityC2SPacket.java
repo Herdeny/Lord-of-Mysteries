@@ -23,7 +23,10 @@ public record UseSeerAbilityC2SPacket(SeerAbilityHandler.Ability ability) {
                               Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         ServerPlayer sender = context.getSender();
-        if (sender != null) SeerAbilityHandler.use(sender, packet.ability());
+        if (sender != null && PMNetwork.acceptC2S(
+                sender, NetworkProtocol.USE_SEER_ABILITY)) {
+            SeerAbilityHandler.use(sender, packet.ability());
+        }
         context.setPacketHandled(true);
     }
 }

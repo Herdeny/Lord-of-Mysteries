@@ -85,6 +85,11 @@ public final class CommissionService {
         if (!recordObjective(player, "rescue", "missing_reporter", 1)) return 0;
         PlayerMysteryData data = MysteryCapability.get(player);
         data.escortedReporterUuid = reporter.getUUID().toString();
+        QuestChainDefinition chain = activeChain(data);
+        if (chain != null) {
+            QuestPartyService.assignReporter(
+                    player, chain, reporter.getUUID().toString());
+        }
         InvestigationNpcHandler.beginEscort(reporter, player);
         if (!hasItem(player, ModItems.PRESS_CARD.get())) {
             giveItem(player, new ItemStack(ModItems.PRESS_CARD.get()));
@@ -230,8 +235,16 @@ public final class CommissionService {
             case "enter_structure" -> trackStructure(player, overworld, objective);
             case "custom_callback" -> trackCustomObjective(player, overworld, objective);
             case "pickup" -> trackEvidence(player, overworld, objective);
-            case "escort" -> trackEscort(player, overworld, objective);
-            case "survive_waves" -> trackNightDefense(player, overworld, objective);
+            case "escort" -> {
+                if (QuestPartyService.isCoordinator(player, chain)) {
+                    trackEscort(player, overworld, objective);
+                }
+            }
+            case "survive_waves" -> {
+                if (QuestPartyService.isCoordinator(player, chain)) {
+                    trackNightDefense(player, overworld, objective);
+                }
+            }
             case "reach_sequence" -> {
                 if (data.isExtraordinary() && data.sequence <= 9) {
                     recordObjective(player, objective.type(), objective.target(), 1);
@@ -248,6 +261,22 @@ public final class CommissionService {
 
     public static boolean recordObjective(ServerPlayer player, String type,
                                           String target, int amount) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        QuestChainDefinition chain = activeChain(data);
+        if (chain == null) return false;
+        List<ServerPlayer> participants = QuestPartyService.participants(player, chain);
+        boolean matched = recordObjectiveForPlayer(player, type, target, amount);
+        if (!matched) return false;
+        for (ServerPlayer participant : participants) {
+            if (participant != player) {
+                recordObjectiveForPlayer(participant, type, target, amount);
+            }
+        }
+        return true;
+    }
+
+    private static boolean recordObjectiveForPlayer(ServerPlayer player, String type,
+                                                    String target, int amount) {
         PlayerMysteryData data = MysteryCapability.get(player);
         QuestChainDefinition chain = activeChain(data);
         if (chain == null) return false;
@@ -377,7 +406,13 @@ public final class CommissionService {
             if (!near(player, outpost, 32d)) return;
             PlayerMysteryData data = MysteryCapability.get(player);
             long now = level.getGameTime();
-            List<Mob> attackers = defenseAttackers(level, outpost, player.getUUID());
+            QuestChainDefinition chain = activeChain(data);
+            if (chain == null) return;
+            String partyKey = QuestPartyService.partyKey(player, chain);
+            List<Mob> attackers = defenseAttackers(level, outpost, partyKey);
+            if (!attackers.isEmpty() && !data.questDefenseWaveSpawned) {
+                QuestPartyService.setDefenseState(player, chain, true, 0L);
+            }
             NightDefenseLogic.Action action = NightDefenseLogic.decide(
                     level.isNight(), data.questDefenseWaveSpawned,
                     !attackers.isEmpty(), now, data.questDefenseNextTick);
@@ -387,27 +422,29 @@ public final class CommissionService {
                         player.sendSystemMessage(Component.translatable(
                                 "message.lord_of_mysteries.quest.wait_for_night")
                                 .withStyle(ChatFormatting.DARK_GRAY));
-                        data.questDefenseNextTick = now + 200L;
+                        QuestPartyService.setDefenseState(
+                                player, chain, false, now + 200L);
                     }
                 }
                 case SPAWN_WAVE -> {
                     int wave = data.questObjectiveProgress + 1;
-                    spawnDefenseWave(level, player, outpost, wave);
-                    data.questDefenseWaveSpawned = true;
-                    data.questDefenseNextTick = 0L;
+                    spawnDefenseWave(level, player, outpost, wave, partyKey);
+                    QuestPartyService.setDefenseState(player, chain, true, 0L);
                     player.sendSystemMessage(Component.translatable(
                             "message.lord_of_mysteries.quest.wave_started",
                             wave, objective.count()).withStyle(ChatFormatting.RED));
                 }
                 case COMPLETE_WAVE -> {
                     int completedWave = data.questObjectiveProgress + 1;
-                    data.questDefenseWaveSpawned = false;
+                    QuestPartyService.setDefenseState(player, chain, false, 0L);
                     player.sendSystemMessage(Component.translatable(
                             "message.lord_of_mysteries.quest.wave_cleared",
                             completedWave, objective.count()).withStyle(ChatFormatting.GREEN));
                     recordObjective(player, objective.type(), objective.target(), 1);
-                    data.questDefenseNextTick = isCurrentObjective(
+                    long nextTick = isCurrentObjective(
                             player, objective.type(), objective.target()) ? now + 100L : 0L;
+                    QuestPartyService.setDefenseState(
+                            player, chain, false, nextTick);
                 }
                 case WAIT -> {
                 }
@@ -416,16 +453,16 @@ public final class CommissionService {
     }
 
     private static List<Mob> defenseAttackers(ServerLevel level, BlockPos outpost,
-                                              UUID owner) {
+                                              String partyKey) {
         return level.getEntitiesOfClass(Mob.class, new AABB(outpost).inflate(48d),
                 mob -> mob.isAlive()
-                        && mob.getPersistentData().hasUUID("lom_defense_owner")
-                        && owner.equals(mob.getPersistentData().getUUID(
-                                "lom_defense_owner")));
+                        && partyKey.equals(mob.getPersistentData().getString(
+                                "lom_defense_party")));
     }
 
     private static void spawnDefenseWave(ServerLevel level, ServerPlayer player,
-                                         BlockPos outpost, int wave) {
+                                         BlockPos outpost, int wave,
+                                         String partyKey) {
         RandomSource random = RandomSource.create(
                 level.getSeed() ^ player.getUUID().getMostSignificantBits() ^ wave);
         int count = 2 + wave;
@@ -441,7 +478,7 @@ public final class CommissionService {
             attacker.moveTo(x + 0.5d, y, z + 0.5d, random.nextFloat() * 360f, 0f);
             attacker.setTarget(player);
             attacker.setPersistenceRequired();
-            attacker.getPersistentData().putUUID("lom_defense_owner", player.getUUID());
+            attacker.getPersistentData().putString("lom_defense_party", partyKey);
             level.addFreshEntity(attacker);
         }
     }

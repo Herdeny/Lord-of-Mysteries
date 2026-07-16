@@ -20,7 +20,10 @@ public record UseEnrageC2SPacket() {
                               Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         ServerPlayer sender = context.getSender();
-        if (sender != null) HunterAbilityHandler.enrage(sender);
+        if (sender != null && PMNetwork.acceptC2S(
+                sender, NetworkProtocol.USE_ENRAGE)) {
+            HunterAbilityHandler.enrage(sender);
+        }
         context.setPacketHandled(true);
     }
 }

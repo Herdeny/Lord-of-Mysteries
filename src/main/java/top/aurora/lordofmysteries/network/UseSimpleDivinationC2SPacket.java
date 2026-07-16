@@ -25,7 +25,8 @@ public record UseSimpleDivinationC2SPacket() {
     public static void handle(UseSimpleDivinationC2SPacket pkt, Supplier<NetworkEvent.Context> ctxSup) {
         NetworkEvent.Context ctx = ctxSup.get();
         ServerPlayer sender = ctx.getSender();
-        if (sender != null) {
+        if (sender != null && PMNetwork.acceptC2S(
+                sender, NetworkProtocol.USE_SIMPLE_DIVINATION)) {
             SimpleDivinationHandler.cast(sender);
         }
         ctx.setPacketHandled(true);

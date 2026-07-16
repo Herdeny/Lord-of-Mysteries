@@ -51,6 +51,7 @@ public final class RitualStateMachine {
     }
 
     public void restore(State restored) {
-        state = restored == null ? State.IDLE : restored;
+        state = restored == null ? State.IDLE
+                : restored == State.RESOLVING ? State.INVOKING : restored;
     }
 }

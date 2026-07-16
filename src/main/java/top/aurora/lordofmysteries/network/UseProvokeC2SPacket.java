@@ -20,7 +20,10 @@ public record UseProvokeC2SPacket() {
                               Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         ServerPlayer sender = context.getSender();
-        if (sender != null) HunterAbilityHandler.provoke(sender);
+        if (sender != null && PMNetwork.acceptC2S(
+                sender, NetworkProtocol.USE_PROVOKE)) {
+            HunterAbilityHandler.provoke(sender);
+        }
         context.setPacketHandled(true);
     }
 }

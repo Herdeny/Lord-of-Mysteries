@@ -23,7 +23,8 @@ public record RequestMysteryStatusC2SPacket() {
                               Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         ServerPlayer sender = context.getSender();
-        if (sender != null) {
+        if (sender != null && PMNetwork.acceptC2S(
+                sender, NetworkProtocol.REQUEST_STATUS, 10L)) {
             PlayerMysteryData data = MysteryCapability.get(sender);
             PlayerMysteryStatusS2CPacket response = PlayerMysteryStatusS2CPacket.from(
                     data, ServerConfig.SHOW_EXACT_DIGESTION.get());

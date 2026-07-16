@@ -77,6 +77,12 @@ minecraft {
 // 数据生成产出加入资源
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+tasks.configureEach {
+    if (name == 'runServer') {
+        standardInput = System.in
+    }
+}
+
 def pythonExecutable = System.getProperty('os.name').toLowerCase().contains('windows')
         ? 'python' : 'python3'
 
@@ -88,7 +94,8 @@ tasks.register('generateProjectMysteryData', Exec) {
             'docs/pathways_master.csv',
             'docs/recipes_master.csv',
             fileTree('src/main/resources/data/lord_of_mysteries/commissions'),
-            fileTree('src/main/resources/data/lord_of_mysteries/quests')
+            fileTree('src/main/resources/data/lord_of_mysteries/quests'),
+            fileTree('src/main/resources/assets/lord_of_mysteries/lang')
     outputs.dir 'src/generated/resources/data/lord_of_mysteries'
 }
 

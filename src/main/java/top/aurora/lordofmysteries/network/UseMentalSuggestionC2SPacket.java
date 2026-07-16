@@ -20,7 +20,10 @@ public record UseMentalSuggestionC2SPacket() {
                               Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         ServerPlayer sender = context.getSender();
-        if (sender != null) SpectatorAbilityHandler.castMentalSuggestion(sender);
+        if (sender != null && PMNetwork.acceptC2S(
+                sender, NetworkProtocol.USE_MENTAL_SUGGESTION)) {
+            SpectatorAbilityHandler.castMentalSuggestion(sender);
+        }
         context.setPacketHandled(true);
     }
 }

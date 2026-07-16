@@ -42,6 +42,7 @@ class PlayerMysteryDataTest {
         assertEquals(0, d.clownDodgeCount);
         assertEquals(Long.MIN_VALUE, d.lastRestRecoveryDay);
         assertFalse(d.m1TrialActive);
+        assertEquals(-1L, d.m1TrialStartTick);
         assertEquals(-1, d.m1TrialBestSequence);
         assertEquals(0L, d.m1TrialElapsedTicks);
         assertTrue(d.actingCounters.isEmpty());
@@ -90,6 +91,12 @@ class PlayerMysteryDataTest {
         source.m1TrialOccultKills = 3;
         source.m1TrialActingEvents = 2;
         source.m1TrialMaxPressure = 42f;
+        source.m1TrialReconnects = 1;
+        source.m1TrialServerRestarts = 2;
+        source.m1TrialDimensionChanges = 3;
+        source.m1TrialDeathRecoveries = 1;
+        source.m1TrialPendingReconnect = true;
+        source.m1TrialSessionId = "d21fbf02-2d69-4e09-ac2f-0a8e0f71d79d";
         source.thiefPilferCooldownEndTick = 300L;
         source.thiefEscapeCooldownEndTick = 600L;
         source.apprenticeTrickCooldownEndTick = 200L;
@@ -141,6 +148,13 @@ class PlayerMysteryDataTest {
         assertEquals(3, copied.m1TrialOccultKills);
         assertEquals(2, copied.m1TrialActingEvents);
         assertEquals(42f, copied.m1TrialMaxPressure);
+        assertEquals(1, copied.m1TrialReconnects);
+        assertEquals(2, copied.m1TrialServerRestarts);
+        assertEquals(3, copied.m1TrialDimensionChanges);
+        assertEquals(1, copied.m1TrialDeathRecoveries);
+        assertTrue(copied.m1TrialPendingReconnect);
+        assertEquals("d21fbf02-2d69-4e09-ac2f-0a8e0f71d79d",
+                copied.m1TrialSessionId);
         assertEquals(300L, copied.thiefPilferCooldownEndTick);
         assertEquals(600L, copied.thiefEscapeCooldownEndTick);
         assertEquals(200L, copied.apprenticeTrickCooldownEndTick);
@@ -171,5 +185,31 @@ class PlayerMysteryDataTest {
         assertEquals(1800L, copied.questDefenseNextTick);
         assertTrue(copied.completedCommissions.contains(commission));
         assertEquals(2400L, copied.commissionCooldowns.get(commission));
+    }
+
+    @Test
+    void continuityEvidenceSurvivesNbtRoundTrip() {
+        PlayerMysteryData source = new PlayerMysteryData();
+        source.m1TrialActive = true;
+        source.m1TrialStartTick = 500L;
+        source.m1TrialElapsedTicks = 900L;
+        source.m1TrialReconnects = 2;
+        source.m1TrialServerRestarts = 1;
+        source.m1TrialDimensionChanges = 4;
+        source.m1TrialDeathRecoveries = 1;
+        source.m1TrialSessionId = "67418fd3-2b1d-450e-af60-6a4827e04612";
+
+        PlayerMysteryData restored = new PlayerMysteryData();
+        restored.load(source.save());
+
+        assertTrue(restored.m1TrialActive);
+        assertEquals(500L, restored.m1TrialStartTick);
+        assertEquals(900L, restored.m1TrialElapsedTicks);
+        assertEquals(2, restored.m1TrialReconnects);
+        assertEquals(1, restored.m1TrialServerRestarts);
+        assertEquals(4, restored.m1TrialDimensionChanges);
+        assertEquals(1, restored.m1TrialDeathRecoveries);
+        assertEquals(PlayerMysteryData.CURRENT_SCHEMA_VERSION,
+                restored.schemaVersion);
     }
 }
