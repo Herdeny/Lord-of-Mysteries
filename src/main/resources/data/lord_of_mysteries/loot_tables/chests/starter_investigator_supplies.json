@@ -1,0 +1,101 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "lord_of_mysteries:crucible" }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "lord_of_mysteries:spirit_herb",
+          "functions": [
+            { "function": "minecraft:set_count", "count": 2 }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "lord_of_mysteries:divination_crystal" }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "lord_of_mysteries:moonwater" }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "lord_of_mysteries:deep_gray_spirit_tear" }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "lord_of_mysteries:heather",
+          "functions": [
+            { "function": "minecraft:set_count", "count": 2 }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "lord_of_mysteries:spirit_alcohol" }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "lord_of_mysteries:ash_powder",
+          "functions": [
+            { "function": "minecraft:set_count", "count": 2 }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "lord_of_mysteries:silver_filings" }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "lord_of_mysteries:spirit_lantern" }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "lord_of_mysteries:calming_incense",
+          "functions": [
+            { "function": "minecraft:set_count", "count": 2 }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "lord_of_mysteries:protective_charm" }
+      ]
+    }
+  ]
+}

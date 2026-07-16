@@ -36,20 +36,40 @@ public final class M1TrialTracker {
 
     public static void refresh(ServerPlayer player, PlayerMysteryData data) {
         recordServerSession(data);
+        long elapsed = elapsed(player, data);
         data.m1TrialMaxPressure = Math.max(
                 data.m1TrialMaxPressure, data.insanityPressure);
         data.m1TrialMaxPollution = Math.max(
                 data.m1TrialMaxPollution, data.pollution);
+        if (data.m1TrialRiskReachedTick < 0L
+                && Math.max(data.insanityPressure, data.pollution)
+                >= M1TrialProgress.REQUIRED_RISK_PEAK) {
+            data.m1TrialRiskReachedTick = elapsed;
+        }
         if (SeerPotionItem.SEER_PATHWAY.equals(data.pathway)
                 && (data.m1TrialBestSequence < 0
                 || data.sequence < data.m1TrialBestSequence)) {
             data.m1TrialBestSequence = data.sequence;
         }
+        if (SeerPotionItem.SEER_PATHWAY.equals(data.pathway)) {
+            if (data.sequence == 9 && data.m1TrialSequence9Tick < 0L) {
+                data.m1TrialSequence9Tick = elapsed;
+            } else if (data.sequence == 8 && data.m1TrialSequence8Tick < 0L) {
+                data.m1TrialSequence8Tick = elapsed;
+            } else if (data.sequence <= 7 && data.m1TrialSequence7Tick < 0L) {
+                data.m1TrialSequence7Tick = elapsed;
+            }
+        }
         if (!data.m1TrialCampVisited && player.level().dimension() == Level.OVERWORLD) {
             CampGenerationSavedData.get(player.serverLevel())
                     .nearestCamp(player.blockPosition())
                     .filter(camp -> camp.distSqr(player.blockPosition()) <= 24d * 24d)
-                    .ifPresent(camp -> data.m1TrialCampVisited = true);
+                    .ifPresent(camp -> {
+                        data.m1TrialCampVisited = true;
+                        if (data.m1TrialCampReachedTick < 0L) {
+                            data.m1TrialCampReachedTick = elapsed;
+                        }
+                    });
         }
     }
 
@@ -107,7 +127,12 @@ public final class M1TrialTracker {
 
     public static void recordOccultKill(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
-        if (data.m1TrialActive) data.m1TrialOccultKills++;
+        if (data.m1TrialActive) {
+            data.m1TrialOccultKills++;
+            if (data.m1TrialFirstOccultKillTick < 0L) {
+                data.m1TrialFirstOccultKillTick = elapsed(player, data);
+            }
+        }
     }
 
     public static void recordRest(ServerPlayer player) {
@@ -122,7 +147,18 @@ public final class M1TrialTracker {
 
     public static void recordActing(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
-        if (data.m1TrialActive) data.m1TrialActingEvents++;
+        if (data.m1TrialActive) {
+            data.m1TrialActingEvents++;
+            if (data.m1TrialFirstActingTick < 0L) {
+                data.m1TrialFirstActingTick = elapsed(player, data);
+            }
+        }
+    }
+
+    private static long elapsed(ServerPlayer player, PlayerMysteryData data) {
+        return M1TrialTimer.elapsed(data.m1TrialElapsedTicks,
+                data.m1TrialActive, data.m1TrialStartTick,
+                player.level().getGameTime());
     }
 
     private static void recordServerSession(PlayerMysteryData data) {

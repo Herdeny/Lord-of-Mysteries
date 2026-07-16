@@ -45,6 +45,10 @@ class PlayerMysteryDataTest {
         assertEquals(-1L, d.m1TrialStartTick);
         assertEquals(-1, d.m1TrialBestSequence);
         assertEquals(0L, d.m1TrialElapsedTicks);
+        assertEquals(-1L, d.m1TrialCampReachedTick);
+        assertEquals(-1L, d.m1TrialSequence9Tick);
+        assertEquals(-1L, d.m1TrialSequence8Tick);
+        assertEquals(-1L, d.m1TrialSequence7Tick);
         assertTrue(d.actingCounters.isEmpty());
         assertEquals(0L, d.moneyPence);
         assertEquals("", d.activeCommissionId);
@@ -97,6 +101,13 @@ class PlayerMysteryDataTest {
         source.m1TrialDeathRecoveries = 1;
         source.m1TrialPendingReconnect = true;
         source.m1TrialSessionId = "d21fbf02-2d69-4e09-ac2f-0a8e0f71d79d";
+        source.m1TrialCampReachedTick = 1200L;
+        source.m1TrialSequence9Tick = 2400L;
+        source.m1TrialSequence8Tick = 4800L;
+        source.m1TrialSequence7Tick = 7000L;
+        source.m1TrialFirstOccultKillTick = 2600L;
+        source.m1TrialFirstActingTick = 2800L;
+        source.m1TrialRiskReachedTick = 3200L;
         source.thiefPilferCooldownEndTick = 300L;
         source.thiefEscapeCooldownEndTick = 600L;
         source.apprenticeTrickCooldownEndTick = 200L;
@@ -155,6 +166,13 @@ class PlayerMysteryDataTest {
         assertTrue(copied.m1TrialPendingReconnect);
         assertEquals("d21fbf02-2d69-4e09-ac2f-0a8e0f71d79d",
                 copied.m1TrialSessionId);
+        assertEquals(1200L, copied.m1TrialCampReachedTick);
+        assertEquals(2400L, copied.m1TrialSequence9Tick);
+        assertEquals(4800L, copied.m1TrialSequence8Tick);
+        assertEquals(7000L, copied.m1TrialSequence7Tick);
+        assertEquals(2600L, copied.m1TrialFirstOccultKillTick);
+        assertEquals(2800L, copied.m1TrialFirstActingTick);
+        assertEquals(3200L, copied.m1TrialRiskReachedTick);
         assertEquals(300L, copied.thiefPilferCooldownEndTick);
         assertEquals(600L, copied.thiefEscapeCooldownEndTick);
         assertEquals(200L, copied.apprenticeTrickCooldownEndTick);
@@ -198,6 +216,13 @@ class PlayerMysteryDataTest {
         source.m1TrialDimensionChanges = 4;
         source.m1TrialDeathRecoveries = 1;
         source.m1TrialSessionId = "67418fd3-2b1d-450e-af60-6a4827e04612";
+        source.m1TrialCampReachedTick = 100L;
+        source.m1TrialSequence9Tick = 200L;
+        source.m1TrialSequence8Tick = 500L;
+        source.m1TrialSequence7Tick = 800L;
+        source.m1TrialFirstOccultKillTick = 300L;
+        source.m1TrialFirstActingTick = 400L;
+        source.m1TrialRiskReachedTick = 600L;
 
         PlayerMysteryData restored = new PlayerMysteryData();
         restored.load(source.save());
@@ -209,6 +234,13 @@ class PlayerMysteryDataTest {
         assertEquals(1, restored.m1TrialServerRestarts);
         assertEquals(4, restored.m1TrialDimensionChanges);
         assertEquals(1, restored.m1TrialDeathRecoveries);
+        assertEquals(100L, restored.m1TrialCampReachedTick);
+        assertEquals(200L, restored.m1TrialSequence9Tick);
+        assertEquals(500L, restored.m1TrialSequence8Tick);
+        assertEquals(800L, restored.m1TrialSequence7Tick);
+        assertEquals(300L, restored.m1TrialFirstOccultKillTick);
+        assertEquals(400L, restored.m1TrialFirstActingTick);
+        assertEquals(600L, restored.m1TrialRiskReachedTick);
         assertEquals(PlayerMysteryData.CURRENT_SCHEMA_VERSION,
                 restored.schemaVersion);
     }

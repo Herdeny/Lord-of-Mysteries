@@ -27,8 +27,10 @@ import top.aurora.lordofmysteries.knowledge.KnowledgeText;
 import top.aurora.lordofmysteries.knowledge.M1Readiness;
 import top.aurora.lordofmysteries.knowledge.M1TrialContinuity;
 import top.aurora.lordofmysteries.knowledge.M1TrialProgress;
+import top.aurora.lordofmysteries.knowledge.M1TrialTimeline;
 import top.aurora.lordofmysteries.knowledge.M1TrialTimer;
 import top.aurora.lordofmysteries.knowledge.M1TrialTracker;
+import top.aurora.lordofmysteries.knowledge.PlayerGuideHandler;
 import top.aurora.lordofmysteries.network.NetworkProtocol;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
@@ -56,10 +58,24 @@ public final class ProjectMysteryCommands {
 
     private static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("pm")
-                .then(Commands.literal("guide").executes(context -> {
-                    InvestigatorNotesItem.showGuide(context.getSource().getPlayerOrException());
-                    return 1;
-                }))
+                .then(Commands.literal("guide")
+                        .executes(context -> {
+                            InvestigatorNotesItem.showGuide(
+                                    context.getSource().getPlayerOrException());
+                            return 1;
+                        })
+                        .then(Commands.literal("next").executes(context ->
+                                PlayerGuideHandler.showNextStep(
+                                        context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("recover").executes(context ->
+                                PlayerGuideHandler.restoreStarterKit(
+                                        context.getSource().getPlayerOrException(), true))))
+                .then(Commands.literal("next").executes(context ->
+                        PlayerGuideHandler.showNextStep(
+                                context.getSource().getPlayerOrException())))
+                .then(Commands.literal("recover").executes(context ->
+                        PlayerGuideHandler.restoreStarterKit(
+                                context.getSource().getPlayerOrException(), true)))
                 .then(Commands.literal("handbook")
                         .executes(context -> InvestigatorNotesItem.showHandbookOverview(
                                 context.getSource().getPlayerOrException()))
@@ -115,6 +131,9 @@ public final class ProjectMysteryCommands {
                         showM1Check(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("doctor").executes(context ->
                         showDiagnostics(context.getSource().getPlayerOrException())))
+                .then(Commands.literal("servercheck")
+                        .requires(source -> source.hasPermission(2))
+                        .executes(context -> showServerDiagnostics(context.getSource())))
                 .then(Commands.literal("trial")
                         .then(Commands.literal("start").executes(context ->
                                 startTrial(context.getSource().getPlayerOrException())))
@@ -124,6 +143,8 @@ public final class ProjectMysteryCommands {
                                 showTrial(context.getSource().getPlayerOrException())))
                         .then(Commands.literal("verify").executes(context ->
                                 verifyTrial(context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("report").executes(context ->
+                                showTrialReport(context.getSource().getPlayerOrException())))
                         .then(Commands.literal("stop").executes(context ->
                                 stopTrial(context.getSource().getPlayerOrException())))
                         .then(Commands.literal("reset").executes(context ->
@@ -296,6 +317,59 @@ public final class ProjectMysteryCommands {
         return verified ? 1 : 0;
     }
 
+    private static int showTrialReport(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.m1TrialActive) M1TrialTracker.refresh(player, data);
+        M1TrialTimeline.Result result = M1TrialTimeline.evaluate(
+                data.m1TrialCampReachedTick,
+                data.m1TrialSequence9Tick,
+                data.m1TrialSequence8Tick,
+                data.m1TrialSequence7Tick);
+        player.sendSystemMessage(Component.translatable(
+                "command.lord_of_mysteries.trial.report.title")
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
+        sendTrialMilestone(player, "camp", result.camp());
+        sendTrialMilestone(player, "sequence9", result.sequence9());
+        sendTrialMilestone(player, "sequence8", result.sequence8());
+        sendTrialMilestone(player, "sequence7", result.sequence7());
+        player.sendSystemMessage(Component.translatable(
+                result.onSchedule()
+                        ? "command.lord_of_mysteries.trial.report.on_schedule"
+                        : "command.lord_of_mysteries.trial.report.needs_review",
+                result.recordedMilestones(), result.onTimeMilestones())
+                .withStyle(result.onSchedule()
+                        ? ChatFormatting.GREEN : ChatFormatting.YELLOW));
+        player.sendSystemMessage(Component.translatable(
+                "command.lord_of_mysteries.trial.report.first_events",
+                formatOptionalDuration(data.m1TrialFirstOccultKillTick),
+                formatOptionalDuration(data.m1TrialFirstActingTick),
+                formatOptionalDuration(data.m1TrialRiskReachedTick))
+                .withStyle(ChatFormatting.DARK_GRAY));
+        return result.recordedMilestones();
+    }
+
+    private static void sendTrialMilestone(
+            ServerPlayer player, String milestone,
+            M1TrialTimeline.Milestone result) {
+        Component status = Component.translatable(result.recorded()
+                ? result.onTime()
+                ? "command.lord_of_mysteries.trial.report.status.on_time"
+                : "command.lord_of_mysteries.trial.report.status.late"
+                : "command.lord_of_mysteries.trial.report.status.pending");
+        player.sendSystemMessage(Component.translatable(
+                "command.lord_of_mysteries.trial.report.line",
+                Component.translatable(
+                        "command.lord_of_mysteries.trial.report." + milestone),
+                formatOptionalDuration(result.actualTick()),
+                M1TrialProgress.formatDuration(result.targetTick()),
+                status).withStyle(result.onTime()
+                        ? ChatFormatting.GREEN : ChatFormatting.GRAY));
+    }
+
+    private static String formatOptionalDuration(long tick) {
+        return tick < 0L ? "--:--:--" : M1TrialProgress.formatDuration(tick);
+    }
+
     private static void sendTrialGoal(ServerPlayer player, boolean complete,
                                       String goal, Object... args) {
         player.sendSystemMessage(Component.literal(complete ? "✔ " : "· ")
@@ -318,7 +392,11 @@ public final class ProjectMysteryCommands {
                 || data.m1TrialMaxPressure > 0f || data.m1TrialMaxPollution > 0f
                 || data.m1TrialReconnects > 0 || data.m1TrialServerRestarts > 0
                 || data.m1TrialDimensionChanges > 0
-                || data.m1TrialDeathRecoveries > 0;
+                || data.m1TrialDeathRecoveries > 0
+                || data.m1TrialCampReachedTick >= 0L
+                || data.m1TrialSequence9Tick >= 0L
+                || data.m1TrialSequence8Tick >= 0L
+                || data.m1TrialSequence7Tick >= 0L;
     }
 
     private static void clearTrial(PlayerMysteryData data) {
@@ -340,6 +418,34 @@ public final class ProjectMysteryCommands {
         data.m1TrialDeathRecoveries = 0;
         data.m1TrialPendingReconnect = false;
         data.m1TrialSessionId = "";
+        data.m1TrialCampReachedTick = -1L;
+        data.m1TrialSequence9Tick = -1L;
+        data.m1TrialSequence8Tick = -1L;
+        data.m1TrialSequence7Tick = -1L;
+        data.m1TrialFirstOccultKillTick = -1L;
+        data.m1TrialFirstActingTick = -1L;
+        data.m1TrialRiskReachedTick = -1L;
+    }
+
+    private static int showServerDiagnostics(CommandSourceStack source) {
+        int commissions = CommissionDefinitionManager.all().size();
+        int quests = QuestChainDefinitionManager.all().size();
+        boolean worldReady = source.getServer().getLevel(Level.OVERWORLD) != null;
+        boolean healthy = commissions > 0 && quests > 0 && worldReady
+                && NetworkProtocol.PACKET_COUNT > 0;
+        String marker = "PROJECT_MYSTERY_SERVERCHECK_"
+                + (healthy ? "OK" : "FAILED")
+                + " commissions=" + commissions
+                + " quests=" + quests
+                + " protocol=" + NetworkProtocol.VERSION
+                + " packets=" + NetworkProtocol.PACKET_COUNT
+                + " overworld=" + worldReady;
+        if (healthy) {
+            source.sendSuccess(() -> Component.literal(marker), false);
+            return 1;
+        }
+        source.sendFailure(Component.literal(marker));
+        return 0;
     }
 
     private static int showDiagnostics(ServerPlayer player) {

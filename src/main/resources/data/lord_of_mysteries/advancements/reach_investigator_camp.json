@@ -1,0 +1,17 @@
+{
+  "parent": "lord_of_mysteries:follow_the_needle",
+  "display": {
+    "icon": { "item": "lord_of_mysteries:investigator_notes" },
+    "title": { "translate": "advancement.lord_of_mysteries.reach_investigator_camp.title" },
+    "description": { "translate": "advancement.lord_of_mysteries.reach_investigator_camp.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "camp_reached": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

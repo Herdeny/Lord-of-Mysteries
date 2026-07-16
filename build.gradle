@@ -106,6 +106,19 @@ tasks.register('checkProjectMysteryData', Exec) {
     commandLine pythonExecutable, 'scripts/gen_datapack.py', '--check'
 }
 
+tasks.register('checkM1Playability', Exec) {
+    group = 'verification'
+    description = 'Checks the M1 first-hour route, starter cache, commands, and translations.'
+    commandLine pythonExecutable, 'scripts/check_m1_playability.py'
+    inputs.files 'scripts/check_m1_playability.py',
+            'docs/m1-playability-contract.json',
+            'src/main/resources/data/lord_of_mysteries/loot_tables/chests/starter_investigator_supplies.json',
+            fileTree('src/main/resources/data/lord_of_mysteries/potions'),
+            fileTree('src/main/resources/assets/lord_of_mysteries/lang'),
+            'src/main/java/top/aurora/lordofmysteries/command/ProjectMysteryCommands.java',
+            'src/main/java/top/aurora/lordofmysteries/world/AbandonedCampGenerator.java'
+}
+
 repositories {
     mavenLocal()
 }
@@ -161,7 +174,7 @@ test {
 }
 
 tasks.named('check').configure {
-    dependsOn 'checkProjectMysteryData'
+    dependsOn 'checkProjectMysteryData', 'checkM1Playability'
 }
 
 jar {

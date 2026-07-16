@@ -13,6 +13,8 @@ on:
       - "scripts/sync_project_metadata.py"
       - "scripts/gen_datapack.py"
       - "scripts/run_server_smoke.py"
+      - "scripts/check_m1_playability.py"
+      - "docs/m1-playability-contract.json"
       - "docs/pathways_master.csv"
       - "docs/recipes_master.csv"
       - "build.gradle"
@@ -29,6 +31,8 @@ on:
       - "scripts/sync_project_metadata.py"
       - "scripts/gen_datapack.py"
       - "scripts/run_server_smoke.py"
+      - "scripts/check_m1_playability.py"
+      - "docs/m1-playability-contract.json"
       - "docs/pathways_master.csv"
       - "docs/recipes_master.csv"
       - "build.gradle"
@@ -66,6 +70,9 @@ jobs:
 
       - name: Verify generated datapack
         run: python3 scripts/gen_datapack.py --check
+
+      - name: Verify M1 playability contract
+        run: python3 scripts/check_m1_playability.py
 
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew

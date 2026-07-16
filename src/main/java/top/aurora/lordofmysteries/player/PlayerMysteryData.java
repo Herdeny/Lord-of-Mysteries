@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 13;
+    public static final int CURRENT_SCHEMA_VERSION = 14;
 
     // 途径 & 序列。
     // pathway 使用 ResourceLocation 以便完全数据驱动，例如 lord_of_mysteries:seer。
@@ -109,6 +109,13 @@ public class PlayerMysteryData {
     public int m1TrialDeathRecoveries = 0;
     public boolean m1TrialPendingReconnect = false;
     public String m1TrialSessionId = "";
+    public long m1TrialCampReachedTick = -1L;
+    public long m1TrialSequence9Tick = -1L;
+    public long m1TrialSequence8Tick = -1L;
+    public long m1TrialSequence7Tick = -1L;
+    public long m1TrialFirstOccultKillTick = -1L;
+    public long m1TrialFirstActingTick = -1L;
+    public long m1TrialRiskReachedTick = -1L;
 
     public long moneyPence = 0L;
     public String activeCommissionId = "";
@@ -230,6 +237,13 @@ public class PlayerMysteryData {
         this.m1TrialDeathRecoveries = src.m1TrialDeathRecoveries;
         this.m1TrialPendingReconnect = src.m1TrialPendingReconnect;
         this.m1TrialSessionId = src.m1TrialSessionId;
+        this.m1TrialCampReachedTick = src.m1TrialCampReachedTick;
+        this.m1TrialSequence9Tick = src.m1TrialSequence9Tick;
+        this.m1TrialSequence8Tick = src.m1TrialSequence8Tick;
+        this.m1TrialSequence7Tick = src.m1TrialSequence7Tick;
+        this.m1TrialFirstOccultKillTick = src.m1TrialFirstOccultKillTick;
+        this.m1TrialFirstActingTick = src.m1TrialFirstActingTick;
+        this.m1TrialRiskReachedTick = src.m1TrialRiskReachedTick;
         this.moneyPence = src.moneyPence;
         this.activeCommissionId = src.activeCommissionId;
         this.activeQuestChainId = src.activeQuestChainId;
@@ -334,6 +348,13 @@ public class PlayerMysteryData {
         tag.putInt("m1_trial_death_recoveries", m1TrialDeathRecoveries);
         tag.putBoolean("m1_trial_pending_reconnect", m1TrialPendingReconnect);
         tag.putString("m1_trial_session_id", m1TrialSessionId);
+        tag.putLong("m1_trial_camp_reached_tick", m1TrialCampReachedTick);
+        tag.putLong("m1_trial_sequence_9_tick", m1TrialSequence9Tick);
+        tag.putLong("m1_trial_sequence_8_tick", m1TrialSequence8Tick);
+        tag.putLong("m1_trial_sequence_7_tick", m1TrialSequence7Tick);
+        tag.putLong("m1_trial_first_occult_kill_tick", m1TrialFirstOccultKillTick);
+        tag.putLong("m1_trial_first_acting_tick", m1TrialFirstActingTick);
+        tag.putLong("m1_trial_risk_reached_tick", m1TrialRiskReachedTick);
         tag.putLong("money_pence", moneyPence);
         tag.putString("active_commission", activeCommissionId);
         tag.putString("active_quest_chain", activeQuestChainId);
@@ -467,6 +488,14 @@ public class PlayerMysteryData {
         m1TrialPendingReconnect = tag.getBoolean("m1_trial_pending_reconnect");
         m1TrialSessionId = tag.contains("m1_trial_session_id")
                 ? tag.getString("m1_trial_session_id") : "";
+        m1TrialCampReachedTick = optionalTrialTick(tag, "m1_trial_camp_reached_tick");
+        m1TrialSequence9Tick = optionalTrialTick(tag, "m1_trial_sequence_9_tick");
+        m1TrialSequence8Tick = optionalTrialTick(tag, "m1_trial_sequence_8_tick");
+        m1TrialSequence7Tick = optionalTrialTick(tag, "m1_trial_sequence_7_tick");
+        m1TrialFirstOccultKillTick = optionalTrialTick(
+                tag, "m1_trial_first_occult_kill_tick");
+        m1TrialFirstActingTick = optionalTrialTick(tag, "m1_trial_first_acting_tick");
+        m1TrialRiskReachedTick = optionalTrialTick(tag, "m1_trial_risk_reached_tick");
         moneyPence = tag.getLong("money_pence");
         activeCommissionId = tag.contains("active_commission")
                 ? tag.getString("active_commission") : "";
@@ -520,6 +549,10 @@ public class PlayerMysteryData {
             if (rl != null) orgReputation.put(rl, rep.getInt(key));
         }
         sanitize();
+    }
+
+    private static long optionalTrialTick(CompoundTag tag, String key) {
+        return tag.contains(key) ? tag.getLong(key) : -1L;
     }
 
     public int sanitize() {

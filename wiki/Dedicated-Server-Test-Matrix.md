@@ -1,6 +1,6 @@
 # 专用服务器与多人一致性验证
 
-> 当前版本：0.8.5-1.20.1 · Capability schema 13 · 网络协议 6
+> 当前版本：0.8.6-1.20.1 · Capability schema 14 · 网络协议 6
 
 ## 自动冒烟
 
@@ -8,13 +8,20 @@
 python scripts/run_server_smoke.py --timeout 180
 ```
 
-脚本实际启动 Forge 专用服务器，确认 2 个委托、2 条任务链完成加载并进入 `Done`，随后发送
-`stop`，要求世界保存并以 0 退出。Build 工作流会在完整构建后执行同一检查。
+脚本实际启动 Forge 专用服务器，确认 2 个委托、2 条任务链完成加载并进入 `Done`，随后执行
+`pm servercheck`、`list` 和 `save-all flush`。只有运行诊断、命令循环、世界强制保存均成功且未发现
+服务端线程致命错误时才发送 `stop`，并要求进程以 0 退出。Build 工作流会在完整构建后执行同一检查。
+
+`./gradlew check` 还会运行 `scripts/check_m1_playability.py`，核对 60 分钟阶段目标、三份 M1 魔药、
+十二项保底补给、十个关键命令入口和中英文本地化；当前自动化基线为 158 项测试。
 
 ## M1 连续性
 
 开测先执行 `/pm doctor`，再用 `/pm trial reset` 与 `/pm trial start` 创建干净记录。
 `stop` 只结算在线时长，`resume` 或再次 `start` 会恢复保留记录。
+
+测试过程中用 `/pm trial report` 对照营地 10 分钟、序列 9/8/7 为 25/45/60 分钟的阶段目标，
+并记录首次特殊生物击杀、首次正收益扮演和首次 25 风险峰值。
 
 `/pm trial verify` 要求：
 

@@ -1,6 +1,6 @@
 # M1 一小时纵切验收清单
 
-> 适用版本：0.8.5-1.20.1
+> 适用版本：0.8.6-1.20.1
 > 设计基线：Project Mystery v0.8
 > 验收结论：未完成实测前，M1 保持 `active`
 
@@ -10,7 +10,8 @@
 服务器配置与开始/结束时间。测试必须从新世界、空背包和普通人生存模式开始。
 
 进入世界后先执行 `/pm doctor`，确认定义、协议、世界目标和玩家数据通过；随后执行
-`/pm trial reset` 与 `/pm trial start`。测试中可用 `/pm trial status` 查看机器记录；
+`/pm trial reset` 与 `/pm trial start`。测试中可用 `/pm next` 检查主线、`/pm trial status` 查看目标、
+`/pm trial report` 查看阶段耗时；
 中断时用 `stop` 保留数据，只有彻底重测时才用 `reset`。
 
 ## 0–10 分钟：调查入口
@@ -19,6 +20,9 @@
 - [ ] 右键罗盘显示方向、距离和坐标；`/pm camp` 返回相同目标。
 - [ ] 新手营地位于出生点外约 10–16 区块，平台完整、箱子可开启、无悬空致命陷阱。
 - [ ] 箱子至少提供一条继续推进的线索；无法直接完成时，配方允许玩家自行补齐。
+- [ ] 专用补给桶固定包含可玩性合同声明的 12 项补给，随机线索箱与补给桶互不覆盖。
+- [ ] `/pm next` 在营地、序列、消化和幻形蛇材料变化后给出正确下一步，且阶段提示不会持续刷屏。
+- [ ] `/pm recover` 只补缺失手稿/罗盘；背包和末影箱满时不会静默吞物品。
 - [ ] `/pm guide`、`/pm handbook`、`/pm rules`、`/pm items`、`/pm bestiary`、`/pm journal` 与 `/pm trial` 均无需管理员权限。
 
 ## 10–25 分钟：第一份魔药
@@ -64,6 +68,7 @@
 - [ ] 离线期间不累计试炼时长；`start` / `resume` 能继续暂停记录，只有 `reset` 清空。
 - [ ] 跨维度往返后数据一致，罗盘仍能找到主世界记录营地。
 - [ ] `/pm trial verify` 显示重连 ≥1、专服重启 ≥1、维度变化 ≥2、死亡恢复 ≥1。
+- [ ] `/pm trial report` 记录营地、序列 9、序列 8、序列 7 耗时，并标出超过 10/25/45/60 分钟目标的阶段。
 - [ ] 按 [`DEDICATED_SERVER_TEST_MATRIX.md`](DEDICATED_SERVER_TEST_MATRIX.md) 完成单人及适用的多人矩阵。
 - [ ] 至少验证一次魔药失败、一次压力事件和一种失控模式。
 
@@ -73,7 +78,7 @@
 死亡次数和卡点。若任一必需材料在 15 分钟内无稳定获取路径，或单一能力替代同序列全部能力，
 则验收失败并创建带复现步骤的 Issue。
 
-结束前执行 `/pm trial verify` 并记录结果。核心目标应显示 6/6：一小时、营地到访、占卜家序列 7、
+结束前执行 `/pm trial report` 与 `/pm trial verify` 并记录结果。核心目标应显示 6/6：一小时、营地到访、占卜家序列 7、
 至少 3 次特殊生物击杀、至少 2 次有效扮演、至少 25 点压力或污染峰值。详细字段见
 [`M1_TRIAL_TRACKER.md`](M1_TRIAL_TRACKER.md)。
 
@@ -82,6 +87,6 @@
 - 所有阻断项完成，不能依赖创造模式、管理员命令或外部 NBT 修改。
 - 无崩溃、复制、永久卡死、跨玩家数据串扰或客户端越权。
 - 一小时内至少完成序列 9；目标配置下可以连续完成序列 9–7。
-- `python scripts/sync_project_metadata.py --check`、`./gradlew clean build` 与 `python scripts/run_server_smoke.py --timeout 180` 通过。
+- `python scripts/check_m1_playability.py`、`python scripts/sync_project_metadata.py --check`、`./gradlew clean build` 与 `python scripts/run_server_smoke.py --timeout 180` 通过。
 - GitHub Build、CodeQL、Documentation Consistency、Pages 与 Wiki Sync 全部通过。
 - `/pm trial verify` 的 6/6 + 4/4 只作为机器证据；本清单中的人工阻断项仍必须全部完成。

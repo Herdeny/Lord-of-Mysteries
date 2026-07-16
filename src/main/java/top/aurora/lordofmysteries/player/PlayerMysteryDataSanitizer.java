@@ -102,6 +102,20 @@ public final class PlayerMysteryDataSanitizer {
         repairs += setFloat(data.m1TrialMaxPollution,
                 finiteClamp(data.m1TrialMaxPollution, 0f, 100f, 0f),
                 value -> data.m1TrialMaxPollution = value);
+        repairs += clampOptionalTick(data.m1TrialCampReachedTick,
+                value -> data.m1TrialCampReachedTick = value);
+        repairs += clampOptionalTick(data.m1TrialSequence9Tick,
+                value -> data.m1TrialSequence9Tick = value);
+        repairs += clampOptionalTick(data.m1TrialSequence8Tick,
+                value -> data.m1TrialSequence8Tick = value);
+        repairs += clampOptionalTick(data.m1TrialSequence7Tick,
+                value -> data.m1TrialSequence7Tick = value);
+        repairs += clampOptionalTick(data.m1TrialFirstOccultKillTick,
+                value -> data.m1TrialFirstOccultKillTick = value);
+        repairs += clampOptionalTick(data.m1TrialFirstActingTick,
+                value -> data.m1TrialFirstActingTick = value);
+        repairs += clampOptionalTick(data.m1TrialRiskReachedTick,
+                value -> data.m1TrialRiskReachedTick = value);
         if (!data.m1TrialSessionId.isBlank() && !validUuid(data.m1TrialSessionId)) {
             data.m1TrialSessionId = "";
             repairs++;
@@ -183,6 +197,12 @@ public final class PlayerMysteryDataSanitizer {
     private static int clampNonNegativeLong(long current, LongSetter setter) {
         if (current >= 0L) return 0;
         setter.set(0L);
+        return 1;
+    }
+
+    private static int clampOptionalTick(long current, LongSetter setter) {
+        if (current >= -1L) return 0;
+        setter.set(-1L);
         return 1;
     }
 

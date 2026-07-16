@@ -24,6 +24,7 @@ class PlayerMysteryDataSanitizerTest {
         data.potionQuality = "unknown";
         data.m1TrialDeaths = -3;
         data.m1TrialMaxPressure = 120f;
+        data.m1TrialSequence7Tick = -9L;
         data.commissionCooldowns.put(null, 20L);
         data.completedCommissions.add(null);
         data.knownKnowledge.add(null);
@@ -39,6 +40,7 @@ class PlayerMysteryDataSanitizerTest {
         assertEquals("complete", data.potionQuality);
         assertEquals(0, data.m1TrialDeaths);
         assertEquals(100f, data.m1TrialMaxPressure);
+        assertEquals(-1L, data.m1TrialSequence7Tick);
         assertTrue(data.commissionCooldowns.isEmpty());
         assertTrue(data.completedCommissions.isEmpty());
         assertTrue(data.knownKnowledge.isEmpty());

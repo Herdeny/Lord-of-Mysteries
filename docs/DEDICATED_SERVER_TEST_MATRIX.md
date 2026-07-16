@@ -1,8 +1,10 @@
 # Project Mystery 专用服务器与多人一致性验证矩阵
 
-> 适用版本：0.8.5-1.20.1  
-> 技术基线：Minecraft 1.20.1 · Forge 47.4.20 · Java 17  
-> 数据基线：Capability schema 13 · SimpleChannel protocol 6
+> 适用版本：0.8.6-1.20.1
+>
+> 技术基线：Minecraft 1.20.1 · Forge 47.4.20 · Java 17
+>
+> 数据基线：Capability schema 14 · SimpleChannel protocol 6
 
 本矩阵用于验证 M1 连续性，并为 M2 多人内测提前冻结可重复的证据格式。自动冒烟通过不等于
 真实一小时平衡验收通过；任何崩溃、复制、永久卡步、跨玩家串档或客户端越权均为阻断项。
@@ -11,13 +13,15 @@
 
 ```bash
 python scripts/gen_datapack.py --check
+python scripts/check_m1_playability.py
 python scripts/sync_project_metadata.py --check
 ./gradlew clean build
 python scripts/run_server_smoke.py --timeout 180
 ```
 
-`run_server_smoke.py` 会接受 EULA、启动 Forge 专用服务器、确认 2 个委托和 2 条任务链完成加载、
-等待服务器进入 `Done`，然后发送 `stop` 并要求世界保存与进程以 0 退出。GitHub Build 工作流执行同一冒烟。
+`run_server_smoke.py` 会接受 EULA、启动 Forge 专用服务器、确认 2 个委托和 2 条任务链完成加载，
+等待服务器进入 `Done`，执行 `/pm servercheck`、`list` 与 `save-all flush`，检测服务端线程致命错误，
+然后发送 `stop` 并要求进程以 0 退出。GitHub Build 工作流执行同一冒烟。
 
 ## 开测前诊断
 
@@ -80,6 +84,7 @@ python scripts/run_server_smoke.py --timeout 180
 起止时间：
 /pm doctor：PASS / FAIL
 /pm trial verify：核心 __/6，连续性 __/4
+/pm trial report：营地 __ / 序列9 __ / 序列8 __ / 序列7 __
 自动 server smoke：PASS / FAIL
 任务链：PASS / FAIL，失败步骤：
 数据与物品复制检查：PASS / FAIL
@@ -91,6 +96,6 @@ C2S 重放/限流：PASS / FAIL
 
 ## 当前结论边界
 
-- 已自动验证：构建、152 项测试、数据加载、专服到达 `Done`、保存与干净停服。
+- 已自动验证：M1 可玩性合同、158 项测试、数据加载、专服到达 `Done`、运行诊断、命令循环、强制保存与干净停服。
 - 已实现基础：在线同记分板队伍 2–4 人共享进度、确定性协调者、仪式重启/离线恢复。
 - 尚未关闭：真实一小时生存平衡、离线成员追赶、正式队伍 UI、五途径多人负载矩阵与 M2 schema 冻结。

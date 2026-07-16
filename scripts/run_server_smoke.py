@@ -17,7 +17,15 @@ EXPECTED = {
     "commissions": "Loaded 2 commission definitions",
     "quests": "Loaded 2 quest chain definitions",
     "ready": "Done (",
+    "servercheck": "PROJECT_MYSTERY_SERVERCHECK_OK",
+    "command_loop": "There are 0 of a max of",
+    "save": "Saved the game",
 }
+FATAL_MARKERS = (
+    "[Server thread/ERROR]",
+    "Encountered an unexpected exception",
+    "Failed to start the minecraft server",
+)
 
 
 def stop_process_tree(process):
@@ -71,7 +79,9 @@ def run(timeout_seconds):
         target=stream_output, args=(process, output_queue), daemon=True
     ).start()
     observed = set()
+    fatal_lines = []
     deadline = time.monotonic() + timeout_seconds
+    checks_sent = False
     stop_sent = False
     try:
         while time.monotonic() < deadline:
@@ -86,13 +96,27 @@ def run(timeout_seconds):
                 for name, marker in EXPECTED.items():
                     if marker in line:
                         observed.add(name)
-            if observed == set(EXPECTED) and not stop_sent:
+                if any(marker in line for marker in FATAL_MARKERS):
+                    fatal_lines.append(line.strip())
+            if "ready" in observed and not checks_sent:
+                assert process.stdin is not None
+                process.stdin.write("pm servercheck\n")
+                process.stdin.write("list\n")
+                process.stdin.write("save-all flush\n")
+                process.stdin.flush()
+                checks_sent = True
+            if observed == set(EXPECTED) and not stop_sent and not fatal_lines:
                 assert process.stdin is not None
                 process.stdin.write("stop\n")
                 process.stdin.flush()
                 stop_sent = True
             if process.poll() is not None:
                 break
+        if fatal_lines:
+            print("server smoke detected fatal server-thread output:", file=sys.stderr)
+            for line in fatal_lines:
+                print(f"  {line}", file=sys.stderr)
+            return 1
         if not stop_sent:
             missing = sorted(set(EXPECTED) - observed)
             print(f"server smoke failed; missing markers: {missing}", file=sys.stderr)
@@ -105,7 +129,10 @@ def run(timeout_seconds):
         if return_code != 0:
             print(f"server smoke process exited with {return_code}", file=sys.stderr)
             return 1
-        print("server smoke passed: definitions loaded and dedicated server reached Done")
+        print(
+            "server smoke passed: definitions loaded, runtime diagnostics passed, "
+            "command loop responded, world flushed, and server stopped cleanly"
+        )
         return 0
     finally:
         stop_process_tree(process)

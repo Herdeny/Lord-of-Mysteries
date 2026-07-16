@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "target_minutes": {
+    "camp": 10,
+    "sequence_9": 25,
+    "sequence_8": 45,
+    "sequence_7": 60
+  },
+  "commands": [
+    "guide",
+    "next",
+    "recover",
+    "status",
+    "camp",
+    "m1check",
+    "doctor",
+    "trial",
+    "report",
+    "servercheck"
+  ],
+  "starter_cache_items": [
+    "lord_of_mysteries:crucible",
+    "lord_of_mysteries:spirit_herb",
+    "lord_of_mysteries:divination_crystal",
+    "lord_of_mysteries:moonwater",
+    "lord_of_mysteries:deep_gray_spirit_tear",
+    "lord_of_mysteries:heather",
+    "lord_of_mysteries:spirit_alcohol",
+    "lord_of_mysteries:ash_powder",
+    "lord_of_mysteries:silver_filings",
+    "lord_of_mysteries:spirit_lantern",
+    "lord_of_mysteries:calming_incense",
+    "lord_of_mysteries:protective_charm"
+  ],
+  "route": [
+    {
+      "sequence": 9,
+      "potion": "seer_potion_9",
+      "required_inputs": [
+        "lord_of_mysteries:spirit_herb",
+        "lord_of_mysteries:divination_crystal"
+      ]
+    },
+    {
+      "sequence": 8,
+      "potion": "seer_potion_8",
+      "required_inputs": [
+        "lord_of_mysteries:deep_gray_spirit_tear",
+        "lord_of_mysteries:heather"
+      ]
+    },
+    {
+      "sequence": 7,
+      "potion": "seer_potion_7",
+      "required_inputs": [
+        "lord_of_mysteries:shapeshifter_serpent_gland",
+        "lord_of_mysteries:ash_powder"
+      ],
+      "field_acquired": "lord_of_mysteries:shapeshifter_serpent_gland"
+    }
+  ],
+  "translation_keys": [
+    "message.lord_of_mysteries.guide.quick_start",
+    "message.lord_of_mysteries.guide.recovered",
+    "message.lord_of_mysteries.guide.camp_found",
+    "guide.lord_of_mysteries.next.title",
+    "guide.lord_of_mysteries.next.find_camp",
+    "guide.lord_of_mysteries.next.brew_seer",
+    "guide.lord_of_mysteries.next.digest_seer",
+    "guide.lord_of_mysteries.next.brew_clown",
+    "guide.lord_of_mysteries.next.digest_clown",
+    "guide.lord_of_mysteries.next.hunt_serpent",
+    "guide.lord_of_mysteries.next.brew_magician",
+    "guide.lord_of_mysteries.next.complete",
+    "guide.lord_of_mysteries.next.other_pathway",
+    "advancement.lord_of_mysteries.reach_investigator_camp.title",
+    "advancement.lord_of_mysteries.reach_investigator_camp.description"
+  ],
+  "continuity_gates": [
+    "reconnect",
+    "server_restart",
+    "dimension_round_trip",
+    "death_recovery"
+  ]
+}
