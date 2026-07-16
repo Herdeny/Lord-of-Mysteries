@@ -1,0 +1,49 @@
+{
+  "id": "lord_of_mysteries:quest/chain1_missing_squad_prologue",
+  "title_key": "quest.lord_of_mysteries.missing_squad.title",
+  "steps": [
+    {
+      "id": "s1_accept",
+      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.accept",
+      "objective": {
+        "type": "talk_npc",
+        "target": "press_clerk"
+      }
+    },
+    {
+      "id": "s2_press_desk",
+      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.outpost",
+      "objective": {"type": "enter_structure", "target": "mist_city_outpost"}
+    },
+    {
+      "id": "s3_last_camp",
+      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.camp",
+      "objective": {"type": "enter_structure", "target": "investigator_camp"}
+    },
+    {
+      "id": "s4_evidence",
+      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.evidence",
+      "objective": {
+        "type": "pickup",
+        "target": "lord_of_mysteries:bloodstained_notebook"
+      }
+    },
+    {
+      "id": "s5_advance",
+      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.advance",
+      "objective": {"type": "reach_sequence", "target": "any_pathway_9"}
+    },
+    {
+      "id": "s6_clear_threats",
+      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.threats",
+      "objective": {"type": "encounter", "count": 3}
+    },
+    {
+      "id": "s7_settle",
+      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.return",
+      "objective": {"type": "talk_npc", "target": "nighthawk_contact"}
+    }
+  ],
+  "fail_policy": "step_retry",
+  "coop": {"shared_progress": true, "max_party": 4}
+}

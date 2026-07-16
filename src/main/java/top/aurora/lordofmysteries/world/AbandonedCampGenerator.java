@@ -1,6 +1,10 @@
 package top.aurora.lordofmysteries.world;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -10,7 +14,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.level.ChunkEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -22,6 +30,7 @@ public final class AbandonedCampGenerator {
 
     private static final ResourceLocation CAMP_LOOT = ResourceLocation.fromNamespaceAndPath(
             ProjectMystery.MOD_ID, "chests/abandoned_investigator_camp");
+    private static final Queue<PendingCamp> PENDING_CAMPS = new ConcurrentLinkedQueue<>();
 
     private AbandonedCampGenerator() {}
 
@@ -42,19 +51,33 @@ public final class AbandonedCampGenerator {
 
         int x = chunkPos.getMinBlockX() + 8;
         int z = chunkPos.getMinBlockZ() + 8;
-        int y = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
+        int y = event.getChunk().getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
         if ((!starterCamp && y <= level.getSeaLevel())
                 || y > level.getMaxBuildHeight() - 8) return;
-        generate(level, new BlockPos(x, y, z), random);
-        generationData.recordCamp(new BlockPos(x, y, z), starterCamp);
+        BlockPos target = new BlockPos(x, y, z);
+        PENDING_CAMPS.offer(new PendingCamp(level.getSeed(), target,
+                random.nextLong(), starterCamp));
+    }
+
+    @SubscribeEvent
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        ServerLevel level = event.getServer().getLevel(Level.OVERWORLD);
+        if (level == null) return;
+        PendingCamp pending;
+        while ((pending = PENDING_CAMPS.poll()) != null) {
+            if (pending.levelSeed() != level.getSeed()) continue;
+            generate(level, pending.target(), pending.lootSeed(), pending.starterCamp());
+            CampGenerationSavedData.get(level).recordCamp(
+                    pending.target(), pending.starterCamp());
+        }
     }
 
     public static BlockPos starterCampTarget(ServerLevel level) {
         ChunkPos chunk = starterCampChunk(level);
         int x = chunk.getMinBlockX() + 8;
         int z = chunk.getMinBlockZ() + 8;
-        int y = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
-        return new BlockPos(x, y, z);
+        return new BlockPos(x, level.getSharedSpawnPos().getY(), z);
     }
 
     private static ChunkPos starterCampChunk(ServerLevel level) {
@@ -69,7 +92,14 @@ public final class AbandonedCampGenerator {
         return new ChunkPos(spawnChunkX + offsetX, spawnChunkZ + offsetZ);
     }
 
-    private static void generate(ServerLevel level, BlockPos center, RandomSource random) {
+    public static Cat ensureLostCat(ServerLevel level, BlockPos center) {
+        return level.getEntitiesOfClass(Cat.class, new AABB(center).inflate(12d),
+                        cat -> cat.getPersistentData().getBoolean("lord_of_mysteries_lost_cat"))
+                .stream().findFirst().orElseGet(() -> spawnLostCat(level, center));
+    }
+
+    private static void generate(ServerLevel level, BlockPos center, long lootSeed,
+                                 boolean starterCamp) {
         for (int dx = -3; dx <= 3; dx++) {
             for (int dz = -3; dz <= 3; dz++) {
                 BlockPos floor = center.offset(dx, -1, dz);
@@ -94,7 +124,25 @@ public final class AbandonedCampGenerator {
         BlockPos chestPos = center.offset(2, 0, 1);
         level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
-            chest.setLootTable(CAMP_LOOT, random.nextLong());
+            chest.setLootTable(CAMP_LOOT, lootSeed);
         }
+        if (starterCamp) ensureLostCat(level, center);
     }
+
+    private static Cat spawnLostCat(ServerLevel level, BlockPos center) {
+        Cat cat = EntityType.CAT.create(level);
+        if (cat == null) throw new IllegalStateException("Unable to create lost cat");
+        cat.moveTo(center.getX() + 0.5d, center.getY(), center.getZ() + 0.5d,
+                0f, 0f);
+        cat.setCustomName(Component.translatable(
+                "entity.lord_of_mysteries.lost_cat"));
+        cat.setCustomNameVisible(true);
+        cat.setPersistenceRequired();
+        cat.getPersistentData().putBoolean("lord_of_mysteries_lost_cat", true);
+        level.addFreshEntity(cat);
+        return cat;
+    }
+
+    private record PendingCamp(long levelSeed, BlockPos target, long lootSeed,
+                               boolean starterCamp) {}
 }

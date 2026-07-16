@@ -1,6 +1,7 @@
 package top.aurora.lordofmysteries.registry;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 
@@ -13,6 +14,7 @@ import top.aurora.lordofmysteries.potion.CrucibleBlock;
 import top.aurora.lordofmysteries.ritual.RitualAltarBlock;
 import top.aurora.lordofmysteries.ritual.RitualChalkMarkBlock;
 import top.aurora.lordofmysteries.hunter.HunterSnareBlock;
+import top.aurora.lordofmysteries.commission.CommissionBoardBlock;
 
 /**
  * 方块注册（Forge 1.20.1）。当前包含坩埚、仪式祭坛、阵纹与猎人捕兽夹。
@@ -61,4 +63,11 @@ public final class ModBlocks {
                     .mapColor(MapColor.METAL)
                     .strength(0.6f)
                     .noOcclusion()));
+
+    public static final RegistryObject<Block> COMMISSION_BOARD = BLOCKS.register(
+            "commission_board",
+            () -> new CommissionBoardBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.WOOD)
+                    .sound(SoundType.WOOD)
+                    .strength(2.0f)));
 }

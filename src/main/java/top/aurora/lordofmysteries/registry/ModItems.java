@@ -22,6 +22,8 @@ import top.aurora.lordofmysteries.knowledge.InvestigatorCompassItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
 import top.aurora.lordofmysteries.knowledge.FormulaFragmentItem;
 import top.aurora.lordofmysteries.knowledge.KnowledgeCopyItem;
+import top.aurora.lordofmysteries.commission.CaseClueItem;
+import top.aurora.lordofmysteries.commission.CommissionPaperItem;
 
 /**
  * 物品注册（Forge 1.20.1）。包含材料、魔药、封印物和方块物品。
@@ -98,6 +100,21 @@ public final class ModItems {
     public static final RegistryObject<Item> NEWSPAPER = ITEMS.register(
             "newspaper",
             () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> COMMISSION_PAPER = ITEMS.register(
+            "commission_paper",
+            () -> new CommissionPaperItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> BLOODSTAINED_NOTEBOOK = ITEMS.register(
+            "bloodstained_notebook",
+            () -> new CaseClueItem(
+                    "m2/missing_squad_evidence",
+                    "tooltip.lord_of_mysteries.bloodstained_notebook",
+                    new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> BURNT_LIST = ITEMS.register(
+            "burnt_list",
+            () -> new CaseClueItem(
+                    "m2/missing_squad_chain",
+                    "tooltip.lord_of_mysteries.burnt_list",
+                    new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> KNOWLEDGE_COPY = ITEMS.register(
             "knowledge_copy",
             () -> new KnowledgeCopyItem(
@@ -237,4 +254,7 @@ public final class ModItems {
     public static final RegistryObject<Item> HUNTER_SNARE_ITEM = ITEMS.register(
             "hunter_snare",
             () -> new BlockItem(ModBlocks.HUNTER_SNARE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> COMMISSION_BOARD_ITEM = ITEMS.register(
+            "commission_board",
+            () -> new BlockItem(ModBlocks.COMMISSION_BOARD.get(), new Item.Properties()));
 }

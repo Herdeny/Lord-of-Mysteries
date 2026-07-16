@@ -86,7 +86,9 @@ tasks.register('generateProjectMysteryData', Exec) {
     commandLine pythonExecutable, 'scripts/gen_datapack.py'
     inputs.files 'scripts/gen_datapack.py',
             'docs/pathways_master.csv',
-            'docs/recipes_master.csv'
+            'docs/recipes_master.csv',
+            fileTree('src/main/resources/data/lord_of_mysteries/commissions'),
+            fileTree('src/main/resources/data/lord_of_mysteries/quests')
     outputs.dir 'src/generated/resources/data/lord_of_mysteries'
 }
 

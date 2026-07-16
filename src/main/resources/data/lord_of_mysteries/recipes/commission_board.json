@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["PPP", "SNS", "S S"],
+  "key": {
+    "P": {"item": "minecraft:paper"},
+    "S": {"item": "minecraft:spruce_planks"},
+    "N": {"item": "lord_of_mysteries:newspaper"}
+  },
+  "result": {"item": "lord_of_mysteries:commission_board"}
+}

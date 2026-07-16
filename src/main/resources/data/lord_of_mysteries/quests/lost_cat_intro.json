@@ -1,0 +1,36 @@
+{
+  "id": "lord_of_mysteries:quest/lost_cat_intro",
+  "title_key": "quest.lord_of_mysteries.lost_cat.title",
+  "steps": [
+    {
+      "id": "accept_notice",
+      "guidance_key": "quest.lord_of_mysteries.lost_cat.step.accept",
+      "objective": {
+        "type": "talk_npc",
+        "target": "press_clerk"
+      }
+    },
+    {
+      "id": "read_board",
+      "guidance_key": "quest.lord_of_mysteries.lost_cat.step.outpost",
+      "objective": {"type": "enter_structure", "target": "mist_city_outpost"}
+    },
+    {
+      "id": "reach_camp",
+      "guidance_key": "quest.lord_of_mysteries.lost_cat.step.camp",
+      "objective": {"type": "enter_structure", "target": "investigator_camp"}
+    },
+    {
+      "id": "find_cat",
+      "guidance_key": "quest.lord_of_mysteries.lost_cat.step.cat",
+      "objective": {"type": "custom_callback", "target": "lost_cat"}
+    },
+    {
+      "id": "return_board",
+      "guidance_key": "quest.lord_of_mysteries.lost_cat.step.return",
+      "objective": {"type": "talk_npc", "target": "nighthawk_contact"}
+    }
+  ],
+  "fail_policy": "step_retry",
+  "coop": {"shared_progress": false, "max_party": 1}
+}

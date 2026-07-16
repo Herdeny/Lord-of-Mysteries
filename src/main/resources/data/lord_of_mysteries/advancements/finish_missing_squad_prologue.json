@@ -1,0 +1,15 @@
+{
+  "parent": "lord_of_mysteries:take_first_commission",
+  "display": {
+    "icon": {"item": "lord_of_mysteries:burnt_list"},
+    "title": {"translate": "advancement.lord_of_mysteries.finish_missing_squad.title"},
+    "description": {"translate": "advancement.lord_of_mysteries.finish_missing_squad.description"},
+    "frame": "goal"
+  },
+  "criteria": {
+    "list": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {"items": [{"items": ["lord_of_mysteries:burnt_list"]}]}
+    }
+  }
+}

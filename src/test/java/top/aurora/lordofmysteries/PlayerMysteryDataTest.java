@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import net.minecraft.resources.ResourceLocation;
+
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 
 /**
@@ -43,6 +45,11 @@ class PlayerMysteryDataTest {
         assertEquals(-1, d.m1TrialBestSequence);
         assertEquals(0L, d.m1TrialElapsedTicks);
         assertTrue(d.actingCounters.isEmpty());
+        assertEquals(0L, d.moneyPence);
+        assertEquals("", d.activeCommissionId);
+        assertEquals(-1, d.activeQuestStep);
+        assertTrue(d.completedCommissions.isEmpty());
+        assertTrue(d.commissionCooldowns.isEmpty());
     }
 
     /** 只有序列值不足以成为非凡者，必须同时拥有途径 ID。 */
@@ -98,6 +105,16 @@ class PlayerMysteryDataTest {
         source.apprenticeMirrorCooldownEndTick = 908L;
         source.apprenticeDivinationCooldownEndTick = 909L;
         source.apprenticeWardCooldownEndTick = 910L;
+        ResourceLocation commission = ResourceLocation.fromNamespaceAndPath(
+                "lord_of_mysteries", "commission/test");
+        source.moneyPence = 253L;
+        source.activeCommissionId = commission.toString();
+        source.activeQuestChainId = "lord_of_mysteries:quest/test";
+        source.activeQuestStep = 4;
+        source.questObjectiveProgress = 2;
+        source.commissionAcceptedTick = 1200L;
+        source.completedCommissions.add(commission);
+        source.commissionCooldowns.put(commission, 2400L);
 
         PlayerMysteryData copied = new PlayerMysteryData();
         copied.copyFrom(source);
@@ -136,5 +153,13 @@ class PlayerMysteryDataTest {
         assertEquals(908L, copied.apprenticeMirrorCooldownEndTick);
         assertEquals(909L, copied.apprenticeDivinationCooldownEndTick);
         assertEquals(910L, copied.apprenticeWardCooldownEndTick);
+        assertEquals(253L, copied.moneyPence);
+        assertEquals(commission.toString(), copied.activeCommissionId);
+        assertEquals("lord_of_mysteries:quest/test", copied.activeQuestChainId);
+        assertEquals(4, copied.activeQuestStep);
+        assertEquals(2, copied.questObjectiveProgress);
+        assertEquals(1200L, copied.commissionAcceptedTick);
+        assertTrue(copied.completedCommissions.contains(commission));
+        assertEquals(2400L, copied.commissionCooldowns.get(commission));
     }
 }

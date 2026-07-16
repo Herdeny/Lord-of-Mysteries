@@ -1,0 +1,17 @@
+{
+  "id": "lord_of_mysteries:commission/lost_cat",
+  "title_key": "commission.lord_of_mysteries.lost_cat.title",
+  "summary_key": "commission.lord_of_mysteries.lost_cat.summary",
+  "board": ["mist_city_outpost"],
+  "level_range": [0, 1],
+  "solutions": ["tracking", "spirit_vision"],
+  "reward": {
+    "pence": 24,
+    "reputation": {
+      "lord_of_mysteries:organization/detective_agency": 3
+    }
+  },
+  "quest_chain": "lord_of_mysteries:quest/lost_cat_intro",
+  "cooldown_hours": 20,
+  "repeatable": false
+}

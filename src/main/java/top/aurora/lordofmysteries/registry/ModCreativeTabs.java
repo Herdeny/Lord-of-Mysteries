@@ -62,6 +62,9 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.MYSTIC_INK.get());
                         output.accept(ModItems.FORMULA_FRAGMENT.get());
                         output.accept(ModItems.NEWSPAPER.get());
+                        output.accept(ModItems.COMMISSION_PAPER.get());
+                        output.accept(ModItems.BLOODSTAINED_NOTEBOOK.get());
+                        output.accept(ModItems.BURNT_LIST.get());
                         output.accept(ModItems.KNOWLEDGE_COPY.get());
                         output.accept(ModItems.MYSTIC_PLAYING_CARDS.get());
                         output.accept(ModItems.PAPER_FIGURINE.get());
@@ -95,6 +98,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.APPRENTICE_POTION_8.get());
                         output.accept(ModItems.APPRENTICE_POTION_7.get());
                         output.accept(ModItems.HUNTER_SNARE_ITEM.get());
+                        output.accept(ModItems.COMMISSION_BOARD_ITEM.get());
                         output.accept(ModItems.ETERNAL_MATCHBOX.get());
                         output.accept(ModItems.RITUAL_ALTAR_ITEM.get());
                         output.accept(ModItems.RITUAL_CHALK_MARK_ITEM.get());

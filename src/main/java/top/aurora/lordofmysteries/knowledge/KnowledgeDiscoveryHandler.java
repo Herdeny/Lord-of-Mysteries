@@ -9,11 +9,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.registry.ModEntities;
+import top.aurora.lordofmysteries.commission.CommissionService;
 
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class KnowledgeDiscoveryHandler {
@@ -44,6 +46,8 @@ public final class KnowledgeDiscoveryHandler {
         }
         if (path == null) return;
         M1TrialTracker.recordOccultKill(player);
+        ResourceLocation entityId = ForgeRegistries.ENTITY_TYPES.getKey(type);
+        if (entityId != null) CommissionService.recordOccultKill(player, entityId);
         discover(player, path);
     }
 

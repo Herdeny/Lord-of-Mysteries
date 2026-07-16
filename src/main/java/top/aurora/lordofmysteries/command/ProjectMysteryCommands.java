@@ -2,6 +2,7 @@ package top.aurora.lordofmysteries.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
@@ -26,6 +27,8 @@ import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.registry.ModItems;
+import top.aurora.lordofmysteries.commission.CommissionService;
+import top.aurora.lordofmysteries.world.MistCityOutpostGenerator;
 
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ProjectMysteryCommands {
@@ -59,10 +62,32 @@ public final class ProjectMysteryCommands {
                     InvestigatorCompassItem.reportCamp(player, compass);
                     return 1;
                 }))
+                .then(Commands.literal("mistcity").executes(context -> {
+                    MistCityOutpostGenerator.reportOutpost(
+                            context.getSource().getPlayerOrException());
+                    return 1;
+                }))
+                .then(Commands.literal("commission")
+                        .executes(context -> CommissionService.showStatus(
+                                context.getSource().getPlayerOrException()))
+                        .then(Commands.literal("list").executes(context ->
+                                CommissionService.list(
+                                        context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("status").executes(context ->
+                                CommissionService.showStatus(
+                                        context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("accept")
+                                .then(Commands.argument("id", StringArgumentType.word())
+                                        .executes(context -> CommissionService.accept(
+                                                context.getSource().getPlayerOrException(),
+                                                StringArgumentType.getString(context, "id")))))
+                        .then(Commands.literal("abandon").executes(context ->
+                                CommissionService.abandon(
+                                        context.getSource().getPlayerOrException()))))
                 .then(Commands.literal("rules").executes(context ->
                         showLines(context.getSource().getPlayerOrException(), "rules", 5)))
                 .then(Commands.literal("items").executes(context ->
-                        showLines(context.getSource().getPlayerOrException(), "items", 6)))
+                        showLines(context.getSource().getPlayerOrException(), "items", 8)))
                 .then(Commands.literal("bestiary").executes(context ->
                         showLines(context.getSource().getPlayerOrException(), "bestiary", 4)))
                 .then(Commands.literal("journal").executes(context ->

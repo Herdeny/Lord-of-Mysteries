@@ -1,0 +1,17 @@
+{
+  "id": "lord_of_mysteries:commission/missing_investigation_squad",
+  "title_key": "commission.lord_of_mysteries.missing_squad.title",
+  "summary_key": "commission.lord_of_mysteries.missing_squad.summary",
+  "board": ["mist_city_outpost", "church_notice"],
+  "level_range": [1, 3],
+  "solutions": ["assault", "stealth", "divination"],
+  "reward": {
+    "pence": 144,
+    "reputation": {
+      "lord_of_mysteries:organization/detective_agency": 10
+    }
+  },
+  "quest_chain": "lord_of_mysteries:quest/chain1_missing_squad_prologue",
+  "cooldown_hours": 72,
+  "repeatable": false
+}

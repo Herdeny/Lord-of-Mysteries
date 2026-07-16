@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 10;
+    public static final int CURRENT_SCHEMA_VERSION = 11;
 
     // 途径 & 序列。
     // pathway 使用 ResourceLocation 以便完全数据驱动，例如 lord_of_mysteries:seer。
@@ -103,6 +103,15 @@ public class PlayerMysteryData {
     public int m1TrialActingEvents = 0;
     public float m1TrialMaxPressure = 0f;
     public float m1TrialMaxPollution = 0f;
+
+    public long moneyPence = 0L;
+    public String activeCommissionId = "";
+    public String activeQuestChainId = "";
+    public int activeQuestStep = -1;
+    public int questObjectiveProgress = 0;
+    public long commissionAcceptedTick = 0L;
+    public Set<ResourceLocation> completedCommissions = new HashSet<>();
+    public Map<ResourceLocation, Long> commissionCooldowns = new HashMap<>();
 
     // 知识系统。保存玩家已经解锁的知识条目 ID，供手册、仪式和配方门槛读取。
     public Set<ResourceLocation> knownKnowledge = new HashSet<>();
@@ -206,6 +215,14 @@ public class PlayerMysteryData {
         this.m1TrialActingEvents = src.m1TrialActingEvents;
         this.m1TrialMaxPressure = src.m1TrialMaxPressure;
         this.m1TrialMaxPollution = src.m1TrialMaxPollution;
+        this.moneyPence = src.moneyPence;
+        this.activeCommissionId = src.activeCommissionId;
+        this.activeQuestChainId = src.activeQuestChainId;
+        this.activeQuestStep = src.activeQuestStep;
+        this.questObjectiveProgress = src.questObjectiveProgress;
+        this.commissionAcceptedTick = src.commissionAcceptedTick;
+        this.completedCommissions = new HashSet<>(src.completedCommissions);
+        this.commissionCooldowns = new HashMap<>(src.commissionCooldowns);
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
         this.actingHistory = new HashMap<>(src.actingHistory);
         this.actingCounters = new HashMap<>(src.actingCounters);
@@ -292,7 +309,24 @@ public class PlayerMysteryData {
         tag.putInt("m1_trial_acting_events", m1TrialActingEvents);
         tag.putFloat("m1_trial_max_pressure", m1TrialMaxPressure);
         tag.putFloat("m1_trial_max_pollution", m1TrialMaxPollution);
+        tag.putLong("money_pence", moneyPence);
+        tag.putString("active_commission", activeCommissionId);
+        tag.putString("active_quest_chain", activeQuestChainId);
+        tag.putInt("active_quest_step", activeQuestStep);
+        tag.putInt("quest_objective_progress", questObjectiveProgress);
+        tag.putLong("commission_accepted_tick", commissionAcceptedTick);
         tag.putInt("schema_version", schemaVersion);
+
+        ListTag completed = new ListTag();
+        for (ResourceLocation id : completedCommissions) {
+            completed.add(StringTag.valueOf(id.toString()));
+        }
+        tag.put("completed_commissions", completed);
+
+        CompoundTag commissionCooldownTag = new CompoundTag();
+        commissionCooldowns.forEach((id, tick) ->
+                commissionCooldownTag.putLong(id.toString(), tick));
+        tag.put("commission_cooldowns", commissionCooldownTag);
 
         ListTag known = new ListTag();
         // ListTag 只能存 Tag 对象，因此 ResourceLocation 统一序列化成字符串。
@@ -397,7 +431,30 @@ public class PlayerMysteryData {
         m1TrialActingEvents = tag.getInt("m1_trial_acting_events");
         m1TrialMaxPressure = tag.getFloat("m1_trial_max_pressure");
         m1TrialMaxPollution = tag.getFloat("m1_trial_max_pollution");
+        moneyPence = tag.getLong("money_pence");
+        activeCommissionId = tag.contains("active_commission")
+                ? tag.getString("active_commission") : "";
+        activeQuestChainId = tag.contains("active_quest_chain")
+                ? tag.getString("active_quest_chain") : "";
+        activeQuestStep = tag.contains("active_quest_step")
+                ? tag.getInt("active_quest_step") : -1;
+        questObjectiveProgress = tag.getInt("quest_objective_progress");
+        commissionAcceptedTick = tag.getLong("commission_accepted_tick");
         schemaVersion = CURRENT_SCHEMA_VERSION;
+
+        completedCommissions.clear();
+        ListTag completed = tag.getList("completed_commissions", Tag.TAG_STRING);
+        for (int i = 0; i < completed.size(); i++) {
+            ResourceLocation id = ResourceLocation.tryParse(completed.getString(i));
+            if (id != null) completedCommissions.add(id);
+        }
+
+        commissionCooldowns.clear();
+        CompoundTag commissionCooldownTag = tag.getCompound("commission_cooldowns");
+        for (String key : commissionCooldownTag.getAllKeys()) {
+            ResourceLocation id = ResourceLocation.tryParse(key);
+            if (id != null) commissionCooldowns.put(id, commissionCooldownTag.getLong(key));
+        }
 
         knownKnowledge.clear();
         ListTag known = tag.getList("known_knowledge", Tag.TAG_STRING);

@@ -1,0 +1,15 @@
+{
+  "parent": "lord_of_mysteries:root",
+  "display": {
+    "icon": {"item": "lord_of_mysteries:commission_paper"},
+    "title": {"translate": "advancement.lord_of_mysteries.take_first_commission.title"},
+    "description": {"translate": "advancement.lord_of_mysteries.take_first_commission.description"},
+    "frame": "task"
+  },
+  "criteria": {
+    "paper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {"items": [{"items": ["lord_of_mysteries:commission_paper"]}]}
+    }
+  }
+}
