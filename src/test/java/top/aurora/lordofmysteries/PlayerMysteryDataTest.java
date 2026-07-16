@@ -48,6 +48,9 @@ class PlayerMysteryDataTest {
         assertEquals(0L, d.moneyPence);
         assertEquals("", d.activeCommissionId);
         assertEquals(-1, d.activeQuestStep);
+        assertEquals("", d.escortedReporterUuid);
+        assertFalse(d.questDefenseWaveSpawned);
+        assertEquals(0L, d.questDefenseNextTick);
         assertTrue(d.completedCommissions.isEmpty());
         assertTrue(d.commissionCooldowns.isEmpty());
     }
@@ -113,6 +116,9 @@ class PlayerMysteryDataTest {
         source.activeQuestStep = 4;
         source.questObjectiveProgress = 2;
         source.commissionAcceptedTick = 1200L;
+        source.escortedReporterUuid = "c7838ad4-a600-45c6-a747-7d954892158f";
+        source.questDefenseWaveSpawned = true;
+        source.questDefenseNextTick = 1800L;
         source.completedCommissions.add(commission);
         source.commissionCooldowns.put(commission, 2400L);
 
@@ -159,6 +165,10 @@ class PlayerMysteryDataTest {
         assertEquals(4, copied.activeQuestStep);
         assertEquals(2, copied.questObjectiveProgress);
         assertEquals(1200L, copied.commissionAcceptedTick);
+        assertEquals("c7838ad4-a600-45c6-a747-7d954892158f",
+                copied.escortedReporterUuid);
+        assertTrue(copied.questDefenseWaveSpawned);
+        assertEquals(1800L, copied.questDefenseNextTick);
         assertTrue(copied.completedCommissions.contains(commission));
         assertEquals(2400L, copied.commissionCooldowns.get(commission));
     }

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {"min": 2, "max": 4},
+      "entries": [
+        {"type": "minecraft:item", "name": "lord_of_mysteries:bloodstained_notebook", "weight": 4},
+        {"type": "minecraft:item", "name": "lord_of_mysteries:formula_fragment", "weight": 3},
+        {"type": "minecraft:item", "name": "lord_of_mysteries:spirit_lantern", "weight": 1},
+        {"type": "minecraft:item", "name": "lord_of_mysteries:protective_charm", "weight": 3},
+        {
+          "type": "minecraft:item",
+          "name": "lord_of_mysteries:white_candle",
+          "weight": 4,
+          "functions": [{"function": "minecraft:set_count", "count": {"min": 1, "max": 3}}]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:gold_nugget",
+          "weight": 2,
+          "functions": [{"function": "minecraft:set_count", "count": {"min": 2, "max": 7}}]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "parent": "lord_of_mysteries:take_first_commission",
+  "display": {
+    "icon": {"item": "lord_of_mysteries:press_card"},
+    "title": {"translate": "advancement.lord_of_mysteries.rescue_reporter.title"},
+    "description": {"translate": "advancement.lord_of_mysteries.rescue_reporter.description"},
+    "frame": "task"
+  },
+  "criteria": {
+    "card": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {"items": [{"items": ["lord_of_mysteries:press_card"]}]}
+    }
+  }
+}

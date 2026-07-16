@@ -29,6 +29,7 @@ import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.registry.ModItems;
 import top.aurora.lordofmysteries.commission.CommissionService;
 import top.aurora.lordofmysteries.world.MistCityOutpostGenerator;
+import top.aurora.lordofmysteries.world.InvestigationSiteGenerator;
 
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ProjectMysteryCommands {
@@ -67,6 +68,11 @@ public final class ProjectMysteryCommands {
                             context.getSource().getPlayerOrException());
                     return 1;
                 }))
+                .then(Commands.literal("case").executes(context -> {
+                    InvestigationSiteGenerator.reportSites(
+                            context.getSource().getPlayerOrException());
+                    return 1;
+                }))
                 .then(Commands.literal("commission")
                         .executes(context -> CommissionService.showStatus(
                                 context.getSource().getPlayerOrException()))
@@ -87,7 +93,7 @@ public final class ProjectMysteryCommands {
                 .then(Commands.literal("rules").executes(context ->
                         showLines(context.getSource().getPlayerOrException(), "rules", 5)))
                 .then(Commands.literal("items").executes(context ->
-                        showLines(context.getSource().getPlayerOrException(), "items", 8)))
+                        showLines(context.getSource().getPlayerOrException(), "items", 9)))
                 .then(Commands.literal("bestiary").executes(context ->
                         showLines(context.getSource().getPlayerOrException(), "bestiary", 4)))
                 .then(Commands.literal("journal").executes(context ->

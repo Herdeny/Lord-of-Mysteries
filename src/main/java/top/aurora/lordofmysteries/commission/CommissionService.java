@@ -1,7 +1,9 @@
 package top.aurora.lordofmysteries.commission;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -9,10 +11,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 
 import top.aurora.lordofmysteries.ProjectMystery;
@@ -21,6 +29,7 @@ import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.registry.ModItems;
 import top.aurora.lordofmysteries.world.AbandonedCampGenerator;
 import top.aurora.lordofmysteries.world.CampGenerationSavedData;
+import top.aurora.lordofmysteries.world.InvestigationSiteSavedData;
 import top.aurora.lordofmysteries.world.MistCityOutpostSavedData;
 
 public final class CommissionService {
@@ -34,8 +43,10 @@ public final class CommissionService {
     public static int interactBoard(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         if (!data.activeCommissionId.isBlank()) {
-            recordObjective(player, "talk_npc", "nighthawk_contact", 1);
-            if (isReadyToSettle(data)) return settle(player);
+            if (LOST_CAT.toString().equals(data.activeCommissionId)) {
+                recordObjective(player, "talk_npc", "nighthawk_contact", 1);
+                if (isReadyToSettle(data)) return settle(player);
+            }
             return showStatus(player);
         }
         ResourceLocation recommended = !data.completedCommissions.contains(LOST_CAT)
@@ -46,6 +57,42 @@ public final class CommissionService {
             recordObjective(player, "enter_structure", "mist_city_outpost", 1);
         }
         return accepted;
+    }
+
+    public static int talkPressClerk(ServerPlayer player) {
+        player.sendSystemMessage(Component.translatable(
+                "message.lord_of_mysteries.npc.press_clerk")
+                .withStyle(ChatFormatting.GRAY));
+        return recordObjective(player, "talk_npc", "press_clerk", 1) ? 1 : 0;
+    }
+
+    public static int interactContact(ServerPlayer player) {
+        player.sendSystemMessage(Component.translatable(
+                "message.lord_of_mysteries.npc.nighthawk_contact")
+                .withStyle(ChatFormatting.DARK_PURPLE));
+        PlayerMysteryData data = MysteryCapability.get(player);
+        recordObjective(player, "talk_npc", "nighthawk_contact", 1);
+        return isReadyToSettle(data) ? settle(player) : showStatus(player);
+    }
+
+    public static int rescueReporter(ServerPlayer player, Villager reporter) {
+        if (!isCurrentObjective(player, "rescue", "missing_reporter")) {
+            player.sendSystemMessage(Component.translatable(
+                    "message.lord_of_mysteries.npc.reporter_not_ready")
+                    .withStyle(ChatFormatting.GRAY));
+            return 0;
+        }
+        if (!recordObjective(player, "rescue", "missing_reporter", 1)) return 0;
+        PlayerMysteryData data = MysteryCapability.get(player);
+        data.escortedReporterUuid = reporter.getUUID().toString();
+        InvestigationNpcHandler.beginEscort(reporter, player);
+        if (!hasItem(player, ModItems.PRESS_CARD.get())) {
+            giveItem(player, new ItemStack(ModItems.PRESS_CARD.get()));
+        }
+        player.sendSystemMessage(Component.translatable(
+                "message.lord_of_mysteries.npc.reporter_rescued")
+                .withStyle(ChatFormatting.GREEN));
+        return 1;
     }
 
     public static int list(ServerPlayer player) {
@@ -126,7 +173,6 @@ public final class CommissionService {
                 "command.lord_of_mysteries.commission.accepted",
                 Component.translatable(definition.titleKey()))
                 .withStyle(ChatFormatting.GOLD));
-        recordObjective(player, "talk_npc", "press_clerk", 1);
         showCurrentStep(player, data, chain);
         return 1;
     }
@@ -184,6 +230,8 @@ public final class CommissionService {
             case "enter_structure" -> trackStructure(player, overworld, objective);
             case "custom_callback" -> trackCustomObjective(player, overworld, objective);
             case "pickup" -> trackEvidence(player, overworld, objective);
+            case "escort" -> trackEscort(player, overworld, objective);
+            case "survive_waves" -> trackNightDefense(player, overworld, objective);
             case "reach_sequence" -> {
                 if (data.isExtraordinary() && data.sequence <= 9) {
                     recordObjective(player, objective.type(), objective.target(), 1);
@@ -283,6 +331,118 @@ public final class CommissionService {
                     .filter(position -> near(player, position, 24d))
                     .ifPresent(position -> recordObjective(
                             player, objective.type(), objective.target(), 1));
+        } else if ("abandoned_church".equals(objective.target())) {
+            InvestigationSiteSavedData.get(level).church()
+                    .filter(position -> near(player, position, 24d))
+                    .ifPresent(position -> recordObjective(
+                            player, objective.type(), objective.target(), 1));
+        } else if ("cultist_camp".equals(objective.target())) {
+            InvestigationSiteSavedData.get(level).cultistCamp()
+                    .filter(position -> near(player, position, 28d))
+                    .ifPresent(position -> recordObjective(
+                            player, objective.type(), objective.target(), 1));
+        }
+    }
+
+    private static void trackEscort(ServerPlayer player, ServerLevel level,
+                                    QuestChainDefinition.Objective objective) {
+        if (!"missing_reporter_to_outpost".equals(objective.target())) return;
+        PlayerMysteryData data = MysteryCapability.get(player);
+        UUID reporterId = parseUuid(data.escortedReporterUuid);
+        if (reporterId == null) return;
+        Entity entity = level.getEntity(reporterId);
+        if (!(entity instanceof Villager reporter) || !reporter.isAlive()) return;
+        double distance = player.distanceToSqr(reporter);
+        if (distance > 32d * 32d) {
+            reporter.teleportTo(player.getX() + 1d, player.getY(), player.getZ() + 1d);
+        } else if (distance > 3d * 3d) {
+            reporter.getNavigation().moveTo(player, 1.05d);
+        }
+        MistCityOutpostSavedData.get(level).outpost().ifPresent(outpost -> {
+            if (near(player, outpost, 18d)
+                    && outpost.distToCenterSqr(reporter.position()) <= 18d * 18d
+                    && recordObjective(player, objective.type(), objective.target(), 1)) {
+                InvestigationNpcHandler.finishEscort(reporter, outpost);
+                player.sendSystemMessage(Component.translatable(
+                        "message.lord_of_mysteries.quest.escort_complete")
+                        .withStyle(ChatFormatting.GREEN));
+            }
+        });
+    }
+
+    private static void trackNightDefense(ServerPlayer player, ServerLevel level,
+                                          QuestChainDefinition.Objective objective) {
+        if (!"mist_city_outpost".equals(objective.target())) return;
+        MistCityOutpostSavedData.get(level).outpost().ifPresent(outpost -> {
+            if (!near(player, outpost, 32d)) return;
+            PlayerMysteryData data = MysteryCapability.get(player);
+            long now = level.getGameTime();
+            List<Mob> attackers = defenseAttackers(level, outpost, player.getUUID());
+            NightDefenseLogic.Action action = NightDefenseLogic.decide(
+                    level.isNight(), data.questDefenseWaveSpawned,
+                    !attackers.isEmpty(), now, data.questDefenseNextTick);
+            switch (action) {
+                case WAIT_FOR_NIGHT -> {
+                    if (now >= data.questDefenseNextTick) {
+                        player.sendSystemMessage(Component.translatable(
+                                "message.lord_of_mysteries.quest.wait_for_night")
+                                .withStyle(ChatFormatting.DARK_GRAY));
+                        data.questDefenseNextTick = now + 200L;
+                    }
+                }
+                case SPAWN_WAVE -> {
+                    int wave = data.questObjectiveProgress + 1;
+                    spawnDefenseWave(level, player, outpost, wave);
+                    data.questDefenseWaveSpawned = true;
+                    data.questDefenseNextTick = 0L;
+                    player.sendSystemMessage(Component.translatable(
+                            "message.lord_of_mysteries.quest.wave_started",
+                            wave, objective.count()).withStyle(ChatFormatting.RED));
+                }
+                case COMPLETE_WAVE -> {
+                    int completedWave = data.questObjectiveProgress + 1;
+                    data.questDefenseWaveSpawned = false;
+                    player.sendSystemMessage(Component.translatable(
+                            "message.lord_of_mysteries.quest.wave_cleared",
+                            completedWave, objective.count()).withStyle(ChatFormatting.GREEN));
+                    recordObjective(player, objective.type(), objective.target(), 1);
+                    data.questDefenseNextTick = isCurrentObjective(
+                            player, objective.type(), objective.target()) ? now + 100L : 0L;
+                }
+                case WAIT -> {
+                }
+            }
+        });
+    }
+
+    private static List<Mob> defenseAttackers(ServerLevel level, BlockPos outpost,
+                                              UUID owner) {
+        return level.getEntitiesOfClass(Mob.class, new AABB(outpost).inflate(48d),
+                mob -> mob.isAlive()
+                        && mob.getPersistentData().hasUUID("lom_defense_owner")
+                        && owner.equals(mob.getPersistentData().getUUID(
+                                "lom_defense_owner")));
+    }
+
+    private static void spawnDefenseWave(ServerLevel level, ServerPlayer player,
+                                         BlockPos outpost, int wave) {
+        RandomSource random = RandomSource.create(
+                level.getSeed() ^ player.getUUID().getMostSignificantBits() ^ wave);
+        int count = 2 + wave;
+        for (int index = 0; index < count; index++) {
+            double angle = Math.PI * 2d * index / count + random.nextDouble() * 0.35d;
+            int radius = 10 + random.nextInt(5);
+            int x = outpost.getX() + (int) Math.round(Math.cos(angle) * radius);
+            int z = outpost.getZ() + (int) Math.round(Math.sin(angle) * radius);
+            int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
+            Mob attacker = (index + wave) % 3 == 0
+                    ? EntityType.SKELETON.create(level) : EntityType.ZOMBIE.create(level);
+            if (attacker == null) continue;
+            attacker.moveTo(x + 0.5d, y, z + 0.5d, random.nextFloat() * 360f, 0f);
+            attacker.setTarget(player);
+            attacker.setPersistenceRequired();
+            attacker.getPersistentData().putUUID("lom_defense_owner", player.getUUID());
+            level.addFreshEntity(attacker);
         }
     }
 
@@ -340,6 +500,26 @@ public final class CommissionService {
         return id == null ? null : QuestChainDefinitionManager.get(id);
     }
 
+    private static boolean isCurrentObjective(ServerPlayer player, String type,
+                                              String target) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        QuestChainDefinition chain = activeChain(data);
+        if (chain == null || data.activeQuestStep < 0
+                || data.activeQuestStep >= chain.steps().size()) return false;
+        QuestChainDefinition.Objective objective =
+                chain.steps().get(data.activeQuestStep).objective();
+        return objective.type().equals(type) && objective.target().equals(target);
+    }
+
+    private static UUID parseUuid(String value) {
+        if (value.isBlank()) return null;
+        try {
+            return UUID.fromString(value);
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
+    }
+
     private static Optional<BlockPos> nearestCamp(ServerLevel level, ServerPlayer player) {
         return CampGenerationSavedData.get(level).nearestCamp(player.blockPosition());
     }
@@ -372,6 +552,9 @@ public final class CommissionService {
         data.activeQuestStep = -1;
         data.questObjectiveProgress = 0;
         data.commissionAcceptedTick = 0L;
+        data.escortedReporterUuid = "";
+        data.questDefenseWaveSpawned = false;
+        data.questDefenseNextTick = 0L;
     }
 
     private static ResourceLocation normalize(String value) {

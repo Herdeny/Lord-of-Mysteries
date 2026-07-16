@@ -1,6 +1,6 @@
 # 入门与占卜家序列 9–7
 
-> 当前版本：0.8.3-1.20.1
+> 当前版本：0.8.4-1.20.1
 >
 > 设计基线：v0.8 · M1 验收 / M2 预研
 
@@ -58,6 +58,7 @@
 | `/pm status` | 状态数值 |
 | `/pm camp` | 营地方向与坐标 |
 | `/pm mistcity` | 雾都前哨方向与坐标 |
+| `/pm case` | 废弃教堂与邪教救援营地 |
 | `/pm commission list|status` | 委托列表、步骤、进度和账本 |
 | `/pm commission accept <id>` | 接取指定委托 |
 | `/pm m1check` | 下一晋升门槛 |
@@ -89,8 +90,8 @@
 戏法大师/占星人使用空间转移、知识链接、镜门、星象预兆和团队庇护。详见
 [偷盗者与学徒序列 8-7](M2-Sequence-8-7-Thief-and-Apprentice)。
 
-雾都前哨、寻猫委托和“失踪调查小队·序章”现已可玩；详情见
-[雾都前哨与调查委托](M2-Commissions-and-Mist-City-Outpost)。完整镇区、NPC、护送和夜袭后半链仍未完成。
+雾都前哨、寻猫委托和“失踪调查小队·第一阶段”现已可玩；详情见
+[雾都前哨与调查委托](M2-Commissions-and-Mist-City-Outpost)。完整镇区、神秘学家小屋、真假配方和三解分支仍未完成。
 
 完整手册见
 [`docs/GETTING_STARTED.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/GETTING_STARTED.md)。

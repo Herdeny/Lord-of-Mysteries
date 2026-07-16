@@ -40,7 +40,37 @@
     },
     {
       "id": "s7_settle",
-      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.return",
+      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.authorization",
+      "objective": {"type": "talk_npc", "target": "nighthawk_contact"}
+    },
+    {
+      "id": "s8_church",
+      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.church",
+      "objective": {"type": "enter_structure", "target": "abandoned_church"}
+    },
+    {
+      "id": "s9_cultist_camp",
+      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.cultist_camp",
+      "objective": {"type": "enter_structure", "target": "cultist_camp"}
+    },
+    {
+      "id": "s10_rescue",
+      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.rescue",
+      "objective": {"type": "rescue", "target": "missing_reporter"}
+    },
+    {
+      "id": "s11_escort",
+      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.escort",
+      "objective": {"type": "escort", "target": "missing_reporter_to_outpost"}
+    },
+    {
+      "id": "s12_night_defense",
+      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.night_defense",
+      "objective": {"type": "survive_waves", "target": "mist_city_outpost", "count": 3}
+    },
+    {
+      "id": "s13_final_settlement",
+      "guidance_key": "quest.lord_of_mysteries.missing_squad.step.final_settlement",
       "objective": {"type": "talk_npc", "target": "nighthawk_contact"}
     }
   ],

@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 11;
+    public static final int CURRENT_SCHEMA_VERSION = 12;
 
     // 途径 & 序列。
     // pathway 使用 ResourceLocation 以便完全数据驱动，例如 lord_of_mysteries:seer。
@@ -110,6 +110,9 @@ public class PlayerMysteryData {
     public int activeQuestStep = -1;
     public int questObjectiveProgress = 0;
     public long commissionAcceptedTick = 0L;
+    public String escortedReporterUuid = "";
+    public boolean questDefenseWaveSpawned = false;
+    public long questDefenseNextTick = 0L;
     public Set<ResourceLocation> completedCommissions = new HashSet<>();
     public Map<ResourceLocation, Long> commissionCooldowns = new HashMap<>();
 
@@ -221,6 +224,9 @@ public class PlayerMysteryData {
         this.activeQuestStep = src.activeQuestStep;
         this.questObjectiveProgress = src.questObjectiveProgress;
         this.commissionAcceptedTick = src.commissionAcceptedTick;
+        this.escortedReporterUuid = src.escortedReporterUuid;
+        this.questDefenseWaveSpawned = src.questDefenseWaveSpawned;
+        this.questDefenseNextTick = src.questDefenseNextTick;
         this.completedCommissions = new HashSet<>(src.completedCommissions);
         this.commissionCooldowns = new HashMap<>(src.commissionCooldowns);
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
@@ -315,6 +321,9 @@ public class PlayerMysteryData {
         tag.putInt("active_quest_step", activeQuestStep);
         tag.putInt("quest_objective_progress", questObjectiveProgress);
         tag.putLong("commission_accepted_tick", commissionAcceptedTick);
+        tag.putString("escorted_reporter_uuid", escortedReporterUuid);
+        tag.putBoolean("quest_defense_wave_spawned", questDefenseWaveSpawned);
+        tag.putLong("quest_defense_next_tick", questDefenseNextTick);
         tag.putInt("schema_version", schemaVersion);
 
         ListTag completed = new ListTag();
@@ -440,6 +449,10 @@ public class PlayerMysteryData {
                 ? tag.getInt("active_quest_step") : -1;
         questObjectiveProgress = tag.getInt("quest_objective_progress");
         commissionAcceptedTick = tag.getLong("commission_accepted_tick");
+        escortedReporterUuid = tag.contains("escorted_reporter_uuid")
+                ? tag.getString("escorted_reporter_uuid") : "";
+        questDefenseWaveSpawned = tag.getBoolean("quest_defense_wave_spawned");
+        questDefenseNextTick = tag.getLong("quest_defense_next_tick");
         schemaVersion = CURRENT_SCHEMA_VERSION;
 
         completedCommissions.clear();

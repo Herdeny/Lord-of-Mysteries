@@ -64,6 +64,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.NEWSPAPER.get());
                         output.accept(ModItems.COMMISSION_PAPER.get());
                         output.accept(ModItems.BLOODSTAINED_NOTEBOOK.get());
+                        output.accept(ModItems.PRESS_CARD.get());
                         output.accept(ModItems.BURNT_LIST.get());
                         output.accept(ModItems.KNOWLEDGE_COPY.get());
                         output.accept(ModItems.MYSTIC_PLAYING_CARDS.get());

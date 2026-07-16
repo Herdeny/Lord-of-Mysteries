@@ -115,6 +115,12 @@ public final class ModItems {
                     "m2/missing_squad_chain",
                     "tooltip.lord_of_mysteries.burnt_list",
                     new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> PRESS_CARD = ITEMS.register(
+            "press_card",
+            () -> new CaseClueItem(
+                    "m2/reporter_rescued",
+                    "tooltip.lord_of_mysteries.press_card",
+                    new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> KNOWLEDGE_COPY = ITEMS.register(
             "knowledge_copy",
             () -> new KnowledgeCopyItem(
