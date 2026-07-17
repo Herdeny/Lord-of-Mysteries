@@ -10,10 +10,10 @@
 > 在未知中承担风险，通过扮演消化力量，逐步成为非凡者。
 
 <!-- project-status:start -->
-> - 当前版本：**`0.9.0-1.20.1`**
+> - 当前版本：**`0.9.1-1.20.1`**
 > - 开发阶段：**v0.9 M0 内容基建 / M1 纵切迁移**（M0）
 > - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-> - 最后更新：**2026-07-17 16:17:22 UTC+01:00**（`2026-07-17T15:17:22Z`）
+> - 最后更新：**2026-07-17 17:23:46 UTC+01:00**（`2026-07-17T16:23:46Z`）
 <!-- project-status:end -->
 
 Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 Minecraft 生存冒险 Mod。
@@ -34,6 +34,7 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 [入门指南](docs/GETTING_STARTED.md) ·
 [v0.9 实施基线](docs/V0.9_IMPLEMENTATION_BASELINE.md) ·
 [M0 内容图与迁移](docs/V0.9_M0_CONTENT_GRAPH_AND_MIGRATION.md) ·
+[v0.9 首次部署](docs/V0.9_FIRST_DEPLOYMENT.md) ·
 [精神风险与调查日志](docs/MENTAL_RISK_AND_KNOWLEDGE.md) ·
 [M1 试炼追踪器](docs/M1_TRIAL_TRACKER.md) ·
 [M1 可玩性合同](docs/m1-playability-contract.json) ·
@@ -59,8 +60,9 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 按 v0.9 路线，当前正式里程碑是 **M0 内容基建**。五条途径序列 9–7、通用仪式、
 三种委托和三条任务链继续可玩，但统一归类为待迁移与重验收资产，不据此宣称 M1–M3 完成。
 当前已经建立 schema v4 元数据、71 节点/63 关系内容图、Capability schema 16、
-分层非凡特性和扮演 v2 身份区分；M0 仍需把目录扩至 100 节点，并完成未知 ID 保留、
-迁移备份、dirty mask、正式 DataFix 和完整 GameTest 存档矩阵。
+分层非凡特性和扮演 v2 身份区分；0.9.1 又补齐正式 DataFix、迁移前世界快照、
+原始 NBT 备份和未知/非法 ID 孤儿保留。M0 仍需把目录扩至 100 节点，并完成
+Core/Knowledge/Social/Endgame dirty mask 与完整 GameTest 存档矩阵。
 
 1. 首次登录取得调查手稿与罗盘；使用 `/pm next` 查看当前主线，遗失时用 `/pm recover` 自助补回。
 2. 右键罗盘或输入 `/pm camp` 前往世界种子确定的新手营地，取得专用补给桶和随机线索箱。
@@ -74,6 +76,14 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 10. 完成占卜家纵切后输入 `/pm mistcity` 前往雾都前哨；失踪小队救援时用 `/pm commission approach` 选择强攻、潜入或占卜。
 11. 完成失踪小队后接取“真假配方”，用 `/pm case` 前往神秘学家小屋，鉴定卷宗并提交 authentic/forged 结论。
 12. 2–4 人联机时使用原版 `/team` 组队；`/pm party` 查看持久账本，离线成员上线自动追赶，中途加入者用 `/pm party sync`。
+
+### v0.9.1 首次部署 / 存档安全
+
+- 世界加载前自动备份 `level.dat*`、玩家数据和 Project Mystery SavedData；临时目录、原子替换和 schema marker 保证失败关闭与重复启动幂等。
+- schema 0/15→16 使用命名 DataFix 链；schema 15 继续回填特性 bundle，无版本旧键先归一化，未来 schema 不会被旧版本直接降级覆盖。
+- 每次真实迁移保留原始 Capability NBT、迁移步骤和最多三份回滚载荷；非法 ID、损坏 bundle 与未来字段进入 `orphaned_entries`。
+- 旧 M1 试炼、M2 委托/调查、余额、队伍、能力冷却、途径和扮演状态继续沿用；196 项测试验证迁移和备份边界。
+- 完整停服升级、首启核验与回滚步骤见 [`docs/V0.9_FIRST_DEPLOYMENT.md`](docs/V0.9_FIRST_DEPLOYMENT.md)。
 
 ### v0.9.0 内容基建 / 特性账本 / 扮演 v2
 
@@ -336,8 +346,9 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 - 仪式主持人离线暂停、超时取消与服务端重启安全恢复
 - v0.9 内容生产线：schema v4、22 途径目录、15 个序列定义、首批配方 CSV、精确设计源校验和 Gradle 门禁
 - 内容关系图：71 节点、63 关系，以及 orphan、spoiler、compat、localization、asset 六类审计报告
+- 首次部署安全链：世界加载前 schema 16 快照、正式 DataFix、原始 NBT 备份、迁移历史和 `orphaned_entries`
 - M2 迁移数据门禁：3 种委托、3 条任务链、15 类冻结目标类型、前置关系、跨文件引用与至少双解法校验
-- JUnit 5 的 191 项测试覆盖玩家数据迁移、特性账本、扮演身份、协议、限流、任务链、配方、救援路线、队伍 SavedData、能力、炼药与仪式
+- JUnit 5 的 196 项测试覆盖玩家数据迁移、备份幂等、孤儿保留、特性账本、扮演身份、协议、限流、任务链、配方、救援路线、队伍 SavedData、能力、炼药与仪式
 - 统一资源门禁检查 261 个 JSON、764 个成对双语键、330 个静态引用键、73 个模型及全部物品/方块/实体注册资源
 - 分层 `CharacteristicBundle` 与扮演 v2：原则理解、角色过度认同、每日反思和状态界面同步
 - CI Forge 专用服务器冒烟：加载数据、进入 `Done`、保存世界并干净停服
@@ -349,7 +360,7 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 - 当前只接入净化封印这一种完整仪式；尊名呼名、晋升饮药窗口和更多仪式仍待后续实现。
 - 调查营地、雾都前哨、废弃教堂、邪教营地与神秘学家小屋均采用轻量程序生成；完整维多利亚镇区和正式结构模板尚未实装。
 - 占卜家序列 9–7 代码纵切、连续性追踪与自动专服冒烟已完成，但真实一小时生存和平衡验收尚未记录。
-- M0 当前只有 71 个内容节点，尚未达到 100 节点；未知 ID 孤儿保留、迁移备份、dirty mask、正式 DataFix 与完整 GameTest 尚未完成。
+- M0 当前只有 71 个内容节点，尚未达到 100 节点；Core/Knowledge/Social/Endgame dirty mask 与完整 GameTest 存档矩阵尚未完成。
 - 特性 bundle 已进入存档与晋升，但提取、实体掉落、重复合并和死亡守恒闭环尚未完成。
 - 扮演 v2 已有原则/身份字段与反思命令，但身份卡、反思日志物品、四阶段验证和两小时真人验收尚未完成。
 - 五途径序列 9-7、三种委托、失踪调查小队第一阶段、真假配方和持久化队伍追赶是可玩迁移资产；正式队伍 GUI、完整多人负载矩阵与动态案件仍未完成。
@@ -400,7 +411,7 @@ python scripts/check_resource_integrity.py
 python scripts/sync_project_metadata.py --check
 ```
 
-CI 会检查 v0.9 设计源、元数据同步、内容图、M1 可玩性合同、M2 调查合同、统一资源完整性，运行 191 项 Gradle 测试并启动一次 Forge 专用服务器运行诊断冒烟；`wiki/` 内容变化后自动发布 GitHub Wiki。完整规则见
+CI 会检查 v0.9 设计源、元数据同步、内容图、M1 可玩性合同、M2 调查合同、统一资源完整性，运行 196 项 Gradle 测试并启动一次 Forge 专用服务器运行诊断冒烟；`wiki/` 内容变化后自动发布 GitHub Wiki。完整规则见
 [`VERSIONING.md`](VERSIONING.md)。
 
 ## 项目结构

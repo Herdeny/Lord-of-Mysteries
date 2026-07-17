@@ -3,6 +3,7 @@
 - [首页](Home)
 - [v0.9 实施基线](V0.9-Implementation-Baseline)
 - [M0 内容图与迁移](V0.9-M0-Content-Graph-and-Migration)
+- [v0.9 首次实施部署](V0.9-First-Deployment)
 - [开发状态](Development-Status)
 - [安装与构建](Installation-and-Build)
 - [入门与占卜家 9–7](Getting-Started)

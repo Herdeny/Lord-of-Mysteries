@@ -18,7 +18,8 @@
         "已完成：71 节点、63 关系的内容图和 orphan、spoiler、compat、localization、asset 六类审计报告",
         "已完成：Capability schema 16、CharacteristicBundle 分层特性、旧档回填和 Provider 生命周期失效监听",
         "已完成：扮演 v2 基础字段、反刷联动、每日反思命令、状态显示和网络协议 7",
-        "待完成：样例节点扩至 100、未知 ID 孤儿保留、迁移前备份、dirty mask、正式 DataFix 与完整 GameTest 存档矩阵"
+        "已完成：schema 0/15→16 正式 DataFix 链、迁移前世界快照、原始 NBT 备份、未知/非法 ID 孤儿保留与幂等迁移历史",
+        "待完成：样例节点扩至 100、Core/Knowledge/Social/Endgame dirty mask 与完整 GameTest 存档矩阵"
       ]
     },
     {
@@ -207,7 +208,7 @@
       "structure_specs": 32,
       "weather_anomaly_specs": 18
     },
-    "repository_evidence_at_0.9.0": {
+    "repository_evidence_at_0.9.1": {
       "content_graph_nodes": 71,
       "content_graph_edges": 63,
       "schema4_sequence_definitions": 15,

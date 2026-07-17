@@ -19,10 +19,10 @@ import top.aurora.lordofmysteries.registry.ModEntities;
  * Project Mystery —《诡秘之主》Minecraft Mod 入口。
  *
  * 技术基线：Minecraft 1.20.1 · Forge 47.4.x · Java 17
- * 设计基线：docs/DESIGN_BASELINE.md（Project Mystery v0.8）
+ * 设计基线：docs/DESIGN_BASELINE.md（Project Mystery v0.9）
  *
- * 当前按 v0.8 路线推进 M1 占卜家序列 9-7 验收，并保留 M2 数据与内容预研；
- * 完整门禁由 roadmap.json 定义。
+ * 当前按 v0.9 路线推进 M0 内容基建，并把既有 M1/M2 可玩内容作为迁移资产重新验收；
+ * 完整 M0-M12 门禁由 roadmap.json 定义。
  *
  * 注：1.20.1 没有 NeoForge 的 Attachments API，玩家数据走 Forge Capability。
  *

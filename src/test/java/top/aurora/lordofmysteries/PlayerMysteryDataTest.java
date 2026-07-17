@@ -55,6 +55,10 @@ class PlayerMysteryDataTest {
         assertEquals(0, d.actingReflectionCount);
         assertEquals(Long.MIN_VALUE, d.lastActingReflectionDay);
         assertTrue(d.characteristicBundles.isEmpty());
+        assertTrue(d.orphanedEntries.isEmpty());
+        assertTrue(d.migrationBackups.isEmpty());
+        assertTrue(d.migrationHistory.isEmpty());
+        assertFalse(d.futureSchemaDetected);
         assertEquals(0L, d.moneyPence);
         assertEquals("", d.activeCommissionId);
         assertEquals(-1, d.activeQuestStep);
@@ -261,5 +265,40 @@ class PlayerMysteryDataTest {
         assertTrue(restored.questResolutionReady);
         assertEquals(PlayerMysteryData.CURRENT_SCHEMA_VERSION,
                 restored.schemaVersion);
+    }
+
+    @Test
+    void migrationBackupAndOrphansSurviveRoundTripWithoutDuplication() {
+        net.minecraft.nbt.CompoundTag legacy = new net.minecraft.nbt.CompoundTag();
+        legacy.putInt("schema_version", 15);
+        legacy.putString("pathway", "lord_of_mysteries:seer");
+        legacy.putInt("sequence", 9);
+        legacy.putString("potion_quality", "complete");
+        net.minecraft.nbt.ListTag knowledge = new net.minecraft.nbt.ListTag();
+        knowledge.add(net.minecraft.nbt.StringTag.valueOf("invalid id"));
+        legacy.put("known_knowledge", knowledge);
+        legacy.putString("active_commission", "invalid id");
+        legacy.putString("active_quest_chain", "lord_of_mysteries:quest/test");
+
+        PlayerMysteryData migrated = new PlayerMysteryData();
+        migrated.load(legacy);
+
+        assertEquals(1, migrated.characteristicBundles.size());
+        assertEquals(1, migrated.migrationBackups.size());
+        assertEquals(1, migrated.migrationHistory.size());
+        assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
+                entry.getString("section").equals("known_knowledge")));
+        assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
+                entry.getString("section").equals("active_quest")));
+        assertEquals("", migrated.activeCommissionId);
+        assertEquals("", migrated.activeQuestChainId);
+
+        PlayerMysteryData restored = new PlayerMysteryData();
+        restored.load(migrated.save());
+
+        assertEquals(1, restored.migrationBackups.size());
+        assertEquals(1, restored.migrationHistory.size());
+        assertEquals(migrated.orphanedEntries.size(),
+                restored.orphanedEntries.size());
     }
 }

@@ -28,6 +28,8 @@ import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 public class PlayerMysteryData {
 
     public static final int CURRENT_SCHEMA_VERSION = 16;
+    private static final int MAX_MIGRATION_BACKUPS = 3;
+    private static final int MAX_MIGRATION_HISTORY = 64;
 
     // 途径 & 序列。
     // pathway 使用 ResourceLocation 以便完全数据驱动，例如 lord_of_mysteries:seer。
@@ -43,6 +45,10 @@ public class PlayerMysteryData {
     public float insanityPressure = 0f;     // 失控压力，范围约定为 0-100，用于短期精神状态
     public String potionQuality = "complete"; // 当前序列魔药品质，影响扮演消化倍率
     public List<CharacteristicBundle> characteristicBundles = new ArrayList<>();
+    public List<CompoundTag> orphanedEntries = new ArrayList<>();
+    public List<CompoundTag> migrationBackups = new ArrayList<>();
+    public List<CompoundTag> migrationHistory = new ArrayList<>();
+    public boolean futureSchemaDetected = false;
 
     // 批次1 能力状态。
     // 灵视是否开启：服务端权威，登入登出保留状态。
@@ -184,6 +190,10 @@ public class PlayerMysteryData {
         this.potionQuality = src.potionQuality;
         this.characteristicBundles = CharacteristicLedger.copy(
                 src.characteristicBundles);
+        this.orphanedEntries = copyCompoundTags(src.orphanedEntries);
+        this.migrationBackups = copyCompoundTags(src.migrationBackups);
+        this.migrationHistory = copyCompoundTags(src.migrationHistory);
+        this.futureSchemaDetected = src.futureSchemaDetected;
         this.spiritVisionActive = src.spiritVisionActive;
         this.divinationCooldownEndTick = src.divinationCooldownEndTick;
         this.dangerIntuitionCooldownEndTick = src.dangerIntuitionCooldownEndTick;
@@ -391,7 +401,7 @@ public class PlayerMysteryData {
         tag.putLong("quest_defense_next_tick", questDefenseNextTick);
         tag.putString("quest_resolution_route", questResolutionRoute);
         tag.putBoolean("quest_resolution_ready", questResolutionReady);
-        tag.putInt("schema_version", schemaVersion);
+        tag.putInt("schema_version", CURRENT_SCHEMA_VERSION);
 
         ListTag completed = new ListTag();
         for (ResourceLocation id : completedCommissions) {
@@ -427,6 +437,10 @@ public class PlayerMysteryData {
         orgReputation.forEach((id, v) -> rep.putInt(id.toString(), v));
         tag.put("org_reputation", rep);
 
+        tag.put("orphaned_entries", saveCompoundTags(orphanedEntries));
+        tag.put("migration_backups", saveCompoundTags(migrationBackups));
+        tag.put("migration_history", saveCompoundTags(migrationHistory));
+
         return tag;
     }
 
@@ -437,9 +451,15 @@ public class PlayerMysteryData {
      * 使用 contains 判断并提供默认值，确保旧存档也能继续加载。
      */
     public void load(CompoundTag tag) {
-        int loadedSchemaVersion = tag.contains("schema_version")
-                ? tag.getInt("schema_version") : 0;
-        pathway = tag.contains("pathway") ? ResourceLocation.tryParse(tag.getString("pathway")) : null;
+        PlayerMysteryDataFixer.MigrationResult migration =
+                PlayerMysteryDataFixer.migrate(tag);
+        tag = migration.data();
+        loadMigrationMetadata(tag, migration);
+        String pathwayId = tag.contains("pathway") ? tag.getString("pathway") : "";
+        pathway = pathwayId.isBlank() ? null : ResourceLocation.tryParse(pathwayId);
+        if (!pathwayId.isBlank() && pathway == null) {
+            addOrphan("pathway", "invalid_id", StringTag.valueOf(pathwayId));
+        }
         sequence = tag.getInt("sequence");
         spirituality = tag.getFloat("spirituality");
         // 旧存档可能没有 spirituality_max；保留 100 作为基线默认值。
@@ -550,23 +570,41 @@ public class PlayerMysteryData {
         completedCommissions.clear();
         ListTag completed = tag.getList("completed_commissions", Tag.TAG_STRING);
         for (int i = 0; i < completed.size(); i++) {
-            ResourceLocation id = ResourceLocation.tryParse(completed.getString(i));
-            if (id != null) completedCommissions.add(id);
+            String rawId = completed.getString(i);
+            ResourceLocation id = ResourceLocation.tryParse(rawId);
+            if (id != null) {
+                completedCommissions.add(id);
+            } else {
+                addOrphan("completed_commissions", "invalid_id",
+                        StringTag.valueOf(rawId));
+            }
         }
 
         commissionCooldowns.clear();
         CompoundTag commissionCooldownTag = tag.getCompound("commission_cooldowns");
         for (String key : commissionCooldownTag.getAllKeys()) {
             ResourceLocation id = ResourceLocation.tryParse(key);
-            if (id != null) commissionCooldowns.put(id, commissionCooldownTag.getLong(key));
+            if (id != null) {
+                commissionCooldowns.put(id, commissionCooldownTag.getLong(key));
+            } else {
+                CompoundTag payload = new CompoundTag();
+                payload.putString("id", key);
+                Tag value = commissionCooldownTag.get(key);
+                if (value != null) payload.put("value", value.copy());
+                addOrphan("commission_cooldowns", "invalid_id", payload);
+            }
         }
 
         knownKnowledge.clear();
         ListTag known = tag.getList("known_knowledge", Tag.TAG_STRING);
         for (int i = 0; i < known.size(); i++) {
             ResourceLocation rl = ResourceLocation.tryParse(known.getString(i));
-            // 数据包或旧版本留下的非法 ID 不应阻止玩家进入世界。
-            if (rl != null) knownKnowledge.add(rl);
+            if (rl != null) {
+                knownKnowledge.add(rl);
+            } else {
+                addOrphan("known_knowledge", "invalid_id",
+                        StringTag.valueOf(known.getString(i)));
+            }
         }
 
         actingHistory.clear();
@@ -586,26 +624,110 @@ public class PlayerMysteryData {
         CompoundTag rep = tag.getCompound("org_reputation");
         for (String key : rep.getAllKeys()) {
             ResourceLocation rl = ResourceLocation.tryParse(key);
-            // 只恢复合法组织 ID；非法键静默丢弃，避免污染运行期数据结构。
-            if (rl != null) orgReputation.put(rl, rep.getInt(key));
+            if (rl != null) {
+                orgReputation.put(rl, rep.getInt(key));
+            } else {
+                CompoundTag payload = new CompoundTag();
+                payload.putString("id", key);
+                Tag value = rep.get(key);
+                if (value != null) payload.put("value", value.copy());
+                addOrphan("org_reputation", "invalid_id", payload);
+            }
         }
 
         characteristicBundles.clear();
+        Tag rawCharacteristics = tag.get("characteristic_bundles");
+        if (rawCharacteristics != null && !(rawCharacteristics instanceof ListTag)) {
+            addOrphan("characteristic_bundles", "invalid_container",
+                    rawCharacteristics);
+        }
         ListTag characteristics = tag.getList(
                 "characteristic_bundles", Tag.TAG_COMPOUND);
         for (int index = 0; index < characteristics.size(); index++) {
+            CompoundTag rawBundle = characteristics.getCompound(index);
             try {
-                characteristicBundles.add(CharacteristicBundle.load(
-                        characteristics.getCompound(index)));
+                characteristicBundles.add(CharacteristicBundle.load(rawBundle));
             } catch (IllegalArgumentException ignored) {
+                addOrphan("characteristic_bundles", "invalid_bundle", rawBundle);
             }
         }
-        if (loadedSchemaVersion < CURRENT_SCHEMA_VERSION
-                && characteristicBundles.isEmpty()) {
-            characteristicBundles.addAll(CharacteristicLedger.migrateLegacy(
-                    pathway, sequence, potionQuality));
-        }
+        captureInvalidActiveQuestState();
         sanitize();
+    }
+
+    private void loadMigrationMetadata(
+            CompoundTag tag, PlayerMysteryDataFixer.MigrationResult migration) {
+        orphanedEntries = loadCompoundTags(tag, "orphaned_entries");
+        migrationBackups = loadCompoundTags(tag, "migration_backups");
+        migrationHistory = loadCompoundTags(tag, "migration_history");
+        for (CompoundTag orphanedEntry : migration.orphanedEntries()) {
+            orphanedEntries.add(orphanedEntry.copy());
+        }
+        if (migration.backup() != null) {
+            migrationBackups.add(migration.backup().copy());
+            trimOldest(migrationBackups, MAX_MIGRATION_BACKUPS);
+        }
+        for (PlayerMysteryDataFixer.MigrationStep step : migration.appliedSteps()) {
+            migrationHistory.add(step.save());
+            trimOldest(migrationHistory, MAX_MIGRATION_HISTORY);
+        }
+        futureSchemaDetected = migration.futureSchema();
+    }
+
+    private void captureInvalidActiveQuestState() {
+        boolean commissionValid = activeCommissionId.isBlank()
+                || ResourceLocation.tryParse(activeCommissionId) != null;
+        boolean questValid = activeQuestChainId.isBlank()
+                || ResourceLocation.tryParse(activeQuestChainId) != null;
+        boolean incompletePair = activeCommissionId.isBlank()
+                != activeQuestChainId.isBlank();
+        if (commissionValid && questValid && !incompletePair) return;
+        CompoundTag payload = new CompoundTag();
+        payload.putString("active_commission", activeCommissionId);
+        payload.putString("active_quest_chain", activeQuestChainId);
+        payload.putInt("active_quest_step", activeQuestStep);
+        payload.putInt("quest_objective_progress", questObjectiveProgress);
+        payload.putLong("commission_accepted_tick", commissionAcceptedTick);
+        payload.putString("escorted_reporter_uuid", escortedReporterUuid);
+        payload.putBoolean("quest_defense_wave_spawned", questDefenseWaveSpawned);
+        payload.putLong("quest_defense_next_tick", questDefenseNextTick);
+        payload.putString("quest_resolution_route", questResolutionRoute);
+        payload.putBoolean("quest_resolution_ready", questResolutionReady);
+        addOrphan("active_quest", "invalid_or_incomplete_id_pair", payload);
+    }
+
+    private void addOrphan(String section, String reason, Tag payload) {
+        orphanedEntries.add(PlayerMysteryDataFixer.orphan(section, reason, payload));
+    }
+
+    private static ListTag saveCompoundTags(List<CompoundTag> values) {
+        ListTag tags = new ListTag();
+        for (CompoundTag value : values) {
+            if (value != null) tags.add(value.copy());
+        }
+        return tags;
+    }
+
+    private static List<CompoundTag> loadCompoundTags(CompoundTag source,
+                                                       String key) {
+        List<CompoundTag> values = new ArrayList<>();
+        ListTag tags = source.getList(key, Tag.TAG_COMPOUND);
+        for (int index = 0; index < tags.size(); index++) {
+            values.add(tags.getCompound(index).copy());
+        }
+        return values;
+    }
+
+    private static List<CompoundTag> copyCompoundTags(List<CompoundTag> source) {
+        List<CompoundTag> copy = new ArrayList<>();
+        for (CompoundTag value : source) {
+            if (value != null) copy.add(value.copy());
+        }
+        return copy;
+    }
+
+    private static void trimOldest(List<CompoundTag> values, int maximum) {
+        while (values.size() > maximum) values.remove(0);
     }
 
     private static long optionalTrialTick(CompoundTag tag, String key) {

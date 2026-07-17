@@ -18,6 +18,10 @@ NETWORK_PROTOCOL_SOURCE = (
     ROOT
     / "src/main/java/top/aurora/lordofmysteries/network/NetworkProtocol.java"
 )
+PLAYER_DATA_SOURCE = (
+    ROOT
+    / "src/main/java/top/aurora/lordofmysteries/player/PlayerMysteryData.java"
+)
 
 
 def expected_network_metadata():
@@ -29,7 +33,16 @@ def expected_network_metadata():
     return version_match.group(1), packet_count_match.group(1)
 
 
+def expected_player_schema():
+    source = PLAYER_DATA_SOURCE.read_text(encoding="utf-8")
+    schema_match = re.search(r"CURRENT_SCHEMA_VERSION\s*=\s*(\d+)", source)
+    if schema_match is None:
+        raise RuntimeError("PlayerMysteryData schema metadata was not found")
+    return schema_match.group(1)
+
+
 EXPECTED_PROTOCOL, EXPECTED_PACKET_COUNT = expected_network_metadata()
+EXPECTED_PLAYER_SCHEMA = expected_player_schema()
 EXPECTED = {
     "commissions": "Loaded 3 commission definitions",
     "quests": "Loaded 3 quest chain definitions",
@@ -76,6 +89,26 @@ def stream_output(process, output_queue):
     for line in process.stdout:
         output_queue.put(line)
     output_queue.put(None)
+
+
+def verify_migration_backup():
+    backup_root = RUN_DIR / "world" / "project_mystery_backups"
+    marker = backup_root / f"schema-{EXPECTED_PLAYER_SCHEMA}.complete"
+    if not marker.is_file():
+        return False, f"missing migration marker: {marker}"
+    snapshot_name = marker.read_text(encoding="utf-8").strip()
+    if not snapshot_name:
+        return False, f"empty migration marker: {marker}"
+    snapshot = (backup_root / snapshot_name).resolve()
+    if snapshot.parent != backup_root.resolve() or not snapshot.is_dir():
+        return False, f"invalid migration snapshot path: {snapshot}"
+    manifest = snapshot / "manifest.properties"
+    if not manifest.is_file():
+        return False, f"missing migration manifest: {manifest}"
+    manifest_text = manifest.read_text(encoding="utf-8")
+    if f"schema={EXPECTED_PLAYER_SCHEMA}\n" not in manifest_text:
+        return False, f"migration manifest schema mismatch: {manifest}"
+    return True, snapshot
 
 
 def run(timeout_seconds):
@@ -152,9 +185,14 @@ def run(timeout_seconds):
         if return_code != 0:
             print(f"server smoke process exited with {return_code}", file=sys.stderr)
             return 1
+        backup_valid, backup_evidence = verify_migration_backup()
+        if not backup_valid:
+            print(f"server smoke failed; {backup_evidence}", file=sys.stderr)
+            return 1
         print(
             "server smoke passed: definitions loaded, runtime diagnostics passed, "
-            "command loop responded, world flushed, and server stopped cleanly"
+            "migration backup verified, command loop responded, world flushed, "
+            f"and server stopped cleanly ({backup_evidence})"
         )
         return 0
     finally:

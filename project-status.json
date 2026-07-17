@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "version": "0.9.0-1.20.1",
+  "version": "0.9.1-1.20.1",
   "stage": "v0.9 M0 内容基建 / M1 纵切迁移",
   "milestone": "M0",
   "minecraft_version": "1.20.1",
   "forge_version": "47.4.20",
   "java_version": "17",
-  "last_updated": "2026-07-17T16:17:22+01:00",
-  "last_updated_utc": "2026-07-17T15:17:22Z"
+  "last_updated": "2026-07-17T17:23:46+01:00",
+  "last_updated_utc": "2026-07-17T16:23:46Z"
 }
