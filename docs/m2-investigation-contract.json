@@ -44,7 +44,16 @@
       "settled_members"
     ]
   },
+  "investigation_board": {
+    "block": "commission_board",
+    "command": "board",
+    "network_protocol": 9,
+    "packet_count": 14,
+    "requires_proximity": true,
+    "states": ["AVAILABLE", "ACTIVE", "COMPLETED", "LOCKED", "COOLDOWN"]
+  },
   "command_tokens": [
+    "board",
     "approach",
     "assault",
     "stealth",
@@ -66,6 +75,19 @@
     "command.lord_of_mysteries.party.catchup",
     "command.lord_of_mysteries.party.sync_success",
     "command.lord_of_mysteries.party.status",
-    "command.lord_of_mysteries.party.cooldown"
+    "command.lord_of_mysteries.party.cooldown",
+    "screen.lord_of_mysteries.investigation_board.title",
+    "screen.lord_of_mysteries.investigation_board.balance",
+    "screen.lord_of_mysteries.investigation_board.active",
+    "screen.lord_of_mysteries.investigation_board.progress",
+    "screen.lord_of_mysteries.investigation_board.reward",
+    "screen.lord_of_mysteries.investigation_board.abandon",
+    "screen.lord_of_mysteries.investigation_board.close",
+    "screen.lord_of_mysteries.investigation_board.nearby_required",
+    "screen.lord_of_mysteries.investigation_board.state.available",
+    "screen.lord_of_mysteries.investigation_board.state.active",
+    "screen.lord_of_mysteries.investigation_board.state.completed",
+    "screen.lord_of_mysteries.investigation_board.state.locked",
+    "screen.lord_of_mysteries.investigation_board.state.cooldown"
   ]
 }

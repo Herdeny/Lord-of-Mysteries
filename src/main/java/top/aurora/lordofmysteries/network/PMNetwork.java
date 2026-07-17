@@ -111,6 +111,18 @@ public final class PMNetwork {
                 .decoder(PlayerMysterySummaryS2CPacket::decode)
                 .consumerMainThread(PlayerMysterySummaryS2CPacket::handle)
                 .add();
+        CHANNEL.messageBuilder(InvestigationBoardS2CPacket.class,
+                        NetworkProtocol.INVESTIGATION_BOARD)
+                .encoder(InvestigationBoardS2CPacket::encode)
+                .decoder(InvestigationBoardS2CPacket::decode)
+                .consumerMainThread(InvestigationBoardS2CPacket::handle)
+                .add();
+        CHANNEL.messageBuilder(InvestigationBoardActionC2SPacket.class,
+                        NetworkProtocol.INVESTIGATION_BOARD_ACTION)
+                .encoder(InvestigationBoardActionC2SPacket::encode)
+                .decoder(InvestigationBoardActionC2SPacket::decode)
+                .consumerMainThread(InvestigationBoardActionC2SPacket::handle)
+                .add();
     }
 
     public static boolean acceptC2S(ServerPlayer player, int packetId) {

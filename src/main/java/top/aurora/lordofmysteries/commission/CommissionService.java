@@ -325,6 +325,27 @@ public final class CommissionService {
         return 1;
     }
 
+    public static CommissionBoardState availability(
+            PlayerMysteryData data, CommissionDefinition definition, long gameTime) {
+        if (definition.id().toString().equals(data.activeCommissionId)) {
+            return CommissionBoardState.ACTIVE;
+        }
+        if (!data.activeCommissionId.isBlank()) {
+            return CommissionBoardState.LOCKED;
+        }
+        if (!definition.repeatable()
+                && data.completedCommissions.contains(definition.id())) {
+            return CommissionBoardState.COMPLETED;
+        }
+        if (!requirementsMet(data, definition)) {
+            return CommissionBoardState.LOCKED;
+        }
+        if (data.commissionCooldowns.getOrDefault(definition.id(), 0L) > gameTime) {
+            return CommissionBoardState.COOLDOWN;
+        }
+        return CommissionBoardState.AVAILABLE;
+    }
+
     public static int showStatus(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         player.sendSystemMessage(Component.translatable(

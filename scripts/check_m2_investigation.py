@@ -18,6 +18,12 @@ PARTY_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmyste
 PARTY_SNAPSHOT = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestPartySnapshot.java"
 PARTY_SAVED_DATA = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestPartySavedData.java"
 PROGRESS_HANDLER = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestProgressHandler.java"
+BOARD_BLOCK = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CommissionBoardBlock.java"
+BOARD_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "InvestigationBoardService.java"
+BOARD_STATE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CommissionBoardState.java"
+BOARD_SCREEN = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "client" / "InvestigationBoardScreen.java"
+NETWORK_PROTOCOL = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "network" / "NetworkProtocol.java"
+NETWORK = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "network" / "PMNetwork.java"
 
 
 def load(path):
@@ -119,6 +125,37 @@ def main():
     require(party["maximum_party"] == 4,
             "party recovery contract maximum changed")
 
+    board = contract["investigation_board"]
+    board_block = BOARD_BLOCK.read_text(encoding="utf-8")
+    board_service = BOARD_SERVICE.read_text(encoding="utf-8")
+    board_state = BOARD_STATE.read_text(encoding="utf-8")
+    board_screen = BOARD_SCREEN.read_text(encoding="utf-8")
+    network_protocol = NETWORK_PROTOCOL.read_text(encoding="utf-8")
+    network = NETWORK.read_text(encoding="utf-8")
+    protocol_match = re.search(r'VERSION\s*=\s*"(\d+)"', network_protocol)
+    packet_count_match = re.search(r"PACKET_COUNT\s*=\s*(\d+)", network_protocol)
+    require(protocol_match is not None
+            and int(protocol_match.group(1)) == board["network_protocol"],
+            "investigation board protocol drifted")
+    require(packet_count_match is not None
+            and int(packet_count_match.group(1)) == board["packet_count"],
+            "investigation board packet count drifted")
+    require("InvestigationBoardService.openFromBoard" in board_block,
+            "commission board does not open the investigation interface")
+    require(not board["requires_proximity"]
+            or ("isNearBoard" in board_service and "COMMISSION_BOARD" in board_service),
+            "investigation board actions are not proximity-gated")
+    require("InvestigationBoardS2CPacket" in network
+            and "InvestigationBoardActionC2SPacket" in network,
+            "investigation board packets are not registered")
+    for state in board["states"]:
+        require(state in board_state,
+                f"investigation board state {state} is missing")
+    require("state.name().toLowerCase" in board_screen,
+            "investigation board state labels are not localized")
+    require(f'literal("{board["command"]}")' in command_source,
+            "investigation board command is missing")
+
     for locale in ("zh_cn", "en_us"):
         translations = load(LANG / f"{locale}.json")
         missing_keys = set(contract["translation_keys"]) - translations.keys()
@@ -129,7 +166,7 @@ def main():
         "M2 investigation contract checked: "
         f"{len(commissions)} commissions, {len(quests)} quest chains, "
         "occultist hut, formula appraisal, three rescue routes, "
-        "and persistent party recovery"
+        "persistent party recovery, and the server-authoritative board UI"
     )
 
 

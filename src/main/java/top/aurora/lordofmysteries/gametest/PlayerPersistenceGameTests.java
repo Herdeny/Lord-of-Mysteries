@@ -3,6 +3,7 @@ package top.aurora.lordofmysteries.gametest;
 import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +25,8 @@ import top.aurora.lordofmysteries.player.PlayerDataSection;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.PotionQuality;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
+import top.aurora.lordofmysteries.commission.InvestigationBoardService;
+import top.aurora.lordofmysteries.registry.ModBlocks;
 import top.aurora.lordofmysteries.registry.ModEntities;
 
 @PrefixGameTestTemplate(false)
@@ -217,6 +220,24 @@ public final class PlayerPersistenceGameTests {
                 "all nine M1 goals must survive provider serialization");
         helper.assertTrue(restored.m1TrialStreetLifeCompletedTick == 144000L,
                 "two-hour street-life milestone must survive restart state");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void investigationBoardRequiresPhysicalProximity(
+            GameTestHelper helper) {
+        BlockPos board = helper.absolutePos(new BlockPos(1, 2, 1));
+        helper.getLevel().setBlockAndUpdate(
+                board, ModBlocks.COMMISSION_BOARD.get().defaultBlockState());
+        ServerPlayer player = createPlayer(helper, "board-proximity");
+        player.setPos(board.getX() + 2.5d, board.getY(), board.getZ() + 0.5d);
+
+        helper.assertTrue(InvestigationBoardService.isNearBoard(player),
+                "server must allow board actions while the player is nearby");
+
+        player.setPos(board.getX() + 20.5d, board.getY(), board.getZ() + 0.5d);
+        helper.assertTrue(!InvestigationBoardService.isNearBoard(player),
+                "server must reject remote board actions");
         helper.succeed();
     }
 }

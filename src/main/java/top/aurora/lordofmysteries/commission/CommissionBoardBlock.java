@@ -21,7 +21,7 @@ public final class CommissionBoardBlock extends Block {
                                  Player player, InteractionHand hand,
                                  BlockHitResult hit) {
         if (player instanceof ServerPlayer serverPlayer) {
-            CommissionService.interactBoard(serverPlayer);
+            InvestigationBoardService.openFromBoard(serverPlayer);
         }
         return InteractionResult.sidedSuccess(level.isClientSide());
     }

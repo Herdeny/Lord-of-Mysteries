@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "version": "0.9.3-1.20.1",
-  "stage": "v0.9 M2 调查与生活（M0/M1 实施完成）",
+  "version": "0.9.4-1.20.1",
+  "stage": "v0.9 M2 调查板与案件交互",
   "milestone": "M2",
   "minecraft_version": "1.20.1",
   "forge_version": "47.4.20",
   "java_version": "17",
-  "last_updated": "2026-07-17T19:46:14+01:00",
-  "last_updated_utc": "2026-07-17T18:46:14Z"
+  "last_updated": "2026-07-17T20:52:14+01:00",
+  "last_updated_utc": "2026-07-17T19:52:14Z"
 }

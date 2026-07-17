@@ -29,6 +29,7 @@ Thumbs.db
 
 # 日志
 *.log
+logs/
 
 # Python 工具缓存
 __pycache__/

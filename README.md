@@ -10,10 +10,10 @@
 > 在未知中承担风险，通过扮演消化力量，逐步成为非凡者。
 
 <!-- project-status:start -->
-> - 当前版本：**`0.9.3-1.20.1`**
-> - 开发阶段：**v0.9 M2 调查与生活（M0/M1 实施完成）**（M2）
+> - 当前版本：**`0.9.4-1.20.1`**
+> - 开发阶段：**v0.9 M2 调查板与案件交互**（M2）
 > - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-> - 最后更新：**2026-07-17 19:46:14 UTC+01:00**（`2026-07-17T18:46:14Z`）
+> - 最后更新：**2026-07-17 20:52:14 UTC+01:00**（`2026-07-17T19:52:14Z`）
 <!-- project-status:end -->
 
 Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 Minecraft 生存冒险 Mod。
@@ -29,26 +29,22 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 > **NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH
 > MOJANG OR MICROSOFT.**
 
-📖 [资料站](https://herdeny.github.io/Lord-of-Mysteries/) ·
-[Wiki](https://github.com/Herdeny/Lord-of-Mysteries/wiki) ·
-[入门指南](docs/GETTING_STARTED.md) ·
-[v0.9 实施基线](docs/V0.9_IMPLEMENTATION_BASELINE.md) ·
-[M0 内容图与迁移](docs/V0.9_M0_CONTENT_GRAPH_AND_MIGRATION.md) ·
-[M0/M1 完成报告](docs/V0.9_M0_M1_COMPLETION.md) ·
-[v0.9 首次部署](docs/V0.9_FIRST_DEPLOYMENT.md) ·
-[精神风险与调查日志](docs/MENTAL_RISK_AND_KNOWLEDGE.md) ·
-[M1 试炼追踪器](docs/M1_TRIAL_TRACKER.md) ·
-[M1 可玩性合同](docs/m1-playability-contract.json) ·
-[M2 调查合同](docs/m2-investigation-contract.json) ·
-[M2 小屋与分支指南](docs/M2_OCCULTIST_HUT_AND_RESCUE_ROUTES.md) ·
-[M2 队伍离线追赶](docs/M2_PERSISTENT_PARTY_RECOVERY.md) ·
-[仓库健康与资源完整性](docs/REPOSITORY_HEALTH_AND_RESOURCE_INTEGRITY.md) ·
-[专用服务器验证矩阵](docs/DEDICATED_SERVER_TEST_MATRIX.md) ·
-[完整路线](ROADMAP.md) ·
-[版本记录](CHANGELOG.md) ·
-[版本规范](VERSIONING.md) ·
-[路线与任务](https://github.com/Herdeny/Lord-of-Mysteries/issues) ·
-[参与贡献](CONTRIBUTING.md)
+🎮 [开始游玩](docs/GETTING_STARTED.md) ·
+📖 [在线资料站](https://herdeny.github.io/Lord-of-Mysteries/) ·
+🧭 [GitHub Wiki](https://github.com/Herdeny/Lord-of-Mysteries/wiki) ·
+🗺️ [开发路线](ROADMAP.md) ·
+🤝 [参与贡献](CONTRIBUTING.md) ·
+🛠️ [安装与构建](#构建) ·
+📝 [版本记录](CHANGELOG.md)
+
+## 先从这里开始
+
+| 你是谁 | 建议入口 | 最短路径 |
+|---|---|---|
+| 第一次游玩的玩家 | [入门指南](docs/GETTING_STARTED.md) | 安装 Forge 1.20.1 → 进入世界 → `/pm next` → 跟随罗盘抵达营地 |
+| 想体验调查玩法 | [调查板玩家手册](docs/M2_INVESTIGATION_BOARD.md) | 完成 M1 → `/pm mistcity` → 右键调查板 → 比较并接取案件 |
+| 服务器管理员 | [专服验证矩阵](docs/DEDICATED_SERVER_TEST_MATRIX.md) | 安装 Mod → `/pm doctor` → `/pm servercheck` → 执行重启/回滚验证 |
+| 开发者或贡献者 | [贡献指南](CONTRIBUTING.md) | 阅读 [设计基线](docs/DESIGN_BASELINE.md) → 修改 → 运行完整门禁 → 提交 PR |
 
 ## 当前可玩内容
 
@@ -63,7 +59,7 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 当前已经建立 schema v4 元数据、114 节点/160 关系内容图、Capability schema 17、
 分层非凡特性和扮演 v2 身份区分；0.9.1 补齐正式 DataFix、迁移前世界快照、
 原始 NBT 备份和未知/非法 ID 孤儿保留，0.9.2 完成四区 dirty mask 与生命周期摘要同步，
-0.9.3 进一步完成受限回滚、双启动专服矩阵、5 项 Forge GameTest，以及 M1 两小时玩法闭环。当前正式里程碑为 M2。
+0.9.3 完成受限回滚、双启动专服矩阵与 M1 两小时玩法闭环；0.9.4 新增服务端权威调查板 UI，网络协议升至 9。当前正式里程碑为 M2。
 
 1. 首次登录取得调查手稿与罗盘；使用 `/pm next` 查看当前主线，遗失时用 `/pm recover` 自助补回。
 2. 右键罗盘或输入 `/pm camp` 前往世界种子确定的新手营地，取得专用补给桶和随机线索箱。
@@ -77,6 +73,18 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 10. 完成占卜家纵切后输入 `/pm mistcity` 前往雾都前哨；失踪小队救援时用 `/pm commission approach` 选择强攻、潜入或占卜。
 11. 完成失踪小队后接取“真假配方”，用 `/pm case` 前往神秘学家小屋，鉴定卷宗并提交 authentic/forged 结论。
 12. 2–4 人联机时使用原版 `/team` 组队；`/pm party` 查看持久账本，离线成员上线自动追赶，中途加入者用 `/pm party sync`。
+
+### v0.9.4 M2 调查板与案件交互
+
+- 右键雾都调查板打开分页案件界面，不再自动接取“推荐案件”。
+- 界面按清晰顺序显示事务所余额、当前案件、步骤/目标进度、案件摘要、报酬和可用状态。
+- 可用、进行中、已完成、前置锁定与冷却状态使用双语按钮反馈；玩家可在同一界面接取或放弃。
+- 客户端只发送接取/放弃意图，服务端重新校验案件 ID、进度、冷却和玩家与调查板的物理距离。
+- `/pm commission board` 可在调查板附近重新打开界面；网络协议升至 9，固定消息增至 14。
+- 自动化基线增至 207 项 JUnit 和 6 项 Forge GameTest，M2 合同现在强制保护调查板 UI、协议和邻近门禁。
+
+<details>
+<summary><strong>展开历史实施批次（0.4.0–0.9.3）</strong></summary>
 
 ### v0.9.1 首次部署 / 存档安全
 
@@ -240,6 +248,10 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 - 新增统一资源完整性门禁，覆盖全部 JSON、双语键、模型/纹理引用和注册物资源；Build 与文档 CI 都会执行。
 - Forge 加载入口改为构造上下文注入，项目 Gradle DSL 消除旧 Maven 写法；ForgeGradle 6 内部任务仍有上游弃用提示，但不影响 Gradle 8.14.5 构建。测试增至 183 项，协议 6 与 Capability schema 15 不变。
 
+</details>
+
+## 玩法参考
+
 ### 野外物品
 
 | 物品 | 获取与配方 | 规则 |
@@ -360,16 +372,16 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 - 轻量雾都前哨、废弃教堂、邪教营地、神秘学家小屋、四名调查 NPC、委托板、记者护送与三波夜袭
 - 中英双语、二十一段教程/晋升成就、十二条随机低语、知识本地化、基础配方与原版纹理回退
 - M1 两小时追踪器及委托状态：Capability schema 17 持久化、自修复、七阶段耗时与离线安全计时
-- 网络协议 8：12 个固定消息 ID、严格版本匹配、独立核心摘要与 C2S 服务端限流
+- 网络协议 9：14 个固定消息 ID、严格版本匹配、独立核心摘要、调查板快照与 C2S 服务端限流
 - 同记分板队伍 2–4 人共享任务推进、持久账本、离线自动追赶、个人独立结算与确定性护送/夜袭协调者
 - 仪式主持人离线暂停、超时取消与服务端重启安全恢复
 - v0.9 内容生产线：schema v4、22 途径目录、15 个序列定义、首批配方 CSV、精确设计源校验和 Gradle 门禁
 - 内容关系图：114 节点、160 关系，以及 orphan、spoiler、compat、localization、asset 六类审计报告
 - 部署安全链：世界加载前 schema 17 快照、正式 DataFix、原始 NBT 备份、迁移历史、`orphaned_entries` 与受限回滚工具
 - M2 迁移数据门禁：3 种委托、3 条任务链、15 类冻结目标类型、前置关系、跨文件引用与至少双解法校验
-- JUnit 5 的 202 项测试覆盖玩家数据迁移、dirty mask、摘要策略、备份幂等、孤儿保留、特性账本、扮演身份、协议、限流、任务链、配方、救援路线、队伍 SavedData、能力、炼药与仪式
-- 5 项 Forge GameTest 在真实 Minecraft 服务器运行时覆盖 Capability Clone、schema 15→17 Provider 往返、未来 schema 隔离、特性守恒与 M1 状态
-- 统一资源门禁检查 261 个 JSON、764 个成对双语键、330 个静态引用键、73 个模型及全部物品/方块/实体注册资源
+- JUnit 5 的 207 项测试覆盖玩家数据迁移、dirty mask、摘要策略、备份幂等、孤儿保留、特性账本、扮演身份、协议、调查板状态/快照、限流、任务链、配方、救援路线、队伍 SavedData、能力、炼药与仪式
+- 6 项 Forge GameTest 在真实 Minecraft 服务器运行时覆盖 Capability Clone、schema 15→17 Provider 往返、未来 schema 隔离、特性守恒、M1 状态与调查板物理邻近门禁
+- 统一资源门禁检查 266 个 JSON、824 个成对双语键、359 个静态引用键、75 个模型及全部物品/方块/实体注册资源
 - 分层 `CharacteristicBundle` 与扮演 v2：原则理解、角色过度认同、每日反思和状态界面同步
 - CI Forge 专用服务器冒烟：加载数据、进入 `Done`、保存世界并干净停服
 
@@ -380,7 +392,7 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 - 当前只接入净化封印这一种完整仪式；尊名呼名、晋升饮药窗口和更多仪式仍待后续实现。
 - 调查营地、雾都前哨、废弃教堂、邪教营地与神秘学家小屋均采用轻量程序生成；完整维多利亚镇区和正式结构模板尚未实装。
 - M0 与 M1 的代码、数据、资源和自动化实施门禁已经完成；公开发布前仍要继续收集真人两小时节奏、无障碍和多人平衡反馈。
-- M2 已进入 active：正式报社、事务所、警局、调查板 GUI、动态案件生成、八小时四人负载与经济平衡仍待完成。
+- M2 已进入 active：调查板 GUI 已完成；正式报社、事务所、警局、动态案件生成、八小时四人负载与经济平衡仍待完成。
 - 特性守恒现覆盖当前途径 bundle 的提取、失控体携带和精确掉落；重复特性合并、净化和跨途径高阶规则属于后续里程碑。
 - 五途径序列 9-7、三种委托、失踪调查小队第一阶段、真假配方和持久化队伍追赶是可玩迁移资产；正式队伍 GUI、完整多人负载矩阵与动态案件仍未完成。
 - 三解救援当前为轻量功能分支，正式潜入 AI、营地警戒演出和完整维多利亚镇区仍未实现。
@@ -410,7 +422,8 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 python scripts/import_v09_design.py --check
 python scripts/gen_datapack.py --check
 python scripts/build_content_graph.py
-python scripts/run_server_smoke.py --timeout 180
+python scripts/check_save_rollback.py
+python scripts/run_server_restart_matrix.py --timeout 180
 python scripts/check_m2_investigation.py
 python scripts/check_resource_integrity.py
 ```
@@ -431,7 +444,7 @@ python scripts/check_resource_integrity.py
 python scripts/sync_project_metadata.py --check
 ```
 
-CI 会检查 v0.9 设计源、元数据同步、114 节点内容图、M1 两小时合同、M2 调查合同、统一资源完整性和存档回滚，运行 202 项 JUnit、5 项 Forge GameTest，并连续两次启动 Forge 专用服务器验证同一世界重启；`wiki/` 内容变化后自动发布 GitHub Wiki。完整规则见
+CI 会检查 v0.9 设计源、元数据同步、114 节点内容图、M1 两小时合同、M2 调查板合同、统一资源完整性和存档回滚，运行 207 项 JUnit、6 项 Forge GameTest，并连续两次启动 Forge 专用服务器验证同一世界重启；`wiki/` 内容变化后自动发布 GitHub Wiki。完整规则见
 [`VERSIONING.md`](VERSIONING.md)。
 
 ## 项目结构

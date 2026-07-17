@@ -16,7 +16,7 @@ window.LOM_ROADMAP_META = {
         "114 节点、160 关系内容图通过 orphan、spoiler、compat、localization 与 asset 审计",
         "Capability schema 17 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema",
         "世界加载前原子快照、幂等 schema marker、受限路径恢复工具和恢复前安全备份",
-        "5 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒和 M1 两小时状态",
+        "6 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒、M1 两小时状态和调查板邻近门禁",
         "专服双启动矩阵验证世界种子、schema 快照、保存和干净停服保持稳定"
       ]
     },
@@ -47,7 +47,8 @@ window.LOM_ROADMAP_META = {
       "acceptance": "四人服务器连续八小时无任务锁死；案件可恢复、可解释、可独立结算，生活与调查资源不会形成不可逆软锁。",
       "points": [
         "现有资产：3 种委托、3 条任务链、三路线救援、真假配方和 2–4 人持久调查账本",
-        "下一步：正式报社、事务所、警局街区及调查板交互界面",
+        "已完成：服务端权威调查板界面、案件状态/报酬/步骤展示与邻近校验",
+        "下一步：正式报社、事务所与警局街区",
         "下一步：失踪、异常物品、神秘学犯罪三类动态案件生成器",
         "下一步：生活物价、职业循环、证据链解释和八小时多人连续性矩阵"
       ]
@@ -208,18 +209,18 @@ window.LOM_ROADMAP_META = {
       "structure_specs": 32,
       "weather_anomaly_specs": 18
     },
-    "repository_evidence_at_0.9.3": {
+    "repository_evidence_at_0.9.4": {
       "content_graph_nodes": 114,
       "content_graph_edges": 160,
       "schema4_sequence_definitions": 15,
       "generated_recipes": 13,
       "playable_commissions": 3,
       "playable_quest_chains": 3,
-      "junit_tests": 202,
-      "forge_gametests": 5,
+      "junit_tests": 207,
+      "forge_gametests": 6,
       "save_rollback_checks": 1,
       "dedicated_server_starts": 2,
-      "network_protocol": 8,
+      "network_protocol": 9,
       "player_capability_schema": 17
     }
   }

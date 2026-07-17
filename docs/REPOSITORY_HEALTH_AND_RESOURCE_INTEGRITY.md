@@ -1,10 +1,10 @@
 # 仓库健康审计与资源完整性门禁
 
-> 适用版本：0.9.3-1.20.1
+> 适用版本：0.9.4-1.20.1
 >
 > 技术基线：Minecraft 1.20.1 · Forge 47.4.20 · Java 17 · Gradle 8.14.5
 
-本页记录 0.8.9 健康审计，并追加 0.9.1 存档迁移、0.9.2 dirty mask/生命周期同步与 0.9.3 M0/M1 完成门禁。目标不是增加表面内容，
+本页记录 0.8.9 健康审计，并追加 0.9.1 存档迁移、0.9.2 dirty mask/生命周期同步、0.9.3 M0/M1 完成门禁与 0.9.4 调查板协议门禁。目标不是增加表面内容，
 而是确保现有迁移资产在损坏数据、换队、重复同步、资源漂移和未来构建工具升级时仍能安全失败。
 
 ## 本轮修复
@@ -50,12 +50,12 @@ python scripts/check_resource_integrity.py
 
 ## 自动验证基线
 
-- 202 项 JUnit 单元/契约测试，失败、错误与跳过均为 0。
-- 5 项 Forge GameTest 真实执行，验证 Capability Clone、schema 15→17 Provider 往返、future schema 隔离、精确特性载荷和两小时 M1 状态往返。
-- M1 可玩性合同、M2 调查合同、34 个生成资源检查。
+- 207 项 JUnit 单元/契约测试，失败、错误与跳过均为 0。
+- 6 项 Forge GameTest 真实执行，验证 Capability Clone、schema 15→17 Provider 往返、future schema 隔离、精确特性载荷、两小时 M1 状态往返和调查板邻近门禁。
+- M1 可玩性合同、M2 调查板合同、34 个生成资源检查。
 - Forge `clean build`、隔离回滚演练与两次真实专用服务器启动、`/pm servercheck`、命令循环、强制保存、干净停服。
 - 服务端诊断输出协议/包数量、世界状态、队伍 SavedData、活动队伍数和活动成员数。
-- Capability schema 17、内容 schema v4、网络协议 8；四区 dirty mask、生命周期摘要、schema 0/15/16→17 DataFix、世界快照、精确恢复、原始 NBT 备份和孤儿保留已自动验证。
+- Capability schema 17、内容 schema v4、网络协议 9；四区 dirty mask、生命周期摘要、调查板权威快照、schema 0/15/16→17 DataFix、世界快照、精确恢复、原始 NBT 备份和孤儿保留已自动验证。
 
 ## 仍需人工验证
 

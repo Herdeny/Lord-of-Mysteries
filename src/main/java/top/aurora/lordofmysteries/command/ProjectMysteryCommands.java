@@ -41,6 +41,7 @@ import top.aurora.lordofmysteries.commission.CommissionDefinitionManager;
 import top.aurora.lordofmysteries.commission.CommissionService;
 import top.aurora.lordofmysteries.commission.CityLifeService;
 import top.aurora.lordofmysteries.commission.FormulaAppraisalService;
+import top.aurora.lordofmysteries.commission.InvestigationBoardService;
 import top.aurora.lordofmysteries.commission.QuestChainDefinitionManager;
 import top.aurora.lordofmysteries.commission.QuestPartyService;
 import top.aurora.lordofmysteries.commission.QuestPartySavedData;
@@ -115,6 +116,9 @@ public final class ProjectMysteryCommands {
                 .then(Commands.literal("commission")
                         .executes(context -> CommissionService.showStatus(
                                 context.getSource().getPlayerOrException()))
+                        .then(Commands.literal("board").executes(context ->
+                                InvestigationBoardService.openNearby(
+                                        context.getSource().getPlayerOrException())))
                         .then(Commands.literal("list").executes(context ->
                                 CommissionService.list(
                                         context.getSource().getPlayerOrException())))
