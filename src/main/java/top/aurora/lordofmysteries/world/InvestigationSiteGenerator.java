@@ -32,6 +32,9 @@ public final class InvestigationSiteGenerator {
     private static final ResourceLocation CULTIST_CAMP_LOOT =
             ResourceLocation.fromNamespaceAndPath(
                     ProjectMystery.MOD_ID, "chests/cultist_rescue_camp");
+    private static final ResourceLocation OCCULTIST_HUT_LOOT =
+            ResourceLocation.fromNamespaceAndPath(
+                    ProjectMystery.MOD_ID, "chests/occultist_hut");
     private static final Queue<PendingSite> PENDING_SITES = new ConcurrentLinkedQueue<>();
 
     private InvestigationSiteGenerator() {}
@@ -47,6 +50,9 @@ public final class InvestigationSiteGenerator {
         }
         if (!data.hasCultistCamp() && loaded.equals(cultistCampChunk(level))) {
             PENDING_SITES.offer(pending(level, event, SiteType.CULTIST_CAMP));
+        }
+        if (!data.hasOccultistHut() && loaded.equals(occultistHutChunk(level))) {
+            PENDING_SITES.offer(pending(level, event, SiteType.OCCULTIST_HUT));
         }
     }
 
@@ -68,6 +74,11 @@ public final class InvestigationSiteGenerator {
                 generateCultistCamp(level, pending.target());
                 data.recordCultistCamp(pending.target());
                 ProjectMystery.LOGGER.info("Generated cultist rescue camp at {}", pending.target());
+            } else if (pending.type() == SiteType.OCCULTIST_HUT
+                    && !data.hasOccultistHut()) {
+                generateOccultistHut(level, pending.target());
+                data.recordOccultistHut(pending.target());
+                ProjectMystery.LOGGER.info("Generated occultist hut at {}", pending.target());
             }
         }
     }
@@ -78,8 +89,11 @@ public final class InvestigationSiteGenerator {
         InvestigationSiteSavedData data = InvestigationSiteSavedData.get(level);
         BlockPos church = data.church().orElseGet(() -> churchTarget(level));
         BlockPos cultistCamp = data.cultistCamp().orElseGet(() -> cultistCampTarget(level));
+        BlockPos occultistHut = data.occultistHut().orElseGet(
+                () -> occultistHutTarget(level));
         report(player, church, "message.lord_of_mysteries.case.church");
         report(player, cultistCamp, "message.lord_of_mysteries.case.cultist_camp");
+        report(player, occultistHut, "message.lord_of_mysteries.case.occultist_hut");
     }
 
     public static BlockPos churchTarget(ServerLevel level) {
@@ -90,12 +104,17 @@ public final class InvestigationSiteGenerator {
         return target(level, cultistCampChunk(level));
     }
 
+    public static BlockPos occultistHutTarget(ServerLevel level) {
+        return target(level, occultistHutChunk(level));
+    }
+
     private static PendingSite pending(ServerLevel level, ChunkEvent.Load event,
                                        SiteType type) {
         ChunkPos chunk = event.getChunk().getPos();
         int x = chunk.getMinBlockX() + 8;
         int z = chunk.getMinBlockZ() + 8;
-        int surface = event.getChunk().getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
+        int surface = event.getChunk().getHeight(
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
         int y = Math.max(surface, level.getSeaLevel() + 1);
         return new PendingSite(level.getSeed(), type, new BlockPos(x, y, z));
     }
@@ -111,6 +130,14 @@ public final class InvestigationSiteGenerator {
 
     private static ChunkPos cultistCampChunk(ServerLevel level) {
         return targetChunk(level, 0x43554C54495354L, 10, 13);
+    }
+
+    private static ChunkPos occultistHutChunk(ServerLevel level) {
+        ChunkPos target = targetChunk(level, 0x4F4343554C544CL, 8, 10);
+        if (target.equals(churchChunk(level)) || target.equals(cultistCampChunk(level))) {
+            return new ChunkPos(target.x + 2, target.z - 2);
+        }
+        return target;
     }
 
     private static ChunkPos targetChunk(ServerLevel level, long salt,
@@ -214,9 +241,53 @@ public final class InvestigationSiteGenerator {
         }
     }
 
+    private static void generateOccultistHut(ServerLevel level, BlockPos center) {
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
+                level.setBlock(center.offset(dx, -1, dz),
+                        Blocks.COBBLESTONE.defaultBlockState(), 3);
+                for (int dy = 0; dy <= 5; dy++) {
+                    level.setBlock(center.offset(dx, dy, dz),
+                            Blocks.AIR.defaultBlockState(), 3);
+                }
+            }
+        }
+        for (int dx = -3; dx <= 3; dx++) {
+            for (int dz = -3; dz <= 3; dz++) {
+                boolean wall = Math.abs(dx) == 3 || Math.abs(dz) == 3;
+                level.setBlock(center.offset(dx, 0, dz),
+                        Blocks.DARK_OAK_PLANKS.defaultBlockState(), 3);
+                if (wall) {
+                    for (int dy = 1; dy <= 3; dy++) {
+                        boolean doorway = dz == 3 && dx == 0 && dy <= 2;
+                        boolean window = dy == 2 && (dx == 0 || dz == 0);
+                        if (!doorway && !window) {
+                            level.setBlock(center.offset(dx, dy, dz),
+                                    Blocks.SPRUCE_PLANKS.defaultBlockState(), 3);
+                        }
+                    }
+                }
+                level.setBlock(center.offset(dx, 4, dz),
+                        Blocks.DARK_OAK_SLAB.defaultBlockState(), 3);
+            }
+        }
+        level.setBlock(center.offset(-2, 1, -2), Blocks.BOOKSHELF.defaultBlockState(), 3);
+        level.setBlock(center.offset(-2, 2, -2), Blocks.BOOKSHELF.defaultBlockState(), 3);
+        level.setBlock(center.offset(0, 1, -2), Blocks.LECTERN.defaultBlockState(), 3);
+        level.setBlock(center.offset(2, 1, -2), Blocks.BREWING_STAND.defaultBlockState(), 3);
+        level.setBlock(center.offset(2, 1, 1), Blocks.CARTOGRAPHY_TABLE.defaultBlockState(), 3);
+        level.setBlock(center.offset(-2, 3, 1), Blocks.SOUL_LANTERN.defaultBlockState(), 3);
+        BlockPos chestPos = center.offset(-2, 1, 1);
+        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
+        if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
+            chest.setLootTable(OCCULTIST_HUT_LOOT, level.random.nextLong());
+        }
+    }
+
     private enum SiteType {
         ABANDONED_CHURCH,
-        CULTIST_CAMP
+        CULTIST_CAMP,
+        OCCULTIST_HUT
     }
 
     private record PendingSite(long levelSeed, SiteType type, BlockPos target) {}

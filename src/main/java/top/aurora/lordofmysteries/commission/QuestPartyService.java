@@ -78,6 +78,16 @@ public final class QuestPartyService {
         }
     }
 
+    public static void setResolutionState(ServerPlayer player,
+                                          QuestChainDefinition chain,
+                                          String route, boolean ready) {
+        for (ServerPlayer participant : participants(player, chain)) {
+            PlayerMysteryData data = MysteryCapability.get(participant);
+            data.questResolutionRoute = route;
+            data.questResolutionReady = ready;
+        }
+    }
+
     private static boolean sameChain(ServerPlayer player,
                                      QuestChainDefinition chain) {
         return chain.id().toString().equals(

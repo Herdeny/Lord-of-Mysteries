@@ -29,6 +29,11 @@ class PlayerMysteryDataSanitizerTest {
         data.completedCommissions.add(null);
         data.knownKnowledge.add(null);
         data.actingCounters.put(null, -1);
+        data.activeCommissionId = "lord_of_mysteries:commission/test";
+        data.activeQuestChainId = "lord_of_mysteries:quest/test";
+        data.activeQuestStep = 9;
+        data.questResolutionRoute = "teleport";
+        data.questResolutionReady = true;
 
         assertTrue(data.sanitize() > 0);
         assertEquals(9, data.sequence);
@@ -45,6 +50,8 @@ class PlayerMysteryDataSanitizerTest {
         assertTrue(data.completedCommissions.isEmpty());
         assertTrue(data.knownKnowledge.isEmpty());
         assertTrue(data.actingCounters.isEmpty());
+        assertEquals("", data.questResolutionRoute);
+        assertFalse(data.questResolutionReady);
     }
 
     @Test
@@ -55,6 +62,8 @@ class PlayerMysteryDataSanitizerTest {
         data.activeQuestStep = 8;
         data.questObjectiveProgress = 2;
         data.questDefenseWaveSpawned = true;
+        data.questResolutionRoute = "assault";
+        data.questResolutionReady = true;
 
         data.sanitize();
         assertEquals("", data.activeCommissionId);
@@ -62,6 +71,8 @@ class PlayerMysteryDataSanitizerTest {
         assertEquals(-1, data.activeQuestStep);
         assertEquals(0, data.questObjectiveProgress);
         assertFalse(data.questDefenseWaveSpawned);
+        assertEquals("", data.questResolutionRoute);
+        assertFalse(data.questResolutionReady);
     }
 
     @Test

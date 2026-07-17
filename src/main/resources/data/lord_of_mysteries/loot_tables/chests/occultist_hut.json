@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 2,
+      "entries": [
+        { "type": "minecraft:item", "name": "lord_of_mysteries:formula_fragment", "weight": 3 },
+        { "type": "minecraft:item", "name": "lord_of_mysteries:mystic_ink", "weight": 4 },
+        { "type": "minecraft:item", "name": "lord_of_mysteries:divination_crystal", "weight": 2 },
+        { "type": "minecraft:item", "name": "lord_of_mysteries:moonwater", "weight": 2 }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "lord_of_mysteries:white_candle",
+          "functions": [
+            { "function": "minecraft:set_count", "count": { "min": 2, "max": 5 } }
+          ]
+        }
+      ]
+    }
+  ]
+}

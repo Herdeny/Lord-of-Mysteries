@@ -14,8 +14,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 RUN_DIR = ROOT / "run"
 EXPECTED = {
-    "commissions": "Loaded 2 commission definitions",
-    "quests": "Loaded 2 quest chain definitions",
+    "commissions": "Loaded 3 commission definitions",
+    "quests": "Loaded 3 quest chain definitions",
     "ready": "Done (",
     "servercheck": "PROJECT_MYSTERY_SERVERCHECK_OK",
     "command_loop": "There are 0 of a max of",

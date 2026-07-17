@@ -227,6 +227,8 @@ def validate_commissions(quest_ids, languages):
         if commission_id in ids:
             raise ValueError(f"重复 commission id: {commission_id}")
         ids.add(commission_id)
+    for path, payload in payloads.items():
+        commission_id = require_resource(payload["id"], f"{path.name}.id")
         require_translation(payload.get("title_key", ""),
                             f"{commission_id}.title_key", languages)
         require_translation(payload.get("summary_key", ""),
@@ -256,6 +258,19 @@ def validate_commissions(quest_ids, languages):
         )
         if quest_id not in quest_ids:
             raise ValueError(f"{commission_id} 引用了不存在的任务链: {quest_id}")
+        prerequisites = payload.get("prerequisites", [])
+        if len(prerequisites) != len(set(prerequisites)):
+            raise ValueError(f"{commission_id} prerequisites 不能重复")
+        for prerequisite in prerequisites:
+            prerequisite_id = require_resource(
+                prerequisite, f"{commission_id}.prerequisites"
+            )
+            if prerequisite_id == commission_id:
+                raise ValueError(f"{commission_id} 不能依赖自身")
+            if prerequisite_id not in ids:
+                raise ValueError(
+                    f"{commission_id} 引用了不存在的前置委托: {prerequisite_id}"
+                )
         if int(payload.get("cooldown_hours", 0)) < 0:
             raise ValueError(f"{commission_id} cooldown_hours 不能为负数")
     return len(payloads)

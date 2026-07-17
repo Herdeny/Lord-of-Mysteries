@@ -38,6 +38,7 @@ import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.registry.ModItems;
 import top.aurora.lordofmysteries.commission.CommissionDefinitionManager;
 import top.aurora.lordofmysteries.commission.CommissionService;
+import top.aurora.lordofmysteries.commission.FormulaAppraisalService;
 import top.aurora.lordofmysteries.commission.QuestChainDefinitionManager;
 import top.aurora.lordofmysteries.world.AbandonedCampGenerator;
 import top.aurora.lordofmysteries.world.CampGenerationSavedData;
@@ -118,7 +119,35 @@ public final class ProjectMysteryCommands {
                                                 StringArgumentType.getString(context, "id")))))
                         .then(Commands.literal("abandon").executes(context ->
                                 CommissionService.abandon(
-                                        context.getSource().getPlayerOrException()))))
+                                        context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("approach")
+                                .then(Commands.literal("assault").executes(context ->
+                                        CommissionService.chooseRescueApproach(
+                                                context.getSource().getPlayerOrException(),
+                                                "assault")))
+                                .then(Commands.literal("stealth").executes(context ->
+                                        CommissionService.chooseRescueApproach(
+                                                context.getSource().getPlayerOrException(),
+                                                "stealth")))
+                                .then(Commands.literal("divination").executes(context ->
+                                        CommissionService.chooseRescueApproach(
+                                                context.getSource().getPlayerOrException(),
+                                                "divination")))))
+                .then(Commands.literal("formula")
+                        .executes(context -> FormulaAppraisalService.inspectHeld(
+                                context.getSource().getPlayerOrException()))
+                        .then(Commands.literal("inspect").executes(context ->
+                                FormulaAppraisalService.inspectHeld(
+                                        context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("verdict")
+                                .then(Commands.literal("authentic").executes(context ->
+                                        FormulaAppraisalService.submitVerdict(
+                                                context.getSource().getPlayerOrException(),
+                                                true)))
+                                .then(Commands.literal("forged").executes(context ->
+                                        FormulaAppraisalService.submitVerdict(
+                                                context.getSource().getPlayerOrException(),
+                                                false)))))
                 .then(Commands.literal("rules").executes(context ->
                         showLines(context.getSource().getPlayerOrException(), "rules", 5)))
                 .then(Commands.literal("items").executes(context ->
@@ -502,10 +531,13 @@ public final class ProjectMysteryCommands {
                     .orElseGet(() -> InvestigationSiteGenerator.churchTarget(overworld));
             BlockPos cultistCamp = sites.cultistCamp()
                     .orElseGet(() -> InvestigationSiteGenerator.cultistCampTarget(overworld));
+            BlockPos occultistHut = sites.occultistHut()
+                    .orElseGet(() -> InvestigationSiteGenerator.occultistHutTarget(overworld));
             player.sendSystemMessage(Component.translatable(
                     "command.lord_of_mysteries.doctor.world",
                     camp.getX(), camp.getZ(), outpost.getX(), outpost.getZ(),
-                    church.getX(), church.getZ(), cultistCamp.getX(), cultistCamp.getZ())
+                    church.getX(), church.getZ(), cultistCamp.getX(), cultistCamp.getZ(),
+                    occultistHut.getX(), occultistHut.getZ())
                     .withStyle(ChatFormatting.GRAY));
         }
         player.sendSystemMessage(Component.translatable(errors == 0

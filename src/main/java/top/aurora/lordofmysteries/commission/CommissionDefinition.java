@@ -22,12 +22,14 @@ public record CommissionDefinition(
         List<String> solutions,
         Reward reward,
         ResourceLocation questChain,
+        List<ResourceLocation> prerequisites,
         long cooldownTicks,
         boolean repeatable) {
 
     public CommissionDefinition {
         boards = List.copyOf(boards);
         solutions = List.copyOf(solutions);
+        prerequisites = List.copyOf(prerequisites);
     }
 
     public static CommissionDefinition parse(JsonObject json, ResourceLocation fallbackId) {
@@ -60,12 +62,19 @@ public record CommissionDefinition(
         }
         ResourceLocation questChain = resourceLocation(
                 GsonHelper.getAsString(json, "quest_chain"), "quest_chain");
+        List<ResourceLocation> prerequisites = new ArrayList<>();
+        if (json.has("prerequisites")) {
+            for (String value : strings(GsonHelper.getAsJsonArray(
+                    json, "prerequisites"))) {
+                prerequisites.add(resourceLocation(value, "prerequisites"));
+            }
+        }
         long cooldownHours = Math.max(0L, GsonHelper.getAsLong(json, "cooldown_hours", 0L));
         boolean repeatable = GsonHelper.getAsBoolean(json, "repeatable", false);
         return new CommissionDefinition(id, titleKey, summaryKey, boards,
                 minimumLevel, maximumLevel, solutions,
                 new Reward(pence, Map.copyOf(reputation)), questChain,
-                cooldownHours * 1000L, repeatable);
+                prerequisites, cooldownHours * 1000L, repeatable);
     }
 
     private static List<String> strings(JsonArray array) {

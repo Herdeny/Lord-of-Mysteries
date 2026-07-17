@@ -10,6 +10,7 @@
 - [偷盗者与学徒序列 9](M2-Sequence-9-Foundation)
 - [偷盗者与学徒序列 8-7](M2-Sequence-8-7-Thief-and-Apprentice)
 - [雾都委托与调查链第一阶段](M2-Commissions-and-Mist-City-Outpost)
+- [神秘学家小屋、真假配方与三解救援](M2-Occultist-Hut-and-Rescue-Routes)
 - [心理医生与纵火家序列 7](M2-Sequence-7-Psychiatrist-and-Pyromaniac)
 - [M1 一小时验收](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M1_ACCEPTANCE_CHECKLIST.md)
 - [开发状态](Development-Status)

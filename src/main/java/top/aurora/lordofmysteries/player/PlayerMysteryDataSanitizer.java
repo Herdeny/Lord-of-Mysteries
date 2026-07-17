@@ -128,6 +128,7 @@ public final class PlayerMysteryDataSanitizer {
         data.activeCommissionId = safe(data.activeCommissionId);
         data.activeQuestChainId = safe(data.activeQuestChainId);
         data.escortedReporterUuid = safe(data.escortedReporterUuid);
+        data.questResolutionRoute = safe(data.questResolutionRoute);
         boolean commissionValid = data.activeCommissionId.isBlank()
                 || ResourceLocation.tryParse(data.activeCommissionId) != null;
         boolean questValid = data.activeQuestChainId.isBlank()
@@ -141,7 +142,9 @@ public final class PlayerMysteryDataSanitizer {
         if (data.activeCommissionId.isBlank()) {
             if (data.activeQuestStep != -1 || data.questObjectiveProgress != 0
                     || !data.escortedReporterUuid.isBlank()
-                    || data.questDefenseWaveSpawned || data.questDefenseNextTick != 0L) {
+                    || data.questDefenseWaveSpawned || data.questDefenseNextTick != 0L
+                    || !data.questResolutionRoute.isBlank()
+                    || data.questResolutionReady) {
                 clearActiveCommission(data);
                 repairs++;
             }
@@ -163,6 +166,18 @@ public final class PlayerMysteryDataSanitizer {
                 data.escortedReporterUuid = "";
                 repairs++;
             }
+            if (!data.questResolutionRoute.isBlank()
+                    && !data.questResolutionRoute.equals("assault")
+                    && !data.questResolutionRoute.equals("stealth")
+                    && !data.questResolutionRoute.equals("divination")) {
+                data.questResolutionRoute = "";
+                data.questResolutionReady = false;
+                repairs++;
+            } else if (data.questResolutionRoute.isBlank()
+                    && data.questResolutionReady) {
+                data.questResolutionReady = false;
+                repairs++;
+            }
         }
         if (data.moneyPence < 0L) {
             data.moneyPence = 0L;
@@ -180,6 +195,8 @@ public final class PlayerMysteryDataSanitizer {
         data.escortedReporterUuid = "";
         data.questDefenseWaveSpawned = false;
         data.questDefenseNextTick = 0L;
+        data.questResolutionRoute = "";
+        data.questResolutionReady = false;
     }
 
     private static float finiteClamp(float value, float minimum,

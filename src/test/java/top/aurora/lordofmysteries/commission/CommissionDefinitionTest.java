@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.List;
+
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import org.junit.jupiter.api.Test;
@@ -28,6 +30,7 @@ class CommissionDefinitionTest {
                             "reputation": {"lord_of_mysteries:organization/test": 4}
                           },
                           "quest_chain": "lord_of_mysteries:quest/test",
+                          "prerequisites": ["lord_of_mysteries:commission/intro"],
                           "cooldown_hours": 2
                         }
                         """).getAsJsonObject(), id("test"));
@@ -36,6 +39,7 @@ class CommissionDefinitionTest {
         assertEquals(36L, definition.reward().pence());
         assertEquals(2000L, definition.cooldownTicks());
         assertEquals(2, definition.solutions().size());
+        assertEquals(List.of(id("commission/intro")), definition.prerequisites());
         assertFalse(definition.repeatable());
     }
 

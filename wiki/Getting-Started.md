@@ -1,6 +1,6 @@
 # 入门与占卜家序列 9–7
 
-> 当前版本：0.8.6-1.20.1
+> 当前版本：0.8.7-1.20.1
 >
 > 设计基线：v0.8 · M1 验收 / M2 预研
 
@@ -103,9 +103,12 @@
 戏法大师/占星人使用空间转移、知识链接、镜门、星象预兆和团队庇护。详见
 [偷盗者与学徒序列 8-7](M2-Sequence-8-7-Thief-and-Apprentice)。
 
-雾都前哨、寻猫委托和“失踪调查小队·第一阶段”现已可玩；详情见
-[雾都前哨与调查委托](M2-Commissions-and-Mist-City-Outpost)。同记分板队伍 2–4 名在线成员可共享目标；
-完整镇区、神秘学家小屋、真假配方、三解分支、离线共享和正式队伍 UI 仍未完成。
+雾都前哨、三份委托和“失踪调查小队·第一阶段”现已可玩；记者步骤使用
+`/pm commission approach assault|stealth|divination` 选择路线。完成后可进入神秘学家小屋，
+用 `/pm formula inspect` 和 `verdict authentic|forged` 处理真假配方。详见
+[雾都前哨与调查委托](M2-Commissions-and-Mist-City-Outpost) 和
+[神秘学家小屋与三解救援](M2-Occultist-Hut-and-Rescue-Routes)。同记分板队伍 2–4 名在线成员可共享目标；
+完整镇区、正式警戒 AI、离线共享和正式队伍 UI 仍未完成。
 
 完整手册见
 [`docs/GETTING_STARTED.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/GETTING_STARTED.md)。

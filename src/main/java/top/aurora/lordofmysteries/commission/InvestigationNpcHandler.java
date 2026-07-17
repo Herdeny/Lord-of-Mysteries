@@ -29,6 +29,7 @@ public final class InvestigationNpcHandler {
     public static final String PRESS_CLERK_TAG = "lom_press_clerk";
     public static final String NIGHTHAWK_CONTACT_TAG = "lom_nighthawk_contact";
     public static final String MISSING_REPORTER_TAG = "lom_missing_reporter";
+    public static final String OCCULT_APPRAISER_TAG = "lom_occult_appraiser";
     public static final String ESCORT_OWNER_TAG = "lom_escort_owner";
 
     private InvestigationNpcHandler() {}
@@ -48,6 +49,8 @@ public final class InvestigationNpcHandler {
             CommissionService.interactContact(player);
         } else if (villager.getTags().contains(MISSING_REPORTER_TAG)) {
             CommissionService.rescueReporter(player, villager);
+        } else if (villager.getTags().contains(OCCULT_APPRAISER_TAG)) {
+            CommissionService.interactOccultAppraiser(player);
         }
     }
 
@@ -63,6 +66,8 @@ public final class InvestigationNpcHandler {
         InvestigationSiteSavedData data = InvestigationSiteSavedData.get(level);
         data.cultistCamp().filter(level::hasChunkAt)
                 .ifPresent(position -> ensureReporter(level, position, data));
+        data.occultistHut().filter(level::hasChunkAt)
+                .ifPresent(position -> ensureOccultAppraiser(level, position, data));
     }
 
     public static void beginEscort(Villager reporter, ServerPlayer owner) {
@@ -82,7 +87,8 @@ public final class InvestigationNpcHandler {
     private static boolean isInvestigationNpc(Villager villager) {
         return villager.getTags().contains(PRESS_CLERK_TAG)
                 || villager.getTags().contains(NIGHTHAWK_CONTACT_TAG)
-                || villager.getTags().contains(MISSING_REPORTER_TAG);
+                || villager.getTags().contains(MISSING_REPORTER_TAG)
+                || villager.getTags().contains(OCCULT_APPRAISER_TAG);
     }
 
     private static void ensureOutpostNpcs(ServerLevel level, BlockPos outpost) {
@@ -96,7 +102,10 @@ public final class InvestigationNpcHandler {
 
     private static void ensureReporter(ServerLevel level, BlockPos camp,
                                        InvestigationSiteSavedData data) {
-        if (data.reporterId().isPresent()) return;
+        if (data.reporterId().map(level::getEntity)
+                .filter(Villager.class::isInstance)
+                .map(Villager.class::cast)
+                .filter(Villager::isAlive).isPresent()) return;
         Villager reporter = ensureVillager(level, camp.offset(-2, 0, 0),
                 MISSING_REPORTER_TAG, "entity.lord_of_mysteries.missing_reporter",
                 VillagerProfession.CARTOGRAPHER, villager -> {
@@ -104,6 +113,18 @@ public final class InvestigationNpcHandler {
                     villager.setInvulnerable(true);
                 });
         if (reporter != null) data.recordReporter(reporter.getUUID());
+    }
+
+    private static void ensureOccultAppraiser(ServerLevel level, BlockPos hut,
+                                              InvestigationSiteSavedData data) {
+        if (data.occultAppraiserId().map(level::getEntity)
+                .filter(Villager.class::isInstance)
+                .map(Villager.class::cast)
+                .filter(Villager::isAlive).isPresent()) return;
+        Villager appraiser = ensureVillager(level, hut.offset(0, 1, -1),
+                OCCULT_APPRAISER_TAG, "entity.lord_of_mysteries.occult_appraiser",
+                VillagerProfession.CLERIC, villager -> villager.setNoAi(true));
+        if (appraiser != null) data.recordOccultAppraiser(appraiser.getUUID());
     }
 
     private static Villager ensureVillager(ServerLevel level, BlockPos position,

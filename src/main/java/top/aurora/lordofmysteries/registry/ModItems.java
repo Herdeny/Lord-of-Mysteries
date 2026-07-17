@@ -24,6 +24,7 @@ import top.aurora.lordofmysteries.knowledge.FormulaFragmentItem;
 import top.aurora.lordofmysteries.knowledge.KnowledgeCopyItem;
 import top.aurora.lordofmysteries.commission.CaseClueItem;
 import top.aurora.lordofmysteries.commission.CommissionPaperItem;
+import top.aurora.lordofmysteries.commission.SealedFormulaDossierItem;
 
 /**
  * 物品注册（Forge 1.20.1）。包含材料、魔药、封印物和方块物品。
@@ -103,6 +104,10 @@ public final class ModItems {
     public static final RegistryObject<Item> COMMISSION_PAPER = ITEMS.register(
             "commission_paper",
             () -> new CommissionPaperItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> SEALED_FORMULA_DOSSIER = ITEMS.register(
+            "sealed_formula_dossier",
+            () -> new SealedFormulaDossierItem(
+                    new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> BLOODSTAINED_NOTEBOOK = ITEMS.register(
             "bloodstained_notebook",
             () -> new CaseClueItem(

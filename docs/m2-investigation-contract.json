@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "capability_schema": 15,
+  "data_counts": {
+    "commissions": 3,
+    "quest_chains": 3
+  },
+  "legacy_missing_squad": {
+    "step_count": 13,
+    "prefix": [
+      "s1_accept",
+      "s2_press_desk",
+      "s3_last_camp",
+      "s4_evidence",
+      "s5_advance",
+      "s6_clear_threats",
+      "s7_settle"
+    ],
+    "solutions": ["assault", "stealth", "divination"]
+  },
+  "counterfeit_formula": {
+    "commission": "lord_of_mysteries:commission/counterfeit_formula",
+    "quest": "lord_of_mysteries:quest/counterfeit_formula_case",
+    "prerequisite": "lord_of_mysteries:commission/missing_investigation_squad",
+    "steps": [
+      "s1_find_hut",
+      "s2_consult_appraiser",
+      "s3_receive_dossier",
+      "s4_appraise",
+      "s5_verdict",
+      "s6_return"
+    ]
+  },
+  "command_tokens": [
+    "approach",
+    "assault",
+    "stealth",
+    "divination",
+    "formula",
+    "authentic",
+    "forged"
+  ],
+  "translation_keys": [
+    "item.lord_of_mysteries.sealed_formula_dossier",
+    "commission.lord_of_mysteries.counterfeit_formula.title",
+    "quest.lord_of_mysteries.counterfeit_formula.title",
+    "message.lord_of_mysteries.case.occultist_hut",
+    "message.lord_of_mysteries.formula.verdict_correct",
+    "message.lord_of_mysteries.quest.approach.required",
+    "knowledge.lord_of_mysteries.m2.formula_authenticity"
+  ]
+}

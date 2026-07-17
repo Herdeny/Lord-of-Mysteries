@@ -1,0 +1,41 @@
+{
+  "id": "lord_of_mysteries:quest/counterfeit_formula_case",
+  "title_key": "quest.lord_of_mysteries.counterfeit_formula.title",
+  "steps": [
+    {
+      "id": "s1_find_hut",
+      "guidance_key": "quest.lord_of_mysteries.counterfeit_formula.step.find_hut",
+      "objective": {"type": "enter_structure", "target": "occultist_hut"}
+    },
+    {
+      "id": "s2_consult_appraiser",
+      "guidance_key": "quest.lord_of_mysteries.counterfeit_formula.step.consult",
+      "objective": {"type": "talk_npc", "target": "occult_appraiser"}
+    },
+    {
+      "id": "s3_receive_dossier",
+      "guidance_key": "quest.lord_of_mysteries.counterfeit_formula.step.receive",
+      "objective": {
+        "type": "pickup",
+        "target": "lord_of_mysteries:sealed_formula_dossier"
+      }
+    },
+    {
+      "id": "s4_appraise",
+      "guidance_key": "quest.lord_of_mysteries.counterfeit_formula.step.appraise",
+      "objective": {"type": "custom_callback", "target": "formula_appraised"}
+    },
+    {
+      "id": "s5_verdict",
+      "guidance_key": "quest.lord_of_mysteries.counterfeit_formula.step.verdict",
+      "objective": {"type": "custom_callback", "target": "formula_verdict"}
+    },
+    {
+      "id": "s6_return",
+      "guidance_key": "quest.lord_of_mysteries.counterfeit_formula.step.return",
+      "objective": {"type": "talk_npc", "target": "occult_appraiser"}
+    }
+  ],
+  "fail_policy": "step_retry",
+  "coop": {"shared_progress": true, "max_party": 4}
+}

@@ -56,6 +56,8 @@ class PlayerMysteryDataTest {
         assertEquals("", d.escortedReporterUuid);
         assertFalse(d.questDefenseWaveSpawned);
         assertEquals(0L, d.questDefenseNextTick);
+        assertEquals("", d.questResolutionRoute);
+        assertFalse(d.questResolutionReady);
         assertTrue(d.completedCommissions.isEmpty());
         assertTrue(d.commissionCooldowns.isEmpty());
     }
@@ -137,6 +139,8 @@ class PlayerMysteryDataTest {
         source.escortedReporterUuid = "c7838ad4-a600-45c6-a747-7d954892158f";
         source.questDefenseWaveSpawned = true;
         source.questDefenseNextTick = 1800L;
+        source.questResolutionRoute = "divination";
+        source.questResolutionReady = true;
         source.completedCommissions.add(commission);
         source.commissionCooldowns.put(commission, 2400L);
 
@@ -201,6 +205,8 @@ class PlayerMysteryDataTest {
                 copied.escortedReporterUuid);
         assertTrue(copied.questDefenseWaveSpawned);
         assertEquals(1800L, copied.questDefenseNextTick);
+        assertEquals("divination", copied.questResolutionRoute);
+        assertTrue(copied.questResolutionReady);
         assertTrue(copied.completedCommissions.contains(commission));
         assertEquals(2400L, copied.commissionCooldowns.get(commission));
     }
@@ -223,6 +229,11 @@ class PlayerMysteryDataTest {
         source.m1TrialFirstOccultKillTick = 300L;
         source.m1TrialFirstActingTick = 400L;
         source.m1TrialRiskReachedTick = 600L;
+        source.activeCommissionId = "lord_of_mysteries:commission/test";
+        source.activeQuestChainId = "lord_of_mysteries:quest/test";
+        source.activeQuestStep = 9;
+        source.questResolutionRoute = "stealth";
+        source.questResolutionReady = true;
 
         PlayerMysteryData restored = new PlayerMysteryData();
         restored.load(source.save());
@@ -241,6 +252,8 @@ class PlayerMysteryDataTest {
         assertEquals(300L, restored.m1TrialFirstOccultKillTick);
         assertEquals(400L, restored.m1TrialFirstActingTick);
         assertEquals(600L, restored.m1TrialRiskReachedTick);
+        assertEquals("stealth", restored.questResolutionRoute);
+        assertTrue(restored.questResolutionReady);
         assertEquals(PlayerMysteryData.CURRENT_SCHEMA_VERSION,
                 restored.schemaVersion);
     }

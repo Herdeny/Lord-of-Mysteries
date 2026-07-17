@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 14;
+    public static final int CURRENT_SCHEMA_VERSION = 15;
 
     // 途径 & 序列。
     // pathway 使用 ResourceLocation 以便完全数据驱动，例如 lord_of_mysteries:seer。
@@ -126,6 +126,8 @@ public class PlayerMysteryData {
     public String escortedReporterUuid = "";
     public boolean questDefenseWaveSpawned = false;
     public long questDefenseNextTick = 0L;
+    public String questResolutionRoute = "";
+    public boolean questResolutionReady = false;
     public Set<ResourceLocation> completedCommissions = new HashSet<>();
     public Map<ResourceLocation, Long> commissionCooldowns = new HashMap<>();
 
@@ -253,6 +255,8 @@ public class PlayerMysteryData {
         this.escortedReporterUuid = src.escortedReporterUuid;
         this.questDefenseWaveSpawned = src.questDefenseWaveSpawned;
         this.questDefenseNextTick = src.questDefenseNextTick;
+        this.questResolutionRoute = src.questResolutionRoute;
+        this.questResolutionReady = src.questResolutionReady;
         this.completedCommissions = new HashSet<>(src.completedCommissions);
         this.commissionCooldowns = new HashMap<>(src.commissionCooldowns);
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
@@ -364,6 +368,8 @@ public class PlayerMysteryData {
         tag.putString("escorted_reporter_uuid", escortedReporterUuid);
         tag.putBoolean("quest_defense_wave_spawned", questDefenseWaveSpawned);
         tag.putLong("quest_defense_next_tick", questDefenseNextTick);
+        tag.putString("quest_resolution_route", questResolutionRoute);
+        tag.putBoolean("quest_resolution_ready", questResolutionReady);
         tag.putInt("schema_version", schemaVersion);
 
         ListTag completed = new ListTag();
@@ -509,6 +515,9 @@ public class PlayerMysteryData {
                 ? tag.getString("escorted_reporter_uuid") : "";
         questDefenseWaveSpawned = tag.getBoolean("quest_defense_wave_spawned");
         questDefenseNextTick = tag.getLong("quest_defense_next_tick");
+        questResolutionRoute = tag.contains("quest_resolution_route")
+                ? tag.getString("quest_resolution_route") : "";
+        questResolutionReady = tag.getBoolean("quest_resolution_ready");
         schemaVersion = CURRENT_SCHEMA_VERSION;
 
         completedCommissions.clear();
