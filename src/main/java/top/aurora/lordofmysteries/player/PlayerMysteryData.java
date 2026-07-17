@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.nbt.CompoundTag;
@@ -161,8 +162,14 @@ public class PlayerMysteryData {
     // 序列化版本号（用于迁移）。未来字段改名或结构升级时，可根据旧版本补默认值。
     public int schemaVersion = CURRENT_SCHEMA_VERSION;
 
+    private final long[] sectionFingerprints =
+            new long[PlayerDataSection.values().length];
+    private int dirtySectionMask = PlayerDataSection.ALL_MASK;
+
     /** 默认构造器需要保留，Capability Provider 和测试都会直接创建空数据。 */
-    public PlayerMysteryData() {}
+    public PlayerMysteryData() {
+        resetDirtyTracking();
+    }
 
     /**
      * 判断玩家是否已经成为非凡者。
@@ -291,6 +298,7 @@ public class PlayerMysteryData {
         this.orgReputation = new HashMap<>(src.orgReputation);
         this.schemaVersion = CURRENT_SCHEMA_VERSION;
         sanitize();
+        resetDirtyTracking();
     }
 
     // —— NBT 序列化 ——
@@ -653,6 +661,195 @@ public class PlayerMysteryData {
         }
         captureInvalidActiveQuestState();
         sanitize();
+        resetDirtyTracking();
+    }
+
+    /** Detects mutations made through the legacy public fields. */
+    public int refreshDirtySections() {
+        for (PlayerDataSection section : PlayerDataSection.values()) {
+            long currentFingerprint = fingerprint(section);
+            int index = section.ordinal();
+            if (sectionFingerprints[index] != currentFingerprint) {
+                sectionFingerprints[index] = currentFingerprint;
+                dirtySectionMask |= section.mask();
+            }
+        }
+        return dirtySectionMask;
+    }
+
+    public int dirtySectionMask() {
+        return refreshDirtySections();
+    }
+
+    public boolean isDirty(PlayerDataSection section) {
+        return (refreshDirtySections() & section.mask()) != 0;
+    }
+
+    public void markDirty(PlayerDataSection section) {
+        dirtySectionMask |= section.mask();
+    }
+
+    public void acknowledgeDirty(PlayerDataSection section) {
+        refreshDirtySections();
+        dirtySectionMask &= ~section.mask();
+    }
+
+    public void acknowledgeAllDirty() {
+        refreshDirtySections();
+        dirtySectionMask = 0;
+    }
+
+    private void resetDirtyTracking() {
+        for (PlayerDataSection section : PlayerDataSection.values()) {
+            sectionFingerprints[section.ordinal()] = fingerprint(section);
+        }
+        dirtySectionMask = PlayerDataSection.ALL_MASK;
+    }
+
+    private long fingerprint(PlayerDataSection section) {
+        return switch (section) {
+            case CORE -> coreFingerprint();
+            case KNOWLEDGE -> knowledgeFingerprint();
+            case SOCIAL -> socialFingerprint();
+            case ENDGAME -> endgameFingerprint();
+        };
+    }
+
+    private long coreFingerprint() {
+        long hash = fingerprintSeed();
+        hash = mix(hash, pathway);
+        hash = mix(hash, sequence);
+        hash = mix(hash, spirituality);
+        hash = mix(hash, spiritualityMax);
+        hash = mix(hash, digestion);
+        hash = mix(hash, pollution);
+        hash = mix(hash, insanityPressure);
+        hash = mix(hash, potionQuality);
+        hash = mix(hash, characteristicBundles);
+        hash = mix(hash, orphanedEntries);
+        hash = mix(hash, migrationBackups);
+        hash = mix(hash, migrationHistory);
+        hash = mix(hash, futureSchemaDetected);
+        hash = mix(hash, spiritVisionActive);
+        hash = mix(hash, divinationCooldownEndTick);
+        hash = mix(hash, dangerIntuitionCooldownEndTick);
+        hash = mix(hash, breakdownCooldownEndTick);
+        hash = mix(hash, mentalTraumaEndTick);
+        hash = mix(hash, emotionReadActive);
+        hash = mix(hash, behaviorPredictionCooldownEndTick);
+        hash = mix(hash, surfaceReadCooldownEndTick);
+        hash = mix(hash, mentalSuggestionCooldownEndTick);
+        hash = mix(hash, hunterTrackedTarget);
+        hash = mix(hash, hunterTrackingStartTick);
+        hash = mix(hash, hunterTrackingEndTick);
+        hash = mix(hash, provokeCooldownEndTick);
+        hash = mix(hash, enrageCooldownEndTick);
+        hash = mix(hash, battleWillCooldownEndTick);
+        hash = mix(hash, battleWillEndTick);
+        hash = mix(hash, cardBladeCooldownEndTick);
+        hash = mix(hash, clownDodgeCooldownEndTick);
+        hash = mix(hash, clownDodgeCount);
+        hash = mix(hash, expressionControlCooldownEndTick);
+        hash = mix(hash, flameLeapCooldownEndTick);
+        hash = mix(hash, flameLeapStrikeEndTick);
+        hash = mix(hash, paperSubstituteCooldownEndTick);
+        hash = mix(hash, paperSubstituteArmedEndTick);
+        hash = mix(hash, paperSubstituteDimension);
+        hash = mix(hash, paperSubstituteX);
+        hash = mix(hash, paperSubstituteY);
+        hash = mix(hash, paperSubstituteZ);
+        hash = mix(hash, airBulletCooldownEndTick);
+        hash = mix(hash, stageIllusionCooldownEndTick);
+        hash = mix(hash, thiefPilferCooldownEndTick);
+        hash = mix(hash, thiefEscapeCooldownEndTick);
+        hash = mix(hash, apprenticeTrickCooldownEndTick);
+        hash = mix(hash, apprenticeCopyCooldownEndTick);
+        hash = mix(hash, thiefSwapCooldownEndTick);
+        hash = mix(hash, thiefDecoyCooldownEndTick);
+        hash = mix(hash, thiefRuneCooldownEndTick);
+        hash = mix(hash, thiefLockpickCooldownEndTick);
+        hash = mix(hash, thiefEraseCooldownEndTick);
+        hash = mix(hash, apprenticeRelocateCooldownEndTick);
+        hash = mix(hash, apprenticeLinkCooldownEndTick);
+        hash = mix(hash, apprenticeMirrorCooldownEndTick);
+        hash = mix(hash, apprenticeDivinationCooldownEndTick);
+        hash = mix(hash, apprenticeWardCooldownEndTick);
+        hash = mix(hash, psychPacifyCooldownEndTick);
+        hash = mix(hash, psychShockCooldownEndTick);
+        hash = mix(hash, pyroSpearCooldownEndTick);
+        hash = mix(hash, pyroRingCooldownEndTick);
+        hash = mix(hash, lastRestRecoveryDay);
+        hash = mix(hash, principleInsight);
+        hash = mix(hash, roleOveridentification);
+        hash = mix(hash, actingReflectionCount);
+        hash = mix(hash, lastActingReflectionDay);
+        hash = mix(hash, schemaVersion);
+        return hash;
+    }
+
+    private long knowledgeFingerprint() {
+        long hash = fingerprintSeed();
+        hash = mix(hash, knownKnowledge);
+        hash = mix(hash, actingHistory);
+        hash = mix(hash, actingCounters);
+        return hash;
+    }
+
+    private long socialFingerprint() {
+        long hash = fingerprintSeed();
+        hash = mix(hash, moneyPence);
+        hash = mix(hash, activeCommissionId);
+        hash = mix(hash, activeQuestChainId);
+        hash = mix(hash, activeQuestStep);
+        hash = mix(hash, questObjectiveProgress);
+        hash = mix(hash, commissionAcceptedTick);
+        hash = mix(hash, escortedReporterUuid);
+        hash = mix(hash, questDefenseWaveSpawned);
+        hash = mix(hash, questDefenseNextTick);
+        hash = mix(hash, questResolutionRoute);
+        hash = mix(hash, questResolutionReady);
+        hash = mix(hash, completedCommissions);
+        hash = mix(hash, commissionCooldowns);
+        hash = mix(hash, orgReputation);
+        return hash;
+    }
+
+    private long endgameFingerprint() {
+        long hash = fingerprintSeed();
+        hash = mix(hash, m1TrialActive);
+        hash = mix(hash, m1TrialStartTick);
+        hash = mix(hash, m1TrialElapsedTicks);
+        hash = mix(hash, m1TrialCampVisited);
+        hash = mix(hash, m1TrialBestSequence);
+        hash = mix(hash, m1TrialOccultKills);
+        hash = mix(hash, m1TrialDeaths);
+        hash = mix(hash, m1TrialRestRecoveries);
+        hash = mix(hash, m1TrialCharmsConsumed);
+        hash = mix(hash, m1TrialActingEvents);
+        hash = mix(hash, m1TrialMaxPressure);
+        hash = mix(hash, m1TrialMaxPollution);
+        hash = mix(hash, m1TrialReconnects);
+        hash = mix(hash, m1TrialServerRestarts);
+        hash = mix(hash, m1TrialDimensionChanges);
+        hash = mix(hash, m1TrialDeathRecoveries);
+        hash = mix(hash, m1TrialPendingReconnect);
+        hash = mix(hash, m1TrialSessionId);
+        hash = mix(hash, m1TrialCampReachedTick);
+        hash = mix(hash, m1TrialSequence9Tick);
+        hash = mix(hash, m1TrialSequence8Tick);
+        hash = mix(hash, m1TrialSequence7Tick);
+        hash = mix(hash, m1TrialFirstOccultKillTick);
+        hash = mix(hash, m1TrialFirstActingTick);
+        hash = mix(hash, m1TrialRiskReachedTick);
+        return hash;
+    }
+
+    private static long fingerprintSeed() {
+        return 0xcbf29ce484222325L;
+    }
+
+    private static long mix(long hash, Object value) {
+        return (hash ^ Objects.hashCode(value)) * 0x100000001b3L;
     }
 
     private void loadMigrationMetadata(

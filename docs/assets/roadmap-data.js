@@ -17,9 +17,11 @@ window.LOM_ROADMAP_META = {
         "已完成：Schema v4 元数据进入途径、15 个现有序列、3 个委托、3 条任务链和 25 条 M0 物品/状态/配方样例",
         "已完成：71 节点、63 关系的内容图和 orphan、spoiler、compat、localization、asset 六类审计报告",
         "已完成：Capability schema 16、CharacteristicBundle 分层特性、旧档回填和 Provider 生命周期失效监听",
-        "已完成：扮演 v2 基础字段、反刷联动、每日反思命令、状态显示和网络协议 7",
+        "已完成：扮演 v2 基础字段、反刷联动、每日反思命令、状态显示和网络协议 8",
         "已完成：schema 0/15→16 正式 DataFix 链、迁移前世界快照、原始 NBT 备份、未知/非法 ID 孤儿保留与幂等迁移历史",
-        "待完成：样例节点扩至 100、Core/Knowledge/Social/Endgame dirty mask 与完整 GameTest 存档矩阵"
+        "已完成：Core/Knowledge/Social/Endgame 四区 dirty mask、登录/重生/维度切换摘要同步与 5 秒校正",
+        "已完成：3 项 Forge GameTest 验证 Capability Clone、schema 15 迁移与未来 schema 隔离，并进入 Build CI",
+        "待完成：样例节点扩至 100、专服重启/降级回滚自动演练与真人死亡/跨维度整体验收"
       ]
     },
     {
@@ -208,13 +210,16 @@ window.LOM_ROADMAP_META = {
       "structure_specs": 32,
       "weather_anomaly_specs": 18
     },
-    "repository_evidence_at_0.9.1": {
+    "repository_evidence_at_0.9.2": {
       "content_graph_nodes": 71,
       "content_graph_edges": 63,
       "schema4_sequence_definitions": 15,
       "generated_recipes": 11,
       "playable_commissions": 3,
-      "playable_quest_chains": 3
+      "playable_quest_chains": 3,
+      "junit_tests": 202,
+      "forge_gametests": 3,
+      "network_protocol": 8
     }
   }
 };

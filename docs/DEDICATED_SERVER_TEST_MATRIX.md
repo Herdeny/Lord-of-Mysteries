@@ -1,10 +1,10 @@
 # Project Mystery 专用服务器与多人一致性验证矩阵
 
-> 适用版本：0.9.1-1.20.1
+> 适用版本：0.9.2-1.20.1
 >
 > 技术基线：Minecraft 1.20.1 · Forge 47.4.20 · Java 17
 >
-> 数据基线：Capability schema 16 · content schema v4 · SimpleChannel protocol 7
+> 数据基线：Capability schema 16 · content schema v4 · SimpleChannel protocol 8
 
 本矩阵用于验证 M1 连续性，并为 M2 多人内测提前冻结可重复的证据格式。自动冒烟通过不等于
 真实一小时平衡验收通过；任何崩溃、复制、永久卡步、跨玩家串档或客户端越权均为阻断项。
@@ -18,6 +18,7 @@ python scripts/check_m2_investigation.py
 python scripts/check_resource_integrity.py
 python scripts/sync_project_metadata.py --check
 ./gradlew clean build
+./gradlew runGameTestServer
 python scripts/run_server_smoke.py --timeout 180
 ```
 
@@ -29,7 +30,7 @@ python scripts/run_server_smoke.py --timeout 180
 ## 开测前诊断
 
 1. 使用新世界、空背包、普通人生存模式进入专用服务器。
-2. 执行 `/pm doctor`；必须显示数据修复完成、委托/任务定义数量正确、协议为 6 且世界目标可计算。
+2. 执行 `/pm doctor`；必须显示数据修复完成、委托/任务定义数量正确、协议为 8 且世界目标可计算。
 3. 执行 `/pm trial reset` 后 `/pm trial start`；只有本轮需要完全清空时才使用 `reset`。
 4. 记录世界种子、难度、玩家数、服务端配置、模组 JAR 哈希、开始时间和 Git commit。
 
@@ -77,7 +78,8 @@ python scripts/run_server_smoke.py --timeout 180
 ## 网络与数据安全矩阵
 
 - 协议版本必须完全匹配；旧协议客户端不得静默接入。
-- 11 个消息使用固定 ID，新增消息只能追加，禁止重排既有 ID。
+- 12 个消息使用固定 ID，新增消息只能追加，禁止重排既有 ID。
+- 核心摘要包不得打开状态 GUI，也不得携带完整知识集合；登录、重生和换维度后必须立即校正。
 - 连续快速发送十类 C2S 意图时，服务端限流必须拒绝超频请求且不重复扣除/结算。
 - 客户端伪造目标、距离、灵性、冷却、PvP 权限或任务步骤不得改变权威状态。
 - `/reload` 后委托、任务、双语键、目标类型、合作人数和跨定义引用仍通过校验。
@@ -106,6 +108,6 @@ C2S 重放/限流：PASS / FAIL
 
 ## 当前结论边界
 
-- 已自动验证：v0.9 设计源、内容图、M1 可玩性合同、M2 调查合同、资源完整性门禁、196 项 Gradle 测试、schema 16 迁移快照、队伍账本 NBT/SavedData 往返、数据加载、专服到达 `Done`、运行诊断、命令循环、强制保存与干净停服。
+- 已自动验证：v0.9 设计源、内容图、M1 可玩性合同、M2 调查合同、资源完整性门禁、202 项 JUnit、3 项真实 Forge GameTest、schema 16 迁移快照、Capability Clone、队伍账本 NBT/SavedData 往返、数据加载、专服到达 `Done`、运行诊断、命令循环、强制保存与干净停服。
 - 已实现基础：同记分板队伍 2–4 人共享进度、离线追赶、换队/退队清理、重复结算防护、个人结算、确定性协调者、仪式重启/离线恢复。
-- 尚未关闭：真实一小时生存平衡、正式队伍 GUI、管理员离线改队/队名复用人工矩阵、五途径多人负载矩阵与 M2 schema 冻结。
+- 尚未关闭：自动化专服重启/降级回滚、真人死亡/跨维度整体验收、真实一小时生存平衡、正式队伍 GUI、管理员离线改队/队名复用人工矩阵、五途径多人负载矩阵与 M2 schema 冻结。

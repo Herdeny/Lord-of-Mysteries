@@ -2,6 +2,7 @@ package top.aurora.lordofmysteries.client;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -83,6 +84,11 @@ public final class ClientForgeEvents {
         while (PMKeyBindings.USE_M2_SECONDARY.consumeClick()) {
             sendM2(M2FoundationAbilityHandler.AbilitySlot.SECONDARY);
         }
+    }
+
+    @SubscribeEvent
+    public static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) {
+        ClientMysteryState.clear();
     }
 
     private static void sendSeer(SeerAbilityHandler.Ability ability) {

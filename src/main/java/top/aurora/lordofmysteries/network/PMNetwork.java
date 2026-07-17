@@ -105,6 +105,12 @@ public final class PMNetwork {
                 .decoder(UseM2FoundationAbilityC2SPacket::decode)
                 .consumerMainThread(UseM2FoundationAbilityC2SPacket::handle)
                 .add();
+        CHANNEL.messageBuilder(PlayerMysterySummaryS2CPacket.class,
+                        NetworkProtocol.PLAYER_SUMMARY)
+                .encoder(PlayerMysterySummaryS2CPacket::encode)
+                .decoder(PlayerMysterySummaryS2CPacket::decode)
+                .consumerMainThread(PlayerMysterySummaryS2CPacket::handle)
+                .add();
     }
 
     public static boolean acceptC2S(ServerPlayer player, int packetId) {

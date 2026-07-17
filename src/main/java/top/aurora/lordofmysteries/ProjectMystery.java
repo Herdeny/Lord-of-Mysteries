@@ -12,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import top.aurora.lordofmysteries.core.MysteryRegistries;
 import top.aurora.lordofmysteries.core.config.ServerConfig;
+import top.aurora.lordofmysteries.gametest.PlayerPersistenceGameTests;
 import top.aurora.lordofmysteries.network.PMNetwork;
 import top.aurora.lordofmysteries.registry.ModEntities;
 
@@ -66,6 +67,7 @@ public class ProjectMystery {
 
         // 通用 setup 会在注册阶段之后触发，适合做网络包、能力系统等一次性初始化。
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(PlayerPersistenceGameTests::register);
 
         // 服务端配置会生成在 serverconfig 或 world/serverconfig 中，随存档/服务器生效。
         loadingContext.registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);

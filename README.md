@@ -10,10 +10,10 @@
 > 在未知中承担风险，通过扮演消化力量，逐步成为非凡者。
 
 <!-- project-status:start -->
-> - 当前版本：**`0.9.1-1.20.1`**
+> - 当前版本：**`0.9.2-1.20.1`**
 > - 开发阶段：**v0.9 M0 内容基建 / M1 纵切迁移**（M0）
 > - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-> - 最后更新：**2026-07-17 17:23:46 UTC+01:00**（`2026-07-17T16:23:46Z`）
+> - 最后更新：**2026-07-17 18:12:39 UTC+01:00**（`2026-07-17T17:12:39Z`）
 <!-- project-status:end -->
 
 Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 Minecraft 生存冒险 Mod。
@@ -60,9 +60,9 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 按 v0.9 路线，当前正式里程碑是 **M0 内容基建**。五条途径序列 9–7、通用仪式、
 三种委托和三条任务链继续可玩，但统一归类为待迁移与重验收资产，不据此宣称 M1–M3 完成。
 当前已经建立 schema v4 元数据、71 节点/63 关系内容图、Capability schema 16、
-分层非凡特性和扮演 v2 身份区分；0.9.1 又补齐正式 DataFix、迁移前世界快照、
-原始 NBT 备份和未知/非法 ID 孤儿保留。M0 仍需把目录扩至 100 节点，并完成
-Core/Knowledge/Social/Endgame dirty mask 与完整 GameTest 存档矩阵。
+分层非凡特性和扮演 v2 身份区分；0.9.1 补齐正式 DataFix、迁移前世界快照、
+原始 NBT 备份和未知/非法 ID 孤儿保留，0.9.2 再完成四区 dirty mask、生命周期摘要同步与
+真实 Forge GameTest。M0 仍需把目录扩至 100 节点，并补齐重启/回滚自动演练和真人整体验收。
 
 1. 首次登录取得调查手稿与罗盘；使用 `/pm next` 查看当前主线，遗失时用 `/pm recover` 自助补回。
 2. 右键罗盘或输入 `/pm camp` 前往世界种子确定的新手营地，取得专用补给桶和随机线索箱。
@@ -85,6 +85,14 @@ Core/Knowledge/Social/Endgame dirty mask 与完整 GameTest 存档矩阵。
 - 旧 M1 试炼、M2 委托/调查、余额、队伍、能力冷却、途径和扮演状态继续沿用；196 项测试验证迁移和备份边界。
 - 完整停服升级、首启核验与回滚步骤见 [`docs/V0.9_FIRST_DEPLOYMENT.md`](docs/V0.9_FIRST_DEPLOYMENT.md)。
 
+### v0.9.2 状态分区 / 生命周期回归
+
+- `PlayerMysteryData` 按 Core、Knowledge、Social、Endgame 四区生成运行时指纹；现有公共字段与集合原地写入都会在下一次检查时自动置脏。
+- 登录、重生与维度切换立即下发核心摘要；服务端每秒检查 Core 变化，并以 5 秒校正包防止客户端漂移。
+- 摘要使用独立 S2C 包和客户端只读缓存，不会误开状态面板，也不携带 `knownKnowledge` 全集；精确消化仍服从服务端配置。
+- 网络协议升级为 8、固定消息增至 12；202 项 JUnit 与 3 项 Forge GameTest 共同验证分区、同步策略、Capability Clone 和迁移隔离。
+- Build CI 在 clean build 后真正运行 `runGameTestServer`，不接受“0 tests”假绿，再继续专服诊断、保存与停服烟测。
+
 ### v0.9.0 内容基建 / 特性账本 / 扮演 v2
 
 - 完整 v0.9 设计、增量说明和 manifest 原样进入 `docs/`，哈希、字节、行数和内嵌 v0.8 基线由 CI 精确校验。
@@ -92,7 +100,7 @@ Core/Knowledge/Social/Endgame dirty mask 与完整 GameTest 存档矩阵。
 - 内容图当前记录 71 节点与 63 关系，自动输出孤儿、剧透、兼容、本地化和资产报告。
 - Capability schema 16 持久化 `CharacteristicBundle`；旧 schema 15 非凡者存档会按当前途径/序列回填 legacy 特性层。
 - 五条现有途径的每次魔药晋升记录序列、纯度、印记、污染和来源哈希；永久失控保留特性账本，等待提取/掉落实体闭环。
-- 扮演 v2 新增原则理解、角色过度认同和每日反思；状态包与非凡者档案同步显示，网络协议升级为 7。
+- 扮演 v2 新增原则理解、角色过度认同和每日反思；状态包与非凡者档案同步显示，网络协议升级为 8。
 - v0.9 路线重构为 M0–M12；现有 M1/M2 内容作为迁移资产重新验收，不把设计规格数量写成实现数量。
 
 ### v0.4.0 探索与生存闭环
@@ -341,14 +349,15 @@ Core/Knowledge/Social/Endgame dirty mask 与完整 GameTest 存档矩阵。
 - 轻量雾都前哨、废弃教堂、邪教营地、神秘学家小屋、四名调查 NPC、委托板、记者护送与三波夜袭
 - 中英双语、二十一段教程/晋升成就、十二条随机低语、知识本地化、基础配方与原版纹理回退
 - M1 一小时迁移追踪器及委托状态：Capability schema 16 持久化、自修复、阶段耗时与离线安全计时
-- 网络协议 7：固定消息 ID、严格版本匹配与 C2S 服务端限流
+- 网络协议 8：12 个固定消息 ID、严格版本匹配、独立核心摘要与 C2S 服务端限流
 - 同记分板队伍 2–4 人共享任务推进、持久账本、离线自动追赶、个人独立结算与确定性护送/夜袭协调者
 - 仪式主持人离线暂停、超时取消与服务端重启安全恢复
 - v0.9 内容生产线：schema v4、22 途径目录、15 个序列定义、首批配方 CSV、精确设计源校验和 Gradle 门禁
 - 内容关系图：71 节点、63 关系，以及 orphan、spoiler、compat、localization、asset 六类审计报告
 - 首次部署安全链：世界加载前 schema 16 快照、正式 DataFix、原始 NBT 备份、迁移历史和 `orphaned_entries`
 - M2 迁移数据门禁：3 种委托、3 条任务链、15 类冻结目标类型、前置关系、跨文件引用与至少双解法校验
-- JUnit 5 的 196 项测试覆盖玩家数据迁移、备份幂等、孤儿保留、特性账本、扮演身份、协议、限流、任务链、配方、救援路线、队伍 SavedData、能力、炼药与仪式
+- JUnit 5 的 202 项测试覆盖玩家数据迁移、dirty mask、摘要策略、备份幂等、孤儿保留、特性账本、扮演身份、协议、限流、任务链、配方、救援路线、队伍 SavedData、能力、炼药与仪式
+- 3 项 Forge GameTest 在真实 Minecraft 服务器运行时覆盖 Capability Clone、schema 15→16 Provider 往返与未来 schema 隔离
 - 统一资源门禁检查 261 个 JSON、764 个成对双语键、330 个静态引用键、73 个模型及全部物品/方块/实体注册资源
 - 分层 `CharacteristicBundle` 与扮演 v2：原则理解、角色过度认同、每日反思和状态界面同步
 - CI Forge 专用服务器冒烟：加载数据、进入 `Done`、保存世界并干净停服
@@ -360,7 +369,7 @@ Core/Knowledge/Social/Endgame dirty mask 与完整 GameTest 存档矩阵。
 - 当前只接入净化封印这一种完整仪式；尊名呼名、晋升饮药窗口和更多仪式仍待后续实现。
 - 调查营地、雾都前哨、废弃教堂、邪教营地与神秘学家小屋均采用轻量程序生成；完整维多利亚镇区和正式结构模板尚未实装。
 - 占卜家序列 9–7 代码纵切、连续性追踪与自动专服冒烟已完成，但真实一小时生存和平衡验收尚未记录。
-- M0 当前只有 71 个内容节点，尚未达到 100 节点；Core/Knowledge/Social/Endgame dirty mask 与完整 GameTest 存档矩阵尚未完成。
+- M0 当前只有 71 个内容节点，尚未达到 100 节点；四区 dirty mask 和首批 GameTest 已完成，但专服重启/降级回滚自动演练与真人死亡/跨维度整体验收仍待补齐。
 - 特性 bundle 已进入存档与晋升，但提取、实体掉落、重复合并和死亡守恒闭环尚未完成。
 - 扮演 v2 已有原则/身份字段与反思命令，但身份卡、反思日志物品、四阶段验证和两小时真人验收尚未完成。
 - 五途径序列 9-7、三种委托、失踪调查小队第一阶段、真假配方和持久化队伍追赶是可玩迁移资产；正式队伍 GUI、完整多人负载矩阵与动态案件仍未完成。
@@ -385,6 +394,7 @@ Core/Knowledge/Social/Endgame dirty mask 与完整 GameTest 存档矩阵。
 ```bash
 ./gradlew compileJava test
 ./gradlew build
+./gradlew runGameTestServer
 ./gradlew runClient
 ./gradlew runServer
 python scripts/import_v09_design.py --check
@@ -411,7 +421,7 @@ python scripts/check_resource_integrity.py
 python scripts/sync_project_metadata.py --check
 ```
 
-CI 会检查 v0.9 设计源、元数据同步、内容图、M1 可玩性合同、M2 调查合同、统一资源完整性，运行 196 项 Gradle 测试并启动一次 Forge 专用服务器运行诊断冒烟；`wiki/` 内容变化后自动发布 GitHub Wiki。完整规则见
+CI 会检查 v0.9 设计源、元数据同步、内容图、M1 可玩性合同、M2 调查合同、统一资源完整性，运行 202 项 JUnit、3 项 Forge GameTest，并启动一次 Forge 专用服务器运行诊断冒烟；`wiki/` 内容变化后自动发布 GitHub Wiki。完整规则见
 [`VERSIONING.md`](VERSIONING.md)。
 
 ## 项目结构

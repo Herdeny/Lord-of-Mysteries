@@ -4,7 +4,7 @@ import java.util.List;
 
 public final class NetworkProtocol {
 
-    public static final String VERSION = "7";
+    public static final String VERSION = "8";
     public static final int TOGGLE_SPIRIT_VISION = 0;
     public static final int USE_SIMPLE_DIVINATION = 1;
     public static final int REQUEST_STATUS = 2;
@@ -16,7 +16,8 @@ public final class NetworkProtocol {
     public static final int USE_ENRAGE = 8;
     public static final int USE_SEER_ABILITY = 9;
     public static final int USE_M2_FOUNDATION_ABILITY = 10;
-    public static final int PACKET_COUNT = 11;
+    public static final int PLAYER_SUMMARY = 11;
+    public static final int PACKET_COUNT = 12;
 
     private NetworkProtocol() {}
 
@@ -36,6 +37,7 @@ public final class NetworkProtocol {
                 USE_PROVOKE,
                 USE_ENRAGE,
                 USE_SEER_ABILITY,
-                USE_M2_FOUNDATION_ABILITY);
+                USE_M2_FOUNDATION_ABILITY,
+                PLAYER_SUMMARY);
     }
 }

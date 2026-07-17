@@ -52,7 +52,7 @@ minecraft {
 
         gameTestServer {
             workingDirectory project.file('run')
-            property 'forge.enabledGameTestNamespaces', mod_id
+            property 'forge.enabledGameTestNamespaces', "${mod_id},minecraft"
             mods {
                 "${mod_id}" {
                     source sourceSets.main

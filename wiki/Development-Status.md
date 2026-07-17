@@ -1,10 +1,10 @@
 # 开发状态
 
 <!-- project-status:start -->
-- 当前版本：**`0.9.1-1.20.1`**
+- 当前版本：**`0.9.2-1.20.1`**
 - 开发阶段：**v0.9 M0 内容基建 / M1 纵切迁移**（M0）
 - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-- 最后更新：**2026-07-17 17:23:46 UTC+01:00**（`2026-07-17T16:23:46Z`）
+- 最后更新：**2026-07-17 18:12:39 UTC+01:00**（`2026-07-17T17:12:39Z`）
 <!-- project-status:end -->
 
 ## 里程碑
@@ -39,6 +39,8 @@
 | schema v4 | 途径、15 序列、3 委托、3 任务链和 M0 目录 | code_ready |
 | 内容图 | 71 节点、63 关系、6 类报告 | data_ready |
 | 玩家迁移 | schema 0/15→16 DataFix、世界快照、原始 NBT 备份与孤儿保留 | code_ready |
+| 状态同步 | 四区 dirty mask、生命周期核心摘要、5 秒校正、协议 8 | code_ready |
+| 生命周期回归 | 202 JUnit、3 Forge GameTest、专服保存停服烟测 | verified automation |
 | 非凡特性 | 分层序列、纯度、印记、污染、来源哈希 | code_ready |
 | 扮演 v2 | 原则理解、角色过度认同、每日反思、UI 同步 | code_ready |
 | 既有玩法 | 五途径 9–7、3 委托、3 任务链、持久队伍 | playable migration assets |
@@ -47,8 +49,8 @@
 ## M0 退出缺口
 
 - 内容目录由 71 节点扩展到至少 100 个有效样例。
-- Core/Knowledge/Social/Endgame dirty mask，避免无关区段全量同步。
-- 存档、死亡、重生、维度切换、专服重启和降级回滚 GameTest。
+- 专服重启、降级回滚与世界文件恢复的自动演练。
+- 真人死亡/重生、维度往返、断线重连与多人长时整体验收。
 - 所有新增内容保持来源、剧透、知识门槛、关系、翻译和资产证据完整。
 
 ## 后续迁移边界
@@ -70,6 +72,7 @@ python scripts/check_m2_investigation.py
 python scripts/check_resource_integrity.py
 python scripts/sync_project_metadata.py --check
 ./gradlew clean build
+./gradlew runGameTestServer
 python scripts/run_server_smoke.py --timeout 180
 ```
 

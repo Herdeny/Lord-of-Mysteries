@@ -10,7 +10,7 @@
 - 工程基线：Minecraft 1.20.1、Forge 47.4.20、Java 17
 - 玩家 Capability：schema 16
 - 内容定义：schema v4
-- SimpleChannel：协议 7
+- SimpleChannel：协议 8
 
 `scripts/import_v09_design.py --check` 会核对完整文档、增量文档、内嵌 v0.8 基线的字节数、行数和 SHA-256，防止设计源在导入后被静默改写。仓库现有可运行行为始终优先于设计文档；文档中的示例包名、未注册 ID、其他加载器代码和概念伪代码不得直接复制，必须转换到 `lord_of_mysteries` 命名空间与当前 Forge 架构。
 
@@ -35,9 +35,10 @@
 - `docs/master/m0_content_catalog.json` 建立首批 M0 迁移目录，覆盖物品、状态、配方和知识门槛。
 - Capability schema 由 15 升至 16；旧档自动回填特性 bundle，Provider 生命周期补齐失效监听。
 - 0.9.1 增加 schema 0/15→16 正式 DataFix、世界加载前相关文件快照、原始 NBT 回滚载荷、迁移历史与未知/非法数据孤儿保留。
+- 0.9.2 增加 Core/Knowledge/Social/Endgame 四区 dirty mask、生命周期核心摘要、客户端只读缓存和 3 项 Forge GameTest。
 - 五条现有途径的 15 次序列 9–7 晋升都会记录特性层；永久失控暂保留 bundle，等待 M1 提取/掉落实体闭环。
 - 扮演事件写入原则理解和角色过度认同；`/pm reflect` 每游戏日可反思一次，并在状态包与界面显示。
-- 网络协议由 6 升至 7；资源、生成器、测试和中英文案同步更新。
+- 网络协议由 7 升至 8；12 个固定消息 ID、202 项 JUnit、3 项 Forge GameTest 与专服烟测组成分层门禁。
 
 ## 事实边界
 
