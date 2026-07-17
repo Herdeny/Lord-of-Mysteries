@@ -19,6 +19,15 @@ class QuestPartyPolicyTest {
     }
 
     @Test
+    void persistentTeamEligibilityCountsOfflineRoster() {
+        assertTrue(QuestPartyPolicy.teamEligible(true, 4, 2));
+        assertTrue(QuestPartyPolicy.teamEligible(true, 4, 4));
+        assertFalse(QuestPartyPolicy.teamEligible(true, 4, 1));
+        assertFalse(QuestPartyPolicy.teamEligible(true, 4, 5));
+        assertFalse(QuestPartyPolicy.teamEligible(false, 4, 2));
+    }
+
+    @Test
     void coordinatorSelectionIsDeterministic() {
         UUID first = UUID.fromString("00000000-0000-0000-0000-000000000001");
         UUID second = UUID.fromString("00000000-0000-0000-0000-000000000002");

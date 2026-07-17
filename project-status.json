@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "version": "0.8.7-1.20.1",
+  "version": "0.8.8-1.20.1",
   "stage": "M1 人工验收 / M2 可玩预研",
   "milestone": "M1",
   "minecraft_version": "1.20.1",
   "forge_version": "47.4.20",
   "java_version": "17",
-  "last_updated": "2026-07-17T03:50:00+01:00",
-  "last_updated_utc": "2026-07-17T02:50:00Z"
+  "last_updated": "2026-07-17T09:19:00+01:00",
+  "last_updated_utc": "2026-07-17T08:19:00Z"
 }

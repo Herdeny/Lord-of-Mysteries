@@ -31,6 +31,19 @@
       "s6_return"
     ]
   },
+  "party_recovery": {
+    "saved_data": "lord_of_mysteries_quest_parties",
+    "maximum_party": 4,
+    "commands": ["party", "sync"],
+    "required_state": [
+      "commission_id",
+      "quest_chain_id",
+      "quest_step",
+      "objective_progress",
+      "members",
+      "settled_members"
+    ]
+  },
   "command_tokens": [
     "approach",
     "assault",
@@ -38,7 +51,9 @@
     "divination",
     "formula",
     "authentic",
-    "forged"
+    "forged",
+    "party",
+    "sync"
   ],
   "translation_keys": [
     "item.lord_of_mysteries.sealed_formula_dossier",
@@ -47,6 +62,9 @@
     "message.lord_of_mysteries.case.occultist_hut",
     "message.lord_of_mysteries.formula.verdict_correct",
     "message.lord_of_mysteries.quest.approach.required",
-    "knowledge.lord_of_mysteries.m2.formula_authenticity"
+    "knowledge.lord_of_mysteries.m2.formula_authenticity",
+    "command.lord_of_mysteries.party.catchup",
+    "command.lord_of_mysteries.party.sync_success",
+    "command.lord_of_mysteries.party.status"
   ]
 }

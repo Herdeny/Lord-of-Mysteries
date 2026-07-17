@@ -1,6 +1,6 @@
 # 入门与占卜家序列 9–7
 
-> 当前版本：0.8.7-1.20.1
+> 当前版本：0.8.8-1.20.1
 >
 > 设计基线：v0.8 · M1 验收 / M2 预研
 
@@ -71,6 +71,9 @@
 | `/pm case` | 废弃教堂与邪教救援营地 |
 | `/pm commission list|status` | 委托列表、步骤、进度和账本 |
 | `/pm commission accept <id>` | 接取指定委托 |
+| `/pm commission approach assault|stealth|divination` | 锁定记者救援路线 |
+| `/pm formula inspect|verdict` | 鉴定并提交真假配方结论 |
+| `/pm party` / `/pm party sync` | 查看队伍账本或追赶离线进度 |
 | `/pm m1check` | 下一晋升门槛 |
 | `/pm rules` | 核心规则 |
 | `/pm items` | 野外装备与调查道具 |
@@ -107,8 +110,9 @@
 `/pm commission approach assault|stealth|divination` 选择路线。完成后可进入神秘学家小屋，
 用 `/pm formula inspect` 和 `verdict authentic|forged` 处理真假配方。详见
 [雾都前哨与调查委托](M2-Commissions-and-Mist-City-Outpost) 和
-[神秘学家小屋与三解救援](M2-Occultist-Hut-and-Rescue-Routes)。同记分板队伍 2–4 名在线成员可共享目标；
-完整镇区、正式警戒 AI、离线共享和正式队伍 UI 仍未完成。
+[神秘学家小屋与三解救援](M2-Occultist-Hut-and-Rescue-Routes)。同记分板队伍 2–4 名成员共享目标；
+`/pm party` 查看持久账本，已登记离线成员上线自动追赶，中途加入使用 `/pm party sync`。完整规则见
+[持久化队伍调查与离线追赶](M2-Persistent-Party-Recovery)。完整镇区、正式警戒 AI、正式队伍 GUI 和多人负载矩阵仍未完成。
 
 完整手册见
 [`docs/GETTING_STARTED.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/GETTING_STARTED.md)。

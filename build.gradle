@@ -131,7 +131,12 @@ tasks.register('checkM2Investigation', Exec) {
             'src/main/java/top/aurora/lordofmysteries/command/ProjectMysteryCommands.java',
             'src/main/java/top/aurora/lordofmysteries/player/PlayerMysteryData.java',
             'src/main/java/top/aurora/lordofmysteries/world/InvestigationSiteGenerator.java',
-            'src/main/java/top/aurora/lordofmysteries/registry/ModItems.java'
+            'src/main/java/top/aurora/lordofmysteries/registry/ModItems.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/CommissionService.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/QuestPartyService.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/QuestPartySnapshot.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/QuestPartySavedData.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/QuestProgressHandler.java'
 }
 
 repositories {

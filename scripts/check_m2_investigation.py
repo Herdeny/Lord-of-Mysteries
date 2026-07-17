@@ -13,6 +13,11 @@ COMMANDS = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries"
 PLAYER_DATA = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "player" / "PlayerMysteryData.java"
 SITE_GENERATOR = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "world" / "InvestigationSiteGenerator.java"
 ITEMS = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "registry" / "ModItems.java"
+COMMISSION_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CommissionService.java"
+PARTY_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestPartyService.java"
+PARTY_SNAPSHOT = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestPartySnapshot.java"
+PARTY_SAVED_DATA = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestPartySavedData.java"
+PROGRESS_HANDLER = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestProgressHandler.java"
 
 
 def load(path):
@@ -81,6 +86,32 @@ def main():
     require("sealed_formula_dossier" in ITEMS.read_text(encoding="utf-8"),
             "sealed formula dossier is not registered")
 
+    party = contract["party_recovery"]
+    party_service = PARTY_SERVICE.read_text(encoding="utf-8")
+    party_snapshot = PARTY_SNAPSHOT.read_text(encoding="utf-8")
+    party_saved_data = PARTY_SAVED_DATA.read_text(encoding="utf-8")
+    progress_handler = PROGRESS_HANDLER.read_text(encoding="utf-8")
+    commission_service = COMMISSION_SERVICE.read_text(encoding="utf-8")
+    require(party["saved_data"] in party_saved_data,
+            "party saved-data identity drifted")
+    for state_key in party["required_state"]:
+        require(f'"{state_key}"' in party_snapshot,
+                f"party snapshot misses {state_key}")
+    require("QuestPartySavedData.get" in party_service
+            and "joinAndSync" in party_service
+            and "reconcile" in party_service,
+            "party persistence service is incomplete")
+    require("QuestPartySavedData.get" in command_source
+            and "party_storage=" in command_source,
+            "dedicated-server diagnostics do not verify party storage")
+    require("PlayerLoggedInEvent" in progress_handler
+            and "PlayerLoggedOutEvent" in progress_handler,
+            "party login/logout recovery hooks are missing")
+    require("markSettled" in commission_service,
+            "individual party settlement tracking is missing")
+    require(party["maximum_party"] == 4,
+            "party recovery contract maximum changed")
+
     for locale in ("zh_cn", "en_us"):
         translations = load(LANG / f"{locale}.json")
         missing_keys = set(contract["translation_keys"]) - translations.keys()
@@ -90,7 +121,8 @@ def main():
     print(
         "M2 investigation contract checked: "
         f"{len(commissions)} commissions, {len(quests)} quest chains, "
-        "occultist hut, formula appraisal, and three rescue routes"
+        "occultist hut, formula appraisal, three rescue routes, "
+        "and persistent party recovery"
     )
 
 

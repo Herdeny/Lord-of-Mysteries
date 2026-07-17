@@ -745,5 +745,21 @@
   "knowledge.lord_of_mysteries.m2.formula_authenticity": "调查准则：真假配方三证鉴定",
   "knowledge.lord_of_mysteries.m2.rescue_route_assault": "调查记录：强攻救援",
   "knowledge.lord_of_mysteries.m2.rescue_route_stealth": "调查记录：潜入救援",
-  "knowledge.lord_of_mysteries.m2.rescue_route_divination": "调查记录：占卜救援"
+  "knowledge.lord_of_mysteries.m2.rescue_route_divination": "调查记录：占卜救援",
+  "command.lord_of_mysteries.party.no_team": "你不在记分板队伍中，无法使用共享调查账本。",
+  "command.lord_of_mysteries.party.none": "当前队伍没有可恢复的共享调查。",
+  "command.lord_of_mysteries.party.data_unavailable": "共享调查引用的数据包定义暂不可用。",
+  "command.lord_of_mysteries.party.invalid_size": "当前队伍登记了 %s 名成员，任务上限为 %s；请先调整记分板队伍。",
+  "command.lord_of_mysteries.party.conflict": "你已有另一份进行中的委托，不能覆盖为队伍进度。",
+  "command.lord_of_mysteries.party.already_settled": "你已经结算过这份队伍委托。",
+  "command.lord_of_mysteries.party.prerequisite_missing": "你尚未满足这份队伍委托的前置案件。",
+  "command.lord_of_mysteries.party.full": "共享调查账本已达到 %s 人上限。",
+  "command.lord_of_mysteries.party.already_synced": "你的调查进度已经与队伍账本一致。",
+  "command.lord_of_mysteries.party.sync_success": "已加入并同步队伍调查：%s。",
+  "command.lord_of_mysteries.party.catchup": "已从持久化队伍账本恢复离线期间的调查进度。",
+  "command.lord_of_mysteries.party.status": "队伍调查账本 · %s · %s",
+  "command.lord_of_mysteries.party.progress": "任务步骤 %s/%s · 当前计数 %s",
+  "command.lord_of_mysteries.party.members": "在线待结算 %s · 待结算 %s · 登记成员 %s/%s",
+  "command.lord_of_mysteries.party.updated": "账本最近更新于 %s 秒前。",
+  "command.lord_of_mysteries.party.join_hint": "执行 /pm party sync 可加入并追赶到队伍最新进度。"
 }

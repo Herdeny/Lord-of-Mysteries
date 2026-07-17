@@ -745,5 +745,21 @@
   "knowledge.lord_of_mysteries.m2.formula_authenticity": "Investigation Rule: Three-Proof Formula Appraisal",
   "knowledge.lord_of_mysteries.m2.rescue_route_assault": "Case Record: Assault Rescue",
   "knowledge.lord_of_mysteries.m2.rescue_route_stealth": "Case Record: Stealth Rescue",
-  "knowledge.lord_of_mysteries.m2.rescue_route_divination": "Case Record: Divination Rescue"
+  "knowledge.lord_of_mysteries.m2.rescue_route_divination": "Case Record: Divination Rescue",
+  "command.lord_of_mysteries.party.no_team": "You are not in a scoreboard team, so no shared investigation ledger is available.",
+  "command.lord_of_mysteries.party.none": "This team has no shared investigation to recover.",
+  "command.lord_of_mysteries.party.data_unavailable": "The datapack definition referenced by this shared investigation is unavailable.",
+  "command.lord_of_mysteries.party.invalid_size": "This scoreboard team has %s entries but the quest limit is %s; adjust the team first.",
+  "command.lord_of_mysteries.party.conflict": "Another commission is already active and cannot be overwritten by party progress.",
+  "command.lord_of_mysteries.party.already_settled": "You have already settled this party commission.",
+  "command.lord_of_mysteries.party.prerequisite_missing": "You have not completed the prerequisite cases for this party commission.",
+  "command.lord_of_mysteries.party.full": "The shared investigation ledger has reached its %s-player limit.",
+  "command.lord_of_mysteries.party.already_synced": "Your investigation already matches the party ledger.",
+  "command.lord_of_mysteries.party.sync_success": "Joined and synchronized the party investigation: %s.",
+  "command.lord_of_mysteries.party.catchup": "Recovered investigation progress made while you were offline from the persistent party ledger.",
+  "command.lord_of_mysteries.party.status": "Party Investigation Ledger · %s · %s",
+  "command.lord_of_mysteries.party.progress": "Quest step %s/%s · current count %s",
+  "command.lord_of_mysteries.party.members": "Online pending %s · pending settlement %s · registered members %s/%s",
+  "command.lord_of_mysteries.party.updated": "Ledger last updated %s seconds ago.",
+  "command.lord_of_mysteries.party.join_hint": "Run /pm party sync to join and catch up to the team's latest progress."
 }

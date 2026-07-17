@@ -1,6 +1,6 @@
 # Project Mystery 入门指南
 
-> 适用版本：0.8.7-1.20.1
+> 适用版本：0.8.8-1.20.1
 >
 > 当前路线：v0.8 · M1 验收 / M2 预研
 
@@ -88,6 +88,8 @@
 - `/pm commission list|status|accept|abandon`：浏览、追踪、接取或放弃调查委托。
 - `/pm commission approach assault|stealth|divination`：锁定记者救援路线。
 - `/pm formula inspect|verdict`：鉴定并提交密封配方结论。
+- `/pm party`：查看队伍持久调查账本、步骤、人数和更新时间。
+- `/pm party sync`：中途加入队伍案件，或立即追赶到离线期间的最新步骤。
 - `/pm m1check`：检查序列 9–7 当前门槛。
 - `/pm rules`：阅读五条核心规则。
 - `/pm items`：查看野外装备来源与代价。
@@ -150,6 +152,10 @@
 - 读心者消化 100% 后可用梦鳞碎片、发酵蛛眼和神秘墨水晋升心理医生；`Y` 心理安抚、`U` 心灵震慑、潜行触发心理隐身。
 - 挑衅者消化 100% 后可用烬火蝾螈腺体、烈焰粉和火药晋升纵火家；`Y` 火焰长枪、`U` 焰环，并获得火焰亲和。
 - 序列 7 详细规则见 [`M2_SEQUENCE7_PSYCHIATRIST_PYROMANIAC.md`](M2_SEQUENCE7_PSYCHIATRIST_PYROMANIAC.md)。
-- 五途径 9-7、轻量雾都前哨、三种委托、失踪小队三解、真假配方和在线同队共享基础已进入可玩预研；完整镇区、正式警戒 AI、离线共享、多人负载矩阵和 schema 冻结尚未完成。
+- 五途径 9-7、轻量雾都前哨、三种委托、失踪小队三解、真假配方、持久队伍账本和离线追赶已进入可玩预研；完整镇区、正式警戒 AI、正式队伍 GUI、多人负载矩阵和 schema 冻结尚未完成。
+
+2–4 人联机可用原版 `/team` 组队。各成员接取同一案件后，进度写入世界级队伍账本；已经登记的
+离线成员上线自动追赶，中途加入者执行 `/pm party sync`。奖励、声望和冷却仍按玩家独立结算。
+完整规则见 [`M2_PERSISTENT_PARTY_RECOVERY.md`](M2_PERSISTENT_PARTY_RECOVERY.md)。
 - 委托与前哨细节见 [`M2_COMMISSION_AND_MIST_CITY_PROLOGUE.md`](M2_COMMISSION_AND_MIST_CITY_PROLOGUE.md)。
 - 小屋、配方和三解细节见 [`M2_OCCULTIST_HUT_AND_RESCUE_ROUTES.md`](M2_OCCULTIST_HUT_AND_RESCUE_ROUTES.md)。

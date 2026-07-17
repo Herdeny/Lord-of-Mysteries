@@ -40,6 +40,8 @@ import top.aurora.lordofmysteries.commission.CommissionDefinitionManager;
 import top.aurora.lordofmysteries.commission.CommissionService;
 import top.aurora.lordofmysteries.commission.FormulaAppraisalService;
 import top.aurora.lordofmysteries.commission.QuestChainDefinitionManager;
+import top.aurora.lordofmysteries.commission.QuestPartyService;
+import top.aurora.lordofmysteries.commission.QuestPartySavedData;
 import top.aurora.lordofmysteries.world.AbandonedCampGenerator;
 import top.aurora.lordofmysteries.world.CampGenerationSavedData;
 import top.aurora.lordofmysteries.world.MistCityOutpostGenerator;
@@ -148,6 +150,12 @@ public final class ProjectMysteryCommands {
                                         FormulaAppraisalService.submitVerdict(
                                                 context.getSource().getPlayerOrException(),
                                                 false)))))
+                .then(Commands.literal("party")
+                        .executes(context -> QuestPartyService.showStatus(
+                                context.getSource().getPlayerOrException()))
+                        .then(Commands.literal("sync").executes(context ->
+                                QuestPartyService.joinAndSync(
+                                        context.getSource().getPlayerOrException()))))
                 .then(Commands.literal("rules").executes(context ->
                         showLines(context.getSource().getPlayerOrException(), "rules", 5)))
                 .then(Commands.literal("items").executes(context ->
@@ -459,16 +467,20 @@ public final class ProjectMysteryCommands {
     private static int showServerDiagnostics(CommandSourceStack source) {
         int commissions = CommissionDefinitionManager.all().size();
         int quests = QuestChainDefinitionManager.all().size();
-        boolean worldReady = source.getServer().getLevel(Level.OVERWORLD) != null;
+        ServerLevel overworld = source.getServer().getLevel(Level.OVERWORLD);
+        boolean worldReady = overworld != null;
+        boolean partyStorageReady = overworld != null;
+        if (overworld != null) QuestPartySavedData.get(overworld);
         boolean healthy = commissions > 0 && quests > 0 && worldReady
-                && NetworkProtocol.PACKET_COUNT > 0;
+                && partyStorageReady && NetworkProtocol.PACKET_COUNT > 0;
         String marker = "PROJECT_MYSTERY_SERVERCHECK_"
                 + (healthy ? "OK" : "FAILED")
                 + " commissions=" + commissions
                 + " quests=" + quests
                 + " protocol=" + NetworkProtocol.VERSION
                 + " packets=" + NetworkProtocol.PACKET_COUNT
-                + " overworld=" + worldReady;
+                + " overworld=" + worldReady
+                + " party_storage=" + partyStorageReady;
         if (healthy) {
             source.sendSuccess(() -> Component.literal(marker), false);
             return 1;

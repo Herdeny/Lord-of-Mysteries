@@ -316,6 +316,7 @@ public final class CommissionService {
         data.questObjectiveProgress = 0;
         data.commissionAcceptedTick = now;
         giveCommissionPaper(player, definition, now);
+        QuestPartyService.registerActive(player, chain);
         player.sendSystemMessage(Component.translatable(
                 "command.lord_of_mysteries.commission.accepted",
                 Component.translatable(definition.titleKey()))
@@ -357,6 +358,7 @@ public final class CommissionService {
     public static int abandon(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         if (data.activeCommissionId.isBlank()) return 0;
+        QuestPartyService.leave(player);
         clearActive(data);
         player.sendSystemMessage(Component.translatable(
                 "command.lord_of_mysteries.commission.abandoned")
@@ -414,6 +416,7 @@ public final class CommissionService {
                 recordObjectiveForPlayer(participant, type, target, amount);
             }
         }
+        QuestPartyService.persistProgress(player, chain);
         return true;
     }
 
@@ -454,6 +457,7 @@ public final class CommissionService {
 
     private static int settle(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
+        QuestChainDefinition chain = activeChain(data);
         ResourceLocation commissionId = ResourceLocation.tryParse(data.activeCommissionId);
         CommissionDefinition definition = commissionId == null
                 ? null : CommissionDefinitionManager.get(commissionId);
@@ -477,8 +481,41 @@ public final class CommissionService {
                 Component.translatable(definition.titleKey()),
                 CommissionCurrency.format(definition.reward().pence()))
                 .withStyle(ChatFormatting.GREEN));
+        if (chain != null) QuestPartyService.markSettled(player, chain);
         clearActive(data);
         return 1;
+    }
+
+    public static void restoreCommissionPaper(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.activeCommissionId.isBlank()
+                || hasCommissionPaper(player, data.activeCommissionId)) return;
+        ResourceLocation commissionId = ResourceLocation.tryParse(data.activeCommissionId);
+        CommissionDefinition definition = commissionId == null
+                ? null : CommissionDefinitionManager.get(commissionId);
+        if (definition != null) {
+            giveCommissionPaper(player, definition, data.commissionAcceptedTick);
+        }
+    }
+
+    private static boolean hasCommissionPaper(ServerPlayer player,
+                                              String commissionId) {
+        for (ItemStack stack : player.getInventory().items) {
+            if (isCommissionPaper(stack, commissionId)) return true;
+        }
+        for (ItemStack stack : player.getInventory().offhand) {
+            if (isCommissionPaper(stack, commissionId)) return true;
+        }
+        for (int slot = 0; slot < player.getEnderChestInventory().getContainerSize(); slot++) {
+            if (isCommissionPaper(player.getEnderChestInventory().getItem(slot),
+                    commissionId)) return true;
+        }
+        return false;
+    }
+
+    private static boolean isCommissionPaper(ItemStack stack, String commissionId) {
+        return stack.is(ModItems.COMMISSION_PAPER.get()) && stack.hasTag()
+                && commissionId.equals(stack.getTag().getString("commission_id"));
     }
 
     private static void trackLostCat(ServerPlayer player, ServerLevel level,
