@@ -55,6 +55,7 @@ EXPECTED = {
     "party_storage": "party_storage=true active_parties=",
     "party_members": "party_members=",
     "command_loop": "There are 0 of a max of",
+    "seed": "Seed: [",
     "save": "Saved the game",
 }
 FATAL_MARKERS = (
@@ -158,6 +159,7 @@ def run(timeout_seconds):
                 assert process.stdin is not None
                 process.stdin.write("pm servercheck\n")
                 process.stdin.write("list\n")
+                process.stdin.write("seed\n")
                 process.stdin.write("save-all flush\n")
                 process.stdin.flush()
                 checks_sent = True
@@ -192,7 +194,7 @@ def run(timeout_seconds):
         print(
             "server smoke passed: definitions loaded, runtime diagnostics passed, "
             "migration backup verified, command loop responded, world flushed, "
-            f"and server stopped cleanly ({backup_evidence})"
+            f"seed captured, and server stopped cleanly ({backup_evidence})"
         )
         return 0
     finally:

@@ -1,5 +1,9 @@
 package top.aurora.lordofmysteries.acting;
 
+import net.minecraft.server.level.ServerPlayer;
+
+import top.aurora.lordofmysteries.knowledge.M1TrialTracker;
+import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 
 public final class ActingIdentityService {
@@ -44,6 +48,16 @@ public final class ActingIdentityService {
                 data.roleOveridentification - 8f, 0f, 100f);
         data.insanityPressure = clamp(data.insanityPressure - 2f, 0f, 100f);
         return ReflectionResult.SUCCESS;
+    }
+
+    public static ReflectionResult reflect(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        ReflectionResult result = reflect(
+                data, player.level().getDayTime() / 24000L);
+        if (result == ReflectionResult.SUCCESS) {
+            M1TrialTracker.recordReflection(player);
+        }
+        return result;
     }
 
     private static float clamp(float value, float minimum, float maximum) {

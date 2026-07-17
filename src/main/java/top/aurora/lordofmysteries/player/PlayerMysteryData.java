@@ -28,7 +28,7 @@ import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 16;
+    public static final int CURRENT_SCHEMA_VERSION = 17;
     private static final int MAX_MIGRATION_BACKUPS = 3;
     private static final int MAX_MIGRATION_HISTORY = 64;
 
@@ -129,8 +129,13 @@ public class PlayerMysteryData {
     public long m1TrialFirstOccultKillTick = -1L;
     public long m1TrialFirstActingTick = -1L;
     public long m1TrialRiskReachedTick = -1L;
+    public long m1TrialIdentityAnchoredTick = -1L;
+    public long m1TrialReflectionCompletedTick = -1L;
+    public long m1TrialStreetLifeCompletedTick = -1L;
 
     public long moneyPence = 0L;
+    public long lastCityWorkDay = Long.MIN_VALUE;
+    public int cityWorkShifts = 0;
     public String activeCommissionId = "";
     public String activeQuestChainId = "";
     public int activeQuestStep = -1;
@@ -155,6 +160,7 @@ public class PlayerMysteryData {
     public float roleOveridentification = 0f;
     public int actingReflectionCount = 0;
     public long lastActingReflectionDay = Long.MIN_VALUE;
+    public boolean identityAnchored = false;
 
     // 组织声望（组织ID → 声望值）。组织 ID 仍使用 ResourceLocation，支持数据包新增组织。
     public Map<ResourceLocation, Integer> orgReputation = new HashMap<>();
@@ -275,7 +281,12 @@ public class PlayerMysteryData {
         this.m1TrialFirstOccultKillTick = src.m1TrialFirstOccultKillTick;
         this.m1TrialFirstActingTick = src.m1TrialFirstActingTick;
         this.m1TrialRiskReachedTick = src.m1TrialRiskReachedTick;
+        this.m1TrialIdentityAnchoredTick = src.m1TrialIdentityAnchoredTick;
+        this.m1TrialReflectionCompletedTick = src.m1TrialReflectionCompletedTick;
+        this.m1TrialStreetLifeCompletedTick = src.m1TrialStreetLifeCompletedTick;
         this.moneyPence = src.moneyPence;
+        this.lastCityWorkDay = src.lastCityWorkDay;
+        this.cityWorkShifts = src.cityWorkShifts;
         this.activeCommissionId = src.activeCommissionId;
         this.activeQuestChainId = src.activeQuestChainId;
         this.activeQuestStep = src.activeQuestStep;
@@ -295,6 +306,7 @@ public class PlayerMysteryData {
         this.roleOveridentification = src.roleOveridentification;
         this.actingReflectionCount = src.actingReflectionCount;
         this.lastActingReflectionDay = src.lastActingReflectionDay;
+        this.identityAnchored = src.identityAnchored;
         this.orgReputation = new HashMap<>(src.orgReputation);
         this.schemaVersion = CURRENT_SCHEMA_VERSION;
         sanitize();
@@ -398,7 +410,12 @@ public class PlayerMysteryData {
         tag.putLong("m1_trial_first_occult_kill_tick", m1TrialFirstOccultKillTick);
         tag.putLong("m1_trial_first_acting_tick", m1TrialFirstActingTick);
         tag.putLong("m1_trial_risk_reached_tick", m1TrialRiskReachedTick);
+        tag.putLong("m1_trial_identity_anchored_tick", m1TrialIdentityAnchoredTick);
+        tag.putLong("m1_trial_reflection_completed_tick", m1TrialReflectionCompletedTick);
+        tag.putLong("m1_trial_street_life_completed_tick", m1TrialStreetLifeCompletedTick);
         tag.putLong("money_pence", moneyPence);
+        tag.putLong("last_city_work_day", lastCityWorkDay);
+        tag.putInt("city_work_shifts", cityWorkShifts);
         tag.putString("active_commission", activeCommissionId);
         tag.putString("active_quest_chain", activeQuestChainId);
         tag.putInt("active_quest_step", activeQuestStep);
@@ -439,6 +456,7 @@ public class PlayerMysteryData {
         tag.putFloat("role_overidentification", roleOveridentification);
         tag.putInt("acting_reflection_count", actingReflectionCount);
         tag.putLong("last_acting_reflection_day", lastActingReflectionDay);
+        tag.putBoolean("identity_anchored", identityAnchored);
 
         CompoundTag rep = new CompoundTag();
         // ResourceLocation 不能直接作为 NBT 键，转成 namespace:path 字符串存储。
@@ -557,7 +575,16 @@ public class PlayerMysteryData {
                 tag, "m1_trial_first_occult_kill_tick");
         m1TrialFirstActingTick = optionalTrialTick(tag, "m1_trial_first_acting_tick");
         m1TrialRiskReachedTick = optionalTrialTick(tag, "m1_trial_risk_reached_tick");
+        m1TrialIdentityAnchoredTick = optionalTrialTick(
+                tag, "m1_trial_identity_anchored_tick");
+        m1TrialReflectionCompletedTick = optionalTrialTick(
+                tag, "m1_trial_reflection_completed_tick");
+        m1TrialStreetLifeCompletedTick = optionalTrialTick(
+                tag, "m1_trial_street_life_completed_tick");
         moneyPence = tag.getLong("money_pence");
+        lastCityWorkDay = tag.contains("last_city_work_day")
+                ? tag.getLong("last_city_work_day") : Long.MIN_VALUE;
+        cityWorkShifts = tag.getInt("city_work_shifts");
         activeCommissionId = tag.contains("active_commission")
                 ? tag.getString("active_commission") : "";
         activeQuestChainId = tag.contains("active_quest_chain")
@@ -627,6 +654,7 @@ public class PlayerMysteryData {
         actingReflectionCount = tag.getInt("acting_reflection_count");
         lastActingReflectionDay = tag.contains("last_acting_reflection_day")
                 ? tag.getLong("last_acting_reflection_day") : Long.MIN_VALUE;
+        identityAnchored = tag.getBoolean("identity_anchored");
 
         orgReputation.clear();
         CompoundTag rep = tag.getCompound("org_reputation");
@@ -783,6 +811,7 @@ public class PlayerMysteryData {
         hash = mix(hash, roleOveridentification);
         hash = mix(hash, actingReflectionCount);
         hash = mix(hash, lastActingReflectionDay);
+        hash = mix(hash, identityAnchored);
         hash = mix(hash, schemaVersion);
         return hash;
     }
@@ -798,6 +827,8 @@ public class PlayerMysteryData {
     private long socialFingerprint() {
         long hash = fingerprintSeed();
         hash = mix(hash, moneyPence);
+        hash = mix(hash, lastCityWorkDay);
+        hash = mix(hash, cityWorkShifts);
         hash = mix(hash, activeCommissionId);
         hash = mix(hash, activeQuestChainId);
         hash = mix(hash, activeQuestStep);
@@ -841,6 +872,9 @@ public class PlayerMysteryData {
         hash = mix(hash, m1TrialFirstOccultKillTick);
         hash = mix(hash, m1TrialFirstActingTick);
         hash = mix(hash, m1TrialRiskReachedTick);
+        hash = mix(hash, m1TrialIdentityAnchoredTick);
+        hash = mix(hash, m1TrialReflectionCompletedTick);
+        hash = mix(hash, m1TrialStreetLifeCompletedTick);
         return hash;
     }
 

@@ -6,8 +6,9 @@
     "docs/pathways_master.csv",
     "docs/recipes_master.csv",
     "docs/Project_Mystery_v0_9_manifest.json",
-    "docs/master/m0_content_catalog.json"
+    "docs/master/m0_content_catalog.json",
+    "docs/master/m0_runtime_catalog.json"
   ],
   "pathway_count": 22,
-  "generated_recipe_count": 11
+  "generated_recipe_count": 13
 }

@@ -15,6 +15,9 @@ on:
       - "scripts/import_v09_design.py"
       - "scripts/build_content_graph.py"
       - "scripts/run_server_smoke.py"
+      - "scripts/run_server_restart_matrix.py"
+      - "scripts/restore_migration_backup.py"
+      - "scripts/check_save_rollback.py"
       - "scripts/check_m1_playability.py"
       - "scripts/check_m2_investigation.py"
       - "scripts/check_resource_integrity.py"
@@ -26,6 +29,7 @@ on:
       - "docs/Project_Mystery_v0_9_Incremental_Additions.md"
       - "docs/Project_Mystery_v0_9_manifest.json"
       - "docs/master/m0_content_catalog.json"
+      - "docs/master/m0_runtime_catalog.json"
       - "build.gradle"
       - "settings.gradle"
       - "gradle.properties"
@@ -42,6 +46,9 @@ on:
       - "scripts/import_v09_design.py"
       - "scripts/build_content_graph.py"
       - "scripts/run_server_smoke.py"
+      - "scripts/run_server_restart_matrix.py"
+      - "scripts/restore_migration_backup.py"
+      - "scripts/check_save_rollback.py"
       - "scripts/check_m1_playability.py"
       - "scripts/check_m2_investigation.py"
       - "scripts/check_resource_integrity.py"
@@ -53,6 +60,7 @@ on:
       - "docs/Project_Mystery_v0_9_Incremental_Additions.md"
       - "docs/Project_Mystery_v0_9_manifest.json"
       - "docs/master/m0_content_catalog.json"
+      - "docs/master/m0_runtime_catalog.json"
       - "build.gradle"
       - "settings.gradle"
       - "gradle.properties"
@@ -104,6 +112,9 @@ jobs:
       - name: Verify resource integrity
         run: python3 scripts/check_resource_integrity.py
 
+      - name: Verify save rollback procedure
+        run: python3 scripts/check_save_rollback.py
+
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
@@ -114,11 +125,11 @@ jobs:
         run: |
           set -o pipefail
           ./gradlew -Dnet.minecraftforge.gradle.check.certs=false --stacktrace runGameTestServer | tee build/gametest-server.log
-          grep -F "3 tests are now running!" build/gametest-server.log
-          grep -F "All 3 required tests passed" build/gametest-server.log
+          grep -F "5 tests are now running!" build/gametest-server.log
+          grep -F "All 5 required tests passed" build/gametest-server.log
 
-      - name: Dedicated server smoke test
-        run: python3 scripts/run_server_smoke.py --timeout 180
+      - name: Dedicated server restart matrix
+        run: python3 scripts/run_server_restart_matrix.py --timeout 180
 
       - name: Upload mod jars
         uses: actions/upload-artifact@v7

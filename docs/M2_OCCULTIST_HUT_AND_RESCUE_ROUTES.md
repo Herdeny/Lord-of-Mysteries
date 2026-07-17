@@ -1,6 +1,6 @@
 # M2 神秘学家小屋、真假配方与三解救援
 
-> 适用版本：0.9.2-1.20.1
+> 适用版本：0.9.3-1.20.1
 >
 > 路线定位：本页内容是 v0.9 M2 调查与生活阶段的可玩迁移资产，当前正式里程碑仍是 M0
 
@@ -51,7 +51,7 @@
 
 ## 持久化与恢复
 
-- Capability schema 16 保存 `questResolutionRoute` 和 `questResolutionReady`。
+- Capability schema 17 保存 `questResolutionRoute` 和 `questResolutionReady`。
 - 死亡、重登、跨维度和服务器保存后保留路线；结算或放弃时完整清理。
 - 记者或鉴定师实体被命令清除后，只要对应结构区块重新加载，服务器会自动补回任务 NPC。
 - 卷宗丢失时再次右键莫尔即可获得同一案件的新卷宗；其真伪仍由世界、玩家与接取时间确定。
@@ -71,7 +71,7 @@ python scripts/run_server_smoke.py --timeout 180
 - 3 个委托与 3 条任务链。
 - 失踪小队旧 13 步数量和前七步兼容前缀。
 - `assault` / `stealth` / `divination` 三解名称。
-- 真假配方前置、六步顺序、命令入口、双语键与 Capability schema 16。
+- 真假配方前置、六步顺序、命令入口、双语键与 Capability schema 17。
 
 ## 当前边界
 
@@ -80,4 +80,4 @@ python scripts/run_server_smoke.py --timeout 180
 2–4 人队伍的步骤、路线、记者和夜袭状态会写入持久调查账本。已登记成员离线后上线自动追赶，
 中途加入使用 `/pm party sync`；个人仍分别结算奖励。详见
 [`M2_PERSISTENT_PARTY_RECOVERY.md`](M2_PERSISTENT_PARTY_RECOVERY.md)。
-M1 的真实一小时与多人手感记录仍是路线图从 M1 正式推进到 M2 的硬门禁。
+M0/M1 的机器门禁已经关闭并正式推进到 M2；真人两小时与多人手感记录继续作为发布质量回归。

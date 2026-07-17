@@ -1,57 +1,55 @@
 {
   "schema_version": 1,
   "design_version": "v0.9",
-  "current_milestone": "M0",
-  "gate_policy": "设计规格、data_ready、code_ready、asset_ready、playable 与 verified 必须分开统计；当前里程碑退出标准未满足前，后续阶段的既有或预研内容只能标注为迁移资产，不能宣称该阶段完成。",
+  "current_milestone": "M2",
+  "gate_policy": "设计规格、data_ready、code_ready、asset_ready、playable 与 verified 分开统计；完成自动化实施门禁不等于完成全部真人平衡与公开发布验证。",
   "milestones": [
     {
       "id": "M0",
       "title": "内容基建",
       "phase": "Content foundation",
-      "state": "active",
+      "state": "done",
       "duration_weeks": 4,
-      "summary": "Schema v4、内容关系图、生成器、迁移框架、来源审计与 CI 门禁。",
-      "acceptance": "至少 100 个样例数据通过 reload 与关系校验，旧存档可安全迁移并完成存档、死亡、重生和维度切换回归。",
+      "summary": "Schema v4、内容关系图、生成器、迁移与回滚工具、来源审计及 CI 门禁。",
+      "acceptance": "至少 100 个真实样例节点通过关系校验；旧存档可迁移、可备份、可回滚，并通过死亡、重生、维度与重启运行时验证。",
       "points": [
-        "已完成：v0.9 原文、增量文档与 manifest 精确导入，哈希、字节、行数和内嵌 v0.8 基线自动校验",
-        "已完成：Schema v4 元数据进入途径、15 个现有序列、3 个委托、3 条任务链和 25 条 M0 物品/状态/配方样例",
-        "已完成：71 节点、63 关系的内容图和 orphan、spoiler、compat、localization、asset 六类审计报告",
-        "已完成：Capability schema 16、CharacteristicBundle 分层特性、旧档回填和 Provider 生命周期失效监听",
-        "已完成：扮演 v2 基础字段、反刷联动、每日反思命令、状态显示和网络协议 8",
-        "已完成：schema 0/15→16 正式 DataFix 链、迁移前世界快照、原始 NBT 备份、未知/非法 ID 孤儿保留与幂等迁移历史",
-        "已完成：Core/Knowledge/Social/Endgame 四区 dirty mask、登录/重生/维度切换摘要同步与 5 秒校正",
-        "已完成：3 项 Forge GameTest 验证 Capability Clone、schema 15 迁移与未来 schema 隔离，并进入 Build CI",
-        "待完成：样例节点扩至 100、专服重启/降级回滚自动演练与真人死亡/跨维度整体验收"
+        "114 节点、160 关系内容图通过 orphan、spoiler、compat、localization 与 asset 审计",
+        "Capability schema 17 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema",
+        "世界加载前原子快照、幂等 schema marker、受限路径恢复工具和恢复前安全备份",
+        "5 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒和 M1 两小时状态",
+        "专服双启动矩阵验证世界种子、schema 快照、保存和干净停服保持稳定"
       ]
     },
     {
       "id": "M1",
       "title": "核心垂直切片",
       "phase": "Core vertical slice",
-      "state": "planned",
+      "state": "done",
       "duration_weeks": 8,
-      "summary": "占卜家 9–7、第一魔药、扮演 v2、特性守恒与一个可生活的城市街区。",
-      "acceptance": "新玩家无需管理员干预，在两小时内完成入门、调查、第一魔药、扮演、风险恢复与序列推进。",
+      "summary": "占卜家 9–7、魔药、扮演 v2、特性守恒、新手营地与可生活的雾都街区闭环。",
+      "acceptance": "新玩家无需管理员干预即可完成入门、营地、魔药、序列推进、扮演身份、反思、风险恢复和城市谋生；机器记录覆盖两小时九目标。",
       "points": [
-        "迁移资产：占卜家 9–7、魔药品质、能力、扮演、污染、失控和确定性首小时路线已经可玩",
-        "迁移资产：调查手账、恢复工具、睡眠恢复、保护符、营地和专服诊断已经存在",
-        "v0.9 新基础：特性 bundle 与扮演身份区分已进入存档和界面",
-        "待完成：两小时教程验收、身份卡/反思日志物品、城市街区生活循环、特性提取与守恒掉落实体"
+        "首次魔药自动发放扮演身份卡与反思日志，/pm recover 可自助补回",
+        "身份卡使用隐私安全预设并锚定行为边界；反思日志每日记录原则理解和过度认同",
+        "雾都前哨扩展床铺、工作台、熔炉、生活补给、街道和报社轮班经济",
+        "永久失控把精确 CharacteristicBundle 转移到失控体并守恒掉落，不再只掉通用碎片",
+        "两小时合同包含营地、序列 7、狩猎、扮演、风险、身份、反思、谋生与持续时长九目标",
+        "引导、/pm next、/pm m1check、/pm life、试炼报告和双语文案串联完整路线"
       ]
     },
     {
       "id": "M2",
       "title": "调查与生活",
       "phase": "Investigation and life",
-      "state": "planned",
+      "state": "active",
       "duration_weeks": 8,
-      "summary": "报社、事务所、警局、证据板、经济和三个动态案件。",
-      "acceptance": "四人服务器连续八小时无任务锁死，案件可恢复、可解释并可独立结算。",
+      "summary": "把现有雾都前哨、委托和持久队伍资产扩展为正式报社、事务所、警局、经济与动态案件。",
+      "acceptance": "四人服务器连续八小时无任务锁死；案件可恢复、可解释、可独立结算，生活与调查资源不会形成不可逆软锁。",
       "points": [
-        "迁移资产：雾都前哨、三委托、三任务链、神秘学家小屋、三路线救援和持久队伍账本已可玩",
-        "迁移资产：离线追赶、换队清理、重复结算防护、任务恢复和诊断已实现",
-        "待完成：正式报社/事务所/警局建筑、调查板 GUI、三类动态案件生成器、物价与生活循环",
-        "待完成：八小时四人负载与断线、死亡、换维度、重启联合验收"
+        "现有资产：3 种委托、3 条任务链、三路线救援、真假配方和 2–4 人持久调查账本",
+        "下一步：正式报社、事务所、警局街区及调查板交互界面",
+        "下一步：失踪、异常物品、神秘学犯罪三类动态案件生成器",
+        "下一步：生活物价、职业循环、证据链解释和八小时多人连续性矩阵"
       ]
     },
     {
@@ -63,9 +61,9 @@
       "summary": "占卜家、观众、猎人、偷盗者和学徒序列 9–5 的差异化闭环。",
       "acceptance": "每条途径都有生活、调查、战斗与风险闭环，并通过无唯一最优途径的多人验证。",
       "points": [
-        "迁移资产：五途径序列 9–7 均有药剂、能力、扮演事件和 schema v4 数据定义",
-        "待完成：五途径序列 6–5、进阶仪式、差异化经济和多人互补矩阵",
-        "待完成：能力同意、PvP、领地和反滥用策略正式验收"
+        "扩展五途径序列 6–5、晋升仪式和特性需求",
+        "建立能力同意、PvP、领地与反滥用策略",
+        "验证五途径经济定位和组队互补矩阵"
       ]
     },
     {
@@ -89,11 +87,11 @@
       "state": "planned",
       "duration_weeks": 10,
       "summary": "灵界航路、共享梦境、12 种生态生物和 6 种异常天气。",
-      "acceptance": "30 分钟灵界远征具有进入、导航、风险、收益和安全退出闭环。",
+      "acceptance": "30 分钟灵界远征具备进入、导航、风险、收益和安全退出闭环。",
       "points": [
         "灵界航路与方向风险",
-        "共享梦境、记忆与退出机制",
-        "生态预算和异常天气降级策略"
+        "共享梦境、记忆和退出机制",
+        "生态预算与异常天气降级策略"
       ]
     },
     {
@@ -116,12 +114,12 @@
       "phase": "Production and compatibility",
       "state": "planned",
       "duration_weeks": 8,
-      "summary": "十个工位以及 JEI、EMI、Curios、Create、Farmer's Delight 和 Jade 兼容。",
+      "summary": "十个工位及 JEI、EMI、Curios、Create、Farmer's Delight 和 Jade 兼容。",
       "acceptance": "目标 Mod 缺失时核心不崩溃，自动化不能绕过知识、同意和特性守恒。",
       "points": [
-        "先接只读 JEI/EMI/Jade/Curios 展示，再开放有限自动化",
+        "先接只读展示，再开放受限自动化",
         "外部 API 类链接隔离与缺失 Mod 回归",
-        "十工位配方、过程、失败与污染审计"
+        "工作位配方、失败和污染审计"
       ]
     },
     {
@@ -131,10 +129,10 @@
       "state": "future",
       "duration_weeks": 12,
       "summary": "战士、秘祈人、阅读者、刺客、耕种者和药师序列 9–5。",
-      "acceptance": "15 条途径均达到 playable，20 人服务器压测达标。",
+      "acceptance": "15 条途径达到 playable，20 人服务器压测达标。",
       "points": [
         "六途径数据、能力和扮演包",
-        "农业、医药、潜行、知识和近战差异化",
+        "农业、医药、潜行、知识与近战差异化",
         "20 人性能与网络预算"
       ]
     },
@@ -144,7 +142,7 @@
       "phase": "Complete 22 pathways",
       "state": "future",
       "duration_weeks": 12,
-      "summary": "补齐 v0.9 第 60 章的七条途径序列 9–5。",
+      "summary": "补齐 v0.9 规格中的剩余七条途径序列 9–5。",
       "acceptance": "22 条途径序列 9–5 至少 playable，敏感能力完成同意与治理验收。",
       "points": [
         "七途径 35 个详细序列包",
@@ -158,7 +156,7 @@
       "phase": "Demigods",
       "state": "future",
       "duration_weeks": 14,
-      "summary": "序列 4、知识灼伤、49+ 模型和锚系统。",
+      "summary": "序列 4、知识灼伤、39+ 模型和锚系统。",
       "acceptance": "五条优先途径序列 4 verified，低配与无障碍替代模式可用。",
       "points": [
         "半神晋升、神话形态与知识伤害",
@@ -172,7 +170,7 @@
       "phase": "World and seasons",
       "state": "future",
       "duration_weeks": 10,
-      "summary": "40+ 结构类别、48 个世界事件、活历史和赛季结算。",
+      "summary": "40+ 结构类别、28 个世界事件、活历史和赛季结算。",
       "acceptance": "十二周模拟世界不出现经济、生态或特性不可逆枯竭。",
       "points": [
         "世界事件调度与活历史",
@@ -186,12 +184,12 @@
       "phase": "Experimental endgame",
       "state": "future",
       "duration_weeks": 16,
-      "summary": "可完全关闭的序列 3–1、祈祷、唯一性与神位战争实验模块。",
-      "acceptance": "终局可完全关闭，不授予管理员式权力，赛季与存档可以安全封存。",
+      "summary": "可完全关闭的序列 3–0、祈祷、唯一性与神位战争实验模块。",
+      "acceptance": "终局可完全关闭，不授予管理员式权力，赛季与存档可安全封存。",
       "points": [
         "默认关闭，不阻塞常规服务器和 1.0 发布候选",
         "祈祷响应、唯一性和神位政治使用服务端预算与审计",
-        "完成后进入本地化、性能、版权原创化和 100 小时公开测试的 1.0 发布候选"
+        "完成后进入本地化、性能、版权原创化与公开长测"
       ]
     }
   ],
@@ -210,16 +208,19 @@
       "structure_specs": 32,
       "weather_anomaly_specs": 18
     },
-    "repository_evidence_at_0.9.2": {
-      "content_graph_nodes": 71,
-      "content_graph_edges": 63,
+    "repository_evidence_at_0.9.3": {
+      "content_graph_nodes": 114,
+      "content_graph_edges": 160,
       "schema4_sequence_definitions": 15,
-      "generated_recipes": 11,
+      "generated_recipes": 13,
       "playable_commissions": 3,
       "playable_quest_chains": 3,
       "junit_tests": 202,
-      "forge_gametests": 3,
-      "network_protocol": 8
+      "forge_gametests": 5,
+      "save_rollback_checks": 1,
+      "dedicated_server_starts": 2,
+      "network_protocol": 8,
+      "player_capability_schema": 17
     }
   }
 }

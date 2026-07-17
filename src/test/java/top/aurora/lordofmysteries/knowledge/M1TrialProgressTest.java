@@ -11,15 +11,17 @@ class M1TrialProgressTest {
     @Test
     void fullVerticalSlicePassesAllGoals() {
         M1TrialProgress.Result result = M1TrialProgress.evaluate(
-                72000L, true, 7, 3, 2, 40f, 12f);
+                144000L, true, 7, 3, 2, 40f, 12f,
+                true, true, true);
         assertTrue(result.passed());
-        assertEquals(6, result.completedGoals());
+        assertEquals(9, result.completedGoals());
     }
 
     @Test
     void partialRunReportsOnlyCompletedGoals() {
         M1TrialProgress.Result result = M1TrialProgress.evaluate(
-                36000L, true, 9, 1, 0, 10f, 5f);
+                36000L, true, 9, 1, 0, 10f, 5f,
+                false, false, false);
         assertFalse(result.passed());
         assertEquals(1, result.completedGoals());
         assertFalse(result.sequenceComplete());

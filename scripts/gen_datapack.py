@@ -309,6 +309,7 @@ def expected_files():
             "docs/recipes_master.csv",
             "docs/Project_Mystery_v0_9_manifest.json",
             "docs/master/m0_content_catalog.json",
+            "docs/master/m0_runtime_catalog.json",
         ],
         "pathway_count": len(pathways),
         "generated_recipe_count": len(recipes),

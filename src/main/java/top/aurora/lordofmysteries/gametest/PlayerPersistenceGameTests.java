@@ -8,15 +8,23 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.RegisterGameTestsEvent;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 import top.aurora.lordofmysteries.ProjectMystery;
+import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
+import top.aurora.lordofmysteries.characteristic.CharacteristicConservationService;
+import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
+import top.aurora.lordofmysteries.knowledge.M1TrialProgress;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerCapabilityEvents;
 import top.aurora.lordofmysteries.player.PlayerDataSection;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
+import top.aurora.lordofmysteries.potion.PotionQuality;
+import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
+import top.aurora.lordofmysteries.registry.ModEntities;
 
 @PrefixGameTestTemplate(false)
 public final class PlayerPersistenceGameTests {
@@ -116,7 +124,7 @@ public final class PlayerPersistenceGameTests {
         helper.assertTrue(saved.getInt("schema_version")
                         == PlayerMysteryData.CURRENT_SCHEMA_VERSION,
                 "provider must persist the migrated schema");
-        helper.assertTrue(saved.getList("migration_history", 10).size() == 1,
+        helper.assertTrue(saved.getList("migration_history", 10).size() == 2,
                 "provider must persist the applied migration history");
         helper.succeed();
     }
@@ -141,6 +149,74 @@ public final class PlayerPersistenceGameTests {
         helper.assertTrue("keep-me".equals(
                         payload.getString("future_only_field")),
                 "future-only fields must remain recoverable");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void characteristicBundleSurvivesCarrierAndItemRoundTrip(
+            GameTestHelper helper) {
+        PlayerMysteryData data = new PlayerMysteryData();
+        data.pathway = ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID, "seer");
+        data.sequence = 8;
+        CharacteristicLedger.recordPotionAdvancement(
+                data, data.pathway, 9, PotionQuality.COMPLETE);
+        CharacteristicLedger.recordPotionAdvancement(
+                data, data.pathway, 8, PotionQuality.PERFECT);
+        CharacteristicBundle expected = data.characteristicBundles.get(0);
+        SeerBreakdownEntity carrier = ModEntities.SEER_BREAKDOWN.get().create(
+                helper.getLevel());
+        helper.assertTrue(carrier != null,
+                "characteristic carrier entity must be constructible");
+        if (carrier == null) return;
+        helper.assertTrue(CharacteristicConservationService.transferCurrentBundle(
+                        carrier, data),
+                "current pathway bundle must transfer to the carrier");
+        helper.assertTrue(data.characteristicBundles.isEmpty(),
+                "transferred bundle must leave the player ledger exactly once");
+        CharacteristicBundle carried = CharacteristicConservationService
+                .readCarrier(carrier).orElse(null);
+        helper.assertTrue(expected.equals(carried),
+                "carrier must retain the exact layered characteristic payload");
+        ItemStack stack = CharacteristicConservationService.createStack(expected);
+        helper.assertTrue(expected.equals(CharacteristicConservationService
+                        .readStack(stack).orElse(null)),
+                "broken characteristic item must retain the exact payload");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void twoHourM1EvidenceSurvivesProviderRoundTrip(
+            GameTestHelper helper) {
+        PlayerMysteryData source = new PlayerMysteryData();
+        source.m1TrialElapsedTicks = M1TrialProgress.REQUIRED_TICKS;
+        source.m1TrialCampVisited = true;
+        source.m1TrialBestSequence = 7;
+        source.m1TrialOccultKills = M1TrialProgress.REQUIRED_OCCULT_KILLS;
+        source.m1TrialActingEvents = M1TrialProgress.REQUIRED_ACTING_EVENTS;
+        source.m1TrialMaxPressure = M1TrialProgress.REQUIRED_RISK_PEAK;
+        source.identityAnchored = true;
+        source.actingReflectionCount = 1;
+        source.cityWorkShifts = 1;
+        source.lastCityWorkDay = 4L;
+        source.m1TrialIdentityAnchoredTick = 120000L;
+        source.m1TrialReflectionCompletedTick = 132000L;
+        source.m1TrialStreetLifeCompletedTick = 144000L;
+
+        MysteryCapability.Provider provider = new MysteryCapability.Provider();
+        provider.deserializeNBT(source.save());
+        PlayerMysteryData restored = provider.getData();
+        M1TrialProgress.Result result = M1TrialProgress.evaluate(
+                restored.m1TrialElapsedTicks, restored.m1TrialCampVisited,
+                restored.m1TrialBestSequence, restored.m1TrialOccultKills,
+                restored.m1TrialActingEvents, restored.m1TrialMaxPressure,
+                restored.m1TrialMaxPollution, restored.identityAnchored,
+                restored.actingReflectionCount > 0,
+                restored.cityWorkShifts > 0);
+        helper.assertTrue(result.passed(),
+                "all nine M1 goals must survive provider serialization");
+        helper.assertTrue(restored.m1TrialStreetLifeCompletedTick == 144000L,
+                "two-hour street-life milestone must survive restart state");
         helper.succeed();
     }
 }

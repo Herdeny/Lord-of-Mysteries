@@ -1,0 +1,288 @@
+{
+  "schema_version": 4,
+  "design_version": "v0.9",
+  "description": "Verified runtime nodes that complete the M0 100-node acceptance sample without counting unimplemented design targets.",
+  "defaults": {
+    "schema_version": 4,
+    "canon_status": "adaptation",
+    "source_tier": "B-tech",
+    "source_refs": ["GDD:v0.9/78.4", "REPO:runtime"],
+    "spoiler_level": 0,
+    "knowledge_gate": "lord_of_mysteries:knowledge/investigator_basics",
+    "links": {"requires": [], "produces": [], "used_by": [], "countered_by": []},
+    "implementation_state": "verified"
+  },
+  "entries": [
+    {
+      "id": "lord_of_mysteries:deep_gray_spirit_tear",
+      "type": "item",
+      "links": {"used_by": ["lord_of_mysteries:seer_potion_8"]}
+    },
+    {
+      "id": "lord_of_mysteries:heather",
+      "type": "item",
+      "links": {"used_by": ["lord_of_mysteries:seer_potion_8"]}
+    },
+    {
+      "id": "lord_of_mysteries:spirit_alcohol",
+      "type": "item",
+      "links": {"used_by": ["lord_of_mysteries:calm_sealing_ritual"]}
+    },
+    {
+      "id": "lord_of_mysteries:shapeshifter_serpent_gland",
+      "type": "item",
+      "spoiler_level": 1,
+      "links": {"used_by": ["lord_of_mysteries:seer_potion_7"]}
+    },
+    {
+      "id": "lord_of_mysteries:ash_powder",
+      "type": "item",
+      "links": {"used_by": ["lord_of_mysteries:seer_potion_7"]}
+    },
+    {
+      "id": "lord_of_mysteries:silver_filings",
+      "type": "item",
+      "links": {"used_by": ["lord_of_mysteries:calm_sealing_ritual"]}
+    },
+    {
+      "id": "lord_of_mysteries:ashen_thread",
+      "type": "item",
+      "links": {"produces": ["lord_of_mysteries:paper_figurine"]}
+    },
+    {
+      "id": "lord_of_mysteries:investigator_notes",
+      "type": "item",
+      "canon_status": "original",
+      "source_tier": "D",
+      "source_refs": ["GDD:v0.9/74.3", "REPO:InvestigatorNotesItem"],
+      "links": {"used_by": ["lord_of_mysteries:knowledge/investigator_basics"]}
+    },
+    {
+      "id": "lord_of_mysteries:investigator_compass",
+      "type": "item",
+      "canon_status": "original",
+      "source_tier": "D",
+      "source_refs": ["GDD:v0.9/74.2", "REPO:InvestigatorCompassItem"],
+      "links": {"used_by": ["lord_of_mysteries:investigator_camp"]}
+    },
+    {
+      "id": "lord_of_mysteries:spirit_lantern",
+      "type": "item",
+      "links": {"countered_by": ["lord_of_mysteries:shapeshifter_serpent"]}
+    },
+    {
+      "id": "lord_of_mysteries:mystic_playing_cards",
+      "type": "item",
+      "links": {"used_by": ["lord_of_mysteries:seer_8"]}
+    },
+    {
+      "id": "lord_of_mysteries:paper_figurine",
+      "type": "item",
+      "links": {"used_by": ["lord_of_mysteries:seer_7"]}
+    },
+    {
+      "id": "lord_of_mysteries:seer_potion_9",
+      "type": "item",
+      "spoiler_level": 1,
+      "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+      "links": {"requires": ["lord_of_mysteries:spirit_herb", "lord_of_mysteries:divination_crystal"], "produces": ["lord_of_mysteries:seer_9"]}
+    },
+    {
+      "id": "lord_of_mysteries:seer_potion_8",
+      "type": "item",
+      "spoiler_level": 1,
+      "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+      "links": {"requires": ["lord_of_mysteries:deep_gray_spirit_tear", "lord_of_mysteries:heather"], "produces": ["lord_of_mysteries:seer_8"]}
+    },
+    {
+      "id": "lord_of_mysteries:seer_potion_7",
+      "type": "item",
+      "spoiler_level": 1,
+      "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+      "links": {"requires": ["lord_of_mysteries:shapeshifter_serpent_gland", "lord_of_mysteries:ash_powder"], "produces": ["lord_of_mysteries:seer_7"]}
+    },
+    {
+      "id": "lord_of_mysteries:contaminated_mixture",
+      "type": "item",
+      "links": {"requires": ["lord_of_mysteries:status/pollution"], "countered_by": ["lord_of_mysteries:calm_sealing_ritual"]}
+    },
+    {
+      "id": "lord_of_mysteries:broken_characteristic",
+      "type": "item",
+      "spoiler_level": 1,
+      "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+      "links": {"requires": ["lord_of_mysteries:seer_breakdown"], "used_by": ["lord_of_mysteries:characteristic_conservation"]}
+    },
+    {
+      "id": "lord_of_mysteries:acting_identity_card",
+      "type": "item",
+      "canon_status": "original",
+      "source_tier": "D",
+      "source_refs": ["GDD:v0.9/64.5", "REPO:ActingIdentityCardItem"],
+      "links": {"used_by": ["lord_of_mysteries:acting_reflection_journal"]}
+    },
+    {
+      "id": "lord_of_mysteries:acting_reflection_journal",
+      "type": "item",
+      "canon_status": "original",
+      "source_tier": "D",
+      "source_refs": ["GDD:v0.9/69", "REPO:ActingReflectionJournalItem"],
+      "links": {"requires": ["lord_of_mysteries:acting_identity_card"], "countered_by": ["lord_of_mysteries:status/insanity_pressure"]}
+    },
+    {
+      "id": "lord_of_mysteries:crucible",
+      "type": "block",
+      "links": {"requires": ["lord_of_mysteries:knowledge/investigator_basics"], "produces": ["lord_of_mysteries:seer_potion_9", "lord_of_mysteries:seer_potion_8", "lord_of_mysteries:seer_potion_7"]}
+    },
+    {
+      "id": "lord_of_mysteries:ritual_altar",
+      "type": "block",
+      "links": {"used_by": ["lord_of_mysteries:calm_sealing_ritual"]}
+    },
+    {
+      "id": "lord_of_mysteries:ritual_chalk_mark",
+      "type": "block",
+      "links": {"used_by": ["lord_of_mysteries:calm_sealing_ritual"]}
+    },
+    {
+      "id": "lord_of_mysteries:hunter_snare",
+      "type": "block",
+      "links": {"countered_by": ["lord_of_mysteries:shapeshifter_serpent"]}
+    },
+    {
+      "id": "lord_of_mysteries:commission_board",
+      "type": "block",
+      "canon_status": "original",
+      "source_tier": "D",
+      "source_refs": ["GDD:v0.9/73", "REPO:CommissionBoardBlock"],
+      "knowledge_gate": "lord_of_mysteries:knowledge/commission_board",
+      "links": {"used_by": ["lord_of_mysteries:commission/missing_investigation_squad", "lord_of_mysteries:commission/lost_cat", "lord_of_mysteries:commission/counterfeit_formula"]}
+    },
+    {
+      "id": "lord_of_mysteries:shapeshifter_serpent",
+      "type": "entity",
+      "spoiler_level": 1,
+      "links": {"produces": ["lord_of_mysteries:shapeshifter_serpent_gland"], "countered_by": ["lord_of_mysteries:spirit_lantern", "lord_of_mysteries:hunter_snare"]}
+    },
+    {
+      "id": "lord_of_mysteries:spirit_wisp",
+      "type": "entity",
+      "links": {"produces": ["lord_of_mysteries:deep_gray_spirit_tear"], "countered_by": ["lord_of_mysteries:spirit_lantern"]}
+    },
+    {
+      "id": "lord_of_mysteries:ashen_puppet",
+      "type": "entity",
+      "links": {"produces": ["lord_of_mysteries:ash_powder", "lord_of_mysteries:ashen_thread"]}
+    },
+    {
+      "id": "lord_of_mysteries:seer_breakdown",
+      "type": "entity",
+      "spoiler_level": 1,
+      "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+      "links": {"produces": ["lord_of_mysteries:broken_characteristic"], "countered_by": ["lord_of_mysteries:protective_charm"]}
+    },
+    {
+      "id": "lord_of_mysteries:thief_breakdown",
+      "type": "entity",
+      "spoiler_level": 1,
+      "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+      "links": {"produces": ["lord_of_mysteries:broken_characteristic"]}
+    },
+    {
+      "id": "lord_of_mysteries:apprentice_breakdown",
+      "type": "entity",
+      "spoiler_level": 1,
+      "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+      "links": {"produces": ["lord_of_mysteries:broken_characteristic"]}
+    },
+    {
+      "id": "lord_of_mysteries:psychiatrist_breakdown",
+      "type": "entity",
+      "spoiler_level": 1,
+      "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+      "links": {"produces": ["lord_of_mysteries:broken_characteristic"]}
+    },
+    {
+      "id": "lord_of_mysteries:pyromaniac_breakdown",
+      "type": "entity",
+      "spoiler_level": 1,
+      "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+      "links": {"produces": ["lord_of_mysteries:broken_characteristic"]}
+    },
+    {
+      "id": "lord_of_mysteries:generated_shadow_marten_claw",
+      "type": "recipe",
+      "source_refs": ["GDD:v0.9/72", "REPO:docs/recipes_master.csv"],
+      "links": {"requires": ["minecraft:rabbit_foot", "minecraft:black_dye", "lord_of_mysteries:spirit_salt"], "produces": ["lord_of_mysteries:shadow_marten_claw"]}
+    },
+    {
+      "id": "lord_of_mysteries:generated_dream_scale_fragment",
+      "type": "recipe",
+      "source_refs": ["GDD:v0.9/72", "REPO:docs/recipes_master.csv"],
+      "links": {"requires": ["minecraft:phantom_membrane", "minecraft:amethyst_shard", "lord_of_mysteries:mystic_ink"], "produces": ["lord_of_mysteries:dream_scale_fragment"]}
+    },
+    {
+      "id": "lord_of_mysteries:generated_mirror_crab_shell",
+      "type": "recipe",
+      "source_refs": ["GDD:v0.9/72", "REPO:docs/recipes_master.csv"],
+      "links": {"requires": ["minecraft:nautilus_shell", "minecraft:prismarine_crystals", "lord_of_mysteries:mystic_ink"], "produces": ["lord_of_mysteries:mirror_crab_shell"]}
+    },
+    {
+      "id": "lord_of_mysteries:generated_ancient_tablet_spore_sac",
+      "type": "recipe",
+      "source_refs": ["GDD:v0.9/72", "REPO:docs/recipes_master.csv"],
+      "links": {"requires": ["minecraft:moss_block", "minecraft:glow_lichen", "minecraft:amethyst_shard"], "produces": ["lord_of_mysteries:ancient_tablet_spore_sac"]}
+    },
+    {
+      "id": "lord_of_mysteries:generated_iridescent_trickbird_feather",
+      "type": "recipe",
+      "source_refs": ["GDD:v0.9/72", "REPO:docs/recipes_master.csv"],
+      "links": {"requires": ["minecraft:feather", "minecraft:glow_ink_sac", "minecraft:ender_pearl"], "produces": ["lord_of_mysteries:iridescent_trickbird_feather"]}
+    },
+    {
+      "id": "lord_of_mysteries:generated_meteor_dust",
+      "type": "recipe",
+      "source_refs": ["GDD:v0.9/72", "REPO:docs/recipes_master.csv"],
+      "links": {"requires": ["minecraft:glowstone_dust", "minecraft:amethyst_shard", "lord_of_mysteries:moonwater"], "produces": ["lord_of_mysteries:meteor_dust"]}
+    },
+    {
+      "id": "lord_of_mysteries:generated_acting_identity_card",
+      "type": "recipe",
+      "canon_status": "original",
+      "source_tier": "D",
+      "source_refs": ["GDD:v0.9/64.5", "REPO:docs/recipes_master.csv"],
+      "links": {"requires": ["minecraft:paper", "minecraft:ink_sac", "minecraft:red_dye"], "produces": ["lord_of_mysteries:acting_identity_card"]}
+    },
+    {
+      "id": "lord_of_mysteries:generated_acting_reflection_journal",
+      "type": "recipe",
+      "canon_status": "original",
+      "source_tier": "D",
+      "source_refs": ["GDD:v0.9/69", "REPO:docs/recipes_master.csv"],
+      "links": {"requires": ["minecraft:leather", "minecraft:paper", "lord_of_mysteries:acting_identity_card"], "produces": ["lord_of_mysteries:acting_reflection_journal"]}
+    },
+    {
+      "id": "lord_of_mysteries:investigator_camp",
+      "type": "structure",
+      "canon_status": "original",
+      "source_tier": "D",
+      "source_refs": ["GDD:v0.9/74.2", "REPO:AbandonedCampGenerator"],
+      "links": {"produces": ["lord_of_mysteries:investigator_notes", "lord_of_mysteries:investigator_compass", "lord_of_mysteries:crucible"]}
+    },
+    {
+      "id": "lord_of_mysteries:calm_sealing_ritual",
+      "type": "ritual",
+      "source_refs": ["GDD:v0.9/69", "REPO:RitualResolutionLogic"],
+      "links": {"requires": ["lord_of_mysteries:ritual_altar", "lord_of_mysteries:ritual_chalk_mark", "lord_of_mysteries:spirit_alcohol", "lord_of_mysteries:silver_filings"], "countered_by": ["lord_of_mysteries:status/pollution"]}
+    },
+    {
+      "id": "lord_of_mysteries:characteristic_conservation",
+      "type": "system",
+      "source_refs": ["GDD:v0.9/6", "REPO:CharacteristicConservationService"],
+      "spoiler_level": 1,
+      "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+      "implementation_state": "code_ready",
+      "links": {"requires": ["lord_of_mysteries:broken_characteristic"], "used_by": ["lord_of_mysteries:seer_breakdown", "lord_of_mysteries:thief_breakdown", "lord_of_mysteries:apprentice_breakdown", "lord_of_mysteries:psychiatrist_breakdown", "lord_of_mysteries:pyromaniac_breakdown"]}
+    }
+  ]
+}

@@ -25,6 +25,9 @@ import top.aurora.lordofmysteries.knowledge.KnowledgeCopyItem;
 import top.aurora.lordofmysteries.commission.CaseClueItem;
 import top.aurora.lordofmysteries.commission.CommissionPaperItem;
 import top.aurora.lordofmysteries.commission.SealedFormulaDossierItem;
+import top.aurora.lordofmysteries.acting.ActingIdentityCardItem;
+import top.aurora.lordofmysteries.acting.ActingReflectionJournalItem;
+import top.aurora.lordofmysteries.characteristic.BrokenCharacteristicItem;
 
 /**
  * 物品注册（Forge 1.20.1）。包含材料、魔药、封印物和方块物品。
@@ -176,7 +179,16 @@ public final class ModItems {
     public static final RegistryObject<Item> CONTAMINATED_MIXTURE = simple("contaminated_mixture");
     public static final RegistryObject<Item> BROKEN_CHARACTERISTIC = ITEMS.register(
             "broken_characteristic",
-            () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+            () -> new BrokenCharacteristicItem(
+                    new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> ACTING_IDENTITY_CARD = ITEMS.register(
+            "acting_identity_card",
+            () -> new ActingIdentityCardItem(
+                    new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> ACTING_REFLECTION_JOURNAL = ITEMS.register(
+            "acting_reflection_journal",
+            () -> new ActingReflectionJournalItem(
+                    new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> INVESTIGATOR_NOTES = ITEMS.register(
             "investigator_notes",
             () -> new InvestigatorNotesItem(new Item.Properties().rarity(Rarity.UNCOMMON)));

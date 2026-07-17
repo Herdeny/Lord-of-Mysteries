@@ -6,13 +6,18 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.level.block.state.properties.BedPart;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.TickEvent;
@@ -26,6 +31,10 @@ import top.aurora.lordofmysteries.registry.ModBlocks;
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class MistCityOutpostGenerator {
 
+    private static final ResourceLocation LIVELIHOOD_SUPPLIES =
+            ResourceLocation.fromNamespaceAndPath(
+                    ProjectMystery.MOD_ID,
+                    "chests/mist_city_livelihood_supplies");
     private static final Queue<PendingOutpost> PENDING_OUTPOSTS =
             new ConcurrentLinkedQueue<>();
 
@@ -100,8 +109,8 @@ public final class MistCityOutpostGenerator {
     }
 
     private static void generate(ServerLevel level, BlockPos center) {
-        for (int dx = -4; dx <= 4; dx++) {
-            for (int dz = -4; dz <= 4; dz++) {
+        for (int dx = -6; dx <= 6; dx++) {
+            for (int dz = -6; dz <= 6; dz++) {
                 level.setBlock(center.offset(dx, -1, dz),
                         Blocks.STONE_BRICKS.defaultBlockState(), 3);
                 for (int dy = 0; dy <= 5; dy++) {
@@ -116,6 +125,20 @@ public final class MistCityOutpostGenerator {
                         Blocks.SPRUCE_PLANKS.defaultBlockState(), 3);
                 level.setBlock(center.offset(dx, 4, dz),
                         Blocks.DARK_OAK_SLAB.defaultBlockState(), 3);
+            }
+        }
+        for (int dy = 1; dy <= 3; dy++) {
+            for (int offset = -3; offset <= 3; offset++) {
+                if (offset != 0 || dy > 2) {
+                    level.setBlock(center.offset(offset, dy, -3),
+                            Blocks.SPRUCE_PLANKS.defaultBlockState(), 3);
+                }
+                if (Math.abs(offset) != 1 || dy != 2) {
+                    level.setBlock(center.offset(-3, dy, offset),
+                            Blocks.SPRUCE_PLANKS.defaultBlockState(), 3);
+                    level.setBlock(center.offset(3, dy, offset),
+                            Blocks.SPRUCE_PLANKS.defaultBlockState(), 3);
+                }
             }
         }
         int[][] corners = {{-3, -3}, {-3, 3}, {3, -3}, {3, 3}};
@@ -135,6 +158,35 @@ public final class MistCityOutpostGenerator {
                 Blocks.LECTERN.defaultBlockState(), 3);
         level.setBlock(center.offset(0, 1, -3),
                 Blocks.SOUL_LANTERN.defaultBlockState(), 3);
+        level.setBlock(center.offset(-2, 1, 2),
+                Blocks.RED_BED.defaultBlockState()
+                        .setValue(BedBlock.PART, BedPart.FOOT)
+                        .setValue(BedBlock.FACING, Direction.NORTH), 3);
+        level.setBlock(center.offset(-2, 1, 1),
+                Blocks.RED_BED.defaultBlockState()
+                        .setValue(BedBlock.PART, BedPart.HEAD)
+                        .setValue(BedBlock.FACING, Direction.NORTH), 3);
+        level.setBlock(center.offset(1, 1, 2),
+                Blocks.CRAFTING_TABLE.defaultBlockState(), 3);
+        level.setBlock(center.offset(2, 1, 2),
+                Blocks.FURNACE.defaultBlockState(), 3);
+        level.setBlock(center.offset(4, 0, 2),
+                Blocks.BARREL.defaultBlockState(), 3);
+        if (level.getBlockEntity(center.offset(4, 0, 2))
+                instanceof RandomizableContainerBlockEntity barrel) {
+            barrel.setLootTable(LIVELIHOOD_SUPPLIES,
+                    level.getSeed() ^ center.asLong());
+        }
+        for (int x = -6; x <= 6; x++) {
+            level.setBlock(center.offset(x, 0, 5),
+                    Blocks.STONE_BRICKS.defaultBlockState(), 3);
+            level.setBlock(center.offset(x, 0, 6),
+                    Blocks.STONE_BRICKS.defaultBlockState(), 3);
+        }
+        level.setBlock(center.offset(-5, 1, 5),
+                Blocks.HAY_BLOCK.defaultBlockState(), 3);
+        level.setBlock(center.offset(5, 1, 5),
+                Blocks.CAULDRON.defaultBlockState(), 3);
     }
 
     private record PendingOutpost(long levelSeed, BlockPos target) {}

@@ -1,13 +1,13 @@
 # Project Mystery 专用服务器与多人一致性验证矩阵
 
-> 适用版本：0.9.2-1.20.1
+> 适用版本：0.9.3-1.20.1
 >
 > 技术基线：Minecraft 1.20.1 · Forge 47.4.20 · Java 17
 >
-> 数据基线：Capability schema 16 · content schema v4 · SimpleChannel protocol 8
+> 数据基线：Capability schema 17 · content schema v4 · SimpleChannel protocol 8
 
 本矩阵用于验证 M1 连续性，并为 M2 多人内测提前冻结可重复的证据格式。自动冒烟通过不等于
-真实一小时平衡验收通过；任何崩溃、复制、永久卡步、跨玩家串档或客户端越权均为阻断项。
+真人两小时平衡验收通过；任何崩溃、复制、永久卡步、跨玩家串档或客户端越权均为阻断项。
 
 ## 自动门禁
 
@@ -16,16 +16,17 @@ python scripts/gen_datapack.py --check
 python scripts/check_m1_playability.py
 python scripts/check_m2_investigation.py
 python scripts/check_resource_integrity.py
+python scripts/check_save_rollback.py
 python scripts/sync_project_metadata.py --check
 ./gradlew clean build
 ./gradlew runGameTestServer
-python scripts/run_server_smoke.py --timeout 180
+python scripts/run_server_restart_matrix.py --timeout 180
 ```
 
-`run_server_smoke.py` 会接受 EULA、启动 Forge 专用服务器、确认 3 个委托和 3 条任务链完成加载，
-等待服务器进入 `Done`，执行 `/pm servercheck` 验证队伍 SavedData 可创建，并检查
-`active_parties` / `party_members` 指标可读，再执行 `list` 与 `save-all flush`，检测服务端线程致命错误，
-然后发送 `stop` 并要求进程以 0 退出。GitHub Build 工作流执行同一冒烟。
+`check_save_rollback.py` 会创建隔离测试世界，验证快照 dry-run、完整恢复、快照后文件清除、
+恢复前安全备份与路径穿越拒绝。`run_server_restart_matrix.py` 会连续启动 Forge 专用服务器两次，
+每次确认 3 个委托和 3 条任务链完成加载、进入 `Done`、运行 `/pm servercheck`、执行命令循环、
+强制保存并干净停服；第二次还要求世界种子与 schema 17 marker 保持一致。GitHub Build 工作流执行同一矩阵。
 
 ## 开测前诊断
 
@@ -48,7 +49,7 @@ python scripts/run_server_smoke.py --timeout 180
 | 仪式重启 | 调用/结算前停服再启动 | `RESOLVING` 安全回退重试，不永久卡死 | 祭坛可继续或取消 |
 | 主持人离线 | 仪式中主持人离线 | 调用暂停；持续离线 60 秒后取消且不错误结算材料 | 祭坛状态回到安全态 |
 
-结束时 `/pm trial verify` 必须显示六项核心目标 6/6、连续性门禁 4/4。随后仍需填写
+结束时 `/pm trial verify` 必须显示九项核心目标 9/9、连续性门禁 4/4。随后仍需填写
 [`M1_ACCEPTANCE_CHECKLIST.md`](M1_ACCEPTANCE_CHECKLIST.md) 的材料、战斗和节奏记录。
 
 ## M2 队伍矩阵
@@ -95,9 +96,9 @@ python scripts/run_server_smoke.py --timeout 180
 玩家与记分板队伍：
 起止时间：
 /pm doctor：PASS / FAIL
-/pm trial verify：核心 __/6，连续性 __/4
-/pm trial report：营地 __ / 序列9 __ / 序列8 __ / 序列7 __
-自动 server smoke：PASS / FAIL
+/pm trial verify：核心 __/9，连续性 __/4
+/pm trial report：营地 __ / 序列9 __ / 序列8 __ / 序列7 __ / 身份 __ / 反思 __ / 城市生活 __
+自动 rollback / restart matrix：PASS / FAIL
 任务链：PASS / FAIL，失败步骤：
 数据与物品复制检查：PASS / FAIL
 C2S 重放/限流：PASS / FAIL
@@ -108,6 +109,6 @@ C2S 重放/限流：PASS / FAIL
 
 ## 当前结论边界
 
-- 已自动验证：v0.9 设计源、内容图、M1 可玩性合同、M2 调查合同、资源完整性门禁、202 项 JUnit、3 项真实 Forge GameTest、schema 16 迁移快照、Capability Clone、队伍账本 NBT/SavedData 往返、数据加载、专服到达 `Done`、运行诊断、命令循环、强制保存与干净停服。
+- 已自动验证：114 节点/160 关系内容图、M1 两小时合同、M2 调查合同、资源完整性门禁、202 项 JUnit、5 项真实 Forge GameTest、schema 17 迁移快照与精确回滚、Capability Clone、特性载荷往返、队伍账本 NBT/SavedData 往返，以及两次专服启动中的种子/marker 幂等、运行诊断、强制保存与干净停服。
 - 已实现基础：同记分板队伍 2–4 人共享进度、离线追赶、换队/退队清理、重复结算防护、个人结算、确定性协调者、仪式重启/离线恢复。
-- 尚未关闭：自动化专服重启/降级回滚、真人死亡/跨维度整体验收、真实一小时生存平衡、正式队伍 GUI、管理员离线改队/队名复用人工矩阵、五途径多人负载矩阵与 M2 schema 冻结。
+- 尚未关闭：真人死亡/跨维度整体验收、真实两小时生存与数值平衡、正式队伍 GUI、管理员离线改队/队名复用人工矩阵、五途径多人负载矩阵与 M2 schema 冻结。

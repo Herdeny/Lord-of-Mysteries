@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import top.aurora.lordofmysteries.ProjectMystery;
-import top.aurora.lordofmysteries.acting.ActingIdentityService;
+import top.aurora.lordofmysteries.acting.IdentityKitService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
@@ -77,6 +77,7 @@ public final class SeerPotionItem extends Item {
         PlayerMysteryData data = MysteryCapability.get(player);
         if (!canAdvance(data)) return stack;
 
+        boolean firstPotion = data.pathway == null;
         PotionQuality quality = getQuality(stack);
         data.pathway = SEER_PATHWAY;
         data.sequence = targetSequence;
@@ -90,7 +91,8 @@ public final class SeerPotionItem extends Item {
         data.potionQuality = quality.id();
         CharacteristicLedger.recordPotionAdvancement(
                 data, SEER_PATHWAY, targetSequence, quality);
-        ActingIdentityService.recordAdvancement(data);
+        IdentityKitService.onPotionAdvancement(
+                player, data, firstPotion);
         data.paperSubstituteArmedEndTick = 0L;
         data.paperSubstituteDimension = "";
         unlockKnowledge(data);

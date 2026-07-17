@@ -76,6 +76,11 @@ public final class PlayerGuideHandler {
         int restored = 0;
         restored += ensureItem(player, ModItems.INVESTIGATOR_NOTES.get());
         restored += ensureItem(player, ModItems.INVESTIGATOR_COMPASS.get());
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.isExtraordinary()) {
+            restored += ensureItem(player, ModItems.ACTING_IDENTITY_CARD.get());
+            restored += ensureItem(player, ModItems.ACTING_REFLECTION_JOURNAL.get());
+        }
         if (announce) {
             Component message = restored == 0
                     ? Component.translatable(
@@ -119,7 +124,9 @@ public final class PlayerGuideHandler {
         return M1ProgressAdvisor.evaluate(
                 data.knownKnowledge.contains(CAMP_FOUND),
                 data.pathway == null ? null : data.pathway.toString(),
-                data.sequence, data.digestion, hasMagicianMaterial);
+                data.sequence, data.digestion, hasMagicianMaterial,
+                data.identityAnchored, data.actingReflectionCount > 0,
+                data.cityWorkShifts > 0);
     }
 
     private static void recordCampVisit(ServerPlayer player,

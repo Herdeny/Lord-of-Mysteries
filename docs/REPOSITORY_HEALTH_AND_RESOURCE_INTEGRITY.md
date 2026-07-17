@@ -1,10 +1,10 @@
 # 仓库健康审计与资源完整性门禁
 
-> 适用版本：0.9.2-1.20.1
+> 适用版本：0.9.3-1.20.1
 >
 > 技术基线：Minecraft 1.20.1 · Forge 47.4.20 · Java 17 · Gradle 8.14.5
 
-本页记录 0.8.9 健康审计，并追加 0.9.1 存档迁移与 0.9.2 dirty mask、生命周期同步和 GameTest 门禁。目标不是增加表面内容，
+本页记录 0.8.9 健康审计，并追加 0.9.1 存档迁移、0.9.2 dirty mask/生命周期同步与 0.9.3 M0/M1 完成门禁。目标不是增加表面内容，
 而是确保现有迁移资产在损坏数据、换队、重复同步、资源漂移和未来构建工具升级时仍能安全失败。
 
 ## 本轮修复
@@ -30,11 +30,11 @@ python scripts/check_resource_integrity.py
 
 | 范围 | 当前基线 |
 |---|---:|
-| 可解析 JSON | 261 |
-| 中英成对翻译键 | 764 |
-| Java/JSON 静态引用翻译键 | 330 |
-| 模型 JSON | 73 |
-| 注册物品 | 68 |
+| 可解析 JSON | 266 |
+| 中英成对翻译键 | 809 |
+| Java/JSON 静态引用翻译键 | 349 |
+| 模型 JSON | 75 |
+| 注册物品 | 70 |
 | 注册方块 | 5 |
 | 注册实体 | 8 |
 
@@ -51,17 +51,17 @@ python scripts/check_resource_integrity.py
 ## 自动验证基线
 
 - 202 项 JUnit 单元/契约测试，失败、错误与跳过均为 0。
-- 3 项 Forge GameTest 真实执行，验证 Capability Clone、schema 15 Provider 往返和 future schema 隔离。
+- 5 项 Forge GameTest 真实执行，验证 Capability Clone、schema 15→17 Provider 往返、future schema 隔离、精确特性载荷和两小时 M1 状态往返。
 - M1 可玩性合同、M2 调查合同、34 个生成资源检查。
-- Forge `clean build` 与真实专用服务器启动、`/pm servercheck`、命令循环、强制保存、干净停服。
+- Forge `clean build`、隔离回滚演练与两次真实专用服务器启动、`/pm servercheck`、命令循环、强制保存、干净停服。
 - 服务端诊断输出协议/包数量、世界状态、队伍 SavedData、活动队伍数和活动成员数。
-- Capability schema 16、内容 schema v4、网络协议 8；四区 dirty mask、生命周期摘要、schema 0/15→16 DataFix、世界快照、原始 NBT 备份和孤儿保留已自动验证。
+- Capability schema 17、内容 schema v4、网络协议 8；四区 dirty mask、生命周期摘要、schema 0/15/16→17 DataFix、世界快照、精确恢复、原始 NBT 备份和孤儿保留已自动验证。
 
 ## 仍需人工验证
 
-- M1 一小时真实生存、材料节奏、伤害、灵性和风险恢复手感。
+- M1 两小时真实生存、材料节奏、伤害、灵性和风险恢复手感。
 - 2–4 人真实网络下的带宽、tick、掉线、死亡、重启和多队并行。
-- 自动化专服重启、降级回滚和真人客户端跨维度整体验收。
+- 真人客户端跨维度、死亡重生和断线整体验收。
 - 队名删除后复用、管理员离线改队、正式邀请/队长权限和最终队伍 GUI。
 - 原创像素资产、公开术语与第三方知识产权逐项登记。
 

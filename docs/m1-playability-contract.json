@@ -2,21 +2,31 @@
   "schema_version": 1,
   "target_minutes": {
     "camp": 10,
-    "sequence_9": 25,
-    "sequence_8": 45,
-    "sequence_7": 60
+    "sequence_9": 30,
+    "sequence_8": 60,
+    "sequence_7": 90,
+    "identity": 100,
+    "reflection": 110,
+    "street_life": 120
   },
+  "core_goal_count": 9,
   "commands": [
     "guide",
     "next",
     "recover",
     "status",
+    "reflect",
     "camp",
+    "life",
     "m1check",
     "doctor",
     "trial",
     "report",
     "servercheck"
+  ],
+  "first_potion_items": [
+    "lord_of_mysteries:acting_identity_card",
+    "lord_of_mysteries:acting_reflection_journal"
   ],
   "starter_cache_items": [
     "lord_of_mysteries:crucible",
@@ -71,10 +81,18 @@
     "guide.lord_of_mysteries.next.digest_clown",
     "guide.lord_of_mysteries.next.hunt_serpent",
     "guide.lord_of_mysteries.next.brew_magician",
+    "guide.lord_of_mysteries.next.bind_identity",
+    "guide.lord_of_mysteries.next.reflect",
+    "guide.lord_of_mysteries.next.city_life",
     "guide.lord_of_mysteries.next.complete",
     "guide.lord_of_mysteries.next.other_pathway",
     "advancement.lord_of_mysteries.reach_investigator_camp.title",
-    "advancement.lord_of_mysteries.reach_investigator_camp.description"
+    "advancement.lord_of_mysteries.reach_investigator_camp.description",
+    "item.lord_of_mysteries.acting_identity_card",
+    "item.lord_of_mysteries.acting_reflection_journal",
+    "command.lord_of_mysteries.trial.goal.identity",
+    "command.lord_of_mysteries.trial.goal.reflection",
+    "command.lord_of_mysteries.trial.goal.street_life"
   ],
   "continuity_gates": [
     "reconnect",

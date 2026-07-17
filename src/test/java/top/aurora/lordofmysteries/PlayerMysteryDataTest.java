@@ -49,17 +49,23 @@ class PlayerMysteryDataTest {
         assertEquals(-1L, d.m1TrialSequence9Tick);
         assertEquals(-1L, d.m1TrialSequence8Tick);
         assertEquals(-1L, d.m1TrialSequence7Tick);
+        assertEquals(-1L, d.m1TrialIdentityAnchoredTick);
+        assertEquals(-1L, d.m1TrialReflectionCompletedTick);
+        assertEquals(-1L, d.m1TrialStreetLifeCompletedTick);
         assertTrue(d.actingCounters.isEmpty());
         assertEquals(0f, d.principleInsight);
         assertEquals(0f, d.roleOveridentification);
         assertEquals(0, d.actingReflectionCount);
         assertEquals(Long.MIN_VALUE, d.lastActingReflectionDay);
+        assertFalse(d.identityAnchored);
         assertTrue(d.characteristicBundles.isEmpty());
         assertTrue(d.orphanedEntries.isEmpty());
         assertTrue(d.migrationBackups.isEmpty());
         assertTrue(d.migrationHistory.isEmpty());
         assertFalse(d.futureSchemaDetected);
         assertEquals(0L, d.moneyPence);
+        assertEquals(Long.MIN_VALUE, d.lastCityWorkDay);
+        assertEquals(0, d.cityWorkShifts);
         assertEquals("", d.activeCommissionId);
         assertEquals(-1, d.activeQuestStep);
         assertEquals("", d.escortedReporterUuid);
@@ -119,6 +125,9 @@ class PlayerMysteryDataTest {
         source.m1TrialFirstOccultKillTick = 2600L;
         source.m1TrialFirstActingTick = 2800L;
         source.m1TrialRiskReachedTick = 3200L;
+        source.m1TrialIdentityAnchoredTick = 3400L;
+        source.m1TrialReflectionCompletedTick = 3600L;
+        source.m1TrialStreetLifeCompletedTick = 3800L;
         source.thiefPilferCooldownEndTick = 300L;
         source.thiefEscapeCooldownEndTick = 600L;
         source.apprenticeTrickCooldownEndTick = 200L;
@@ -140,6 +149,9 @@ class PlayerMysteryDataTest {
         ResourceLocation commission = ResourceLocation.fromNamespaceAndPath(
                 "lord_of_mysteries", "commission/test");
         source.moneyPence = 253L;
+        source.lastCityWorkDay = 17L;
+        source.cityWorkShifts = 4;
+        source.identityAnchored = true;
         source.activeCommissionId = commission.toString();
         source.activeQuestChainId = "lord_of_mysteries:quest/test";
         source.activeQuestStep = 4;
@@ -186,6 +198,9 @@ class PlayerMysteryDataTest {
         assertEquals(2600L, copied.m1TrialFirstOccultKillTick);
         assertEquals(2800L, copied.m1TrialFirstActingTick);
         assertEquals(3200L, copied.m1TrialRiskReachedTick);
+        assertEquals(3400L, copied.m1TrialIdentityAnchoredTick);
+        assertEquals(3600L, copied.m1TrialReflectionCompletedTick);
+        assertEquals(3800L, copied.m1TrialStreetLifeCompletedTick);
         assertEquals(300L, copied.thiefPilferCooldownEndTick);
         assertEquals(600L, copied.thiefEscapeCooldownEndTick);
         assertEquals(200L, copied.apprenticeTrickCooldownEndTick);
@@ -205,6 +220,9 @@ class PlayerMysteryDataTest {
         assertEquals(909L, copied.apprenticeDivinationCooldownEndTick);
         assertEquals(910L, copied.apprenticeWardCooldownEndTick);
         assertEquals(253L, copied.moneyPence);
+        assertEquals(17L, copied.lastCityWorkDay);
+        assertEquals(4, copied.cityWorkShifts);
+        assertTrue(copied.identityAnchored);
         assertEquals(commission.toString(), copied.activeCommissionId);
         assertEquals("lord_of_mysteries:quest/test", copied.activeQuestChainId);
         assertEquals(4, copied.activeQuestStep);
@@ -238,6 +256,12 @@ class PlayerMysteryDataTest {
         source.m1TrialFirstOccultKillTick = 300L;
         source.m1TrialFirstActingTick = 400L;
         source.m1TrialRiskReachedTick = 600L;
+        source.m1TrialIdentityAnchoredTick = 650L;
+        source.m1TrialReflectionCompletedTick = 700L;
+        source.m1TrialStreetLifeCompletedTick = 750L;
+        source.identityAnchored = true;
+        source.lastCityWorkDay = 8L;
+        source.cityWorkShifts = 2;
         source.activeCommissionId = "lord_of_mysteries:commission/test";
         source.activeQuestChainId = "lord_of_mysteries:quest/test";
         source.activeQuestStep = 9;
@@ -261,6 +285,12 @@ class PlayerMysteryDataTest {
         assertEquals(300L, restored.m1TrialFirstOccultKillTick);
         assertEquals(400L, restored.m1TrialFirstActingTick);
         assertEquals(600L, restored.m1TrialRiskReachedTick);
+        assertEquals(650L, restored.m1TrialIdentityAnchoredTick);
+        assertEquals(700L, restored.m1TrialReflectionCompletedTick);
+        assertEquals(750L, restored.m1TrialStreetLifeCompletedTick);
+        assertTrue(restored.identityAnchored);
+        assertEquals(8L, restored.lastCityWorkDay);
+        assertEquals(2, restored.cityWorkShifts);
         assertEquals("stealth", restored.questResolutionRoute);
         assertTrue(restored.questResolutionReady);
         assertEquals(PlayerMysteryData.CURRENT_SCHEMA_VERSION,
@@ -285,7 +315,7 @@ class PlayerMysteryDataTest {
 
         assertEquals(1, migrated.characteristicBundles.size());
         assertEquals(1, migrated.migrationBackups.size());
-        assertEquals(1, migrated.migrationHistory.size());
+        assertEquals(2, migrated.migrationHistory.size());
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
                 entry.getString("section").equals("known_knowledge")));
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
@@ -297,7 +327,7 @@ class PlayerMysteryDataTest {
         restored.load(migrated.save());
 
         assertEquals(1, restored.migrationBackups.size());
-        assertEquals(1, restored.migrationHistory.size());
+        assertEquals(2, restored.migrationHistory.size());
         assertEquals(migrated.orphanedEntries.size(),
                 restored.orphanedEntries.size());
     }

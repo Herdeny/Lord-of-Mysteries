@@ -18,6 +18,7 @@ import top.aurora.lordofmysteries.artifact.ProtectiveCharmService;
 import top.aurora.lordofmysteries.potion.M2PathwayPotionItem;
 import top.aurora.lordofmysteries.potion.HunterPotionItem;
 import top.aurora.lordofmysteries.potion.SpectatorPotionItem;
+import top.aurora.lordofmysteries.characteristic.CharacteristicConservationService;
 
 public final class InsanityEventHandler {
 
@@ -77,13 +78,19 @@ public final class InsanityEventHandler {
         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 600, 10, false, false));
         player.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 600, 4, false, false));
         player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 300, 0, false, false));
-        spawnBreakdownBody(player, data);
+        spawnBreakdownBody(player, data, false);
         player.sendSystemMessage(Component.translatable(
                 "message.lord_of_mysteries.insanity.breakdown_recoverable")
                 .withStyle(ChatFormatting.DARK_RED));
     }
 
     private static void permanentBreakdown(ServerPlayer player, PlayerMysteryData data) {
+        boolean transferred = spawnBreakdownBody(player, data, true);
+        if (!transferred) {
+            CharacteristicConservationService.extractCurrentBundle(data)
+                    .map(CharacteristicConservationService::createStack)
+                    .ifPresent(stack -> player.drop(stack, false));
+        }
         data.pathway = null;
         data.sequence = -1;
         data.spirituality = 0f;
@@ -97,9 +104,10 @@ public final class InsanityEventHandler {
                 .withStyle(ChatFormatting.DARK_RED));
     }
 
-    private static void spawnBreakdownBody(ServerPlayer player,
-                                           PlayerMysteryData data) {
-        if (!(player.level() instanceof ServerLevel level)) return;
+    private static boolean spawnBreakdownBody(ServerPlayer player,
+                                              PlayerMysteryData data,
+                                              boolean carryCharacteristic) {
+        if (!(player.level() instanceof ServerLevel level)) return false;
         Mob body;
         String translationKey;
         if (M2PathwayPotionItem.Pathway.THIEF.id().equals(data.pathway)) {
@@ -118,14 +126,17 @@ public final class InsanityEventHandler {
             body = ModEntities.SEER_BREAKDOWN.get().create(level);
             translationKey = "entity.lord_of_mysteries.seer_breakdown";
         }
-        if (body == null) return;
+        if (body == null) return false;
         body.moveTo(player.getX() + 1.5, player.getY(), player.getZ() + 1.5,
                 player.getYRot(), player.getXRot());
         body.setCustomName(Component.translatable(translationKey));
         body.setCustomNameVisible(true);
         body.setGlowingTag(true);
         body.setTarget(player);
-        level.addFreshEntity(body);
+        if (!level.addFreshEntity(body)) return false;
+        return !carryCharacteristic
+                || CharacteristicConservationService.transferCurrentBundle(
+                        body, data);
     }
 
     private static String whisperKey(ServerPlayer player, String severity) {

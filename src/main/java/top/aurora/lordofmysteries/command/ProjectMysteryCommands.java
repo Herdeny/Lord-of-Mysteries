@@ -39,6 +39,7 @@ import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.registry.ModItems;
 import top.aurora.lordofmysteries.commission.CommissionDefinitionManager;
 import top.aurora.lordofmysteries.commission.CommissionService;
+import top.aurora.lordofmysteries.commission.CityLifeService;
 import top.aurora.lordofmysteries.commission.FormulaAppraisalService;
 import top.aurora.lordofmysteries.commission.QuestChainDefinitionManager;
 import top.aurora.lordofmysteries.commission.QuestPartyService;
@@ -103,6 +104,9 @@ public final class ProjectMysteryCommands {
                             context.getSource().getPlayerOrException());
                     return 1;
                 }))
+                .then(Commands.literal("life").executes(context ->
+                        CityLifeService.showStatus(
+                                context.getSource().getPlayerOrException())))
                 .then(Commands.literal("case").executes(context -> {
                     InvestigationSiteGenerator.reportSites(
                             context.getSource().getPlayerOrException());
@@ -210,8 +214,7 @@ public final class ProjectMysteryCommands {
     private static int reflect(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         ActingIdentityService.ReflectionResult result =
-                ActingIdentityService.reflect(data,
-                        player.level().getDayTime() / 24000L);
+                ActingIdentityService.reflect(player);
         String suffix = switch (result) {
             case SUCCESS -> "success";
             case COMMONER -> "commoner";
@@ -228,6 +231,17 @@ public final class ProjectMysteryCommands {
 
     private static int showM1Check(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
+        if (SeerPotionItem.SEER_PATHWAY.equals(data.pathway)
+                && data.sequence <= 7) {
+            String suffix = !data.identityAnchored ? "identity"
+                    : data.actingReflectionCount <= 0 ? "reflection"
+                    : data.cityWorkShifts <= 0 ? "street_life" : "complete";
+            player.sendSystemMessage(Component.translatable(
+                    "command.lord_of_mysteries.m1check." + suffix)
+                    .withStyle(suffix.equals("complete")
+                            ? ChatFormatting.GREEN : ChatFormatting.LIGHT_PURPLE));
+            return 1;
+        }
         M1Readiness.Stage stage = M1Readiness.evaluate(
                 data.pathway == null ? null : data.pathway.toString(),
                 data.sequence, data.digestion);
@@ -300,7 +314,10 @@ public final class ProjectMysteryCommands {
                 data.m1TrialOccultKills,
                 data.m1TrialActingEvents,
                 data.m1TrialMaxPressure,
-                data.m1TrialMaxPollution);
+                data.m1TrialMaxPollution,
+                data.identityAnchored,
+                data.actingReflectionCount > 0,
+                data.cityWorkShifts > 0);
         player.sendSystemMessage(Component.translatable(
                 "command.lord_of_mysteries.trial.title",
                 M1TrialProgress.formatDuration(elapsed),
@@ -319,6 +336,10 @@ public final class ProjectMysteryCommands {
                 data.m1TrialActingEvents, M1TrialProgress.REQUIRED_ACTING_EVENTS);
         sendTrialGoal(player, result.riskObserved(), "risk",
                 Math.round(data.m1TrialMaxPressure), Math.round(data.m1TrialMaxPollution));
+        sendTrialGoal(player, result.identityAnchored(), "identity");
+        sendTrialGoal(player, result.reflectionCompleted(), "reflection");
+        sendTrialGoal(player, result.streetLifeCompleted(), "street_life",
+                data.cityWorkShifts);
         player.sendSystemMessage(Component.translatable(
                 "command.lord_of_mysteries.trial.stats",
                 data.m1TrialDeaths,
@@ -363,7 +384,9 @@ public final class ProjectMysteryCommands {
         M1TrialProgress.Result core = M1TrialProgress.evaluate(
                 elapsed, data.m1TrialCampVisited, data.m1TrialBestSequence,
                 data.m1TrialOccultKills, data.m1TrialActingEvents,
-                data.m1TrialMaxPressure, data.m1TrialMaxPollution);
+                data.m1TrialMaxPressure, data.m1TrialMaxPollution,
+                data.identityAnchored, data.actingReflectionCount > 0,
+                data.cityWorkShifts > 0);
         M1TrialContinuity.Result continuity = M1TrialContinuity.evaluate(
                 data.m1TrialReconnects, data.m1TrialServerRestarts,
                 data.m1TrialDimensionChanges, data.m1TrialDeathRecoveries);
@@ -383,7 +406,10 @@ public final class ProjectMysteryCommands {
                 data.m1TrialCampReachedTick,
                 data.m1TrialSequence9Tick,
                 data.m1TrialSequence8Tick,
-                data.m1TrialSequence7Tick);
+                data.m1TrialSequence7Tick,
+                data.m1TrialIdentityAnchoredTick,
+                data.m1TrialReflectionCompletedTick,
+                data.m1TrialStreetLifeCompletedTick);
         player.sendSystemMessage(Component.translatable(
                 "command.lord_of_mysteries.trial.report.title")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
@@ -391,6 +417,9 @@ public final class ProjectMysteryCommands {
         sendTrialMilestone(player, "sequence9", result.sequence9());
         sendTrialMilestone(player, "sequence8", result.sequence8());
         sendTrialMilestone(player, "sequence7", result.sequence7());
+        sendTrialMilestone(player, "identity", result.identity());
+        sendTrialMilestone(player, "reflection", result.reflection());
+        sendTrialMilestone(player, "street_life", result.streetLife());
         player.sendSystemMessage(Component.translatable(
                 result.onSchedule()
                         ? "command.lord_of_mysteries.trial.report.on_schedule"
@@ -455,7 +484,10 @@ public final class ProjectMysteryCommands {
                 || data.m1TrialCampReachedTick >= 0L
                 || data.m1TrialSequence9Tick >= 0L
                 || data.m1TrialSequence8Tick >= 0L
-                || data.m1TrialSequence7Tick >= 0L;
+                || data.m1TrialSequence7Tick >= 0L
+                || data.m1TrialIdentityAnchoredTick >= 0L
+                || data.m1TrialReflectionCompletedTick >= 0L
+                || data.m1TrialStreetLifeCompletedTick >= 0L;
     }
 
     private static void clearTrial(PlayerMysteryData data) {
@@ -484,6 +516,9 @@ public final class ProjectMysteryCommands {
         data.m1TrialFirstOccultKillTick = -1L;
         data.m1TrialFirstActingTick = -1L;
         data.m1TrialRiskReachedTick = -1L;
+        data.m1TrialIdentityAnchoredTick = -1L;
+        data.m1TrialReflectionCompletedTick = -1L;
+        data.m1TrialStreetLifeCompletedTick = -1L;
     }
 
     private static int showServerDiagnostics(CommandSourceStack source) {

@@ -12,7 +12,10 @@ ROOT = Path(__file__).resolve().parents[1]
 MAIN_DATA = ROOT / "src/main/resources/data/lord_of_mysteries"
 GENERATED_DATA = ROOT / "src/generated/resources/data/lord_of_mysteries"
 ASSETS = ROOT / "src/main/resources/assets/lord_of_mysteries"
-MASTER = ROOT / "docs/master/m0_content_catalog.json"
+MASTER_CATALOGS = (
+    ROOT / "docs/master/m0_content_catalog.json",
+    ROOT / "docs/master/m0_runtime_catalog.json",
+)
 REPORT_ROOT = ROOT / "build/reports/project_mystery"
 RESOURCE = re.compile(r"^[a-z0-9_.-]+:[a-z0-9_./-]+$")
 METADATA_FIELDS = {
@@ -92,11 +95,20 @@ def validate_metadata(node, origin, errors):
 
 def load_nodes(errors):
     nodes = []
-    master = read_json(MASTER)
-    if master.get("schema_version") != 4 or master.get("design_version") != "v0.9":
-        errors.append(f"{MASTER.relative_to(ROOT)}: invalid catalog header")
-    for entry in master.get("entries", []):
-        nodes.append((entry, str(MASTER.relative_to(ROOT))))
+    for catalog_path in MASTER_CATALOGS:
+        catalog = read_json(catalog_path)
+        if (catalog.get("schema_version") != 4
+                or catalog.get("design_version") != "v0.9"):
+            errors.append(
+                f"{catalog_path.relative_to(ROOT)}: invalid catalog header")
+        defaults = catalog.get("defaults", {})
+        for raw_entry in catalog.get("entries", []):
+            entry = dict(defaults)
+            entry.update(raw_entry)
+            default_links = defaults.get("links", {})
+            entry["links"] = dict(default_links)
+            entry["links"].update(raw_entry.get("links", {}))
+            nodes.append((entry, str(catalog_path.relative_to(ROOT))))
     for directory in (
             MAIN_DATA / "commissions", MAIN_DATA / "quests",
             MAIN_DATA / "sequences"):

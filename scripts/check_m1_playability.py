@@ -13,6 +13,9 @@ STARTER_LOOT = DATA / "loot_tables" / "chests" / "starter_investigator_supplies.
 COMMANDS = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "command" / "ProjectMysteryCommands.java"
 GENERATOR = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "world" / "AbandonedCampGenerator.java"
 TIMELINE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "knowledge" / "M1TrialTimeline.java"
+PROGRESS = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "knowledge" / "M1TrialProgress.java"
+MOD_ITEMS = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "registry" / "ModItems.java"
+IDENTITY_KIT = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "acting" / "IdentityKitService.java"
 
 
 def load(path):
@@ -52,6 +55,9 @@ def timeline_targets():
         "sequence_9": "SEQUENCE_9_TARGET_TICKS",
         "sequence_8": "SEQUENCE_8_TARGET_TICKS",
         "sequence_7": "SEQUENCE_7_TARGET_TICKS",
+        "identity": "IDENTITY_TARGET_TICKS",
+        "reflection": "REFLECTION_TARGET_TICKS",
+        "street_life": "STREET_LIFE_TARGET_TICKS",
     }
     targets = {}
     for contract_name, constant_name in names.items():
@@ -72,13 +78,20 @@ def main():
 
     target_values = list(contract["target_minutes"].values())
     require(target_values == sorted(target_values), "timing targets must be ordered")
-    require(target_values[-1] <= 60, "vertical slice target exceeds one hour")
+    require(target_values[-1] <= 120, "vertical slice target exceeds two hours")
     expected_ticks = {
         name: minutes * 60 * 20
         for name, minutes in contract["target_minutes"].items()
     }
     require(timeline_targets() == expected_ticks,
             "Java timeline targets drifted from the playability contract")
+    progress_source = PROGRESS.read_text(encoding="utf-8")
+    duration_match = re.search(r"REQUIRED_TICKS\s*=\s*(\d+)L", progress_source)
+    require(duration_match is not None, "missing M1 duration constant")
+    require(int(duration_match.group(1)) == target_values[-1] * 60 * 20,
+            "M1 required duration drifts from the two-hour contract")
+    require(contract.get("core_goal_count") == 9,
+            "M1 contract must define all nine core goals")
 
     starter_loot = load(STARTER_LOOT)
     starter_items = collect_item_names(starter_loot)
@@ -110,6 +123,16 @@ def main():
         require(f'literal("{command}")' in command_source,
                 f"missing /pm command token {command}")
 
+    item_source = MOD_ITEMS.read_text(encoding="utf-8")
+    identity_source = IDENTITY_KIT.read_text(encoding="utf-8")
+    for item_id in contract["first_potion_items"]:
+        path = item_id.split(":", 1)[1]
+        require(f'"{path}"' in item_source,
+                f"first-potion item is not registered: {item_id}")
+        constant = path.upper()
+        require(f"ModItems.{constant}" in identity_source,
+                f"first-potion item is not granted: {item_id}")
+
     generator_source = GENERATOR.read_text(encoding="utf-8")
     require("starter_investigator_supplies" in generator_source,
             "starter loot table is not wired to camp generation")
@@ -125,7 +148,8 @@ def main():
         "M1 playability contract checked: "
         f"{len(contract['route'])} sequences, "
         f"{len(required_starter)} guaranteed supplies, "
-        f"{len(contract['commands'])} command tokens"
+        f"{len(contract['commands'])} command tokens, "
+        f"{contract['core_goal_count']} two-hour goals"
     )
 
 

@@ -18,7 +18,9 @@ public final class PlayerMysteryDataFixer {
             new DataFix("legacy_key_normalization", LEGACY_BASELINE_SCHEMA,
                     PlayerMysteryDataFixer::normalizeLegacyKeys),
             new DataFix("characteristic_bundle_upgrade", 16,
-                    PlayerMysteryDataFixer::upgradeCharacteristicBundles));
+                    PlayerMysteryDataFixer::upgradeCharacteristicBundles),
+            new DataFix("m1_vertical_slice_state", 17,
+                    PlayerMysteryDataFixer::initializeM1VerticalSliceState));
 
     private PlayerMysteryDataFixer() {}
 
@@ -120,6 +122,29 @@ public final class PlayerMysteryDataFixer {
         if (!tag.contains("last_acting_reflection_day", Tag.TAG_LONG)) {
             tag.putLong("last_acting_reflection_day", Long.MIN_VALUE);
         }
+    }
+
+    private static void initializeM1VerticalSliceState(
+            CompoundTag tag, List<CompoundTag> orphanedEntries) {
+        putBooleanDefault(tag, "identity_anchored", false);
+        putLongDefault(tag, "last_city_work_day", Long.MIN_VALUE);
+        putIntDefault(tag, "city_work_shifts", 0);
+        putLongDefault(tag, "m1_trial_identity_anchored_tick", -1L);
+        putLongDefault(tag, "m1_trial_reflection_completed_tick", -1L);
+        putLongDefault(tag, "m1_trial_street_life_completed_tick", -1L);
+    }
+
+    private static void putBooleanDefault(CompoundTag tag, String key,
+                                          boolean value) {
+        if (!tag.contains(key, Tag.TAG_BYTE)) tag.putBoolean(key, value);
+    }
+
+    private static void putLongDefault(CompoundTag tag, String key, long value) {
+        if (!tag.contains(key, Tag.TAG_LONG)) tag.putLong(key, value);
+    }
+
+    private static void putIntDefault(CompoundTag tag, String key, int value) {
+        if (!tag.contains(key, Tag.TAG_INT)) tag.putInt(key, value);
     }
 
     private static CompoundTag migrationBackup(CompoundTag source,

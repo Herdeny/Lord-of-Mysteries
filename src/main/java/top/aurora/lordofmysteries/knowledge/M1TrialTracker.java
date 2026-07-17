@@ -46,6 +46,17 @@ public final class M1TrialTracker {
                 >= M1TrialProgress.REQUIRED_RISK_PEAK) {
             data.m1TrialRiskReachedTick = elapsed;
         }
+        if (data.identityAnchored && data.m1TrialIdentityAnchoredTick < 0L) {
+            data.m1TrialIdentityAnchoredTick = elapsed;
+        }
+        if (data.actingReflectionCount > 0
+                && data.m1TrialReflectionCompletedTick < 0L) {
+            data.m1TrialReflectionCompletedTick = elapsed;
+        }
+        if (data.cityWorkShifts > 0
+                && data.m1TrialStreetLifeCompletedTick < 0L) {
+            data.m1TrialStreetLifeCompletedTick = elapsed;
+        }
         if (SeerPotionItem.SEER_PATHWAY.equals(data.pathway)
                 && (data.m1TrialBestSequence < 0
                 || data.sequence < data.m1TrialBestSequence)) {
@@ -152,6 +163,28 @@ public final class M1TrialTracker {
             if (data.m1TrialFirstActingTick < 0L) {
                 data.m1TrialFirstActingTick = elapsed(player, data);
             }
+        }
+    }
+
+    public static void recordIdentityAnchor(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        data.identityAnchored = true;
+        if (data.m1TrialActive && data.m1TrialIdentityAnchoredTick < 0L) {
+            data.m1TrialIdentityAnchoredTick = elapsed(player, data);
+        }
+    }
+
+    public static void recordReflection(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.m1TrialActive && data.m1TrialReflectionCompletedTick < 0L) {
+            data.m1TrialReflectionCompletedTick = elapsed(player, data);
+        }
+    }
+
+    public static void recordStreetLife(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.m1TrialActive && data.m1TrialStreetLifeCompletedTick < 0L) {
+            data.m1TrialStreetLifeCompletedTick = elapsed(player, data);
         }
     }
 

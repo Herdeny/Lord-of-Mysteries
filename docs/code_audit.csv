@@ -1,13 +1,13 @@
 area,expected,current_evidence,implementation_state,gap,next_gate
 v0.9 source,Exact full design incremental document and manifest,"Hash byte and line checks in import_v09_design.py",verified,None,Keep exact-source CI green
 content schema,Schema v4 metadata,"Pathways sequences commissions and quests parse or validate shared metadata",code_ready,Remaining legacy content is not migrated,Migrate all active content definitions
-content graph,Global dependency and audit graph,"71 nodes 63 edges and six generated reports",data_ready,100-node M0 gate not reached,Add at least 29 validated nodes
+content graph,Global dependency and audit graph,"114 nodes 160 edges and six generated reports",verified,None,Keep graph and spoiler gates green as M2 grows
 orphan preservation,Unknown IDs survive migrations,"Runtime orphaned_entries plus graph orphan report preserve invalid unknown and future payloads",verified,Recovery UI and operator export remain,Add explicit recovery and export tooling
-player migration,Safe forward migration,"Capability schema 16 DataFix snapshots backups orphaned_entries four-section dirty masks and three Forge GameTests",code_ready,Restart rollback and human lifecycle matrix remain,Automate restart rollback and client lifecycle acceptance
-characteristics,Layered bundle and conservation,"Sequence purity imprint corruption and source hash persist",code_ready,No extraction drop entity merge or death conservation,Implement full conservation lifecycle
-acting v2,Principle identity and reflection,"Insight overidentification daily reflect packet and UI",code_ready,No identity card reflection item or four-stage acceptance,Add player-facing items and two-hour contract
-seer vertical slice,Two-hour sequence 9-7 onboarding,"Potions abilities acting risk recovery camp and old one-hour tracker",playable,Two-hour human acceptance not recorded,Create and execute v0.9 acceptance matrix
-five pathways,Launch pathways through sequence 5,"Five pathways sequence 9-7 are playable migration assets",playable,Sequences 6-5 and pathway differentiation incomplete,Implement under M3 after M0 and M1
+player migration,Safe forward migration,"Capability schema 17 DataFix snapshots exact restore orphaned_entries four-section dirty masks five Forge GameTests and two-start server matrix",verified,Human client lifecycle evidence remains,Record death dimension and reconnect sessions
+characteristics,Layered bundle and conservation,"Sequence purity imprint corruption source hash permanent-breakdown transfer and exact death drop persist",playable,Duplicate merge and higher-sequence conservation remain,Extend under later pathway milestones
+acting v2,Principle identity and reflection,"Identity card reflection journal insight overidentification daily reflect UI and trial tracking",verified,Human pacing evidence remains,Record two-hour play sessions
+seer vertical slice,Two-hour sequence 9-7 onboarding,"Potions abilities acting risk recovery camp identity reflection city work nine goals and seven milestones",verified,Human balance evidence remains,Keep M1 regression matrix green during M2
+five pathways,Launch pathways through sequence 5,"Five pathways sequence 9-7 are playable migration assets",playable,Sequences 6-5 and pathway differentiation incomplete,Implement under M3 after M2
 investigation,Dynamic case and life loop,"Three commissions three quest chains structures NPCs and persistent party ledger",playable,No formal investigation-board GUI economy or dynamic generator,Implement and run four-player eight-hour test
 compatibility,Read-only integrations first,"Compatibility report lists JEI EMI and Jade as planned",planned,No runtime plugins,Add optional read-only adapters and tests
 localization,Chinese and English parity,"Resource integrity and graph localization report",verified,New content must remain paired,Keep localization gate mandatory

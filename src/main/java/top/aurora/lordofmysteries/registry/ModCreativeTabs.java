@@ -79,6 +79,8 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.PYROMANIAC_BREAKDOWN_SPAWN_EGG.get());
                         output.accept(ModItems.CONTAMINATED_MIXTURE.get());
                         output.accept(ModItems.BROKEN_CHARACTERISTIC.get());
+                        output.accept(ModItems.ACTING_IDENTITY_CARD.get());
+                        output.accept(ModItems.ACTING_REFLECTION_JOURNAL.get());
                         output.accept(ModItems.INVESTIGATOR_NOTES.get());
                         output.accept(ModItems.INVESTIGATOR_COMPASS.get());
                         output.accept(ModItems.CALMING_INCENSE.get());

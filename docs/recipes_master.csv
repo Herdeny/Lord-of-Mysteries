@@ -10,3 +10,5 @@ generated_mirror_crab_shell,bench,lord_of_mysteries:mirror_crab_shell,1,minecraf
 generated_ancient_tablet_spore_sac,bench,lord_of_mysteries:ancient_tablet_spore_sac,1,minecraft:moss_block*1;minecraft:glow_lichen*2;minecraft:amethyst_shard*1,knowledge,true,M2 cryptologist sequence 7 fallback material
 generated_iridescent_trickbird_feather,bench,lord_of_mysteries:iridescent_trickbird_feather,1,minecraft:feather*1;minecraft:glow_ink_sac*1;minecraft:ender_pearl*1,knowledge,true,M2 trickmaster sequence 8 fallback material
 generated_meteor_dust,bench,lord_of_mysteries:meteor_dust,2,minecraft:glowstone_dust*2;minecraft:amethyst_shard*1;lord_of_mysteries:moonwater*1,knowledge,true,M2 astrologer sequence 7 fallback material
+generated_acting_identity_card,bench,lord_of_mysteries:acting_identity_card,1,minecraft:paper*3;minecraft:ink_sac*1;minecraft:red_dye*1,knowledge,true,M1 private identity anchor replacement
+generated_acting_reflection_journal,bench,lord_of_mysteries:acting_reflection_journal,1,minecraft:leather*1;minecraft:paper*6;lord_of_mysteries:acting_identity_card*1,knowledge,true,M1 acting reflection and humanity recovery

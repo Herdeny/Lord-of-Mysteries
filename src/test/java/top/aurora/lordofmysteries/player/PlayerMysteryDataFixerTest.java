@@ -30,9 +30,16 @@ class PlayerMysteryDataFixerTest {
         assertTrue(result.migrated());
         assertFalse(result.futureSchema());
         assertEquals(15, result.sourceSchema());
-        assertEquals(1, result.appliedSteps().size());
+        assertEquals(2, result.appliedSteps().size());
         assertEquals("characteristic_bundle_upgrade",
                 result.appliedSteps().get(0).id());
+        assertEquals("m1_vertical_slice_state",
+                result.appliedSteps().get(1).id());
+        assertFalse(result.data().getBoolean("identity_anchored"));
+        assertEquals(Long.MIN_VALUE,
+                result.data().getLong("last_city_work_day"));
+        assertEquals(-1L, result.data().getLong(
+                "m1_trial_street_life_completed_tick"));
         assertEquals(PlayerMysteryData.CURRENT_SCHEMA_VERSION,
                 result.data().getInt("schema_version"));
         ListTag bundles = result.data().getList(
@@ -58,11 +65,13 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(legacy);
 
-        assertEquals(2, result.appliedSteps().size());
+        assertEquals(3, result.appliedSteps().size());
         assertEquals("legacy_key_normalization",
                 result.appliedSteps().get(0).id());
         assertEquals("characteristic_bundle_upgrade",
                 result.appliedSteps().get(1).id());
+        assertEquals("m1_vertical_slice_state",
+                result.appliedSteps().get(2).id());
         assertEquals("lord_of_mysteries:legacy/formula",
                 result.data().getList("known_knowledge", Tag.TAG_STRING)
                         .getString(0));

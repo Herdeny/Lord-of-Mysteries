@@ -44,6 +44,7 @@ public final class InvestigationNpcHandler {
         if (event.getHand() != InteractionHand.MAIN_HAND
                 || !(event.getEntity() instanceof ServerPlayer player)) return;
         if (villager.getTags().contains(PRESS_CLERK_TAG)) {
+            if (CityLifeService.tryWorkPressShift(player)) return;
             CommissionService.talkPressClerk(player);
         } else if (villager.getTags().contains(NIGHTHAWK_CONTACT_TAG)) {
             CommissionService.interactContact(player);

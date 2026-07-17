@@ -128,6 +128,12 @@ public final class PlayerMysteryDataSanitizer {
                 value -> data.m1TrialFirstActingTick = value);
         repairs += clampOptionalTick(data.m1TrialRiskReachedTick,
                 value -> data.m1TrialRiskReachedTick = value);
+        repairs += clampOptionalTick(data.m1TrialIdentityAnchoredTick,
+                value -> data.m1TrialIdentityAnchoredTick = value);
+        repairs += clampOptionalTick(data.m1TrialReflectionCompletedTick,
+                value -> data.m1TrialReflectionCompletedTick = value);
+        repairs += clampOptionalTick(data.m1TrialStreetLifeCompletedTick,
+                value -> data.m1TrialStreetLifeCompletedTick = value);
         if (!data.m1TrialSessionId.isBlank() && !validUuid(data.m1TrialSessionId)) {
             data.m1TrialSessionId = "";
             repairs++;
@@ -195,6 +201,13 @@ public final class PlayerMysteryDataSanitizer {
             data.moneyPence = 0L;
             repairs++;
         }
+        if (data.lastCityWorkDay < 0L
+                && data.lastCityWorkDay != Long.MIN_VALUE) {
+            data.lastCityWorkDay = Long.MIN_VALUE;
+            repairs++;
+        }
+        repairs += clampNonNegativeInt(data.cityWorkShifts,
+                value -> data.cityWorkShifts = value);
         return repairs;
     }
 
