@@ -50,6 +50,11 @@ class PlayerMysteryDataTest {
         assertEquals(-1L, d.m1TrialSequence8Tick);
         assertEquals(-1L, d.m1TrialSequence7Tick);
         assertTrue(d.actingCounters.isEmpty());
+        assertEquals(0f, d.principleInsight);
+        assertEquals(0f, d.roleOveridentification);
+        assertEquals(0, d.actingReflectionCount);
+        assertEquals(Long.MIN_VALUE, d.lastActingReflectionDay);
+        assertTrue(d.characteristicBundles.isEmpty());
         assertEquals(0L, d.moneyPence);
         assertEquals("", d.activeCommissionId);
         assertEquals(-1, d.activeQuestStep);

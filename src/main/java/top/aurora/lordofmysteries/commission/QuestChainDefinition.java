@@ -12,6 +12,8 @@ import com.google.gson.JsonParseException;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 
+import top.aurora.lordofmysteries.content.ContentMetadata;
+
 public record QuestChainDefinition(
         ResourceLocation id,
         String titleKey,
@@ -31,6 +33,7 @@ public record QuestChainDefinition(
     }
 
     public static QuestChainDefinition parse(JsonObject json, ResourceLocation fallbackId) {
+        ContentMetadata.parse(json);
         ResourceLocation id = resourceLocation(
                 GsonHelper.getAsString(json, "id", fallbackId.toString()), "id");
         String titleKey = GsonHelper.getAsString(json, "title_key");

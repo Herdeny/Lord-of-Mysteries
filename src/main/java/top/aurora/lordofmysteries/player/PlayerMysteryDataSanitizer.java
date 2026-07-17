@@ -20,12 +20,24 @@ public final class PlayerMysteryDataSanitizer {
             repairs++;
         }
         repairs += repairCoreValues(data);
+        repairs += setFloat(data.principleInsight,
+                finiteClamp(data.principleInsight, 0f, 100f, 0f),
+                value -> data.principleInsight = value);
+        repairs += setFloat(data.roleOveridentification,
+                finiteClamp(data.roleOveridentification, 0f, 100f, 0f),
+                value -> data.roleOveridentification = value);
+        repairs += clampNonNegativeInt(data.actingReflectionCount,
+                value -> data.actingReflectionCount = value);
 
         String normalizedQuality = PotionQuality.fromId(data.potionQuality).id();
         if (!normalizedQuality.equals(data.potionQuality)) {
             data.potionQuality = normalizedQuality;
             repairs++;
         }
+
+        int originalCharacteristics = data.characteristicBundles.size();
+        data.characteristicBundles.removeIf(bundle -> bundle == null);
+        repairs += originalCharacteristics - data.characteristicBundles.size();
 
         repairs += repairTrialValues(data);
         repairs += repairCommissionValues(data);

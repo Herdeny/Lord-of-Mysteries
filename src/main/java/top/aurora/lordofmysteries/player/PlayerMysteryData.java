@@ -1,7 +1,9 @@
 package top.aurora.lordofmysteries.player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,6 +12,9 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+
+import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
+import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 
 /**
  * 玩家非凡者数据（设计文档 §5.1）。
@@ -22,7 +27,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 15;
+    public static final int CURRENT_SCHEMA_VERSION = 16;
 
     // 途径 & 序列。
     // pathway 使用 ResourceLocation 以便完全数据驱动，例如 lord_of_mysteries:seer。
@@ -37,6 +42,7 @@ public class PlayerMysteryData {
     public float pollution = 0f;            // 污染值，范围约定为 0-100，100 触发失控
     public float insanityPressure = 0f;     // 失控压力，范围约定为 0-100，用于短期精神状态
     public String potionQuality = "complete"; // 当前序列魔药品质，影响扮演消化倍率
+    public List<CharacteristicBundle> characteristicBundles = new ArrayList<>();
 
     // 批次1 能力状态。
     // 灵视是否开启：服务端权威，登入登出保留状态。
@@ -138,6 +144,10 @@ public class PlayerMysteryData {
     // key 暂用 String 便于直接作为 CompoundTag 键，value 用服务器 gameTime 做冷却/衰减判断。
     public Map<String, Long> actingHistory = new HashMap<>();
     public Map<String, Integer> actingCounters = new HashMap<>();
+    public float principleInsight = 0f;
+    public float roleOveridentification = 0f;
+    public int actingReflectionCount = 0;
+    public long lastActingReflectionDay = Long.MIN_VALUE;
 
     // 组织声望（组织ID → 声望值）。组织 ID 仍使用 ResourceLocation，支持数据包新增组织。
     public Map<ResourceLocation, Integer> orgReputation = new HashMap<>();
@@ -172,6 +182,8 @@ public class PlayerMysteryData {
         this.pollution = src.pollution;
         this.insanityPressure = src.insanityPressure;
         this.potionQuality = src.potionQuality;
+        this.characteristicBundles = CharacteristicLedger.copy(
+                src.characteristicBundles);
         this.spiritVisionActive = src.spiritVisionActive;
         this.divinationCooldownEndTick = src.divinationCooldownEndTick;
         this.dangerIntuitionCooldownEndTick = src.dangerIntuitionCooldownEndTick;
@@ -262,6 +274,10 @@ public class PlayerMysteryData {
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
         this.actingHistory = new HashMap<>(src.actingHistory);
         this.actingCounters = new HashMap<>(src.actingCounters);
+        this.principleInsight = src.principleInsight;
+        this.roleOveridentification = src.roleOveridentification;
+        this.actingReflectionCount = src.actingReflectionCount;
+        this.lastActingReflectionDay = src.lastActingReflectionDay;
         this.orgReputation = new HashMap<>(src.orgReputation);
         this.schemaVersion = CURRENT_SCHEMA_VERSION;
         sanitize();
@@ -285,6 +301,11 @@ public class PlayerMysteryData {
         tag.putFloat("pollution", pollution);
         tag.putFloat("insanity_pressure", insanityPressure);
         tag.putString("potion_quality", potionQuality);
+        ListTag characteristics = new ListTag();
+        for (CharacteristicBundle bundle : characteristicBundles) {
+            characteristics.add(bundle.save());
+        }
+        tag.put("characteristic_bundles", characteristics);
         tag.putBoolean("spirit_vision_active", spiritVisionActive);
         tag.putLong("divination_cd_end", divinationCooldownEndTick);
         tag.putLong("danger_intuition_cd_end", dangerIntuitionCooldownEndTick);
@@ -396,6 +417,10 @@ public class PlayerMysteryData {
         CompoundTag counters = new CompoundTag();
         actingCounters.forEach(counters::putInt);
         tag.put("acting_counters", counters);
+        tag.putFloat("principle_insight", principleInsight);
+        tag.putFloat("role_overidentification", roleOveridentification);
+        tag.putInt("acting_reflection_count", actingReflectionCount);
+        tag.putLong("last_acting_reflection_day", lastActingReflectionDay);
 
         CompoundTag rep = new CompoundTag();
         // ResourceLocation 不能直接作为 NBT 键，转成 namespace:path 字符串存储。
@@ -412,6 +437,8 @@ public class PlayerMysteryData {
      * 使用 contains 判断并提供默认值，确保旧存档也能继续加载。
      */
     public void load(CompoundTag tag) {
+        int loadedSchemaVersion = tag.contains("schema_version")
+                ? tag.getInt("schema_version") : 0;
         pathway = tag.contains("pathway") ? ResourceLocation.tryParse(tag.getString("pathway")) : null;
         sequence = tag.getInt("sequence");
         spirituality = tag.getFloat("spirituality");
@@ -549,6 +576,11 @@ public class PlayerMysteryData {
         actingCounters.clear();
         CompoundTag counters = tag.getCompound("acting_counters");
         for (String key : counters.getAllKeys()) actingCounters.put(key, counters.getInt(key));
+        principleInsight = tag.getFloat("principle_insight");
+        roleOveridentification = tag.getFloat("role_overidentification");
+        actingReflectionCount = tag.getInt("acting_reflection_count");
+        lastActingReflectionDay = tag.contains("last_acting_reflection_day")
+                ? tag.getLong("last_acting_reflection_day") : Long.MIN_VALUE;
 
         orgReputation.clear();
         CompoundTag rep = tag.getCompound("org_reputation");
@@ -556,6 +588,22 @@ public class PlayerMysteryData {
             ResourceLocation rl = ResourceLocation.tryParse(key);
             // 只恢复合法组织 ID；非法键静默丢弃，避免污染运行期数据结构。
             if (rl != null) orgReputation.put(rl, rep.getInt(key));
+        }
+
+        characteristicBundles.clear();
+        ListTag characteristics = tag.getList(
+                "characteristic_bundles", Tag.TAG_COMPOUND);
+        for (int index = 0; index < characteristics.size(); index++) {
+            try {
+                characteristicBundles.add(CharacteristicBundle.load(
+                        characteristics.getCompound(index)));
+            } catch (IllegalArgumentException ignored) {
+            }
+        }
+        if (loadedSchemaVersion < CURRENT_SCHEMA_VERSION
+                && characteristicBundles.isEmpty()) {
+            characteristicBundles.addAll(CharacteristicLedger.migrateLegacy(
+                    pathway, sequence, potionQuality));
         }
         sanitize();
     }

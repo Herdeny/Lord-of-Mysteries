@@ -762,5 +762,9 @@
   "command.lord_of_mysteries.party.progress": "任务步骤 %s/%s · 当前计数 %s",
   "command.lord_of_mysteries.party.members": "在线待结算 %s · 待结算 %s · 登记成员 %s/%s",
   "command.lord_of_mysteries.party.updated": "账本最近更新于 %s 秒前。",
-  "command.lord_of_mysteries.party.join_hint": "执行 /pm party sync 可加入并追赶到队伍最新进度。"
+  "command.lord_of_mysteries.party.join_hint": "执行 /pm party sync 可加入并追赶到队伍最新进度。",
+  "screen.lord_of_mysteries.status.acting_identity": "准则洞察 / 过度认同",
+  "command.lord_of_mysteries.reflect.success": "反思完成。准则洞察 %s，过度认同 %s。你再次确认：角色不是自我。",
+  "command.lord_of_mysteries.reflect.commoner": "你尚未进入非凡途径，暂时无需扮演反思（%s / %s）。",
+  "command.lord_of_mysteries.reflect.cooldown": "今天已经完成过扮演反思（准则洞察 %s / 过度认同 %s）。"
 }

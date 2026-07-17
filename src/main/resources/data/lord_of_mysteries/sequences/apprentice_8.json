@@ -1,0 +1,20 @@
+{
+  "id": "lord_of_mysteries:apprentice_8",
+  "type": "sequence",
+  "schema_version": 4,
+  "canon_status": "adaptation",
+  "source_tier": "B-tech",
+  "source_refs": ["GDD:v0.9/62", "REPO:M2AdvancedAbilityHandler"],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+  "links": {"requires": ["lord_of_mysteries:apprentice", "lord_of_mysteries:apprentice_potion_8"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "pathway": "lord_of_mysteries:apprentice",
+  "sequence": 8,
+  "spirituality_max": 138,
+  "initial_pressure": 12,
+  "abilities": ["lord_of_mysteries:spatial_relay", "lord_of_mysteries:knowledge_link", "lord_of_mysteries:mirror_door"],
+  "acting_events": ["lord_of_mysteries:trickmaster8_combo_discovery", "lord_of_mysteries:trickmaster8_door_tactics", "lord_of_mysteries:trickmaster8_show_off"],
+  "potion_id": "lord_of_mysteries:apprentice_potion_8",
+  "digestion_target": 100.0
+}

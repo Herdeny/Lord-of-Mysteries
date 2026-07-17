@@ -1,5 +1,19 @@
 {
   "id": "lord_of_mysteries:commission/missing_investigation_squad",
+  "type": "commission",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/73", "REPO:M2_INVESTIGATION"],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/commission_board",
+  "links": {
+    "requires": ["lord_of_mysteries:quest/chain1_missing_squad_prologue"],
+    "produces": [],
+    "used_by": ["lord_of_mysteries:commission/counterfeit_formula"],
+    "countered_by": []
+  },
+  "implementation_state": "playable",
   "title_key": "commission.lord_of_mysteries.missing_squad.title",
   "summary_key": "commission.lord_of_mysteries.missing_squad.summary",
   "board": ["mist_city_outpost", "church_notice"],

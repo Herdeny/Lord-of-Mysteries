@@ -1,9 +1,12 @@
 {
-  "design_version": "v0.8",
+  "design_version": "v0.9",
+  "content_schema_version": 4,
   "generator": "scripts/gen_datapack.py",
   "sources": [
     "docs/pathways_master.csv",
-    "docs/recipes_master.csv"
+    "docs/recipes_master.csv",
+    "docs/Project_Mystery_v0_9_manifest.json",
+    "docs/master/m0_content_catalog.json"
   ],
   "pathway_count": 22,
   "generated_recipe_count": 11

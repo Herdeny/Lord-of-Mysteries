@@ -39,6 +39,7 @@ public final class ActingEventHandler {
                 ServerConfig.DIGESTION_MULTIPLIER.get().floatValue());
         data.digestion = Math.max(0f, Math.min(100f, data.digestion + gain));
         data.actingHistory.put(historyKey, now);
+        ActingIdentityService.recordPractice(data, novelty, gain);
         if (gain > 0f) M1TrialTracker.recordActing(player);
 
         if (ServerConfig.SHOW_EXACT_DIGESTION.get()) {

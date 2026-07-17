@@ -27,7 +27,7 @@ public final class MysteryStatusScreen extends Screen {
         int panelWidth = Math.min(360, width - 32);
         int left = (width - panelWidth) / 2;
         int top = Math.max(24, (height - 260) / 2);
-        graphics.fill(left, top, left + panelWidth, top + 260, 0xE6100D16);
+        graphics.fill(left, top, left + panelWidth, top + 278, 0xE6100D16);
         graphics.fill(left, top, left + panelWidth, top + 2, 0xFF8B5CF6);
 
         graphics.drawCenteredString(font, title, width / 2, top + 14, 0xFFD9C7FF);
@@ -62,6 +62,10 @@ public final class MysteryStatusScreen extends Screen {
         line(graphics, x, y, "screen.lord_of_mysteries.status.quality",
                 Component.translatable(
                         "quality.lord_of_mysteries." + status.potionQuality()).getString());
+        y += 18;
+        line(graphics, x, y, "screen.lord_of_mysteries.status.acting_identity",
+                oneDecimal(status.principleInsight()) + " / "
+                        + oneDecimal(status.roleOveridentification()));
         y += 28;
 
         graphics.drawString(font, Component.translatable(
@@ -81,7 +85,7 @@ public final class MysteryStatusScreen extends Screen {
         }
         graphics.drawCenteredString(font, Component.translatable(
                 "screen.lord_of_mysteries.status.guide_hint"),
-                width / 2, top + 240, 0xFF8E8798);
+                width / 2, top + 258, 0xFF8E8798);
         super.render(graphics, mouseX, mouseY, partialTick);
     }
 

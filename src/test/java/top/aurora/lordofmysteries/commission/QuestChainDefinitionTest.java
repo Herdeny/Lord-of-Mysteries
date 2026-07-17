@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.google.gson.JsonParser;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Test;
 
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +16,7 @@ class QuestChainDefinitionTest {
     @Test
     void parsesObjectivesAndCoopPolicy() {
         QuestChainDefinition chain = QuestChainDefinition.parse(
-                JsonParser.parseString("""
+                withMetadata("""
                         {
                           "id": "lord_of_mysteries:quest/test",
                           "title_key": "quest.test.title",
@@ -33,7 +34,7 @@ class QuestChainDefinitionTest {
                           ],
                           "coop": {"shared_progress": true, "max_party": 4}
                         }
-                        """).getAsJsonObject(), id("fallback"));
+                        """), id("fallback"));
 
         assertEquals(2, chain.steps().size());
         assertEquals(3, chain.steps().get(1).objective().count());
@@ -44,7 +45,7 @@ class QuestChainDefinitionTest {
     @Test
     void rejectsObjectiveTypesOutsideTheFrozenV08Registry() {
         assertThrows(JsonParseException.class, () -> QuestChainDefinition.parse(
-                JsonParser.parseString("""
+                withMetadata("""
                         {
                           "title_key": "quest.test.title",
                           "steps": [{
@@ -53,13 +54,13 @@ class QuestChainDefinitionTest {
                             "objective": {"type": "hardcoded_magic"}
                           }]
                         }
-                        """).getAsJsonObject(), id("quest/test")));
+                        """), id("quest/test")));
     }
 
     @Test
     void rejectsSharedPartySizeBeyondPersistentLedgerLimit() {
         assertThrows(JsonParseException.class, () -> QuestChainDefinition.parse(
-                JsonParser.parseString("""
+                withMetadata("""
                         {
                           "title_key": "quest.test.title",
                           "steps": [{
@@ -69,13 +70,13 @@ class QuestChainDefinitionTest {
                           }],
                           "coop": {"shared_progress": true, "max_party": 8}
                         }
-                        """).getAsJsonObject(), id("quest/test")));
+                        """), id("quest/test")));
     }
 
     @Test
     void rejectsDuplicateStepIdsAndNonPositiveCounts() {
         assertThrows(JsonParseException.class, () -> QuestChainDefinition.parse(
-                JsonParser.parseString("""
+                withMetadata("""
                         {
                           "title_key": "quest.test.title",
                           "steps": [
@@ -85,9 +86,9 @@ class QuestChainDefinitionTest {
                              "objective": {"type": "encounter", "count": 1}}
                           ]
                         }
-                        """).getAsJsonObject(), id("quest/test")));
+                        """), id("quest/test")));
         assertThrows(JsonParseException.class, () -> QuestChainDefinition.parse(
-                JsonParser.parseString("""
+                withMetadata("""
                         {
                           "title_key": "quest.test.title",
                           "steps": [{
@@ -96,7 +97,20 @@ class QuestChainDefinitionTest {
                             "objective": {"type": "encounter", "count": 0}
                           }]
                         }
-                        """).getAsJsonObject(), id("quest/test")));
+                        """), id("quest/test")));
+    }
+
+    private static JsonObject withMetadata(String json) {
+        JsonObject object = JsonParser.parseString(json).getAsJsonObject();
+        object.addProperty("schema_version", 4);
+        object.addProperty("canon_status", "original");
+        object.addProperty("source_tier", "D");
+        object.add("source_refs", JsonParser.parseString("[\"TEST:v0.9\"]"));
+        object.addProperty("spoiler_level", 0);
+        object.addProperty("knowledge_gate", "lord_of_mysteries:knowledge/test");
+        object.add("links", JsonParser.parseString("{}"));
+        object.addProperty("implementation_state", "verified");
+        return object;
     }
 
     private static ResourceLocation id(String path) {

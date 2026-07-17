@@ -20,6 +20,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import top.aurora.lordofmysteries.ProjectMystery;
+import top.aurora.lordofmysteries.acting.ActingIdentityService;
+import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 
@@ -130,6 +132,9 @@ public final class M2PathwayPotionItem extends Item {
         data.pollution = Math.min(100f,
                 data.pollution + quality.initialPollution());
         data.potionQuality = quality.id();
+        CharacteristicLedger.recordPotionAdvancement(
+                data, pathway.id(), targetSequence, quality);
+        ActingIdentityService.recordAdvancement(data);
         data.spiritVisionActive = false;
         unlockKnowledge(data);
 

@@ -1,5 +1,19 @@
 {
   "id": "lord_of_mysteries:quest/lost_cat_intro",
+  "type": "quest",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/74", "REPO:M2_INVESTIGATION"],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/commission_board",
+  "links": {
+    "requires": [],
+    "produces": [],
+    "used_by": ["lord_of_mysteries:commission/lost_cat"],
+    "countered_by": []
+  },
+  "implementation_state": "playable",
   "title_key": "quest.lord_of_mysteries.lost_cat.title",
   "steps": [
     {

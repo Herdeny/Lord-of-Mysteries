@@ -16,6 +16,8 @@ on:
       - "wiki/**"
       - "scripts/sync_project_metadata.py"
       - "scripts/gen_datapack.py"
+      - "scripts/import_v09_design.py"
+      - "scripts/build_content_graph.py"
       - "scripts/check_resource_integrity.py"
       - "build.gradle"
       - ".github/workflows/docs-consistency.yml"
@@ -31,6 +33,8 @@ on:
       - "wiki/**"
       - "scripts/sync_project_metadata.py"
       - "scripts/gen_datapack.py"
+      - "scripts/import_v09_design.py"
+      - "scripts/build_content_graph.py"
       - "scripts/check_resource_integrity.py"
       - "build.gradle"
       - ".github/workflows/docs-consistency.yml"
@@ -54,6 +58,12 @@ jobs:
 
       - name: Verify generated datapack
         run: python3 scripts/gen_datapack.py --check
+
+      - name: Verify v0.9 design source set
+        run: python3 scripts/import_v09_design.py --check
+
+      - name: Verify v0.9 content graph
+        run: python3 scripts/build_content_graph.py
 
       - name: Verify resource integrity
         run: python3 scripts/check_resource_integrity.py

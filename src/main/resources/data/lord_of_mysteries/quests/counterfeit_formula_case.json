@@ -1,5 +1,19 @@
 {
   "id": "lord_of_mysteries:quest/counterfeit_formula_case",
+  "type": "quest",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/74", "REPO:M2_INVESTIGATION"],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/commission_board",
+  "links": {
+    "requires": [],
+    "produces": [],
+    "used_by": ["lord_of_mysteries:commission/counterfeit_formula"],
+    "countered_by": []
+  },
+  "implementation_state": "playable",
   "title_key": "quest.lord_of_mysteries.counterfeit_formula.title",
   "steps": [
     {

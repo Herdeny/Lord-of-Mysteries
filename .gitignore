@@ -30,5 +30,9 @@ Thumbs.db
 # 日志
 *.log
 
+# Python 工具缓存
+__pycache__/
+*.py[cod]
+
 # 本地发布仓库
 repo/

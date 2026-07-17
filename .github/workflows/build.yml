@@ -12,6 +12,8 @@ on:
       - "project-status.json"
       - "scripts/sync_project_metadata.py"
       - "scripts/gen_datapack.py"
+      - "scripts/import_v09_design.py"
+      - "scripts/build_content_graph.py"
       - "scripts/run_server_smoke.py"
       - "scripts/check_m1_playability.py"
       - "scripts/check_m2_investigation.py"
@@ -20,6 +22,10 @@ on:
       - "docs/m2-investigation-contract.json"
       - "docs/pathways_master.csv"
       - "docs/recipes_master.csv"
+      - "docs/Project_Mystery_Design_Doc_v0_9.md"
+      - "docs/Project_Mystery_v0_9_Incremental_Additions.md"
+      - "docs/Project_Mystery_v0_9_manifest.json"
+      - "docs/master/m0_content_catalog.json"
       - "build.gradle"
       - "settings.gradle"
       - "gradle.properties"
@@ -33,6 +39,8 @@ on:
       - "project-status.json"
       - "scripts/sync_project_metadata.py"
       - "scripts/gen_datapack.py"
+      - "scripts/import_v09_design.py"
+      - "scripts/build_content_graph.py"
       - "scripts/run_server_smoke.py"
       - "scripts/check_m1_playability.py"
       - "scripts/check_m2_investigation.py"
@@ -41,6 +49,10 @@ on:
       - "docs/m2-investigation-contract.json"
       - "docs/pathways_master.csv"
       - "docs/recipes_master.csv"
+      - "docs/Project_Mystery_Design_Doc_v0_9.md"
+      - "docs/Project_Mystery_v0_9_Incremental_Additions.md"
+      - "docs/Project_Mystery_v0_9_manifest.json"
+      - "docs/master/m0_content_catalog.json"
       - "build.gradle"
       - "settings.gradle"
       - "gradle.properties"
@@ -76,6 +88,12 @@ jobs:
 
       - name: Verify generated datapack
         run: python3 scripts/gen_datapack.py --check
+
+      - name: Verify v0.9 design source set
+        run: python3 scripts/import_v09_design.py --check
+
+      - name: Verify v0.9 content graph
+        run: python3 scripts/build_content_graph.py
 
       - name: Verify M1 playability contract
         run: python3 scripts/check_m1_playability.py

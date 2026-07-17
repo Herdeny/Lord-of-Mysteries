@@ -85,10 +85,10 @@ def load_roadmap(status):
     if roadmap["schema_version"] != 1:
         raise ValueError("不支持的 roadmap.json schema_version")
     milestones = roadmap["milestones"]
-    expected_ids = [f"M{i}" for i in range(8)]
+    expected_ids = [f"M{i}" for i in range(13)]
     actual_ids = [milestone.get("id") for milestone in milestones]
     if actual_ids != expected_ids:
-        raise ValueError(f"roadmap 里程碑必须按 M0-M7 排列: {actual_ids}")
+        raise ValueError(f"roadmap 里程碑必须按 M0-M12 排列: {actual_ids}")
     active = [m["id"] for m in milestones if m.get("state") == "active"]
     if active != [roadmap["current_milestone"]]:
         raise ValueError("roadmap 必须只有 current_milestone 处于 active")
@@ -183,29 +183,17 @@ def render_roadmap_document(roadmap):
             "",
         ])
         lines.extend(f"- {point}" for point in milestone["points"])
-    lines.extend([
-        "",
-        "## 内容规模目标",
-        "",
-        "| 类别 | MVP | EP1 | EP2 |",
-        "|---|---:|---:|---:|",
-    ])
-    keys = [
-        ("playable_sequences", "可玩序列"),
-        ("abilities", "能力"),
-        ("acting_events", "扮演事件"),
-        ("potion_recipes", "魔药配方"),
-        ("artifacts", "封印物"),
-        ("structures", "结构"),
-        ("world_events", "世界事件"),
-        ("diary_pages", "日记残页"),
-    ]
-    scopes = roadmap["scope_targets"]
-    for key, label in keys:
-        lines.append(
-            f"| {label} | {scopes['MVP'][key]} | "
-            f"{scopes['EP1'][key]} | {scopes['EP2'][key]} |"
-        )
+    lines.extend(["", "## 内容规模基线", ""])
+    for scope, values in roadmap["scope_targets"].items():
+        lines.extend([
+            f"### {scope}",
+            "",
+            "| 指标 | 数量 |",
+            "|---|---:|",
+        ])
+        for key, value in values.items():
+            lines.append(f"| {key} | {value} |")
+        lines.append("")
     lines.extend([
         "",
         "路线数据的唯一来源是 `roadmap.json`。修改后运行：",

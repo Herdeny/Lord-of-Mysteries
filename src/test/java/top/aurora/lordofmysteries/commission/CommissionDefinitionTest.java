@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Test;
 
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +18,7 @@ class CommissionDefinitionTest {
     @Test
     void parsesDataDrivenCommissionAndReward() {
         CommissionDefinition definition = CommissionDefinition.parse(
-                JsonParser.parseString("""
+                withMetadata("""
                         {
                           "id": "lord_of_mysteries:commission/test",
                           "title_key": "commission.test.title",
@@ -33,7 +34,7 @@ class CommissionDefinitionTest {
                           "prerequisites": ["lord_of_mysteries:commission/intro"],
                           "cooldown_hours": 2
                         }
-                        """).getAsJsonObject(), id("test"));
+                        """), id("test"));
 
         assertEquals(id("commission/test"), definition.id());
         assertEquals(36L, definition.reward().pence());
@@ -46,7 +47,7 @@ class CommissionDefinitionTest {
     @Test
     void rejectsSingleSolutionCommission() {
         assertThrows(JsonParseException.class, () -> CommissionDefinition.parse(
-                JsonParser.parseString("""
+                withMetadata("""
                         {
                           "title_key": "title",
                           "summary_key": "summary",
@@ -56,13 +57,13 @@ class CommissionDefinitionTest {
                           "reward": {},
                           "quest_chain": "lord_of_mysteries:quest/test"
                         }
-                        """).getAsJsonObject(), id("commission/test")));
+                        """), id("commission/test")));
     }
 
     @Test
     void rejectsDuplicateSolutionsAndCooldownOverflow() {
         assertThrows(JsonParseException.class, () -> CommissionDefinition.parse(
-                JsonParser.parseString("""
+                withMetadata("""
                         {
                           "title_key": "title",
                           "summary_key": "summary",
@@ -72,9 +73,9 @@ class CommissionDefinitionTest {
                           "reward": {},
                           "quest_chain": "lord_of_mysteries:quest/test"
                         }
-                        """).getAsJsonObject(), id("commission/test")));
+                        """), id("commission/test")));
         assertThrows(JsonParseException.class, () -> CommissionDefinition.parse(
-                JsonParser.parseString("""
+                withMetadata("""
                         {
                           "title_key": "title",
                           "summary_key": "summary",
@@ -85,7 +86,20 @@ class CommissionDefinitionTest {
                           "quest_chain": "lord_of_mysteries:quest/test",
                           "cooldown_hours": 9223372036854776
                         }
-                        """).getAsJsonObject(), id("commission/test")));
+                        """), id("commission/test")));
+    }
+
+    private static JsonObject withMetadata(String json) {
+        JsonObject object = JsonParser.parseString(json).getAsJsonObject();
+        object.addProperty("schema_version", 4);
+        object.addProperty("canon_status", "original");
+        object.addProperty("source_tier", "D");
+        object.add("source_refs", JsonParser.parseString("[\"TEST:v0.9\"]"));
+        object.addProperty("spoiler_level", 0);
+        object.addProperty("knowledge_gate", "lord_of_mysteries:knowledge/test");
+        object.add("links", JsonParser.parseString("{}"));
+        object.addProperty("implementation_state", "verified");
+        return object;
     }
 
     private static ResourceLocation id(String path) {

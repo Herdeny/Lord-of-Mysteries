@@ -88,22 +88,51 @@ def pythonExecutable = System.getProperty('os.name').toLowerCase().contains('win
 
 tasks.register('generateProjectMysteryData', Exec) {
     group = 'project mystery'
-    description = 'Generates v0.8 pathway catalog and managed datapack recipes.'
+    description = 'Generates v0.9 pathway catalog and managed datapack recipes.'
     commandLine pythonExecutable, 'scripts/gen_datapack.py'
     inputs.files 'scripts/gen_datapack.py',
             'docs/pathways_master.csv',
             'docs/recipes_master.csv',
+            'docs/Project_Mystery_v0_9_manifest.json',
+            'docs/master/m0_content_catalog.json',
             fileTree('src/main/resources/data/lord_of_mysteries/commissions'),
             fileTree('src/main/resources/data/lord_of_mysteries/quests'),
+            fileTree('src/main/resources/data/lord_of_mysteries/sequences'),
             fileTree('src/main/resources/assets/lord_of_mysteries/lang')
     outputs.dir 'src/generated/resources/data/lord_of_mysteries'
 }
 
 tasks.register('checkProjectMysteryData', Exec) {
     group = 'verification'
-    description = 'Checks generated v0.8 datapack resources are current.'
+    description = 'Checks generated v0.9 datapack resources are current.'
     dependsOn 'generateProjectMysteryData'
     commandLine pythonExecutable, 'scripts/gen_datapack.py', '--check'
+}
+
+tasks.register('checkV09Design', Exec) {
+    group = 'verification'
+    description = 'Verifies the exact v0.9 design, manifest, and incremental source set.'
+    commandLine pythonExecutable, 'scripts/import_v09_design.py', '--check'
+    inputs.files 'scripts/import_v09_design.py',
+            'docs/Project_Mystery_Design_Doc_v0_9.md',
+            'docs/Project_Mystery_v0_9_Incremental_Additions.md',
+            'docs/Project_Mystery_v0_9_manifest.json'
+}
+
+tasks.register('checkContentGraph', Exec) {
+    group = 'verification'
+    description = 'Builds and validates the v0.9 schema-4 content graph and audit reports.'
+    dependsOn 'generateProjectMysteryData'
+    commandLine pythonExecutable, 'scripts/build_content_graph.py'
+    inputs.files 'scripts/build_content_graph.py',
+            'docs/master/m0_content_catalog.json',
+            'docs/pathways_master.csv',
+            'docs/recipes_master.csv',
+            fileTree('src/main/resources/data/lord_of_mysteries/commissions'),
+            fileTree('src/main/resources/data/lord_of_mysteries/quests'),
+            fileTree('src/main/resources/assets/lord_of_mysteries'),
+            fileTree('src/main/java')
+    outputs.dir 'build/reports/project_mystery'
 }
 
 tasks.register('checkM1Playability', Exec) {
@@ -205,7 +234,8 @@ test {
 }
 
 tasks.named('check').configure {
-    dependsOn 'checkProjectMysteryData', 'checkM1Playability',
+    dependsOn 'checkProjectMysteryData', 'checkV09Design',
+            'checkContentGraph', 'checkM1Playability',
             'checkM2Investigation', 'checkResourceIntegrity'
 }
 

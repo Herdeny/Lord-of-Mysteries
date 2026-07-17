@@ -80,6 +80,24 @@ def render_pathways(rows):
             raise ValueError(f"{pathway_id} implemented_sequences 超出 0-9")
         payload = {
             "id": f"lord_of_mysteries:{pathway_id}",
+            "type": "pathway",
+            "schema_version": 4,
+            "canon_status": "adaptation",
+            "source_tier": "B-tech",
+            "source_refs": ["GDD:v0.9/57", "REPO:docs/pathways_master.csv"],
+            "spoiler_level": 1,
+            "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+            "links": {
+                "requires": [],
+                "produces": [],
+                "used_by": [],
+                "countered_by": [],
+            },
+            "implementation_state": (
+                "playable"
+                if status in {"implemented", "m2_foundation"}
+                else "planned"
+            ),
             "group": require_id(row["group"].strip(), "group"),
             "display_name_key": row["display_name_key"].strip(),
             "description_key": row["description_key"].strip(),
@@ -283,11 +301,14 @@ def expected_files():
     expected.update(render_pathways(pathways))
     expected.update(render_recipes(recipes))
     manifest = {
-        "design_version": "v0.8",
+        "design_version": "v0.9",
+        "content_schema_version": 4,
         "generator": "scripts/gen_datapack.py",
         "sources": [
             "docs/pathways_master.csv",
             "docs/recipes_master.csv",
+            "docs/Project_Mystery_v0_9_manifest.json",
+            "docs/master/m0_content_catalog.json",
         ],
         "pathway_count": len(pathways),
         "generated_recipe_count": len(recipes),

@@ -21,6 +21,8 @@ public record PlayerMysteryStatusS2CPacket(
         float pollution,
         float insanityPressure,
         String potionQuality,
+        float principleInsight,
+        float roleOveridentification,
         List<String> knownKnowledge) {
 
     public static PlayerMysteryStatusS2CPacket from(PlayerMysteryData data, boolean showExactDigestion) {
@@ -37,6 +39,8 @@ public record PlayerMysteryStatusS2CPacket(
                 data.pollution,
                 data.insanityPressure,
                 data.potionQuality,
+                data.principleInsight,
+                data.roleOveridentification,
                 knowledge);
     }
 
@@ -49,6 +53,8 @@ public record PlayerMysteryStatusS2CPacket(
         buffer.writeFloat(packet.pollution);
         buffer.writeFloat(packet.insanityPressure);
         buffer.writeUtf(packet.potionQuality);
+        buffer.writeFloat(packet.principleInsight);
+        buffer.writeFloat(packet.roleOveridentification);
         buffer.writeVarInt(packet.knownKnowledge.size());
         for (String id : packet.knownKnowledge) buffer.writeUtf(id);
     }
@@ -62,11 +68,14 @@ public record PlayerMysteryStatusS2CPacket(
         float pollution = buffer.readFloat();
         float pressure = buffer.readFloat();
         String quality = buffer.readUtf();
+        float principleInsight = buffer.readFloat();
+        float roleOveridentification = buffer.readFloat();
         int size = Math.min(256, Math.max(0, buffer.readVarInt()));
         List<String> knowledge = new ArrayList<>(size);
         for (int i = 0; i < size; i++) knowledge.add(buffer.readUtf());
         return new PlayerMysteryStatusS2CPacket(pathway, sequence, spirituality,
-                spiritualityMax, digestion, pollution, pressure, quality, knowledge);
+                spiritualityMax, digestion, pollution, pressure, quality,
+                principleInsight, roleOveridentification, knowledge);
     }
 
     public static void handle(PlayerMysteryStatusS2CPacket packet,

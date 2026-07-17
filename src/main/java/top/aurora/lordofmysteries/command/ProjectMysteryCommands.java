@@ -20,6 +20,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import top.aurora.lordofmysteries.ProjectMystery;
+import top.aurora.lordofmysteries.acting.ActingIdentityService;
 import top.aurora.lordofmysteries.knowledge.InvestigatorCompassItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
 import top.aurora.lordofmysteries.knowledge.GuideJournalProgress;
@@ -89,6 +90,8 @@ public final class ProjectMysteryCommands {
                                         IntegerArgumentType.getInteger(context, "chapter")))))
                 .then(Commands.literal("status").executes(context ->
                         showStatus(context.getSource().getPlayerOrException())))
+                .then(Commands.literal("reflect").executes(context ->
+                        reflect(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("camp").executes(context -> {
                     ServerPlayer player = context.getSource().getPlayerOrException();
                     ItemStack compass = findCompass(player);
@@ -202,6 +205,25 @@ public final class ProjectMysteryCommands {
                 Math.round(data.insanityPressure))
                 .withStyle(ChatFormatting.AQUA));
         return 1;
+    }
+
+    private static int reflect(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        ActingIdentityService.ReflectionResult result =
+                ActingIdentityService.reflect(data,
+                        player.level().getDayTime() / 24000L);
+        String suffix = switch (result) {
+            case SUCCESS -> "success";
+            case COMMONER -> "commoner";
+            case ALREADY_REFLECTED -> "cooldown";
+        };
+        player.sendSystemMessage(Component.translatable(
+                "command.lord_of_mysteries.reflect." + suffix,
+                String.format(java.util.Locale.ROOT, "%.1f", data.principleInsight),
+                String.format(java.util.Locale.ROOT, "%.1f", data.roleOveridentification))
+                .withStyle(result == ActingIdentityService.ReflectionResult.SUCCESS
+                        ? ChatFormatting.AQUA : ChatFormatting.GRAY));
+        return result == ActingIdentityService.ReflectionResult.SUCCESS ? 1 : 0;
     }
 
     private static int showM1Check(ServerPlayer player) {

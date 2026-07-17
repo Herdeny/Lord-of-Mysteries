@@ -1,5 +1,22 @@
 {
   "id": "lord_of_mysteries:apprentice",
+  "type": "pathway",
+  "schema_version": 4,
+  "canon_status": "adaptation",
+  "source_tier": "B-tech",
+  "source_refs": [
+    "GDD:v0.9/57",
+    "REPO:docs/pathways_master.csv"
+  ],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+  "links": {
+    "requires": [],
+    "produces": [],
+    "used_by": [],
+    "countered_by": []
+  },
+  "implementation_state": "playable",
   "group": "sefirah",
   "display_name_key": "pathway.lord_of_mysteries.apprentice",
   "description_key": "pathway.lord_of_mysteries.apprentice.description",

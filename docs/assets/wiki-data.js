@@ -1,6 +1,6 @@
 /*
  * Lord of Mysteries Wiki — 数据源
- * 与项目 data/*.json、CSV 主表和当前设计基线 v0.8 同源整理。
+ * 与项目 data/*.json、CSV 主表、内容关系图和当前设计基线 v0.9 同源整理。
  * 纯静态数据，GitHub Pages 直接加载，无需构建。
  */
 
@@ -36,36 +36,36 @@ LOM.roadmap = roadmapMeta.milestones || [];
 LOM.pathwaysOverview = [
   { id: "seer", name: "占卜家", en: "Seer", accent: "#7c5cff",
     desc: "以观察、占卜与灵视见长。序列 9–7 已形成魔药、扮演、战斗、材料与引导纵切。",
-    traits: ["灵视", "纸牌", "替身", "幻术"], baseSpirit: 100, growth: 22, status: "M1 代码纵切完成" },
+    traits: ["灵视", "纸牌", "替身", "幻术"], baseSpirit: 100, growth: 22, status: "序列9-7已实装 · v0.9迁移资产" },
   { id: "hunter", name: "猎人", en: "Hunter", accent: "#cc5b4d",
     desc: "力量与战斗的途径。序列 9 擅长追踪与陷阱，序列 8 以挑衅控制战局，序列 7 驾驭火焰长枪、焰环与火焰亲和。",
     traits: ["追踪", "陷阱", "挑衅", "战斗意志"],
-    spirit: "序列9 118 · 序列8 142 · 序列7 175", status: "序列9-7已实装 · M2预研" },
+    spirit: "序列9 118 · 序列8 142 · 序列7 175", status: "序列9-7已实装 · v0.9迁移资产" },
   { id: "spectator", name: "观众", en: "Spectator", accent: "#6bcad0",
     desc: "精神与心灵的途径。序列 9 读取情绪，序列 8 读取表层思维，序列 7 以安抚、震慑和心理隐身干预战局。",
     traits: ["情绪读取", "行为预判", "表层读心", "心理暗示"],
-    spirit: "序列9 112 · 序列8 138 · 序列7 168", status: "序列9-7已实装 · M2预研" },
+    spirit: "序列9 112 · 序列8 138 · 序列7 168", status: "序列9-7已实装 · v0.9迁移资产" },
   { id: "apprentice", name: "学徒", en: "Apprentice", accent: "#d4af37",
     desc: "空间、记录与星象的途径。序列 9–7 已具备知识副本、空间转移、镜门、星象预兆和团队庇护。",
-    traits: ["空间", "记录", "知识链接", "星象"], spirit: "序列9 115 · 序列8 138 · 序列7 165", status: "序列9-7已实装 · M2预研" },
+    traits: ["空间", "记录", "知识链接", "星象"], spirit: "序列9 115 · 序列8 138 · 序列7 165", status: "序列9-7已实装 · v0.9迁移资产" },
   { id: "thief", name: "偷盗者", en: "Thief", accent: "#74b86f",
     desc: "窃取、欺诈与解密的途径。序列 9–7 已具备行窃、换位、假身、符文解析、开锁和抹痕。",
-    traits: ["窃取", "欺诈", "解密", "隐匿"], spirit: "序列9 108 · 序列8 130 · 序列7 158", status: "序列9-7已实装 · M2预研" }
+    traits: ["窃取", "欺诈", "解密", "隐匿"], spirit: "序列9 108 · 序列8 130 · 序列7 158", status: "序列9-7已实装 · v0.9迁移资产" }
 ];
 
-/* ── 占卜家序列阶梯（9→0，v0.8 M1 聚焦序列9-7） ── */
+/* ── 占卜家序列阶梯（9→0，v0.9 M1 计划重验序列9-7） ── */
 LOM.seerSequences = [
   { seq: 9, name: "占卜家 Seer", state: "active", spiritMax: 122,
     abilities: ["灵视", "危险直觉", "简易占卜"],
-    desc: "序列起点。初窥灵界，能感知超凡气息、预警致命危险、进行简易占卜。M1 完整实装。" },
+    desc: "序列起点。初窥灵界，能感知超凡气息、预警致命危险、进行简易占卜。当前为可玩迁移资产。" },
   { seq: 8, name: "小丑 Clown", state: "active", spiritMax: 144,
-    abilities: ["纸牌飞刃", "完美平衡", "表情操控", "直觉预判"], desc: "v0.8 M1 已实装；通过表演、压力战斗和连续闪避消化。" },
+    abilities: ["纸牌飞刃", "完美平衡", "表情操控", "直觉预判"], desc: "已实装；通过表演、压力战斗和连续闪避消化，等待 v0.9 M1 两小时复验。" },
   { seq: 7, name: "魔术师 Magician", state: "active", spiritMax: 175,
-    abilities: ["火焰跳跃", "替身纸人", "空气子弹", "舞台幻术"], desc: "v0.8 M1 已实装；代码纵切完成，等待一小时平衡验收。" },
+    abilities: ["火焰跳跃", "替身纸人", "空气子弹", "舞台幻术"], desc: "代码纵切已完成；等待 v0.9 M1 两小时生存与平衡验收。" },
   { seq: 6, name: "无面人 Faceless", state: "planned", spiritMax: 212,
-    abilities: ["完全变形", "形体记录", "声线模仿"], desc: "v0.8 M4 / EP1 规划。" },
+    abilities: ["完全变形", "形体记录", "声线模仿"], desc: "v0.9 M3 首发五途径规划。" },
   { seq: 5, name: "秘偶大师 Marionettist", state: "planned", spiritMax: 265,
-    abilities: ["灵体之线", "秘偶操控", "傀儡收纳"], desc: "v0.8 M4 / EP1 规划。" },
+    abilities: ["灵体之线", "秘偶操控", "傀儡收纳"], desc: "v0.9 M3 首发五途径规划。" },
   { seq: 4, name: "预言家 Scryer", state: "future", spiritMax: 300,
     abilities: ["强化预言", "命运窥探"], desc: "更高维度的预知。规划中。" },
   { seq: 3, name: "占卜之王 (待定)", state: "future", spiritMax: 380, abilities: ["—"], desc: "高序列，暂未设计。" },
@@ -77,10 +77,10 @@ LOM.seerSequences = [
 LOM.spectatorSequences = [
   { pathway: "观众", seq: 9, name: "观众 Spectator", state: "active", spiritMax: 112,
     abilities: ["情绪读取", "行为预判", "镇定"],
-    desc: "持续观察目标情绪，并在战斗中预判来袭行为。已实现，作为 M2 预研保留。" },
+    desc: "持续观察目标情绪，并在战斗中预判来袭行为。已实现，作为 v0.9 迁移资产保留。" },
   { pathway: "观众", seq: 8, name: "读心者 Telepathist", state: "active", spiritMax: 138,
     abilities: ["表层读心", "心理暗示", "精神抵抗"],
-    desc: "读取目标当前表层状态，并施加带可见反馈和玩家抵抗窗口的心理暗示。已实装，作为 M2 预研保留。" },
+    desc: "读取目标当前表层状态，并施加带可见反馈和玩家抵抗窗口的心理暗示。已实装，作为 v0.9 迁移资产保留。" },
   { pathway: "观众", seq: 7, name: "心理医生 Psychiatrist", state: "active", spiritMax: 168,
     abilities: ["心理安抚", "心灵震慑", "心理隐身"],
     desc: "解除群体敌意、打断目标进攻，并在潜行时持续抹除附近生物对自身的锁定。" }
@@ -89,10 +89,10 @@ LOM.spectatorSequences = [
 LOM.hunterSequences = [
   { pathway: "猎人", seq: 9, name: "猎人 Hunter", state: "active", spiritMax: 118,
     abilities: ["战斗追踪", "陷阱精通", "荒野感知"],
-    desc: "攻击后追踪目标，布置专属捕兽夹，并在户外感知附近敌对目标。已实现，作为 M2 预研保留。" },
+    desc: "攻击后追踪目标，布置专属捕兽夹，并在户外感知附近敌对目标。已实现，作为 v0.9 迁移资产保留。" },
   { pathway: "猎人", seq: 8, name: "挑衅者 Provoker", state: "active", spiritMax: 142,
     abilities: ["挑衅", "激怒", "战斗意志"],
-    desc: "吸引低抗性敌人仇恨、激怒单个目标，并在被围攻时获得减伤。已实现，作为 M2 预研保留。" },
+    desc: "吸引低抗性敌人仇恨、激怒单个目标，并在被围攻时获得减伤。已实现，作为 v0.9 迁移资产保留。" },
   { pathway: "猎人", seq: 7, name: "纵火家 Pyromaniac", state: "active", spiritMax: 175,
     abilities: ["火焰长枪", "焰环", "火焰亲和"],
     desc: "以远距火焰和近身焰环控制战场，对燃烧目标造成额外伤害并抵抗火焰。" }
@@ -186,7 +186,7 @@ LOM.entries = [
   { type: "system", id: "lord_of_mysteries:guide_commands", name: "调查指引命令", en: "Investigator Guide Commands",
     summary: "无需管理员权限的自助命令覆盖动态阶段提示、引导物恢复、诊断、探索、资料与验收记录。",
     tags: ["系统", "命令", "引导", "M1"],
-    details: [["下一步", "/pm next · /pm guide next"], ["恢复", "/pm recover · /pm guide recover"], ["晋升", "/pm guide · /pm m1check"], ["诊断", "/pm doctor"], ["手账", "/pm handbook [1-9]"], ["探索", "/pm camp · /pm mistcity · /pm case"], ["委托", "/pm commission list|status|accept|abandon"], ["验收", "/pm trial start|status|report|verify|stop|reset"]],
+    details: [["下一步", "/pm next · /pm guide next"], ["恢复", "/pm recover · /pm guide recover"], ["反思", "/pm reflect"], ["晋升", "/pm guide · /pm m1check"], ["诊断", "/pm doctor"], ["手账", "/pm handbook [1-9]"], ["探索", "/pm camp · /pm mistcity · /pm case"], ["委托", "/pm commission list|status|accept|abandon"], ["验收", "/pm trial start|status|report|verify|stop|reset"]],
     long: "命令由服务端权威执行并发送本地化文本。next 会按营地、序列、消化和关键材料给出单一优先目标；recover 只补回缺失的手账或罗盘；doctor 会修复数据并检查定义、协议和世界目标。" },
   { type: "system", id: "lord_of_mysteries:tutorial_advancements", name: "教程与晋升成就链", en: "Tutorial and Advancement Chain",
     summary: "二十一段成就覆盖营地抵达、M1 主线、四条预研途径晋升、雾都委托与记者救援。",
@@ -201,28 +201,28 @@ LOM.entries = [
   { type: "system", id: "lord_of_mysteries:m1_trial_tracker", name: "M1 一小时试炼追踪器", en: "M1 One-Hour Trial Tracker",
     summary: "持久化记录一小时纵切的六项目标、四项连续性门禁和平衡统计。",
     tags: ["系统", "验收", "命令", "持久化", "M1"],
-    details: [["命令", "/pm trial start|resume|status|report|verify|stop|reset"], ["目标", "一小时 · 营地 · 序列7 · 3次狩猎 · 2次扮演 · 风险峰值25"], ["阶段耗时", "营地10分 · 序列9/8/7为25/45/60分"], ["连续性", "重连 · 重启 · 维度往返 · 死亡恢复"], ["存档", "Capability schema 15"]],
+    details: [["命令", "/pm trial start|resume|status|report|verify|stop|reset"], ["目标", "一小时 · 营地 · 序列7 · 3次狩猎 · 2次扮演 · 风险峰值25"], ["阶段耗时", "营地10分 · 序列9/8/7为25/45/60分"], ["连续性", "重连 · 重启 · 维度往返 · 死亡恢复"], ["存档", "Capability schema 16"]],
     long: "追踪器只累计在线时长，stop 后 start/resume 会恢复记录。report 显示四阶段与首次狩猎、扮演、风险事件时间；核心 6/6 和连续性 4/4 只提供机器证据，不能替代真实一小时平衡验收。" },
   { type: "system", id: "lord_of_mysteries:server_validation", name: "专用服务器与运行诊断", en: "Dedicated Server Validation",
-    summary: "用玩家自检、M1/M2 合同、183 项测试、资源门禁和 CI 专服运行诊断保护现有纵切。",
+    summary: "用 v0.9 设计源、内容图、玩家自检、合同、完整测试、资源门禁和 CI 专服运行诊断保护现有纵切。",
     tags: ["系统", "专用服务器", "CI", "诊断", "M1"],
-    details: [["诊断", "/pm doctor · /pm servercheck"], ["测试", "183"], ["协议", "6 · 11 个固定 ID"], ["资源", "253 JSON · 760 双语键"], ["冒烟", "3委托 · 3任务链 · Done · 保存停服"]],
+    details: [["诊断", "/pm doctor · /pm servercheck"], ["测试", "191 项"], ["协议", "7 · 固定消息 ID"], ["资源", "261 JSON · 764 双语键"], ["内容图", "71 节点 · 63 关系"], ["冒烟", "3委托 · 3任务链 · Done · 保存停服"]],
     long: "Build 工作流在 clean build 后实际启动 Forge 服务器。脚本确认定义加载、队伍 SavedData、active_parties/party_members、命令循环和世界强制保存，检测服务端线程致命错误后再干净停服。" },
   { type: "system", id: "lord_of_mysteries:resource_integrity", name: "统一资源完整性门禁", en: "Unified Resource Integrity Gate",
     summary: "在 Gradle 与 GitHub Actions 中统一阻止 JSON、双语、模型、纹理和注册资源漂移。",
     tags: ["系统", "资源", "CI", "双语", "稳定性"],
-    details: [["JSON", "253"], ["双语键", "760 对"], ["静态引用", "330"], ["模型", "73"], ["注册", "68 物品 · 5 方块 · 8 实体"]],
+    details: [["JSON", "261"], ["双语键", "764 对"], ["静态引用", "330"], ["模型", "73"], ["注册", "68 物品 · 5 方块 · 8 实体"]],
     long: "scripts/check_resource_integrity.py 解析主资源和生成资源，比较 en_us/zh_cn，追踪 Java/JSON 静态翻译引用，验证本命名空间模型/纹理链，并核对注册物的名称、模型与 blockstate。" },
   { type: "system", id: "lord_of_mysteries:occult_handbook", name: "九章神秘学手账", en: "Nine-Chapter Occult Handbook",
     summary: "主动查询式引导系统，按普通人、途径、传闻和未来邀请逐步解锁九章。",
     tags: ["系统", "引导", "知识", "M1"],
     details: [["命令", "/pm handbook [1-9]"], ["默认", "城市 · 成为非凡者 · 风险 · 途径"], ["状态解锁", "扮演 · 占卜 · 仪式"], ["传闻解锁", "钱与生计"], ["未来", "灰雾"]],
     long: "保留 investigator_notes 稳定物品 ID，但显示为神秘学手账。当前使用聊天章节作为无客户端依赖的可玩实现，后续可升级为翻页 UI。" },
-  { type: "system", id: "lord_of_mysteries:v08_datapack_pipeline", name: "v0.8 数据生产线", en: "v0.8 Datapack Pipeline",
-    summary: "CSV 主表驱动 22 途径和配方；同一门禁校验委托、任务目标和跨文件引用。",
-    tags: ["系统", "数据包", "CSV", "M2"],
-    details: [["途径", "22 条"], ["配方", "11 条"], ["委托", "3 种"], ["任务链", "3 条 · 15 类目标"], ["生成", "34 个 JSON"], ["门禁", "Gradle processResources + check"]],
-    long: "v0.8 D9 的首批落地。人工维护 CSV 和生成器，生成 JSON 进入 src/generated/resources；门禁同时验证双语键、目标字段、资源 ID、失败策略、合作人数与跨定义唯一性。" },
+  { type: "system", id: "lord_of_mysteries:v09_content_graph", name: "v0.9 内容图与迁移门禁", en: "v0.9 Content Graph and Migration Gate",
+    summary: "schema v4 统一来源、剧透、知识门槛、关系与实现状态，并从仓库证据建立全局内容图。",
+    tags: ["系统", "数据包", "schema v4", "内容图", "M0"],
+    details: [["途径", "22 条"], ["序列", "15 个"], ["委托", "3 种"], ["任务链", "3 条 · 15 类目标"], ["图谱", "71 节点 · 63 关系"], ["报告", "孤儿 · 剧透 · 兼容 · 本地化 · 资产"]],
+    long: "人工维护 CSV 和领域 JSON，生成器与 ContentMetadata 校验 schema v4；build_content_graph.py 只按已注册、已翻译、已建模和已引用的仓库证据统计完成度，不把 v0.9 设计规格误报为实现。" },
   { type: "entity", id: "lord_of_mysteries:shapeshifter_serpent", name: "幻形蛇", en: "Shapeshifter Serpent",
     summary: "主世界低概率生成的隐匿非凡生物，靠近玩家后显形并掉落魔术师主材料。",
     tags: ["生物", "材料", "序列7", "M1"],
@@ -664,8 +664,8 @@ LOM.entries = [
   { type: "system", id: "lord_of_mysteries:commission_runtime", name: "数据驱动委托与任务状态机", en: "Data-Driven Commission Runtime",
     summary: "热重载三种委托和三条任务链，并以十五类冻结目标推进服务器权威步骤。",
     tags: ["系统", "委托", "数据包", "持久化", "M2"],
-    details: [["委托", "3"], ["任务链", "3"], ["目标枚举", "15"], ["存档", "Capability schema 15 + 队伍 SavedData"], ["合作", "同记分板 2–4 人离线追赶"]],
-    long: "玩家状态保存便士余额、活动委托、记者、夜袭、救援路线和完成集合；世界级队伍账本保存共享步骤、成员与个人结算。schema 15 修复非法值，M2 合同保护离线恢复钩子与跨文件引用。" },
+    details: [["委托", "3"], ["任务链", "3"], ["目标枚举", "15"], ["存档", "Capability schema 16 + 队伍 SavedData"], ["合作", "同记分板 2–4 人离线追赶"]],
+    long: "玩家状态保存便士余额、活动委托、记者、夜袭、救援路线和完成集合；世界级队伍账本保存共享步骤、成员与个人结算。schema 16 修复非法值并持久化特性/扮演 v2 字段，调查合同保护离线恢复钩子与跨文件引用。" },
   { type: "system", id: "lord_of_mysteries:persistent_party_ledger", name: "持久化队伍调查账本", en: "Persistent Party Investigation Ledger",
     summary: "2–4 人记分板队伍共享调查并让已登记离线成员上线追赶，奖励仍逐人结算。",
     tags: ["系统", "多人", "离线恢复", "持久化", "M2"],
@@ -736,8 +736,8 @@ LOM.entries = [
   /* 组织 */
   { type: "org", id: "org_nighthawks", name: "值夜者", en: "Nighthawks",
     summary: "守序的非凡者组织，清剿失控与灵界威胁，玩家可积累声望。",
-    tags: ["组织", "守序", "规划"], details: [["立场", "守序 / 治安"], ["声望", "orgReputation 记录"], ["里程碑", "M3 MVP 公测"]],
-    long: "值夜者是维护凡俗与非凡秩序的组织。玩家协助清剿失控体、封印危险物可积累声望，解锁委托与资源。数据结构已预留 orgReputation，完整任务线按 v0.8 安排在 M3。" },
+    tags: ["组织", "守序", "规划"], details: [["立场", "守序 / 治安"], ["声望", "orgReputation 记录"], ["里程碑", "v0.9 M4"]],
+    long: "值夜者是维护凡俗与非凡秩序的组织。玩家协助清剿失控体、封印危险物可积累声望，解锁委托与资源。数据结构已预留 orgReputation，完整组织行动与封印物闭环安排在 v0.9 M4。" },
   { type: "org", id: "org_aurora", name: "极光会", en: "Aurora Order",
     summary: "追寻知识与晋升之路的非凡者结社。（呼应极光宇宙设定的彩蛋组织）",
     tags: ["组织", "知识", "规划"], details: [["立场", "求知 / 晋升"], ["里程碑", "M5 深化"]],
@@ -745,9 +745,9 @@ LOM.entries = [
 
   /* 世界 / 空间 */
   { type: "world", id: "grayfog", name: "灰雾空间", en: "The Gray Fog",
-    summary: "介于现实与灵界之间的诡秘空间，高序列非凡者的舞台。M4 / EP1 规划。",
-    tags: ["空间", "灰雾", "规划"], details: [["性质", "半灵界维度"], ["里程碑", "M4 / EP1"]],
-    long: "灰雾是弥漫在世界之上的神秘空间，隐藏着信息、交易与危险。v0.8 将灰雾源堡与塔罗会安排在 M4 / EP1，M1-M3 不提前计入完成度。" }
+    summary: "介于现实与灵界之间的诡秘空间，当前仅作远期概念，不计入已实现内容。",
+    tags: ["空间", "灰雾", "规划"], details: [["性质", "半灵界维度"], ["里程碑", "v0.9 M5 以后"]],
+    long: "灰雾是弥漫在世界之上的神秘空间，隐藏着信息、交易与危险。v0.9 先在 M5 完成灵界与梦境基础，高序列和终局能力不会提前计入完成度。" }
 ];
 
 /* ── 分类标签映射 ── */

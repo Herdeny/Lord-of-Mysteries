@@ -1,0 +1,20 @@
+{
+  "id": "lord_of_mysteries:apprentice_9",
+  "type": "sequence",
+  "schema_version": 4,
+  "canon_status": "adaptation",
+  "source_tier": "B-tech",
+  "source_refs": ["GDD:v0.9/62", "REPO:M2FoundationAbilityHandler"],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+  "links": {"requires": ["lord_of_mysteries:apprentice", "lord_of_mysteries:apprentice_potion_9"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "pathway": "lord_of_mysteries:apprentice",
+  "sequence": 9,
+  "spirituality_max": 115,
+  "initial_pressure": 9,
+  "abilities": ["lord_of_mysteries:quick_learning", "lord_of_mysteries:spiritual_sight", "lord_of_mysteries:stable_ink", "lord_of_mysteries:space_trick"],
+  "acting_events": ["lord_of_mysteries:apprentice9_bookworm", "lord_of_mysteries:apprentice9_teach", "lord_of_mysteries:apprentice9_field_note"],
+  "potion_id": "lord_of_mysteries:apprentice_potion_9",
+  "digestion_target": 100.0
+}

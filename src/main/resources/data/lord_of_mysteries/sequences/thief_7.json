@@ -1,0 +1,20 @@
+{
+  "id": "lord_of_mysteries:thief_7",
+  "type": "sequence",
+  "schema_version": 4,
+  "canon_status": "adaptation",
+  "source_tier": "B-tech",
+  "source_refs": ["GDD:v0.9/62", "REPO:M2AdvancedAbilityHandler"],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+  "links": {"requires": ["lord_of_mysteries:thief", "lord_of_mysteries:thief_potion_7"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "pathway": "lord_of_mysteries:thief",
+  "sequence": 7,
+  "spirituality_max": 158,
+  "initial_pressure": 15,
+  "abilities": ["lord_of_mysteries:rune_analysis", "lord_of_mysteries:master_lockpick", "lord_of_mysteries:trace_erasure"],
+  "acting_events": ["lord_of_mysteries:cryptologist7_ancient_read", "lord_of_mysteries:cryptologist7_perfect_crime", "lord_of_mysteries:cryptologist7_share_secret"],
+  "potion_id": "lord_of_mysteries:thief_potion_7",
+  "digestion_target": 100.0
+}

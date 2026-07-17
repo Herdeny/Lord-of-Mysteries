@@ -3,6 +3,7 @@
 import argparse
 import os
 import queue
+import re
 import signal
 import subprocess
 import sys
@@ -13,13 +14,30 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN_DIR = ROOT / "run"
+NETWORK_PROTOCOL_SOURCE = (
+    ROOT
+    / "src/main/java/top/aurora/lordofmysteries/network/NetworkProtocol.java"
+)
+
+
+def expected_network_metadata():
+    source = NETWORK_PROTOCOL_SOURCE.read_text(encoding="utf-8")
+    version_match = re.search(r'VERSION\s*=\s*"(\d+)"', source)
+    packet_count_match = re.search(r'PACKET_COUNT\s*=\s*(\d+)', source)
+    if version_match is None or packet_count_match is None:
+        raise RuntimeError("NetworkProtocol version metadata was not found")
+    return version_match.group(1), packet_count_match.group(1)
+
+
+EXPECTED_PROTOCOL, EXPECTED_PACKET_COUNT = expected_network_metadata()
 EXPECTED = {
     "commissions": "Loaded 3 commission definitions",
     "quests": "Loaded 3 quest chain definitions",
     "ready": "Done (",
     "servercheck": (
         "PROJECT_MYSTERY_SERVERCHECK_OK commissions=3 quests=3 "
-        "protocol=6 packets=11 overworld=true"
+        f"protocol={EXPECTED_PROTOCOL} packets={EXPECTED_PACKET_COUNT} "
+        "overworld=true"
     ),
     "party_storage": "party_storage=true active_parties=",
     "party_members": "party_members=",

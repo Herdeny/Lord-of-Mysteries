@@ -1,6 +1,6 @@
 # 专用服务器与多人一致性验证
 
-> 当前版本：0.8.9-1.20.1 · Capability schema 15 · 网络协议 6
+> 当前版本：0.9.0-1.20.1 · Capability schema 16 · 内容 schema v4 · 网络协议 7
 
 ## 自动冒烟
 
@@ -14,7 +14,7 @@ python scripts/run_server_smoke.py --timeout 180
 
 `./gradlew check` 还会运行 `scripts/check_m1_playability.py`，核对 60 分钟阶段目标、三份 M1 魔药、
 十二项保底补给、十个关键命令入口和中英文本地化；M2 合同保护真假配方、三解、持久队伍恢复与旧 13 步索引；
-统一资源门禁保护 JSON、双语、模型与注册资源；当前自动化基线为 183 项测试。
+统一门禁保护 v0.9 设计源、内容图、JSON、双语、模型与注册资源；当前自动化基线为 191 项 Gradle 测试。
 
 ## M1 连续性
 

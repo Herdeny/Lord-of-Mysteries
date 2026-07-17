@@ -1,0 +1,28 @@
+{
+  "id": "lord_of_mysteries:hunter_7",
+  "type": "sequence",
+  "schema_version": 4,
+  "canon_status": "adaptation",
+  "source_tier": "B-tech",
+  "source_refs": ["GDD:v0.9/62", "REPO:M2Sequence7AbilityHandler"],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+  "links": {"requires": ["lord_of_mysteries:hunter", "lord_of_mysteries:hunter_potion_7"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "pathway": "lord_of_mysteries:hunter",
+  "sequence": 7,
+  "spirituality_max": 175,
+  "initial_pressure": 20,
+  "abilities": [
+    "lord_of_mysteries:flame_spear",
+    "lord_of_mysteries:fire_ring",
+    "lord_of_mysteries:fire_affinity"
+  ],
+  "acting_events": [
+    "lord_of_mysteries:pyromaniac7_long_shot",
+    "lord_of_mysteries:pyromaniac7_fire_ring",
+    "lord_of_mysteries:pyromaniac7_walk_through_fire"
+  ],
+  "potion_id": "lord_of_mysteries:hunter_potion_7",
+  "digestion_target": 100.0
+}

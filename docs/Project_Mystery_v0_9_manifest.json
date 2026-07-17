@@ -1,0 +1,34 @@
+{
+  "version": "0.9",
+  "generated_date": "2026-07-17",
+  "baseline_file": "Project_Mystery_Design_Doc_v0_8.md",
+  "baseline_bytes": 315305,
+  "baseline_lines": 5060,
+  "baseline_sha256": "22a281c3731f256cb473682936f885af8c3e3168fa66114d759ce32b6b30b073",
+  "full_file": "Project_Mystery_Design_Doc_v0_9.md",
+  "full_bytes": 488668,
+  "full_lines": 7044,
+  "full_sha256": "8970ee1b9e41a710823e090724143a45ddb7036bc5969d79e208f18c131f5b3a",
+  "baseline_embedded_exactly": true,
+  "incremental_file": "Project_Mystery_v0_9_Incremental_Additions.md",
+  "incremental_bytes": 171981,
+  "new_chapters": "57-81",
+  "documented_additions": {
+    "fully_detailed_pathways_sequence_9_to_5": 7,
+    "new_registered_item_specs": 104,
+    "new_recipe_specs": 80,
+    "new_or_reworked_statuses": 64,
+    "new_particle_specs": 38,
+    "new_or_reworked_creature_specs": 40,
+    "new_mystical_plant_specs": 36,
+    "new_world_events": 23,
+    "new_quest_chains": 12,
+    "new_recurring_activities": 18,
+    "new_structure_categories": 32,
+    "weather_anomalies": 18
+  },
+  "notes": [
+    "Counts are design specifications, not claims of implementation or verification.",
+    "The v0.8 baseline was embedded byte-for-byte."
+  ]
+}

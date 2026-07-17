@@ -762,5 +762,9 @@
   "command.lord_of_mysteries.party.progress": "Quest step %s/%s · current count %s",
   "command.lord_of_mysteries.party.members": "Online pending %s · pending settlement %s · registered members %s/%s",
   "command.lord_of_mysteries.party.updated": "Ledger last updated %s seconds ago.",
-  "command.lord_of_mysteries.party.join_hint": "Run /pm party sync to join and catch up to the team's latest progress."
+  "command.lord_of_mysteries.party.join_hint": "Run /pm party sync to join and catch up to the team's latest progress.",
+  "screen.lord_of_mysteries.status.acting_identity": "Principle Insight / Overidentification",
+  "command.lord_of_mysteries.reflect.success": "Reflection complete. Principle insight %s, overidentification %s. The role is not the self.",
+  "command.lord_of_mysteries.reflect.commoner": "You have not entered a pathway and do not need acting reflection yet (%s / %s).",
+  "command.lord_of_mysteries.reflect.cooldown": "You already reflected today (principle insight %s / overidentification %s)."
 }

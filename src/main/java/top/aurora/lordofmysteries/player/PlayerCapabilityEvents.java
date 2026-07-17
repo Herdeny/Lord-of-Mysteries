@@ -59,7 +59,9 @@ public final class PlayerCapabilityEvents {
         @SubscribeEvent
         public static void onAttachCapabilities(AttachCapabilitiesEvent<net.minecraft.world.entity.Entity> event) {
             if (event.getObject() instanceof Player) {
-                event.addCapability(MysteryCapability.ID, new MysteryCapability.Provider());
+                MysteryCapability.Provider provider = new MysteryCapability.Provider();
+                event.addCapability(MysteryCapability.ID, provider);
+                event.addListener(provider::invalidate);
             }
         }
 
