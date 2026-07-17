@@ -1,6 +1,7 @@
 package top.aurora.lordofmysteries.commission;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -142,6 +143,18 @@ public final class FormulaAppraisalService {
         return !findDossier(player).isEmpty();
     }
 
+    public static DossierEvidence evidence(ServerPlayer player) {
+        ItemStack dossier = findDossier(player);
+        if (dossier.isEmpty()) return DossierEvidence.NONE;
+        CompoundTag tag = dossier.getTag();
+        if (tag == null) return new DossierEvidence(true, false, false, 0);
+        return new DossierEvidence(
+                true,
+                tag.getBoolean(APPRAISED),
+                tag.contains(VERDICT),
+                tag.getInt(CLUE_MASK));
+    }
+
     public static void takeDossier(ServerPlayer player) {
         ItemStack dossier = findDossier(player);
         if (!dossier.isEmpty() && !player.getAbilities().instabuild) dossier.shrink(1);
@@ -206,5 +219,15 @@ public final class FormulaAppraisalService {
             }
         }
         return false;
+    }
+
+    public record DossierEvidence(
+            boolean present,
+            boolean appraised,
+            boolean verdictSubmitted,
+            int clueMask) {
+
+        public static final DossierEvidence NONE = new DossierEvidence(
+                false, false, false, 0);
     }
 }

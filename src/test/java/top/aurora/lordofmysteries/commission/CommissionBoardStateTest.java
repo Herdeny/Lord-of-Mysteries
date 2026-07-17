@@ -64,7 +64,8 @@ class CommissionBoardStateTest {
         CommissionDefinition aCase = definition(first, List.of(), false);
 
         InvestigationBoardView view = InvestigationBoardView.from(
-                data, Map.of(later, zCase, first, aCase), 0L);
+                data, Map.of(later, zCase, first, aCase), 0L,
+                CaseEvidenceView.EMPTY);
 
         assertEquals(372L, view.balancePence());
         assertEquals(first.toString(), view.entries().get(0).id());

@@ -1,6 +1,6 @@
 # 入门与占卜家序列 9–7
 
-> 当前版本：0.9.4-1.20.1 · v0.9 M0/M1 实施完成 · M2 调查板与案件交互
+> 当前版本：0.9.5-1.20.1 · v0.9 M0/M1 实施完成 · M2 证据档案与城市报纸
 >
 > 设计基线：v0.9 · M1 两小时纵切 / M2 实施
 
@@ -20,7 +20,7 @@
 9. 狩猎幻形蛇取得毒腺，再与灰烬粉、银屑炼制魔术师魔药；毒腺不会由新手补给绕过。
 10. 建议开局执行 `/pm trial start`；途中用 `/pm trial report` 对照营地 10 分钟、序列 9/8/7 的 30/60/90 分钟与身份/反思/城市生活的 100/110/120 分钟目标。
 
-`/pm mistcity`、调查板和“走失的煤球”属于当前 M2 调查支线，建议完成 M1 魔术师纵切后再体验。
+`/pm mistcity`、调查板、证据档案和雾都晨报属于当前 M2 调查支线，建议完成 M1 魔术师纵切后再体验。
 
 ## 普通人 → 占卜家
 
@@ -67,7 +67,7 @@
 | `/pm handbook [1-9]` | 九章手账目录与已解锁章节 |
 | `/pm status` | 途径、序列、灵性、风险、原则理解与角色过度认同 |
 | `/pm reflect` | 每游戏日一次反思，降低过度认同和压力 |
-| `/pm life` | 查看城市生活班次；在报社职员处潜行交互可用 3 张纸换取 24 便士和 2 个面包 |
+| `/pm life` | 查看城市生活班次；潜行交互报社职员可用 3 张纸换取 24 便士、2 个面包和当日报纸 |
 | `/pm camp` | 营地方向与坐标 |
 | `/pm mistcity` | 雾都前哨方向与坐标 |
 | `/pm case` | 废弃教堂与邪教救援营地 |
@@ -109,13 +109,13 @@
 戏法大师/占星人使用空间转移、知识链接、镜门、星象预兆和团队庇护。详见
 [偷盗者与学徒序列 8-7](M2-Sequence-8-7-Thief-and-Apprentice)。
 
-雾都前哨、可视化调查板、三份委托和“失踪调查小队·第一阶段”现已可玩；调查板显示报酬、锁定状态和当前步骤，接取/放弃会在服务端重新校验邻近距离。记者步骤使用
+雾都前哨、可视化调查板、三份委托和“失踪调查小队·第一阶段”现已可玩；调查板显示报酬、锁定状态、当前步骤和三案证据档案，接取/放弃会在服务端重新校验邻近距离。右键报纸可阅读每日头条和案件提示。记者步骤使用
 `/pm commission approach assault|stealth|divination` 选择路线。完成后可进入神秘学家小屋，
 用 `/pm formula inspect` 和 `verdict authentic|forged` 处理真假配方。详见
 [雾都前哨与调查委托](M2-Commissions-and-Mist-City-Outpost) 和
 [神秘学家小屋与三解救援](M2-Occultist-Hut-and-Rescue-Routes)。同记分板队伍 2–4 名成员共享目标；
 `/pm party` 查看持久账本，已登记离线成员上线自动追赶，中途加入使用 `/pm party sync`。完整规则见
-[调查板玩家手册](M2-Investigation-Board) 解释界面状态与安全边界；[持久化队伍调查与离线追赶](M2-Persistent-Party-Recovery) 说明多人恢复。完整镇区、正式警戒 AI、正式队伍 GUI 和多人负载矩阵仍未完成。
+[调查板玩家手册](M2-Investigation-Board) 解释界面状态与安全边界；[证据档案与城市报纸](M2-Evidence-and-Newspaper) 说明证据和日报；[持久化队伍调查与离线追赶](M2-Persistent-Party-Recovery) 说明多人恢复。完整镇区、正式警戒 AI、正式队伍 GUI 和多人负载矩阵仍未完成。
 
 完整手册见
 [`docs/GETTING_STARTED.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/GETTING_STARTED.md)。

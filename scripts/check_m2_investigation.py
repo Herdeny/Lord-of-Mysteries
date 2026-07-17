@@ -21,7 +21,15 @@ PROGRESS_HANDLER = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmy
 BOARD_BLOCK = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CommissionBoardBlock.java"
 BOARD_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "InvestigationBoardService.java"
 BOARD_STATE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CommissionBoardState.java"
+EVIDENCE_VIEW = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseEvidenceView.java"
+EVIDENCE_STATE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "EvidenceState.java"
+FORMULA_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "FormulaAppraisalService.java"
+NEWS_LOGIC = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CityNewsLogic.java"
+NEWS_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CityNewsService.java"
+NEWS_ITEM = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "MistCityNewspaperItem.java"
+CITY_LIFE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CityLifeService.java"
 BOARD_SCREEN = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "client" / "InvestigationBoardScreen.java"
+BOARD_PACKET = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "network" / "InvestigationBoardS2CPacket.java"
 NETWORK_PROTOCOL = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "network" / "NetworkProtocol.java"
 NETWORK = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "network" / "PMNetwork.java"
 
@@ -156,6 +164,47 @@ def main():
     require(f'literal("{board["command"]}")' in command_source,
             "investigation board command is missing")
 
+    evidence = contract["evidence_archive"]
+    evidence_view = EVIDENCE_VIEW.read_text(encoding="utf-8")
+    evidence_state = EVIDENCE_STATE.read_text(encoding="utf-8")
+    formula_service = FORMULA_SERVICE.read_text(encoding="utf-8")
+    board_packet = BOARD_PACKET.read_text(encoding="utf-8")
+    for case_id in evidence["cases"]:
+        require(f'"{case_id}"' in evidence_view,
+                f"evidence archive misses case {case_id}")
+    for state in evidence["states"]:
+        require(state in evidence_state,
+                f"evidence state {state} is missing")
+    for clue in evidence["formula_clues"]:
+        require(f'"{clue}"' in evidence_view,
+                f"formula evidence clue {clue} is missing")
+    require(not evidence["server_authoritative"]
+            or ("DossierEvidence" in formula_service
+                and "CaseEvidenceView" in board_packet
+                and "evidenceMode" in board_screen),
+            "server-authoritative evidence archive is incomplete")
+
+    newspaper = contract["daily_newspaper"]
+    news_logic = NEWS_LOGIC.read_text(encoding="utf-8")
+    news_service = NEWS_SERVICE.read_text(encoding="utf-8")
+    news_item = NEWS_ITEM.read_text(encoding="utf-8")
+    city_life = CITY_LIFE.read_text(encoding="utf-8")
+    headline_match = re.search(r"HEADLINE_COUNT\s*=\s*(\d+)", news_logic)
+    require(headline_match is not None
+            and int(headline_match.group(1)) == newspaper["headline_count"],
+            "daily newspaper headline count drifted")
+    require(news_logic.count("newspaper.case.")
+            == newspaper["case_bulletins"],
+            "daily newspaper case bulletin count drifted")
+    require("CityNewsService.read" in news_item
+            and "newspaper_rumors" in news_service,
+            "daily newspaper is not wired to city intelligence")
+    require(not newspaper["granted_by_press_shift"]
+            or "ModItems.NEWSPAPER" in city_life,
+            "press shift does not grant the daily newspaper")
+    require(newspaper["knowledge"].split(":", 1)[1] in news_service,
+            "daily newspaper knowledge id drifted")
+
     for locale in ("zh_cn", "en_us"):
         translations = load(LANG / f"{locale}.json")
         missing_keys = set(contract["translation_keys"]) - translations.keys()
@@ -166,7 +215,8 @@ def main():
         "M2 investigation contract checked: "
         f"{len(commissions)} commissions, {len(quests)} quest chains, "
         "occultist hut, formula appraisal, three rescue routes, "
-        "persistent party recovery, and the server-authoritative board UI"
+        "persistent party recovery, the server-authoritative evidence archive, "
+        "and the deterministic daily newspaper"
     )
 
 

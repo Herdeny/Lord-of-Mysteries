@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 
 import top.aurora.lordofmysteries.commission.CommissionBoardState;
 import top.aurora.lordofmysteries.commission.CommissionCurrency;
+import top.aurora.lordofmysteries.commission.CaseEvidenceView;
 import top.aurora.lordofmysteries.commission.InvestigationBoardView;
 import top.aurora.lordofmysteries.network.InvestigationBoardActionC2SPacket;
 import top.aurora.lordofmysteries.network.PMNetwork;
@@ -22,6 +23,7 @@ public final class InvestigationBoardScreen extends Screen {
     private int panelWidth;
     private int panelHeight;
     private int visibleRows;
+    private boolean evidenceMode;
 
     private InvestigationBoardScreen(InvestigationBoardView view) {
         super(Component.translatable(
@@ -45,24 +47,28 @@ public final class InvestigationBoardScreen extends Screen {
 
     private void buildButtons() {
         clearWidgets();
+        int itemCount = evidenceMode
+                ? view.evidence().entries().size() : view.entries().size();
         int start = page * visibleRows;
-        int end = Math.min(view.entries().size(), start + visibleRows);
-        for (int index = start; index < end; index++) {
-            InvestigationBoardView.Entry entry = view.entries().get(index);
-            int rowY = top + 88 + (index - start) * ROW_HEIGHT;
-            Button button = Button.builder(stateLabel(entry.state()), pressed -> {
-                        PMNetwork.CHANNEL.sendToServer(
-                                new InvestigationBoardActionC2SPacket(
-                                        InvestigationBoardActionC2SPacket.Action.ACCEPT,
-                                        entry.id()));
-                    })
-                    .bounds(left + panelWidth - 104, rowY + 14, 86, 20)
-                    .build();
-            button.active = entry.state() == CommissionBoardState.AVAILABLE;
-            addRenderableWidget(button);
+        int end = Math.min(itemCount, start + visibleRows);
+        if (!evidenceMode) {
+            for (int index = start; index < end; index++) {
+                InvestigationBoardView.Entry entry = view.entries().get(index);
+                int rowY = top + 88 + (index - start) * ROW_HEIGHT;
+                Button button = Button.builder(stateLabel(entry.state()), pressed -> {
+                            PMNetwork.CHANNEL.sendToServer(
+                                    new InvestigationBoardActionC2SPacket(
+                                            InvestigationBoardActionC2SPacket.Action.ACCEPT,
+                                            entry.id()));
+                        })
+                        .bounds(left + panelWidth - 104, rowY + 14, 86, 20)
+                        .build();
+                button.active = entry.state() == CommissionBoardState.AVAILABLE;
+                addRenderableWidget(button);
+            }
         }
         int pageCount = Math.max(1,
-                (view.entries().size() + visibleRows - 1) / visibleRows);
+                (itemCount + visibleRows - 1) / visibleRows);
         if (pageCount > 1) {
             addRenderableWidget(Button.builder(Component.literal("<"), pressed -> {
                         page = Math.floorMod(page - 1, pageCount);
@@ -84,6 +90,17 @@ public final class InvestigationBoardScreen extends Screen {
                     .build());
         }
         addRenderableWidget(Button.builder(Component.translatable(
+                        evidenceMode
+                                ? "screen.lord_of_mysteries.investigation_board.cases"
+                                : "screen.lord_of_mysteries.investigation_board.evidence"),
+                pressed -> {
+                    evidenceMode = !evidenceMode;
+                    page = 0;
+                    buildButtons();
+                })
+                .bounds(left + panelWidth - 104, top + 44, 86, 20)
+                .build());
+        addRenderableWidget(Button.builder(Component.translatable(
                         "screen.lord_of_mysteries.investigation_board.close"),
                 pressed -> onClose())
                 .bounds(left + panelWidth - 104, top + panelHeight - 26, 86, 20)
@@ -100,16 +117,29 @@ public final class InvestigationBoardScreen extends Screen {
                         "screen.lord_of_mysteries.investigation_board.balance",
                         CommissionCurrency.format(view.balancePence())),
                 left + 18, top + 30, 0xFFE0C48F, false);
-        renderActiveCase(graphics);
-        int start = page * visibleRows;
-        int end = Math.min(view.entries().size(), start + visibleRows);
-        for (int index = start; index < end; index++) {
-            renderEntry(graphics, view.entries().get(index),
-                    top + 88 + (index - start) * ROW_HEIGHT);
+        if (evidenceMode) {
+            renderEvidenceHeader(graphics);
+        } else {
+            renderActiveCase(graphics);
         }
-        if (view.entries().isEmpty()) {
+        int start = page * visibleRows;
+        int itemCount = evidenceMode
+                ? view.evidence().entries().size() : view.entries().size();
+        int end = Math.min(itemCount, start + visibleRows);
+        for (int index = start; index < end; index++) {
+            int rowY = top + 88 + (index - start) * ROW_HEIGHT;
+            if (evidenceMode) {
+                renderEvidenceEntry(
+                        graphics, view.evidence().entries().get(index), rowY);
+            } else {
+                renderEntry(graphics, view.entries().get(index), rowY);
+            }
+        }
+        if (itemCount == 0) {
             graphics.drawCenteredString(font, Component.translatable(
-                            "screen.lord_of_mysteries.investigation_board.empty"),
+                            evidenceMode
+                                    ? "screen.lord_of_mysteries.evidence.empty"
+                                    : "screen.lord_of_mysteries.investigation_board.empty"),
                     width / 2, top + 116, 0xFF9A909F);
         }
         super.render(graphics, mouseX, mouseY, partialTick);
@@ -140,6 +170,30 @@ public final class InvestigationBoardScreen extends Screen {
         }
     }
 
+    private void renderEvidenceHeader(GuiGraphics graphics) {
+        CaseEvidenceView evidence = view.evidence();
+        if (evidence.commissionId().isBlank()) {
+            graphics.drawString(font, Component.translatable(
+                            "screen.lord_of_mysteries.evidence.no_active"),
+                    left + 18, top + 50, 0xFF9A909F, false);
+            return;
+        }
+        graphics.drawString(font, Component.translatable(
+                        "screen.lord_of_mysteries.evidence.case",
+                        Component.translatable(evidence.caseTitleKey())),
+                left + 18, top + 48, 0xFFC6A7F7, false);
+        graphics.drawString(font, Component.translatable(
+                        "screen.lord_of_mysteries.evidence.count",
+                        evidence.discovered(), evidence.total()),
+                left + 18, top + 62, 0xFFAEA3B7, false);
+        graphics.drawString(font, Component.translatable(
+                        evidence.conclusionReady()
+                                ? "screen.lord_of_mysteries.evidence.ready"
+                                : "screen.lord_of_mysteries.evidence.incomplete"),
+                left + 18, top + 74,
+                evidence.conclusionReady() ? 0xFF8BC99A : 0xFF7F7588, false);
+    }
+
     private void renderEntry(GuiGraphics graphics,
                              InvestigationBoardView.Entry entry, int rowY) {
         int color = entry.state() == CommissionBoardState.AVAILABLE
@@ -155,6 +209,36 @@ public final class InvestigationBoardScreen extends Screen {
                         "screen.lord_of_mysteries.investigation_board.reward",
                         CommissionCurrency.format(entry.rewardPence())),
                 left + 20, rowY + 36, 0xFFD7B56D, false);
+    }
+
+    private void renderEvidenceEntry(
+            GuiGraphics graphics,
+            CaseEvidenceView.Entry entry,
+            int rowY) {
+        int color = switch (entry.state()) {
+            case CONFIRMED -> 0xD4243028;
+            case SUSPICIOUS -> 0xD43B2528;
+            case MISSING -> 0xD41D1A22;
+        };
+        int stateColor = switch (entry.state()) {
+            case CONFIRMED -> 0xFF8BC99A;
+            case SUSPICIOUS -> 0xFFE08B78;
+            case MISSING -> 0xFF807785;
+        };
+        graphics.fill(left + 12, rowY, left + panelWidth - 12,
+                rowY + ROW_HEIGHT - 4, color);
+        graphics.drawString(font, Component.translatable(entry.titleKey()),
+                left + 20, rowY + 8, 0xFFE8D9F0, false);
+        String detail = font.plainSubstrByWidth(
+                Component.translatable(entry.detailKey()).getString(),
+                panelWidth - 154);
+        graphics.drawString(font, detail,
+                left + 20, rowY + 23, 0xFFA79EAD, false);
+        graphics.drawString(font, Component.translatable(
+                        "screen.lord_of_mysteries.evidence.state."
+                                + entry.state().name().toLowerCase(
+                                        java.util.Locale.ROOT)),
+                left + 20, rowY + 37, stateColor, false);
     }
 
     private static Component stateLabel(CommissionBoardState state) {

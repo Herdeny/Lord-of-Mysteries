@@ -47,10 +47,11 @@ window.LOM_ROADMAP_META = {
       "acceptance": "四人服务器连续八小时无任务锁死；案件可恢复、可解释、可独立结算，生活与调查资源不会形成不可逆软锁。",
       "points": [
         "现有资产：3 种委托、3 条任务链、三路线救援、真假配方和 2–4 人持久调查账本",
-        "已完成：服务端权威调查板界面、案件状态/报酬/步骤展示与邻近校验",
+        "已完成：服务端权威调查板、三案证据档案页、案件状态/报酬/步骤展示与邻近校验",
+        "已完成：每日动态报纸、案件提示、城市轮班状态与报社产出闭环",
         "下一步：正式报社、事务所与警局街区",
         "下一步：失踪、异常物品、神秘学犯罪三类动态案件生成器",
-        "下一步：生活物价、职业循环、证据链解释和八小时多人连续性矩阵"
+        "下一步：生活物价、职业扩展、证据关联推理和八小时多人连续性矩阵"
       ]
     },
     {
@@ -209,18 +210,18 @@ window.LOM_ROADMAP_META = {
       "structure_specs": 32,
       "weather_anomaly_specs": 18
     },
-    "repository_evidence_at_0.9.4": {
+    "repository_evidence_at_0.9.5": {
       "content_graph_nodes": 114,
       "content_graph_edges": 160,
       "schema4_sequence_definitions": 15,
       "generated_recipes": 13,
       "playable_commissions": 3,
       "playable_quest_chains": 3,
-      "junit_tests": 207,
+      "junit_tests": 212,
       "forge_gametests": 6,
       "save_rollback_checks": 1,
       "dedicated_server_starts": 2,
-      "network_protocol": 9,
+      "network_protocol": 10,
       "player_capability_schema": 17
     }
   }

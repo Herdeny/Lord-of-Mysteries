@@ -11,6 +11,7 @@
 ### 调查与多人
 
 - [调查板：案件状态与操作](M2-Investigation-Board)
+- [证据档案与城市报纸](M2-Evidence-and-Newspaper)
 - [雾都前哨、调查板与委托](M2-Commissions-and-Mist-City-Outpost)
 - [神秘学家小屋、真假配方与三解救援](M2-Occultist-Hut-and-Rescue-Routes)
 - [持久化队伍调查与离线追赶](M2-Persistent-Party-Recovery)

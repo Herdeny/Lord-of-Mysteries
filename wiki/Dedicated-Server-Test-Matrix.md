@@ -1,6 +1,6 @@
 # 专用服务器与多人一致性验证
 
-> 当前版本：0.9.4-1.20.1 · Capability schema 17 · 内容 schema v4 · 网络协议 9
+> 当前版本：0.9.5-1.20.1 · Capability schema 17 · 内容 schema v4 · 网络协议 10
 
 ## 自动冒烟
 
@@ -15,7 +15,7 @@ python scripts/run_server_restart_matrix.py --timeout 180
 
 `./gradlew check` 还会运行 `scripts/check_m1_playability.py`，核对 120 分钟、9 项核心目标、7 个里程碑、三份 M1 魔药、
 十二项保底补给、十个关键命令入口和中英文本地化；M2 合同保护调查板、真假配方、三解、持久队伍恢复与旧 13 步索引；
-统一门禁保护 v0.9 设计源、内容图、JSON、双语、模型与注册资源；当前自动化基线为 207 项 JUnit、6 项真实 Forge GameTest，并验证 schema 17 首启迁移快照、Capability Clone、精确特性载荷、两小时状态往返与调查板物理邻近门禁。
+统一门禁保护 v0.9 设计源、内容图、JSON、双语、模型与注册资源；当前自动化基线为 212 项 JUnit、6 项真实 Forge GameTest，并验证 schema 17 首启迁移快照、Capability Clone、精确特性载荷、两小时状态往返、调查板物理邻近门禁和证据/日报契约。
 
 `./gradlew runGameTestServer` 必须显示 6 项测试实际运行并全部通过；报告 `0 tests` 不视为有效门禁。
 

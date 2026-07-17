@@ -4,7 +4,7 @@ import java.util.List;
 
 public final class NetworkProtocol {
 
-    public static final String VERSION = "9";
+    public static final String VERSION = "10";
     public static final int TOGGLE_SPIRIT_VISION = 0;
     public static final int USE_SIMPLE_DIVINATION = 1;
     public static final int REQUEST_STATUS = 2;

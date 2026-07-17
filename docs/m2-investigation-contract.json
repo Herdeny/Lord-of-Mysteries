@@ -47,10 +47,22 @@
   "investigation_board": {
     "block": "commission_board",
     "command": "board",
-    "network_protocol": 9,
+    "network_protocol": 10,
     "packet_count": 14,
     "requires_proximity": true,
     "states": ["AVAILABLE", "ACTIVE", "COMPLETED", "LOCKED", "COOLDOWN"]
+  },
+  "evidence_archive": {
+    "cases": ["lost_cat", "missing_squad", "counterfeit_formula"],
+    "states": ["CONFIRMED", "SUSPICIOUS", "MISSING"],
+    "formula_clues": ["watermark", "ink", "sequence"],
+    "server_authoritative": true
+  },
+  "daily_newspaper": {
+    "headline_count": 6,
+    "case_bulletins": 4,
+    "granted_by_press_shift": true,
+    "knowledge": "lord_of_mysteries:knowledge/m2/newspaper_rumors"
   },
   "command_tokens": [
     "board",
@@ -88,6 +100,20 @@
     "screen.lord_of_mysteries.investigation_board.state.active",
     "screen.lord_of_mysteries.investigation_board.state.completed",
     "screen.lord_of_mysteries.investigation_board.state.locked",
-    "screen.lord_of_mysteries.investigation_board.state.cooldown"
+    "screen.lord_of_mysteries.investigation_board.state.cooldown",
+    "screen.lord_of_mysteries.investigation_board.evidence",
+    "screen.lord_of_mysteries.evidence.count",
+    "screen.lord_of_mysteries.evidence.state.confirmed",
+    "screen.lord_of_mysteries.evidence.state.suspicious",
+    "screen.lord_of_mysteries.evidence.state.missing",
+    "tooltip.lord_of_mysteries.newspaper",
+    "knowledge.lord_of_mysteries.m2.newspaper_rumors",
+    "message.lord_of_mysteries.newspaper.masthead",
+    "message.lord_of_mysteries.newspaper.headline.0",
+    "message.lord_of_mysteries.newspaper.headline.5",
+    "message.lord_of_mysteries.newspaper.case.none",
+    "message.lord_of_mysteries.newspaper.case.counterfeit_formula",
+    "message.lord_of_mysteries.newspaper.shift.available",
+    "message.lord_of_mysteries.newspaper.shift.done"
   ]
 }

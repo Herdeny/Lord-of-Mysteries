@@ -23,6 +23,7 @@ import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
 import top.aurora.lordofmysteries.knowledge.FormulaFragmentItem;
 import top.aurora.lordofmysteries.knowledge.KnowledgeCopyItem;
 import top.aurora.lordofmysteries.commission.CaseClueItem;
+import top.aurora.lordofmysteries.commission.MistCityNewspaperItem;
 import top.aurora.lordofmysteries.commission.CommissionPaperItem;
 import top.aurora.lordofmysteries.commission.SealedFormulaDossierItem;
 import top.aurora.lordofmysteries.acting.ActingIdentityCardItem;
@@ -103,7 +104,8 @@ public final class ModItems {
                     new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> NEWSPAPER = ITEMS.register(
             "newspaper",
-            () -> new Item(new Item.Properties().stacksTo(16)));
+            () -> new MistCityNewspaperItem(
+                    new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> COMMISSION_PAPER = ITEMS.register(
             "commission_paper",
             () -> new CommissionPaperItem(new Item.Properties().rarity(Rarity.UNCOMMON)));

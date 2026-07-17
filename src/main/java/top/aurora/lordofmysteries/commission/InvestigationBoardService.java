@@ -52,7 +52,8 @@ public final class InvestigationBoardService {
     private static void sendView(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         InvestigationBoardView view = InvestigationBoardView.from(
-                data, CommissionDefinitionManager.all(), player.level().getGameTime());
+                data, CommissionDefinitionManager.all(), player.level().getGameTime(),
+                CaseEvidenceView.from(data, FormulaAppraisalService.evidence(player)));
         PMNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player),
                 new InvestigationBoardS2CPacket(view));
     }

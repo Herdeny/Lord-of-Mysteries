@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import net.minecraft.network.FriendlyByteBuf;
 
 import top.aurora.lordofmysteries.commission.CommissionBoardState;
+import top.aurora.lordofmysteries.commission.CaseEvidenceView;
+import top.aurora.lordofmysteries.commission.EvidenceState;
 import top.aurora.lordofmysteries.commission.InvestigationBoardView;
 
 class InvestigationBoardPacketTest {
@@ -31,7 +33,17 @@ class InvestigationBoardPacketTest {
                         "commission.test.title",
                         "commission.test.summary",
                         144L,
-                        CommissionBoardState.ACTIVE)));
+                        CommissionBoardState.ACTIVE)),
+                new CaseEvidenceView(
+                        "lord_of_mysteries:commission/test",
+                        "commission.test.title",
+                        1,
+                        2,
+                        false,
+                        List.of(new CaseEvidenceView.Entry(
+                                "evidence.test.title",
+                                "evidence.test.detail",
+                                EvidenceState.SUSPICIOUS))));
         FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
 
         InvestigationBoardS2CPacket.encode(
@@ -47,15 +59,25 @@ class InvestigationBoardPacketTest {
                         index,
                         CommissionBoardState.AVAILABLE))
                 .toList();
+        List<CaseEvidenceView.Entry> oversizedEvidence = IntStream.range(0, 40)
+                .mapToObj(index -> new CaseEvidenceView.Entry(
+                        "evidence.test." + index,
+                        "evidence.test.detail",
+                        EvidenceState.CONFIRMED))
+                .toList();
         InvestigationBoardView oversizedView = new InvestigationBoardView(
-                0L, "", "", "", 0, 0, 0, 0, oversizedEntries);
+                0L, "", "", "", 0, 0, 0, 0, oversizedEntries,
+                new CaseEvidenceView("", "", 40, 40, true,
+                        oversizedEvidence));
         FriendlyByteBuf oversizedBuffer = new FriendlyByteBuf(Unpooled.buffer());
 
         InvestigationBoardS2CPacket.encode(
                 new InvestigationBoardS2CPacket(oversizedView), oversizedBuffer);
 
-        assertEquals(32,
-                InvestigationBoardS2CPacket.decode(oversizedBuffer).view().entries().size());
+        InvestigationBoardView decodedOversized =
+                InvestigationBoardS2CPacket.decode(oversizedBuffer).view();
+        assertEquals(32, decodedOversized.entries().size());
+        assertEquals(32, decodedOversized.evidence().entries().size());
     }
 
     @Test

@@ -17,7 +17,8 @@ public record InvestigationBoardView(
         int activeStepCount,
         int activeProgress,
         int activeTarget,
-        List<Entry> entries) {
+        List<Entry> entries,
+        CaseEvidenceView evidence) {
 
     public InvestigationBoardView {
         entries = List.copyOf(entries);
@@ -26,7 +27,8 @@ public record InvestigationBoardView(
     public static InvestigationBoardView from(
             PlayerMysteryData data,
             Map<ResourceLocation, CommissionDefinition> definitions,
-            long gameTime) {
+            long gameTime,
+            CaseEvidenceView evidence) {
         String activeTitleKey = "";
         String activeGuidanceKey = "";
         int activeStep = 0;
@@ -67,7 +69,8 @@ public record InvestigationBoardView(
                 activeStepCount,
                 activeProgress,
                 activeTarget,
-                entries);
+                entries,
+                evidence);
     }
 
     public record Entry(

@@ -9,6 +9,7 @@ import net.minecraft.world.item.Items;
 import top.aurora.lordofmysteries.knowledge.M1TrialTracker;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
+import top.aurora.lordofmysteries.registry.ModItems;
 
 public final class CityLifeService {
 
@@ -39,6 +40,8 @@ public final class CityLifeService {
         data.moneyPence += SHIFT_REWARD_PENCE;
         ItemStack meal = new ItemStack(Items.BREAD, 2);
         if (!player.getInventory().add(meal)) player.drop(meal, false);
+        ItemStack newspaper = new ItemStack(ModItems.NEWSPAPER.get());
+        if (!player.getInventory().add(newspaper)) player.drop(newspaper, false);
         M1TrialTracker.recordStreetLife(player);
         player.sendSystemMessage(Component.translatable(
                 "message.lord_of_mysteries.city_life.shift_complete",
