@@ -27,9 +27,10 @@ public final class QuestPartyService {
         if (team == null || !QuestPartyPolicy.teamEligible(
                 chain.sharedProgress(), chain.maximumPartySize(),
                 team.getPlayers().size())) return List.of(player);
+        String commissionId = MysteryCapability.get(player).activeCommissionId;
         List<ServerPlayer> eligible = player.getServer().getPlayerList().getPlayers().stream()
                 .filter(candidate -> Objects.equals(team, candidate.getTeam()))
-                .filter(candidate -> sameChain(candidate, chain))
+                .filter(candidate -> sameCase(candidate, chain, commissionId))
                 .sorted(Comparator.comparing(candidate -> candidate.getUUID().toString()))
                 .toList();
         return eligible.isEmpty() ? List.of(player) : eligible;
@@ -58,7 +59,8 @@ public final class QuestPartyService {
                                       String reporterUuid) {
         for (ServerPlayer participant : participants(player, chain)) {
             PlayerMysteryData data = MysteryCapability.get(participant);
-            if (data.activeQuestStep < chain.steps().size()
+            if (data.activeQuestStep >= 0
+                    && data.activeQuestStep < chain.steps().size()
                     && "escort".equals(chain.steps().get(
                             data.activeQuestStep).objective().type())) {
                 data.escortedReporterUuid = reporterUuid;
@@ -113,19 +115,32 @@ public final class QuestPartyService {
     }
 
     public static boolean reconcile(ServerPlayer player) {
-        Team team = player.getTeam();
         ServerLevel level = overworld(player);
-        if (team == null || level == null) return false;
-        String key = teamKey(team);
+        if (level == null) return false;
+        Team team = player.getTeam();
+        String key = team == null ? null : teamKey(team);
         QuestPartySavedData savedData = QuestPartySavedData.get(level);
+        savedData.retainMembership(player.getUUID(), key);
+        if (team == null) return false;
         QuestPartySnapshot snapshot = savedData.snapshot(key).orElse(null);
         if (snapshot == null || !snapshot.hasMember(player.getUUID())
                 || snapshot.hasSettled(player.getUUID())) return false;
         QuestChainDefinition chain = chain(snapshot);
+        CommissionDefinition definition = commission(snapshot);
+        if (!validSnapshot(snapshot, chain, definition)) {
+            savedData.remove(key);
+            return false;
+        }
         if (chain == null || !QuestPartyPolicy.teamEligible(
                 chain.sharedProgress(), chain.maximumPartySize(),
                 team.getPlayers().size())) return false;
         PlayerMysteryData data = MysteryCapability.get(player);
+        if (!definition.repeatable()
+                && data.completedCommissions.contains(definition.id())) {
+            savedData.markSettled(player.getUUID(), snapshot.commissionId(),
+                    snapshot.questChainId());
+            return false;
+        }
         if (!data.activeCommissionId.isBlank() && !snapshot.matches(data)) return false;
         boolean caughtUp = snapshot.applyTo(data, player.getUUID());
         boolean advancedLedger = snapshot.mergeProgress(
@@ -153,7 +168,9 @@ public final class QuestPartyService {
             return message(player, "command.lord_of_mysteries.party.none");
         }
         QuestChainDefinition chain = chain(snapshot);
-        if (chain == null) {
+        CommissionDefinition definition = commission(snapshot);
+        if (!validSnapshot(snapshot, chain, definition)) {
+            savedData.remove(key);
             return message(player, "command.lord_of_mysteries.party.data_unavailable");
         }
         if (!QuestPartyPolicy.teamEligible(chain.sharedProgress(),
@@ -168,8 +185,17 @@ public final class QuestPartyService {
         if (snapshot.hasSettled(player.getUUID())) {
             return message(player, "command.lord_of_mysteries.party.already_settled");
         }
-        CommissionDefinition definition = commission(snapshot);
-        if (definition == null || !data.completedCommissions.containsAll(
+        if (!definition.repeatable()
+                && data.completedCommissions.contains(definition.id())) {
+            savedData.markSettled(player.getUUID(), snapshot.commissionId(),
+                    snapshot.questChainId());
+            return message(player, "command.lord_of_mysteries.party.already_settled");
+        }
+        if (definition.repeatable() && data.commissionCooldowns.getOrDefault(
+                definition.id(), 0L) > player.level().getGameTime()) {
+            return message(player, "command.lord_of_mysteries.party.cooldown");
+        }
+        if (!data.completedCommissions.containsAll(
                 definition.prerequisites())) {
             return message(player, "command.lord_of_mysteries.party.prerequisite_missing");
         }
@@ -206,7 +232,8 @@ public final class QuestPartyService {
         }
         QuestChainDefinition chain = chain(snapshot);
         CommissionDefinition definition = commission(snapshot);
-        if (chain == null || definition == null) {
+        if (!validSnapshot(snapshot, chain, definition)) {
+            QuestPartySavedData.get(level).remove(teamKey(team));
             return message(player, "command.lord_of_mysteries.party.data_unavailable");
         }
         if (!QuestPartyPolicy.teamEligible(chain.sharedProgress(),
@@ -247,29 +274,19 @@ public final class QuestPartyService {
 
     public static void markSettled(ServerPlayer player,
                                    QuestChainDefinition chain) {
-        sharedPartyKey(player, chain).ifPresent(key -> {
-            ServerLevel level = overworld(player);
-            if (level == null) return;
-            QuestPartySavedData savedData = QuestPartySavedData.get(level);
-            savedData.snapshot(key).ifPresent(snapshot -> {
-                if (!snapshot.markSettled(player.getUUID())) return;
-                if (snapshot.isFinished()) savedData.remove(key);
-                else savedData.put(key, snapshot);
-            });
-        });
+        ServerLevel level = overworld(player);
+        if (level == null) return;
+        PlayerMysteryData data = MysteryCapability.get(player);
+        QuestPartySavedData.get(level).markSettled(player.getUUID(),
+                data.activeCommissionId, chain.id().toString());
     }
 
     public static void leave(ServerPlayer player) {
-        Team team = player.getTeam();
         ServerLevel level = overworld(player);
-        if (team == null || level == null) return;
-        String key = teamKey(team);
-        QuestPartySavedData savedData = QuestPartySavedData.get(level);
-        savedData.snapshot(key).ifPresent(snapshot -> {
-            if (!snapshot.removeMember(player.getUUID())) return;
-            if (snapshot.isFinished()) savedData.remove(key);
-            else savedData.put(key, snapshot);
-        });
+        if (level == null) return;
+        PlayerMysteryData data = MysteryCapability.get(player);
+        QuestPartySavedData.get(level).removeMember(player.getUUID(),
+                data.activeCommissionId, data.activeQuestChainId);
     }
 
     private static void persist(ServerPlayer player, QuestChainDefinition chain,
@@ -279,19 +296,27 @@ public final class QuestPartyService {
         if (key.isEmpty() || level == null) return;
         PlayerMysteryData playerData = MysteryCapability.get(player);
         if (!chain.id().toString().equals(playerData.activeQuestChainId)
-                || playerData.activeCommissionId.isBlank()) return;
+                || playerData.activeCommissionId.isBlank()
+                || !validProgress(playerData, chain)) return;
         QuestPartySavedData savedData = QuestPartySavedData.get(level);
         QuestPartySnapshot snapshot = savedData.snapshot(key.get()).orElse(null);
+        if (snapshot != null && !snapshot.matches(playerData)) return;
+        if (snapshot != null && !snapshot.validFor(chain)) {
+            savedData.remove(key.get());
+            snapshot = null;
+        }
         if (snapshot == null) {
             snapshot = QuestPartySnapshot.create(
                     playerData, player.getUUID(), level.getGameTime());
-        } else if (!snapshot.matches(playerData)) {
-            return;
         }
-        boolean changed = snapshot.mergeProgress(
+        boolean changed = snapshot.addMember(
+                player.getUUID(), chain.maximumPartySize());
+        changed |= snapshot.mergeProgress(
                 playerData, player.getUUID(), level.getGameTime());
         for (ServerPlayer participant : participants(player, chain)) {
             PlayerMysteryData participantData = MysteryCapability.get(participant);
+            changed |= snapshot.addMember(
+                    participant.getUUID(), chain.maximumPartySize());
             changed |= snapshot.mergeProgress(participantData,
                     participant.getUUID(), level.getGameTime());
         }
@@ -336,9 +361,31 @@ public final class QuestPartyService {
         return 0;
     }
 
-    private static boolean sameChain(ServerPlayer player,
-                                     QuestChainDefinition chain) {
-        return chain.id().toString().equals(
-                MysteryCapability.get(player).activeQuestChainId);
+    private static boolean sameCase(ServerPlayer player,
+                                    QuestChainDefinition chain,
+                                    String commissionId) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        return chain.id().toString().equals(data.activeQuestChainId)
+                && commissionId.equals(data.activeCommissionId);
+    }
+
+    private static boolean validSnapshot(QuestPartySnapshot snapshot,
+                                         QuestChainDefinition chain,
+                                         CommissionDefinition definition) {
+        return snapshot != null && chain != null && definition != null
+                && definition.questChain().equals(chain.id())
+                && snapshot.validFor(chain);
+    }
+
+    private static boolean validProgress(PlayerMysteryData data,
+                                         QuestChainDefinition chain) {
+        if (data.activeQuestStep < 0
+                || data.activeQuestStep > chain.steps().size()
+                || data.questObjectiveProgress < 0) return false;
+        if (data.activeQuestStep == chain.steps().size()) {
+            return data.questObjectiveProgress == 0;
+        }
+        return data.questObjectiveProgress < chain.steps().get(
+                data.activeQuestStep).objective().count();
     }
 }

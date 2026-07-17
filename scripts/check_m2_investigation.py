@@ -99,16 +99,23 @@ def main():
                 f"party snapshot misses {state_key}")
     require("QuestPartySavedData.get" in party_service
             and "joinAndSync" in party_service
-            and "reconcile" in party_service,
+            and "reconcile" in party_service
+            and "retainMembership" in party_service
+            and "completedCommissions" in party_service,
             "party persistence service is incomplete")
     require("QuestPartySavedData.get" in command_source
-            and "party_storage=" in command_source,
+            and "party_storage=" in command_source
+            and "active_parties=" in command_source
+            and "party_members=" in command_source,
             "dedicated-server diagnostics do not verify party storage")
     require("PlayerLoggedInEvent" in progress_handler
             and "PlayerLoggedOutEvent" in progress_handler,
             "party login/logout recovery hooks are missing")
     require("markSettled" in commission_service,
             "individual party settlement tracking is missing")
+    require("markSettled(UUID member" in party_saved_data
+            and "retainMembership(UUID member" in party_saved_data,
+            "party membership lifecycle guards are missing")
     require(party["maximum_party"] == 4,
             "party recovery contract maximum changed")
 

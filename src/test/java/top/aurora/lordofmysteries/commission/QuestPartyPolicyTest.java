@@ -15,6 +15,7 @@ class QuestPartyPolicyTest {
         assertTrue(QuestPartyPolicy.sharingAllowed(true, 4, 4));
         assertFalse(QuestPartyPolicy.sharingAllowed(false, 4, 2));
         assertFalse(QuestPartyPolicy.sharingAllowed(true, 4, 5));
+        assertFalse(QuestPartyPolicy.sharingAllowed(true, 8, 4));
         assertFalse(QuestPartyPolicy.sharingAllowed(true, 1, 1));
     }
 
@@ -24,6 +25,7 @@ class QuestPartyPolicyTest {
         assertTrue(QuestPartyPolicy.teamEligible(true, 4, 4));
         assertFalse(QuestPartyPolicy.teamEligible(true, 4, 1));
         assertFalse(QuestPartyPolicy.teamEligible(true, 4, 5));
+        assertFalse(QuestPartyPolicy.teamEligible(true, 8, 4));
         assertFalse(QuestPartyPolicy.teamEligible(false, 4, 2));
     }
 

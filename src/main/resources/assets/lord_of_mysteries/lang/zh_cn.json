@@ -752,6 +752,7 @@
   "command.lord_of_mysteries.party.invalid_size": "当前队伍登记了 %s 名成员，任务上限为 %s；请先调整记分板队伍。",
   "command.lord_of_mysteries.party.conflict": "你已有另一份进行中的委托，不能覆盖为队伍进度。",
   "command.lord_of_mysteries.party.already_settled": "你已经结算过这份队伍委托。",
+  "command.lord_of_mysteries.party.cooldown": "这份可重复队伍委托仍在冷却中。",
   "command.lord_of_mysteries.party.prerequisite_missing": "你尚未满足这份队伍委托的前置案件。",
   "command.lord_of_mysteries.party.full": "共享调查账本已达到 %s 人上限。",
   "command.lord_of_mysteries.party.already_synced": "你的调查进度已经与队伍账本一致。",

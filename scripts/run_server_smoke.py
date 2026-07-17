@@ -17,7 +17,12 @@ EXPECTED = {
     "commissions": "Loaded 3 commission definitions",
     "quests": "Loaded 3 quest chain definitions",
     "ready": "Done (",
-    "servercheck": "PROJECT_MYSTERY_SERVERCHECK_OK",
+    "servercheck": (
+        "PROJECT_MYSTERY_SERVERCHECK_OK commissions=3 quests=3 "
+        "protocol=6 packets=11 overworld=true"
+    ),
+    "party_storage": "party_storage=true active_parties=",
+    "party_members": "party_members=",
     "command_loop": "There are 0 of a max of",
     "save": "Saved the game",
 }

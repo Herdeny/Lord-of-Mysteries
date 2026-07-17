@@ -50,4 +50,15 @@ class QuestProgressionTest {
         assertTrue(complete.chainCompleted());
         assertEquals(2, complete.stepIndex());
     }
+
+    @Test
+    void corruptedProgressCannotOverflowBackwards() {
+        QuestProgression.Result complete = QuestProgression.record(
+                CHAIN, 1, Integer.MAX_VALUE, "encounter", "any_entity",
+                Integer.MAX_VALUE);
+
+        assertTrue(complete.chainCompleted());
+        assertEquals(2, complete.stepIndex());
+        assertEquals(0, complete.progress());
+    }
 }

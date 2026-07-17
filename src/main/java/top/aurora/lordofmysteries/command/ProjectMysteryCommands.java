@@ -470,7 +470,8 @@ public final class ProjectMysteryCommands {
         ServerLevel overworld = source.getServer().getLevel(Level.OVERWORLD);
         boolean worldReady = overworld != null;
         boolean partyStorageReady = overworld != null;
-        if (overworld != null) QuestPartySavedData.get(overworld);
+        QuestPartySavedData partyStorage = overworld == null
+                ? null : QuestPartySavedData.get(overworld);
         boolean healthy = commissions > 0 && quests > 0 && worldReady
                 && partyStorageReady && NetworkProtocol.PACKET_COUNT > 0;
         String marker = "PROJECT_MYSTERY_SERVERCHECK_"
@@ -480,7 +481,11 @@ public final class ProjectMysteryCommands {
                 + " protocol=" + NetworkProtocol.VERSION
                 + " packets=" + NetworkProtocol.PACKET_COUNT
                 + " overworld=" + worldReady
-                + " party_storage=" + partyStorageReady;
+                + " party_storage=" + partyStorageReady
+                + " active_parties=" + (partyStorage == null
+                        ? 0 : partyStorage.activePartyCount())
+                + " party_members=" + (partyStorage == null
+                        ? 0 : partyStorage.activeMemberCount());
         if (healthy) {
             source.sendSuccess(() -> Component.literal(marker), false);
             return 1;

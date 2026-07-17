@@ -1,6 +1,6 @@
 # 神秘学家小屋、真假配方与三解救援
 
-> 当前版本：0.8.8-1.20.1 · M2 可玩预研
+> 当前版本：0.8.9-1.20.1 · M2 可玩预研
 
 ## 真假配方案件
 
@@ -32,7 +32,7 @@
 
 - 数据基线：3 个委托、3 条任务链、15 类目标。
 - `scripts/check_m2_investigation.py` 保护旧 13 步索引、三解、真假配方和双语键。
-- 当前自动化基线：174 项测试、持久队伍恢复与 Forge 专服运行诊断冒烟。
+- 当前自动化基线：183 项测试、统一资源完整性、持久队伍恢复与 Forge 专服运行诊断冒烟。
 
 完整工程说明见
 [`docs/M2_OCCULTIST_HUT_AND_RESCUE_ROUTES.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M2_OCCULTIST_HUT_AND_RESCUE_ROUTES.md)。

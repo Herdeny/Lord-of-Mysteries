@@ -65,6 +65,7 @@
     "knowledge.lord_of_mysteries.m2.formula_authenticity",
     "command.lord_of_mysteries.party.catchup",
     "command.lord_of_mysteries.party.sync_success",
-    "command.lord_of_mysteries.party.status"
+    "command.lord_of_mysteries.party.status",
+    "command.lord_of_mysteries.party.cooldown"
   ]
 }

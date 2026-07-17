@@ -49,16 +49,18 @@ public final class QuestPartySnapshot {
         snapshot.questStep = Math.max(0, tag.getInt("quest_step"));
         snapshot.objectiveProgress = Math.max(0, tag.getInt("objective_progress"));
         snapshot.acceptedTick = Math.max(0L, tag.getLong("accepted_tick"));
-        snapshot.reporterUuid = tag.getString("reporter_uuid");
+        snapshot.reporterUuid = sanitizeUuid(tag.getString("reporter_uuid"));
         snapshot.defenseWaveSpawned = tag.getBoolean("defense_wave_spawned");
         snapshot.defenseNextTick = Math.max(0L, tag.getLong("defense_next_tick"));
         snapshot.resolutionRoute = sanitizeRoute(tag.getString("resolution_route"));
         snapshot.resolutionReady = tag.getBoolean("resolution_ready");
         if (snapshot.resolutionRoute.isBlank()) snapshot.resolutionReady = false;
         snapshot.updatedTick = Math.max(0L, tag.getLong("updated_tick"));
-        loadUuids(tag.getList("members", Tag.TAG_COMPOUND), snapshot.members, 4);
+        loadUuids(tag.getList("members", Tag.TAG_COMPOUND), snapshot.members,
+                QuestPartyPolicy.MAXIMUM_PERSISTENT_PARTY_SIZE);
         loadUuids(tag.getList("settled_members", Tag.TAG_COMPOUND),
-                snapshot.settledMembers, 4);
+                snapshot.settledMembers,
+                QuestPartyPolicy.MAXIMUM_PERSISTENT_PARTY_SIZE);
         snapshot.settledMembers.retainAll(snapshot.members);
         return snapshot;
     }
@@ -82,8 +84,9 @@ public final class QuestPartySnapshot {
     }
 
     public boolean mergeProgress(PlayerMysteryData data, UUID member, long gameTime) {
-        if (!matches(data)) return false;
-        boolean changed = members.add(member);
+        if (!matches(data) || !members.contains(member)
+                || settledMembers.contains(member)) return false;
+        boolean changed = false;
         int comparison = compareProgress(data.activeQuestStep,
                 data.questObjectiveProgress, questStep, objectiveProgress);
         if (comparison > 0) {
@@ -180,8 +183,22 @@ public final class QuestPartySnapshot {
     }
 
     public boolean matches(PlayerMysteryData data) {
-        return commissionId.equals(data.activeCommissionId)
-                && questChainId.equals(data.activeQuestChainId);
+        return matches(data.activeCommissionId, data.activeQuestChainId);
+    }
+
+    public boolean matches(String expectedCommissionId,
+                           String expectedQuestChainId) {
+        return commissionId.equals(expectedCommissionId)
+                && questChainId.equals(expectedQuestChainId);
+    }
+
+    public boolean validFor(QuestChainDefinition chain) {
+        if (!questChainId.equals(chain.id().toString())
+                || questStep < 0 || questStep > chain.steps().size()) return false;
+        if (questStep == chain.steps().size()) return objectiveProgress == 0;
+        return objectiveProgress >= 0
+                && objectiveProgress < chain.steps().get(
+                        questStep).objective().count();
     }
 
     public String commissionId() {
@@ -281,5 +298,14 @@ public final class QuestPartySnapshot {
             case "assault", "stealth", "divination" -> route;
             default -> "";
         };
+    }
+
+    private static String sanitizeUuid(String value) {
+        if (value.isBlank()) return "";
+        try {
+            return UUID.fromString(value).toString();
+        } catch (IllegalArgumentException ignored) {
+            return "";
+        }
     }
 }

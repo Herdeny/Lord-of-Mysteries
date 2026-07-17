@@ -16,6 +16,7 @@ on:
       - "wiki/**"
       - "scripts/sync_project_metadata.py"
       - "scripts/gen_datapack.py"
+      - "scripts/check_resource_integrity.py"
       - "build.gradle"
       - ".github/workflows/docs-consistency.yml"
   pull_request:
@@ -30,6 +31,7 @@ on:
       - "wiki/**"
       - "scripts/sync_project_metadata.py"
       - "scripts/gen_datapack.py"
+      - "scripts/check_resource_integrity.py"
       - "build.gradle"
       - ".github/workflows/docs-consistency.yml"
   workflow_dispatch:
@@ -52,6 +54,9 @@ jobs:
 
       - name: Verify generated datapack
         run: python3 scripts/gen_datapack.py --check
+
+      - name: Verify resource integrity
+        run: python3 scripts/check_resource_integrity.py
 
       - name: Validate JSON
         run: |

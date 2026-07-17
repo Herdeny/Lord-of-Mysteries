@@ -1,6 +1,6 @@
 # 专用服务器与多人一致性验证
 
-> 当前版本：0.8.8-1.20.1 · Capability schema 15 · 网络协议 6
+> 当前版本：0.8.9-1.20.1 · Capability schema 15 · 网络协议 6
 
 ## 自动冒烟
 
@@ -13,7 +13,8 @@ python scripts/run_server_smoke.py --timeout 180
 服务端线程致命错误时才发送 `stop`，并要求进程以 0 退出。Build 工作流会在完整构建后执行同一检查。
 
 `./gradlew check` 还会运行 `scripts/check_m1_playability.py`，核对 60 分钟阶段目标、三份 M1 魔药、
-十二项保底补给、十个关键命令入口和中英文本地化；M2 合同保护真假配方、三解、持久队伍恢复与旧 13 步索引；当前自动化基线为 174 项测试。
+十二项保底补给、十个关键命令入口和中英文本地化；M2 合同保护真假配方、三解、持久队伍恢复与旧 13 步索引；
+统一资源门禁保护 JSON、双语、模型与注册资源；当前自动化基线为 183 项测试。
 
 ## M1 连续性
 
@@ -36,7 +37,7 @@ python scripts/run_server_smoke.py --timeout 180
 - 记者护送与夜袭按 UUID 选出唯一在线协调者；波次、记者和路线状态持久化。
 - 不同队伍互不共享；超过 `max_party=4` 时安全降级为单人。
 - 已登记离线成员上线自动追赶，中途加入使用 `/pm party sync`；每名成员独立结算。
-- 正式队伍 GUI、换队/队名复用人工矩阵和五途径多人负载矩阵尚未完成。
+- 换队/退队自动清理与超员结算已实现；正式队伍 GUI、管理员离线改队/队名复用人工矩阵和五途径多人负载矩阵尚未完成。
 
 完整场景、网络重放检查和证据模板见
 [`docs/DEDICATED_SERVER_TEST_MATRIX.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/DEDICATED_SERVER_TEST_MATRIX.md)。

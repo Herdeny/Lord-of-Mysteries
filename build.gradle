@@ -139,6 +139,17 @@ tasks.register('checkM2Investigation', Exec) {
             'src/main/java/top/aurora/lordofmysteries/commission/QuestProgressHandler.java'
 }
 
+tasks.register('checkResourceIntegrity', Exec) {
+    group = 'verification'
+    description = 'Checks JSON, translations, asset references, and registry resources.'
+    dependsOn 'generateProjectMysteryData'
+    commandLine pythonExecutable, 'scripts/check_resource_integrity.py'
+    inputs.files 'scripts/check_resource_integrity.py',
+            fileTree('src/main/resources'),
+            fileTree('src/generated/resources'),
+            fileTree('src/main/java')
+}
+
 repositories {
     mavenLocal()
 }
@@ -194,7 +205,8 @@ test {
 }
 
 tasks.named('check').configure {
-    dependsOn 'checkProjectMysteryData', 'checkM1Playability', 'checkM2Investigation'
+    dependsOn 'checkProjectMysteryData', 'checkM1Playability',
+            'checkM2Investigation', 'checkResourceIntegrity'
 }
 
 jar {
@@ -221,7 +233,7 @@ publishing {
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/repo"
+            url = "file://${project.projectDir}/repo"
         }
     }
 }

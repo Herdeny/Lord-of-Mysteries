@@ -135,7 +135,7 @@
   /* ── About ── */
   var techList = $("#tech-list");
   if (techList) [["Minecraft", meta.mc], ["加载器", meta.loader], ["Java", meta.java],
-    ["映射", "official（Mojang）"], ["构建", "Gradle 8.8 + ForgeGradle 6"], ["数据", "Forge Capability + NBT"]]
+    ["映射", "official（Mojang）"], ["构建", "Gradle 8.14.5 + ForgeGradle 6"], ["数据", "Forge Capability + NBT"]]
     .forEach(function (p) { techList.appendChild(el("li", null, "<span>" + p[0] + "</span><b>" + (p[1] || "—") + "</b>")); });
   var teamList = $("#team-list");
   if (teamList) (meta.authors || []).forEach(function (a) {

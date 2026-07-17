@@ -6,6 +6,7 @@
 - [精神风险与调查日志](Risk-and-Investigation)
 - [M1 一小时试炼追踪器](M1-Trial-Tracker)
 - [专用服务器与多人验证](Dedicated-Server-Test-Matrix)
+- [仓库健康与资源完整性](Repository-Health-and-Resource-Integrity)
 - [v0.8 数据生产与 M2 预研](V0.8-Data-Pipeline-and-M2-Research)
 - [偷盗者与学徒序列 9](M2-Sequence-9-Foundation)
 - [偷盗者与学徒序列 8-7](M2-Sequence-8-7-Thief-and-Apprentice)

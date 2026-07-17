@@ -212,8 +212,8 @@ def validate_quests(languages):
         coop = payload.get("coop", {})
         shared = bool(coop.get("shared_progress", False))
         maximum_party = int(coop.get("max_party", 1))
-        if maximum_party < 1 or maximum_party > 8:
-            raise ValueError(f"{quest_id} max_party 必须在 1-8")
+        if maximum_party < 1 or maximum_party > 4:
+            raise ValueError(f"{quest_id} max_party 必须在 1-4")
         if not shared and maximum_party != 1:
             raise ValueError(f"{quest_id} 未开启共享进度时 max_party 必须为 1")
     return ids, len(payloads)

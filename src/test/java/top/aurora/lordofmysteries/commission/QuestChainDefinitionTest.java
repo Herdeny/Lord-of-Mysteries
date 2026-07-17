@@ -56,6 +56,49 @@ class QuestChainDefinitionTest {
                         """).getAsJsonObject(), id("quest/test")));
     }
 
+    @Test
+    void rejectsSharedPartySizeBeyondPersistentLedgerLimit() {
+        assertThrows(JsonParseException.class, () -> QuestChainDefinition.parse(
+                JsonParser.parseString("""
+                        {
+                          "title_key": "quest.test.title",
+                          "steps": [{
+                            "id": "visit",
+                            "guidance_key": "quest.test.visit",
+                            "objective": {"type": "enter_structure", "target": "camp"}
+                          }],
+                          "coop": {"shared_progress": true, "max_party": 8}
+                        }
+                        """).getAsJsonObject(), id("quest/test")));
+    }
+
+    @Test
+    void rejectsDuplicateStepIdsAndNonPositiveCounts() {
+        assertThrows(JsonParseException.class, () -> QuestChainDefinition.parse(
+                JsonParser.parseString("""
+                        {
+                          "title_key": "quest.test.title",
+                          "steps": [
+                            {"id": "same", "guidance_key": "quest.test.a",
+                             "objective": {"type": "encounter", "count": 1}},
+                            {"id": "same", "guidance_key": "quest.test.b",
+                             "objective": {"type": "encounter", "count": 1}}
+                          ]
+                        }
+                        """).getAsJsonObject(), id("quest/test")));
+        assertThrows(JsonParseException.class, () -> QuestChainDefinition.parse(
+                JsonParser.parseString("""
+                        {
+                          "title_key": "quest.test.title",
+                          "steps": [{
+                            "id": "bad_count",
+                            "guidance_key": "quest.test.bad",
+                            "objective": {"type": "encounter", "count": 0}
+                          }]
+                        }
+                        """).getAsJsonObject(), id("quest/test")));
+    }
+
     private static ResourceLocation id(String path) {
         return ResourceLocation.fromNamespaceAndPath("lord_of_mysteries", path);
     }

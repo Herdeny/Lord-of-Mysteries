@@ -752,6 +752,7 @@
   "command.lord_of_mysteries.party.invalid_size": "This scoreboard team has %s entries but the quest limit is %s; adjust the team first.",
   "command.lord_of_mysteries.party.conflict": "Another commission is already active and cannot be overwritten by party progress.",
   "command.lord_of_mysteries.party.already_settled": "You have already settled this party commission.",
+  "command.lord_of_mysteries.party.cooldown": "This repeatable party commission is still on cooldown.",
   "command.lord_of_mysteries.party.prerequisite_missing": "You have not completed the prerequisite cases for this party commission.",
   "command.lord_of_mysteries.party.full": "The shared investigation ledger has reached its %s-player limit.",
   "command.lord_of_mysteries.party.already_synced": "Your investigation already matches the party ledger.",

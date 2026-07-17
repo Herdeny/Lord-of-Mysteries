@@ -15,6 +15,7 @@ on:
       - "scripts/run_server_smoke.py"
       - "scripts/check_m1_playability.py"
       - "scripts/check_m2_investigation.py"
+      - "scripts/check_resource_integrity.py"
       - "docs/m1-playability-contract.json"
       - "docs/m2-investigation-contract.json"
       - "docs/pathways_master.csv"
@@ -35,6 +36,7 @@ on:
       - "scripts/run_server_smoke.py"
       - "scripts/check_m1_playability.py"
       - "scripts/check_m2_investigation.py"
+      - "scripts/check_resource_integrity.py"
       - "docs/m1-playability-contract.json"
       - "docs/m2-investigation-contract.json"
       - "docs/pathways_master.csv"
@@ -80,6 +82,9 @@ jobs:
 
       - name: Verify M2 investigation contract
         run: python3 scripts/check_m2_investigation.py
+
+      - name: Verify resource integrity
+        run: python3 scripts/check_resource_integrity.py
 
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew

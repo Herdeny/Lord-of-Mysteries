@@ -1,6 +1,6 @@
 # Project Mystery 专用服务器与多人一致性验证矩阵
 
-> 适用版本：0.8.8-1.20.1
+> 适用版本：0.8.9-1.20.1
 >
 > 技术基线：Minecraft 1.20.1 · Forge 47.4.20 · Java 17
 >
@@ -15,13 +15,15 @@
 python scripts/gen_datapack.py --check
 python scripts/check_m1_playability.py
 python scripts/check_m2_investigation.py
+python scripts/check_resource_integrity.py
 python scripts/sync_project_metadata.py --check
 ./gradlew clean build
 python scripts/run_server_smoke.py --timeout 180
 ```
 
 `run_server_smoke.py` 会接受 EULA、启动 Forge 专用服务器、确认 3 个委托和 3 条任务链完成加载，
-等待服务器进入 `Done`，执行 `/pm servercheck` 验证队伍 SavedData 可创建，再执行 `list` 与 `save-all flush`，检测服务端线程致命错误，
+等待服务器进入 `Done`，执行 `/pm servercheck` 验证队伍 SavedData 可创建，并检查
+`active_parties` / `party_members` 指标可读，再执行 `list` 与 `save-all flush`，检测服务端线程致命错误，
 然后发送 `stop` 并要求进程以 0 退出。GitHub Build 工作流执行同一冒烟。
 
 ## 开测前诊断
@@ -62,6 +64,10 @@ python scripts/run_server_smoke.py --timeout 180
 | 队员中途加入 | 满足前置且无冲突委托时执行 `/pm party sync`，追赶到队伍最新步骤；不补发他人已结算奖励 |
 | 队员中途离线 | 在线成员继续；已登记成员上线时自动追赶步骤、计数、记者、夜袭和路线状态 |
 | 一人先结算 | 只标记该成员并发放其个人奖励；其他离线成员继续保留待结算状态 |
+| 成员换队/退队 | 旧账本删除该 UUID，个人任务状态保留，旧队其他成员不受影响 |
+| 超员期间个人结算 | 5 人安全降级期间仍按 UUID 与案件 ID 注销，不因当前队伍超限留下可重复奖励状态 |
+| 已完成成员执行 `sync` | 不可重复委托拒绝再次加入；可重复委托必须通过冷却 |
+| 损坏账本恢复 | 无效键、记者 UUID、完成账本和越界步骤被安全清理或拒绝 |
 | 协调者离线 | 按 UUID 确定的新协调者接管护送/夜袭 tick，不重复生成波次 |
 | 多队并行 | 追兵按队伍键隔离，一队击杀不得推进另一队波次 |
 
@@ -76,6 +82,7 @@ python scripts/run_server_smoke.py --timeout 180
 - 客户端伪造目标、距离、灵性、冷却、PvP 权限或任务步骤不得改变权威状态。
 - `/reload` 后委托、任务、双语键、目标类型、合作人数和跨定义引用仍通过校验。
 - `zh_cn` 与 `en_us` 均不得出现缺失翻译键或内部资源 ID 直出。
+- 统一资源门禁必须验证全部 JSON、双语键、模型/纹理引用以及物品、方块、实体注册资源。
 
 ## 证据记录模板
 
@@ -99,6 +106,6 @@ C2S 重放/限流：PASS / FAIL
 
 ## 当前结论边界
 
-- 已自动验证：M1 可玩性合同、M2 调查合同、174 项测试、队伍账本 NBT/SavedData 往返、数据加载、专服到达 `Done`、运行诊断、命令循环、强制保存与干净停服。
-- 已实现基础：同记分板队伍 2–4 人共享进度、离线追赶、个人结算、确定性协调者、仪式重启/离线恢复。
-- 尚未关闭：真实一小时生存平衡、正式队伍 GUI、换队/队名复用人工矩阵、五途径多人负载矩阵与 M2 schema 冻结。
+- 已自动验证：M1 可玩性合同、M2 调查合同、资源完整性门禁、183 项测试、队伍账本 NBT/SavedData 往返、数据加载、专服到达 `Done`、运行诊断、命令循环、强制保存与干净停服。
+- 已实现基础：同记分板队伍 2–4 人共享进度、离线追赶、换队/退队清理、重复结算防护、个人结算、确定性协调者、仪式重启/离线恢复。
+- 尚未关闭：真实一小时生存平衡、正式队伍 GUI、管理员离线改队/队名复用人工矩阵、五途径多人负载矩阵与 M2 schema 冻结。

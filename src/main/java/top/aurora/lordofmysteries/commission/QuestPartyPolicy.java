@@ -6,12 +6,15 @@ import java.util.UUID;
 
 public final class QuestPartyPolicy {
 
+    public static final int MAXIMUM_PERSISTENT_PARTY_SIZE = 4;
+
     private QuestPartyPolicy() {}
 
     public static boolean sharingAllowed(boolean sharedProgress,
                                          int maximumPartySize,
                                          int eligiblePlayers) {
         return sharedProgress && maximumPartySize > 1
+                && maximumPartySize <= MAXIMUM_PERSISTENT_PARTY_SIZE
                 && eligiblePlayers > 1 && eligiblePlayers <= maximumPartySize;
     }
 
@@ -19,6 +22,7 @@ public final class QuestPartyPolicy {
                                        int maximumPartySize,
                                        int rosterSize) {
         return sharedProgress && maximumPartySize > 1
+                && maximumPartySize <= MAXIMUM_PERSISTENT_PARTY_SIZE
                 && rosterSize > 1 && rosterSize <= maximumPartySize;
     }
 

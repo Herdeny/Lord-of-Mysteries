@@ -17,7 +17,8 @@ public final class QuestProgression {
                 && !objective.target().equals(objectiveTarget))) {
             return new Result(stepIndex, currentProgress, false, false, false);
         }
-        int progress = Math.min(objective.count(), currentProgress + amount);
+        long accumulated = (long) Math.max(0, currentProgress) + amount;
+        int progress = (int) Math.min(objective.count(), accumulated);
         if (progress < objective.count()) {
             return new Result(stepIndex, progress, true, false, false);
         }

@@ -6,7 +6,6 @@ import com.mojang.logging.LogUtils;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -56,11 +55,11 @@ public class ProjectMystery {
      *   <li>MinecraftForge.EVENT_BUS：游戏期总线，用于玩家 tick、实体事件、交互事件等。</li>
      * </ul>
      */
-    public ProjectMystery() {
+    public ProjectMystery(FMLJavaModLoadingContext loadingContext) {
         LOGGER.info("[Project Mystery] 初始化中 —— 在未知中承担风险，逐步成为非凡者。");
 
         // 取得当前 Mod 专属的加载期事件总线；DeferredRegister 必须挂在这条总线上。
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus modEventBus = loadingContext.getModEventBus();
 
         // 注册 DeferredRegister（物品、方块、方块实体、创造模式标签等）。
         MysteryRegistries.registerAll(modEventBus);
@@ -69,7 +68,7 @@ public class ProjectMystery {
         modEventBus.addListener(this::commonSetup);
 
         // 服务端配置会生成在 serverconfig 或 world/serverconfig 中，随存档/服务器生效。
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
+        loadingContext.registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
 
         // 把入口实例注册到游戏期事件总线。当前类暂未声明 @SubscribeEvent 方法，
         // 保留这行是为了后续需要入口级游戏事件时无需调整加载结构。

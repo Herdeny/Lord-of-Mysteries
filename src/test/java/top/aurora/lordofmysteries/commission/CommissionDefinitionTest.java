@@ -59,6 +59,35 @@ class CommissionDefinitionTest {
                         """).getAsJsonObject(), id("commission/test")));
     }
 
+    @Test
+    void rejectsDuplicateSolutionsAndCooldownOverflow() {
+        assertThrows(JsonParseException.class, () -> CommissionDefinition.parse(
+                JsonParser.parseString("""
+                        {
+                          "title_key": "title",
+                          "summary_key": "summary",
+                          "board": ["board"],
+                          "level_range": [0, 1],
+                          "solutions": ["combat", "combat"],
+                          "reward": {},
+                          "quest_chain": "lord_of_mysteries:quest/test"
+                        }
+                        """).getAsJsonObject(), id("commission/test")));
+        assertThrows(JsonParseException.class, () -> CommissionDefinition.parse(
+                JsonParser.parseString("""
+                        {
+                          "title_key": "title",
+                          "summary_key": "summary",
+                          "board": ["board"],
+                          "level_range": [0, 1],
+                          "solutions": ["combat", "divination"],
+                          "reward": {},
+                          "quest_chain": "lord_of_mysteries:quest/test",
+                          "cooldown_hours": 9223372036854776
+                        }
+                        """).getAsJsonObject(), id("commission/test")));
+    }
+
     private static ResourceLocation id(String path) {
         return ResourceLocation.fromNamespaceAndPath("lord_of_mysteries", path);
     }
