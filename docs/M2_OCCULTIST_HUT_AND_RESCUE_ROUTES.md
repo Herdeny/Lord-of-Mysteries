@@ -1,6 +1,6 @@
 # M2 神秘学家小屋、真假配方与三解救援
 
-> 适用版本：0.9.8-1.20.1
+> 适用版本：0.9.9-1.20.1
 >
 > 路线定位：本页内容是 v0.9 M2 调查与生活阶段的可玩迁移资产，当前正式里程碑仍是 M0
 
@@ -51,7 +51,7 @@
 
 ## 持久化与恢复
 
-- Capability schema 18 保存 `questResolutionRoute`、`questResolutionReady` 和结案路线复盘。
+- Capability schema 19 保存 `questResolutionRoute`、`questResolutionReady`、玩家假说和结案路线复盘。
 - 死亡、重登、跨维度和服务器保存后保留路线；结算或放弃时完整清理。
 - 记者或鉴定师实体被命令清除后，只要对应结构区块重新加载，服务器会自动补回任务 NPC。
 - 卷宗丢失时再次右键莫尔即可获得同一案件的新卷宗；其真伪仍由世界、玩家与接取时间确定。
@@ -71,7 +71,7 @@ python scripts/run_server_smoke.py --timeout 180
 - 3 个委托与 3 条任务链。
 - 失踪小队旧 13 步数量和前七步兼容前缀。
 - `assault` / `stealth` / `divination` 三解名称。
-- 真假配方前置、六步顺序、命令入口、双语键与 Capability schema 18。
+- 真假配方前置、六步顺序、命令入口、双语键与 Capability schema 19。
 
 ## 当前边界
 

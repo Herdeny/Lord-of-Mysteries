@@ -52,6 +52,10 @@ public final class PlayerMysteryDataSanitizer {
         data.caseDebriefs.entrySet().removeIf(entry ->
                 entry.getKey() == null || entry.getValue() == null);
         repairs += originalDebriefs - data.caseDebriefs.size();
+        int originalHypotheses = data.caseHypotheses.size();
+        data.caseHypotheses.entrySet().removeIf(entry ->
+                entry.getKey() == null || entry.getValue() == null);
+        repairs += originalHypotheses - data.caseHypotheses.size();
         int originalKnowledge = data.knownKnowledge.size();
         data.knownKnowledge.removeIf(id -> id == null);
         repairs += originalKnowledge - data.knownKnowledge.size();

@@ -168,6 +168,16 @@ tasks.register('checkM2Investigation', Exec) {
             'src/main/java/top/aurora/lordofmysteries/commission/CaseDebriefService.java',
             'src/main/java/top/aurora/lordofmysteries/commission/CaseGrade.java',
             'src/main/java/top/aurora/lordofmysteries/commission/CaseDebriefFocus.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/CaseHypothesisRecord.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/CaseHypothesisRules.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/CaseHypothesisService.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/CaseHypothesisView.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/CaseHypothesisStance.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/CaseHypothesisStatus.java',
+            'src/main/java/top/aurora/lordofmysteries/client/InvestigationBoardScreen.java',
+            'src/main/java/top/aurora/lordofmysteries/network/InvestigationBoardS2CPacket.java',
+            'src/main/java/top/aurora/lordofmysteries/network/InvestigationBoardActionC2SPacket.java',
+            'src/main/java/top/aurora/lordofmysteries/network/NetworkProtocol.java',
             'src/main/java/top/aurora/lordofmysteries/commission/QuestPartyService.java',
             'src/main/java/top/aurora/lordofmysteries/commission/QuestPartySnapshot.java',
             'src/main/java/top/aurora/lordofmysteries/commission/QuestPartySavedData.java',
@@ -205,6 +215,7 @@ dependencies {
 // mods.toml 占位符替换
 tasks.named('processResources', ProcessResources).configure {
     dependsOn 'generateProjectMysteryData'
+    filteringCharset = 'UTF-8'
     def modDescriptionFile = file('gradle/mod-description.txt')
     var replaceProperties = [
         minecraft_version      : minecraft_version,

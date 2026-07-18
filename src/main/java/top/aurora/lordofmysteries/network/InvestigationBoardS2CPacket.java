@@ -12,6 +12,10 @@ import net.minecraftforge.network.NetworkEvent;
 import top.aurora.lordofmysteries.client.InvestigationBoardScreen;
 import top.aurora.lordofmysteries.commission.CaseAnalysisStage;
 import top.aurora.lordofmysteries.commission.CaseEvidenceView;
+import top.aurora.lordofmysteries.commission.CaseHypothesisRecord;
+import top.aurora.lordofmysteries.commission.CaseHypothesisStance;
+import top.aurora.lordofmysteries.commission.CaseHypothesisStatus;
+import top.aurora.lordofmysteries.commission.CaseHypothesisView;
 import top.aurora.lordofmysteries.commission.CommissionBoardState;
 import top.aurora.lordofmysteries.commission.EvidenceState;
 import top.aurora.lordofmysteries.commission.EvidenceRelationKind;
@@ -93,6 +97,13 @@ public record InvestigationBoardS2CPacket(InvestigationBoardView view) {
         buffer.writeEnum(evidence.analysisStage());
         buffer.writeUtf(evidence.theoryKey());
         buffer.writeUtf(evidence.nextActionKey());
+        CaseHypothesisView hypothesis = evidence.hypothesis();
+        buffer.writeUtf(hypothesis.relationId());
+        buffer.writeEnum(hypothesis.stance());
+        buffer.writeUtf(hypothesis.note());
+        buffer.writeEnum(hypothesis.status());
+        buffer.writeVarInt(hypothesis.unresolvedStrain());
+        buffer.writeVarInt(hypothesis.failedTests());
         int size = Math.min(MAX_EVIDENCE_ENTRIES, evidence.entries().size());
         buffer.writeVarInt(size);
         for (CaseEvidenceView.Entry entry : evidence.entries().subList(0, size)) {
@@ -105,6 +116,7 @@ public record InvestigationBoardS2CPacket(InvestigationBoardView view) {
         buffer.writeVarInt(relationSize);
         for (CaseEvidenceView.Relation relation
                 : evidence.relations().subList(0, relationSize)) {
+            buffer.writeUtf(relation.id());
             buffer.writeUtf(relation.titleKey());
             buffer.writeUtf(relation.detailKey());
             buffer.writeEnum(relation.kind());
@@ -127,6 +139,12 @@ public record InvestigationBoardS2CPacket(InvestigationBoardView view) {
         CaseAnalysisStage analysisStage = buffer.readEnum(CaseAnalysisStage.class);
         String theoryKey = buffer.readUtf(256);
         String nextActionKey = buffer.readUtf(256);
+        CaseHypothesisView hypothesis = new CaseHypothesisView(
+                buffer.readUtf(64),
+                buffer.readEnum(CaseHypothesisStance.class),
+                buffer.readUtf(CaseHypothesisRecord.MAX_NOTE_LENGTH),
+                buffer.readEnum(CaseHypothesisStatus.class),
+                buffer.readVarInt(), buffer.readVarInt());
         int size = Math.min(MAX_EVIDENCE_ENTRIES,
                 Math.max(0, buffer.readVarInt()));
         List<CaseEvidenceView.Entry> entries = new ArrayList<>(size);
@@ -142,6 +160,7 @@ public record InvestigationBoardS2CPacket(InvestigationBoardView view) {
                 new ArrayList<>(relationSize);
         for (int index = 0; index < relationSize; index++) {
             relations.add(new CaseEvidenceView.Relation(
+                    buffer.readUtf(64),
                     buffer.readUtf(256),
                     buffer.readUtf(256),
                     buffer.readEnum(EvidenceRelationKind.class),
@@ -150,7 +169,8 @@ public record InvestigationBoardS2CPacket(InvestigationBoardView view) {
         return new CaseEvidenceView(
                 commissionId, caseTitleKey, discovered, total, confidence,
                 confirmed, suspicious, missing, conclusionReady,
-                analysisStage, theoryKey, nextActionKey, entries, relations);
+                analysisStage, theoryKey, nextActionKey, hypothesis,
+                entries, relations);
     }
 
     public static void handle(InvestigationBoardS2CPacket packet,

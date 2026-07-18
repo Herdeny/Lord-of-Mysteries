@@ -38,6 +38,8 @@ import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.registry.ModItems;
 import top.aurora.lordofmysteries.commission.CaseAnalysisService;
+import top.aurora.lordofmysteries.commission.CaseHypothesisService;
+import top.aurora.lordofmysteries.commission.CaseHypothesisStance;
 import top.aurora.lordofmysteries.commission.CommissionDefinitionManager;
 import top.aurora.lordofmysteries.commission.CommissionService;
 import top.aurora.lordofmysteries.commission.CityLifeService;
@@ -145,6 +147,52 @@ public final class ProjectMysteryCommands {
                                         CaseAnalysisService.showDebrief(
                                                 context.getSource().getPlayerOrException(),
                                                 CommissionService.COUNTERFEIT_FORMULA))))
+                        .then(Commands.literal("hypothesis")
+                                .executes(context -> CaseHypothesisService.show(
+                                        context.getSource().getPlayerOrException()))
+                                .then(Commands.literal("propose")
+                                        .then(Commands.literal("supports")
+                                                .then(Commands.argument(
+                                                                "relation", StringArgumentType.word())
+                                                        .then(Commands.argument(
+                                                                        "note", StringArgumentType.greedyString())
+                                                                .executes(context ->
+                                                                        CaseHypothesisService.propose(
+                                                                                context.getSource().getPlayerOrException(),
+                                                                                CaseHypothesisStance.SUPPORTS,
+                                                                                StringArgumentType.getString(context, "relation"),
+                                                                                StringArgumentType.getString(context, "note"))))))
+                                        .then(Commands.literal("contradicts")
+                                                .then(Commands.argument(
+                                                                "relation", StringArgumentType.word())
+                                                        .then(Commands.argument(
+                                                                        "note", StringArgumentType.greedyString())
+                                                                .executes(context ->
+                                                                        CaseHypothesisService.propose(
+                                                                                context.getSource().getPlayerOrException(),
+                                                                                CaseHypothesisStance.CONTRADICTS,
+                                                                                StringArgumentType.getString(context, "relation"),
+                                                                                StringArgumentType.getString(context, "note"))))))
+                                        .then(Commands.literal("leads_to")
+                                                .then(Commands.argument(
+                                                                "relation", StringArgumentType.word())
+                                                        .then(Commands.argument(
+                                                                        "note", StringArgumentType.greedyString())
+                                                                .executes(context ->
+                                                                        CaseHypothesisService.propose(
+                                                                                context.getSource().getPlayerOrException(),
+                                                                                CaseHypothesisStance.LEADS_TO,
+                                                                                StringArgumentType.getString(context, "relation"),
+                                                                                StringArgumentType.getString(context, "note")))))))
+                                .then(Commands.literal("test").executes(context ->
+                                        CaseHypothesisService.test(
+                                                context.getSource().getPlayerOrException())))
+                                .then(Commands.literal("reconsider").executes(context ->
+                                        CaseHypothesisService.reconsider(
+                                                context.getSource().getPlayerOrException())))
+                                .then(Commands.literal("clear").executes(context ->
+                                        CaseHypothesisService.clear(
+                                                context.getSource().getPlayerOrException()))))
                         .then(Commands.literal("recover").executes(context ->
                                 CommissionService.recoverCaseItems(
                                         context.getSource().getPlayerOrException()))))

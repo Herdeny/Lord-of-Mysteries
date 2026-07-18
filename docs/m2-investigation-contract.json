@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "capability_schema": 18,
+  "capability_schema": 19,
   "data_counts": {
     "commissions": 3,
     "quest_chains": 3
@@ -47,7 +47,7 @@
   "investigation_board": {
     "block": "commission_board",
     "command": "board",
-    "network_protocol": 11,
+    "network_protocol": 12,
     "packet_count": 14,
     "requires_proximity": true,
     "states": ["AVAILABLE", "ACTIVE", "COMPLETED", "LOCKED", "COOLDOWN"]
@@ -83,7 +83,25 @@
     "command": "debrief",
     "persistent": true,
     "mutates_rewards": false,
-    "captures_failed_formula_verdicts": true
+    "captures_failed_formula_verdicts": true,
+    "captures_unresolved_hypothesis_strain": true
+  },
+  "case_hypothesis": {
+    "archive_key": "case_hypotheses",
+    "stances": ["SUPPORTS", "CONTRADICTS", "LEADS_TO"],
+    "statuses": ["DRAFT", "SUPPORTED", "REJECTED"],
+    "maximum_note_length": 160,
+    "maximum_strain": 3,
+    "wrong_test_pressure": 4,
+    "test_cooldown_ticks": 200,
+    "reconsider_cooldown_ticks": 600,
+    "debrief_penalty_per_strain": 4,
+    "commands": ["hypothesis", "propose", "test", "reconsider", "clear"],
+    "persistent": true,
+    "requires_revealed_relation": true,
+    "requires_board_for_mutation": true,
+    "recoverable": true,
+    "mutates_rewards": false
   },
   "daily_newspaper": {
     "headline_count": 6,
@@ -115,6 +133,11 @@
     "analyze",
     "archive",
     "debrief",
+    "hypothesis",
+    "propose",
+    "test",
+    "reconsider",
+    "clear",
     "recover"
   ],
   "translation_keys": [
@@ -165,6 +188,22 @@
     "command.lord_of_mysteries.case.debrief.focus.procedure",
     "command.lord_of_mysteries.case.debrief.focus.safety",
     "command.lord_of_mysteries.case.debrief.focus.efficiency",
+    "command.lord_of_mysteries.case.hypothesis.title",
+    "command.lord_of_mysteries.case.hypothesis.current",
+    "command.lord_of_mysteries.case.hypothesis.proposed",
+    "command.lord_of_mysteries.case.hypothesis.supported",
+    "command.lord_of_mysteries.case.hypothesis.rejected",
+    "command.lord_of_mysteries.case.hypothesis.reconsidered",
+    "screen.lord_of_mysteries.hypothesis.title",
+    "screen.lord_of_mysteries.hypothesis.prompt",
+    "screen.lord_of_mysteries.hypothesis.test",
+    "screen.lord_of_mysteries.hypothesis.reconsider",
+    "screen.lord_of_mysteries.hypothesis.stance.supports",
+    "screen.lord_of_mysteries.hypothesis.stance.contradicts",
+    "screen.lord_of_mysteries.hypothesis.stance.leads_to",
+    "screen.lord_of_mysteries.hypothesis.status.draft",
+    "screen.lord_of_mysteries.hypothesis.status.supported",
+    "screen.lord_of_mysteries.hypothesis.status.rejected",
     "command.lord_of_mysteries.case.recover.restored",
     "tooltip.lord_of_mysteries.newspaper",
     "knowledge.lord_of_mysteries.m2.newspaper_rumors",

@@ -13,6 +13,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import top.aurora.lordofmysteries.commission.CommissionBoardState;
 import top.aurora.lordofmysteries.commission.CaseAnalysisStage;
 import top.aurora.lordofmysteries.commission.CaseEvidenceView;
+import top.aurora.lordofmysteries.commission.CaseHypothesisStance;
+import top.aurora.lordofmysteries.commission.CaseHypothesisStatus;
+import top.aurora.lordofmysteries.commission.CaseHypothesisView;
 import top.aurora.lordofmysteries.commission.EvidenceState;
 import top.aurora.lordofmysteries.commission.EvidenceRelationKind;
 import top.aurora.lordofmysteries.commission.InvestigationBoardView;
@@ -49,11 +52,17 @@ class InvestigationBoardPacketTest {
                         CaseAnalysisStage.CORRELATING,
                         "analysis.test.theory",
                         "analysis.test.next",
+                        new CaseHypothesisView(
+                                "clue_conflict",
+                                CaseHypothesisStance.CONTRADICTS,
+                                "The ink conflicts with the registry.",
+                                CaseHypothesisStatus.DRAFT, 1, 2),
                         List.of(new CaseEvidenceView.Entry(
                                 "evidence.test.title",
                                 "evidence.test.detail",
                                 EvidenceState.SUSPICIOUS)),
                         List.of(new CaseEvidenceView.Relation(
+                                "clue_conflict",
                                 "relation.test.title",
                                 "relation.test.detail",
                                 EvidenceRelationKind.CONTRADICTS,
@@ -81,6 +90,7 @@ class InvestigationBoardPacketTest {
                 .toList();
         List<CaseEvidenceView.Relation> oversizedRelations = IntStream.range(0, 40)
                 .mapToObj(index -> new CaseEvidenceView.Relation(
+                        "relation_" + index,
                         "relation.test." + index,
                         "relation.test.detail",
                         EvidenceRelationKind.SUPPORTS,
@@ -91,6 +101,7 @@ class InvestigationBoardPacketTest {
                 new CaseEvidenceView("", "", 40, 40, 100,
                         40, 0, 0, true, CaseAnalysisStage.READY,
                         "analysis.test.theory", "analysis.test.next",
+                        CaseHypothesisView.EMPTY,
                         oversizedEvidence, oversizedRelations));
         FriendlyByteBuf oversizedBuffer = new FriendlyByteBuf(Unpooled.buffer());
 

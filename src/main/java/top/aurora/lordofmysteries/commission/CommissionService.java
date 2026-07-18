@@ -489,7 +489,9 @@ public final class CommissionService {
                 definition.id(), evidence, data.commissionAcceptedTick,
                 completedTick, data.questResolutionRoute,
                 data.insanityPressure, data.pollution,
-                FormulaAppraisalService.failedAttempts(player));
+                FormulaAppraisalService.failedAttempts(player),
+                CaseHypothesisService.unresolvedStrain(
+                        data, definition.id()));
         data.caseDebriefs.put(definition.id(), debrief);
         data.moneyPence += definition.reward().pence();
         definition.reward().reputation().forEach((organization, amount) ->

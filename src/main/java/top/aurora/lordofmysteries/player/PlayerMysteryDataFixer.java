@@ -22,7 +22,9 @@ public final class PlayerMysteryDataFixer {
             new DataFix("m1_vertical_slice_state", 17,
                     PlayerMysteryDataFixer::initializeM1VerticalSliceState),
             new DataFix("case_debrief_archive", 18,
-                    PlayerMysteryDataFixer::initializeCaseDebriefArchive));
+                    PlayerMysteryDataFixer::initializeCaseDebriefArchive),
+            new DataFix("case_hypothesis_workspace", 19,
+                    PlayerMysteryDataFixer::initializeCaseHypothesisWorkspace));
 
     private PlayerMysteryDataFixer() {}
 
@@ -145,6 +147,17 @@ public final class PlayerMysteryDataFixer {
                     "invalid_legacy_payload", rawArchive.copy()));
         }
         tag.put("case_debriefs", new CompoundTag());
+    }
+
+    private static void initializeCaseHypothesisWorkspace(
+            CompoundTag tag, List<CompoundTag> orphanedEntries) {
+        Tag rawWorkspace = tag.get("case_hypotheses");
+        if (rawWorkspace instanceof CompoundTag) return;
+        if (rawWorkspace != null) {
+            orphanedEntries.add(orphan("case_hypotheses",
+                    "invalid_legacy_payload", rawWorkspace.copy()));
+        }
+        tag.put("case_hypotheses", new CompoundTag());
     }
 
     private static void putBooleanDefault(CompoundTag tag, String key,

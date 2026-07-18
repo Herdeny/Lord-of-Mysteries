@@ -21,12 +21,17 @@ public final class CaseDebriefService {
             String resolutionRoute,
             float insanityPressure,
             float pollution,
-            int failedVerdictAttempts) {
+            int failedVerdictAttempts,
+            int unresolvedReasoningStrain) {
         long durationTicks = Math.max(0L, completedTick - Math.max(0L, acceptedTick));
         int evidenceScore = evidence.total() == 0 ? 0
                 : Math.round(evidence.discovered() * 40f / evidence.total());
-        int procedureScore = (evidence.conclusionReady() ? 30 : 15)
-                - Math.min(15, Math.max(0, failedVerdictAttempts) * 5);
+        int procedureScore = Math.max(0,
+                (evidence.conclusionReady() ? 30 : 15)
+                        - Math.min(15,
+                                Math.max(0, failedVerdictAttempts) * 5)
+                        - Math.min(12,
+                                Math.max(0, unresolvedReasoningStrain) * 4));
         int safetyScore = 20 - riskPenalty(insanityPressure)
                 - riskPenalty(pollution);
         int efficiencyScore = efficiencyScore(

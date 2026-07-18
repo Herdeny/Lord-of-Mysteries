@@ -98,6 +98,30 @@ class CaseEvidenceViewTest {
         assertEquals(CaseAnalysisStage.READY, ready.analysisStage());
         assertTrue(ready.relations().stream().allMatch(
                 relation -> relation.state() == EvidenceState.CONFIRMED));
+        assertEquals("record_to_tracks", ready.relations().get(0).id());
+    }
+
+    @Test
+    void includesOnlyTheActiveCasesPersistedHypothesis() {
+        PlayerMysteryData data = new PlayerMysteryData();
+        data.activeCommissionId = CommissionService.LOST_CAT.toString();
+        data.activeQuestStep = 4;
+        data.caseHypotheses.put(CommissionService.LOST_CAT,
+                CaseHypothesisRecord.EMPTY.propose(
+                        "record_to_tracks", CaseHypothesisStance.LEADS_TO,
+                        "The record leads to the tracks."));
+        data.caseHypotheses.put(CommissionService.MISSING_SQUAD,
+                CaseHypothesisRecord.EMPTY.propose(
+                        "camp_to_notes", CaseHypothesisStance.SUPPORTS,
+                        "Unrelated archived note."));
+
+        CaseEvidenceView view = CaseEvidenceView.from(
+                data, FormulaAppraisalService.DossierEvidence.NONE);
+
+        assertTrue(view.hypothesis().hasDraft());
+        assertEquals("record_to_tracks", view.hypothesis().relationId());
+        assertEquals("The record leads to the tracks.",
+                view.hypothesis().note());
     }
 
     @Test
@@ -105,7 +129,8 @@ class CaseEvidenceViewTest {
         CaseEvidenceView view = new CaseEvidenceView(
                 "test", "test.title", 9, 2, 140, 9, 8, 7,
                 false, CaseAnalysisStage.COLLECTING,
-                "test.theory", "test.next", java.util.List.of(),
+                "test.theory", "test.next", CaseHypothesisView.EMPTY,
+                java.util.List.of(),
                 java.util.List.of());
 
         assertEquals(2, view.discovered());

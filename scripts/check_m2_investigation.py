@@ -30,6 +30,12 @@ DEBRIEF_RECORD = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmyst
 DEBRIEF_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseDebriefService.java"
 CASE_GRADE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseGrade.java"
 DEBRIEF_FOCUS = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseDebriefFocus.java"
+HYPOTHESIS_RECORD = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseHypothesisRecord.java"
+HYPOTHESIS_RULES = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseHypothesisRules.java"
+HYPOTHESIS_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseHypothesisService.java"
+HYPOTHESIS_VIEW = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseHypothesisView.java"
+HYPOTHESIS_STANCE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseHypothesisStance.java"
+HYPOTHESIS_STATUS = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseHypothesisStatus.java"
 RECOVERY_POLICY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseRecoveryPolicy.java"
 FORMULA_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "FormulaAppraisalService.java"
 NEWS_LOGIC = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CityNewsLogic.java"
@@ -278,6 +284,9 @@ def main():
             or ("failedAttempts" in formula_service
                 and "failedVerdictAttempts" in debrief_service),
             "formula verdict failures are not included in the debrief")
+    require(not debrief["captures_unresolved_hypothesis_strain"]
+            or "unresolvedReasoningStrain" in debrief_service,
+            "unresolved hypothesis strain is not included in the debrief")
     require(debrief["mutates_rewards"]
             or ("moneyPence" not in debrief_service
                 and "orgReputation" not in debrief_service
@@ -286,6 +295,68 @@ def main():
     require(f'literal("{debrief["command"]}")' in command_source
             and "showDebrief" in analysis_service,
             "case debrief command or archive reader is missing")
+
+    hypothesis = contract["case_hypothesis"]
+    hypothesis_record = HYPOTHESIS_RECORD.read_text(encoding="utf-8")
+    hypothesis_rules = HYPOTHESIS_RULES.read_text(encoding="utf-8")
+    hypothesis_service = HYPOTHESIS_SERVICE.read_text(encoding="utf-8")
+    hypothesis_view = HYPOTHESIS_VIEW.read_text(encoding="utf-8")
+    hypothesis_stance = HYPOTHESIS_STANCE.read_text(encoding="utf-8")
+    hypothesis_status = HYPOTHESIS_STATUS.read_text(encoding="utf-8")
+    require(f'MAX_NOTE_LENGTH = {hypothesis["maximum_note_length"]}'
+            in hypothesis_record,
+            "hypothesis note limit drifted")
+    require(f'MAX_STRAIN = {hypothesis["maximum_strain"]}'
+            in hypothesis_record,
+            "hypothesis strain limit drifted")
+    require(f'WRONG_TEST_PRESSURE = {hypothesis["wrong_test_pressure"]}'
+            in hypothesis_rules,
+            "wrong hypothesis pressure cost drifted")
+    require(f'TEST_COOLDOWN_TICKS = {hypothesis["test_cooldown_ticks"]}L'
+            in hypothesis_rules,
+            "hypothesis test cooldown drifted")
+    require(f'RECONSIDER_COOLDOWN_TICKS = '
+            f'{hypothesis["reconsider_cooldown_ticks"]}L' in hypothesis_rules,
+            "hypothesis reconsider cooldown drifted")
+    for stance in hypothesis["stances"]:
+        require(stance in hypothesis_stance,
+                f"hypothesis stance {stance} is missing")
+    for status in hypothesis["statuses"]:
+        require(status in hypothesis_status,
+                f"hypothesis status {status} is missing")
+    for token in hypothesis["commands"]:
+        require(f'literal("{token}")' in command_source,
+                f"hypothesis command {token} is missing")
+    require(not hypothesis["persistent"]
+            or (f'"{hypothesis["archive_key"]}"' in player_source
+                and "caseHypotheses" in player_source
+                and "CaseHypothesisRecord.load" in player_source),
+            "persistent hypothesis workspace is incomplete")
+    require(not hypothesis["requires_revealed_relation"]
+            or ("active.evidence().relations().stream" in hypothesis_service
+                and ".id().equals" in hypothesis_service),
+            "hypothesis proposals are not limited to revealed relations")
+    require(not hypothesis["requires_board_for_mutation"]
+            or "InvestigationBoardService.isNearBoard" in hypothesis_service,
+            "hypothesis mutations are not investigation-board gated")
+    require(not hypothesis["recoverable"]
+            or ("reconsider" in hypothesis_rules
+                and "record.unresolvedStrain() - 1" in hypothesis_rules
+                and "TEST_HYPOTHESIS" in board_screen
+                and "RECONSIDER_HYPOTHESIS" in board_screen),
+            "hypothesis strain cannot be recovered from the board")
+    require("CaseHypothesisView" in board_packet
+            and "renderCustomHypothesis" in board_screen
+            and "CaseHypothesisView" in hypothesis_view,
+            "hypothesis state is not visible on the investigation board")
+    require(f'Math.max(0, unresolvedReasoningStrain) * '
+            f'{hypothesis["debrief_penalty_per_strain"]}' in debrief_service,
+            "hypothesis strain debrief penalty drifted")
+    require(hypothesis["mutates_rewards"]
+            or ("moneyPence" not in hypothesis_service
+                and "orgReputation" not in hypothesis_service
+                and "giveItem" not in hypothesis_service),
+            "hypothesis testing unexpectedly mutates case rewards")
 
     newspaper = contract["daily_newspaper"]
     news_logic = NEWS_LOGIC.read_text(encoding="utf-8")
@@ -351,7 +422,8 @@ def main():
         f"{len(commissions)} commissions, {len(quests)} quest chains, "
         "occultist hut, formula appraisal, three rescue routes, "
         "persistent party recovery, the server-authoritative evidence archive, "
-        "case reasoning, board-gated item recovery, persistent case debriefs, "
+        "case reasoning, recoverable player hypotheses, board-gated item "
+        "recovery, persistent case debriefs, "
         "the deterministic daily newspaper, and versioned city service desks"
     )
 

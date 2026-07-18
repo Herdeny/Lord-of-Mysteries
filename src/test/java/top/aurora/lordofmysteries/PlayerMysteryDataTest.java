@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import net.minecraft.resources.ResourceLocation;
 
 import top.aurora.lordofmysteries.commission.CaseDebriefRecord;
+import top.aurora.lordofmysteries.commission.CaseHypothesisRecord;
+import top.aurora.lordofmysteries.commission.CaseHypothesisStance;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 
 /**
@@ -77,6 +79,7 @@ class PlayerMysteryDataTest {
         assertTrue(d.completedCommissions.isEmpty());
         assertTrue(d.commissionCooldowns.isEmpty());
         assertTrue(d.caseDebriefs.isEmpty());
+        assertTrue(d.caseHypotheses.isEmpty());
     }
 
     /** 只有序列值不足以成为非凡者，必须同时拥有途径 ID。 */
@@ -169,6 +172,10 @@ class PlayerMysteryDataTest {
         source.caseDebriefs.put(commission,
                 new CaseDebriefRecord(40, 25, 18, 8,
                         1800L, 3000L, "divination"));
+        source.caseHypotheses.put(commission,
+                CaseHypothesisRecord.EMPTY.propose(
+                        "clue_synthesis", CaseHypothesisStance.CONTRADICTS,
+                        "The clues conflict."));
 
         PlayerMysteryData copied = new PlayerMysteryData();
         copied.copyFrom(source);
@@ -242,6 +249,8 @@ class PlayerMysteryDataTest {
         assertTrue(copied.completedCommissions.contains(commission));
         assertEquals(2400L, copied.commissionCooldowns.get(commission));
         assertEquals(91, copied.caseDebriefs.get(commission).score());
+        assertEquals("The clues conflict.",
+                copied.caseHypotheses.get(commission).note());
     }
 
     @Test
@@ -326,19 +335,26 @@ class PlayerMysteryDataTest {
         brokenDebriefs.putString(
                 "lord_of_mysteries:commission/lost_cat", "broken");
         legacy.put("case_debriefs", brokenDebriefs);
+        net.minecraft.nbt.CompoundTag brokenHypotheses =
+                new net.minecraft.nbt.CompoundTag();
+        brokenHypotheses.putString(
+                "lord_of_mysteries:commission/lost_cat", "broken");
+        legacy.put("case_hypotheses", brokenHypotheses);
 
         PlayerMysteryData migrated = new PlayerMysteryData();
         migrated.load(legacy);
 
         assertEquals(1, migrated.characteristicBundles.size());
         assertEquals(1, migrated.migrationBackups.size());
-        assertEquals(3, migrated.migrationHistory.size());
+        assertEquals(4, migrated.migrationHistory.size());
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
                 entry.getString("section").equals("known_knowledge")));
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
                 entry.getString("section").equals("active_quest")));
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
                 entry.getString("section").equals("case_debriefs")));
+        assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
+                entry.getString("section").equals("case_hypotheses")));
         assertEquals("", migrated.activeCommissionId);
         assertEquals("", migrated.activeQuestChainId);
 
@@ -346,7 +362,7 @@ class PlayerMysteryDataTest {
         restored.load(migrated.save());
 
         assertEquals(1, restored.migrationBackups.size());
-        assertEquals(3, restored.migrationHistory.size());
+        assertEquals(4, restored.migrationHistory.size());
         assertEquals(migrated.orphanedEntries.size(),
                 restored.orphanedEntries.size());
     }

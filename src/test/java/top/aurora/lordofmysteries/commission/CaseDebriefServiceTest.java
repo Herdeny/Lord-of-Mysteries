@@ -16,7 +16,7 @@ class CaseDebriefServiceTest {
                 CommissionService.COUNTERFEIT_FORMULA,
                 evidence(7, 7, true),
                 1_000L, 30_000L, "divination",
-                0f, 0f, 0);
+                0f, 0f, 0, 0);
 
         assertEquals(100, record.score());
         assertEquals(CaseGrade.S, record.grade());
@@ -29,7 +29,7 @@ class CaseDebriefServiceTest {
                 CommissionService.MISSING_SQUAD,
                 evidence(1, 4, false),
                 1_000L, 200_000L, "assault",
-                100f, 100f, 0);
+                100f, 100f, 0, 0);
 
         assertEquals(27, record.score());
         assertEquals(CaseGrade.D, record.grade());
@@ -42,12 +42,25 @@ class CaseDebriefServiceTest {
                 CommissionService.COUNTERFEIT_FORMULA,
                 evidence(7, 7, true),
                 0L, 20_000L, "",
-                0f, 0f, 3);
+                0f, 0f, 3, 0);
 
         assertEquals(40, record.evidenceScore());
         assertEquals(15, record.procedureScore());
         assertEquals(20, record.safetyScore());
         assertEquals(10, record.efficiencyScore());
+        assertEquals(CaseGrade.A, record.grade());
+    }
+
+    @Test
+    void unresolvedHypothesisStrainPenalizesProcedureUntilRecovered() {
+        CaseDebriefRecord record = CaseDebriefService.evaluate(
+                CommissionService.MISSING_SQUAD,
+                evidence(6, 6, true),
+                0L, 20_000L, "stealth",
+                0f, 0f, 0, 3);
+
+        assertEquals(18, record.procedureScore());
+        assertEquals(88, record.score());
         assertEquals(CaseGrade.A, record.grade());
     }
 
@@ -76,6 +89,7 @@ class CaseDebriefServiceTest {
                 total - discovered, conclusionReady,
                 conclusionReady ? CaseAnalysisStage.READY
                         : CaseAnalysisStage.COLLECTING,
-                "test.theory", "test.next", List.of(), List.of());
+                "test.theory", "test.next", CaseHypothesisView.EMPTY,
+                List.of(), List.of());
     }
 }

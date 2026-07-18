@@ -8,13 +8,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
 import top.aurora.lordofmysteries.commission.CommissionService;
+import top.aurora.lordofmysteries.commission.CaseHypothesisService;
 import top.aurora.lordofmysteries.commission.InvestigationBoardService;
 
 public record InvestigationBoardActionC2SPacket(Action action, String commissionId) {
 
     public enum Action {
         ACCEPT,
-        ABANDON
+        ABANDON,
+        TEST_HYPOTHESIS,
+        RECONSIDER_HYPOTHESIS
     }
 
     public static void encode(InvestigationBoardActionC2SPacket packet,
@@ -35,11 +38,18 @@ public record InvestigationBoardActionC2SPacket(Action action, String commission
         if (sender != null
                 && PMNetwork.acceptC2S(sender, NetworkProtocol.INVESTIGATION_BOARD_ACTION, 10L)
                 && InvestigationBoardService.isNearBoard(sender)) {
-            if (packet.action() == Action.ACCEPT) {
-                ResourceLocation commissionId = ResourceLocation.tryParse(packet.commissionId());
-                if (commissionId != null) CommissionService.accept(sender, commissionId);
-            } else if (packet.action() == Action.ABANDON) {
-                CommissionService.abandon(sender);
+            switch (packet.action()) {
+                case ACCEPT -> {
+                    ResourceLocation commissionId = ResourceLocation.tryParse(
+                            packet.commissionId());
+                    if (commissionId != null) {
+                        CommissionService.accept(sender, commissionId);
+                    }
+                }
+                case ABANDON -> CommissionService.abandon(sender);
+                case TEST_HYPOTHESIS -> CaseHypothesisService.test(sender);
+                case RECONSIDER_HYPOTHESIS ->
+                        CaseHypothesisService.reconsider(sender);
             }
             InvestigationBoardService.refresh(sender);
         }

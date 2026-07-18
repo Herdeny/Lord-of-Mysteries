@@ -47,13 +47,31 @@ public final class CaseAnalysisService {
                         "screen.lord_of_mysteries.analysis.theory",
                         Component.translatable(evidence.theoryKey()))
                 .withStyle(ChatFormatting.AQUA));
+        if (evidence.hypothesis().hasDraft()) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.case.hypothesis.current",
+                            evidence.hypothesis().relationId(),
+                            Component.translatable(
+                                    "screen.lord_of_mysteries.hypothesis.stance."
+                                            + evidence.hypothesis().stance().id()),
+                            evidence.hypothesis().note())
+                    .withStyle(evidence.hypothesis().status()
+                            == CaseHypothesisStatus.REJECTED
+                                    ? ChatFormatting.RED : ChatFormatting.AQUA));
+        }
+        if (evidence.hypothesis().unresolvedStrain() > 0) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.case.hypothesis.strain",
+                            evidence.hypothesis().unresolvedStrain())
+                    .withStyle(ChatFormatting.YELLOW));
+        }
         player.sendSystemMessage(Component.translatable(
                         "screen.lord_of_mysteries.analysis.next_action",
                         Component.translatable(evidence.nextActionKey()))
                 .withStyle(ChatFormatting.GOLD));
         for (CaseEvidenceView.Relation relation : evidence.relations()) {
             if (relation.state() == EvidenceState.MISSING) continue;
-            player.sendSystemMessage(Component.literal("- ")
+            player.sendSystemMessage(Component.literal("- #" + relation.id() + " · ")
                     .append(Component.translatable(
                             "screen.lord_of_mysteries.analysis.relation_kind."
                                     + relation.kind().name().toLowerCase(

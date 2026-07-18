@@ -30,13 +30,15 @@ class PlayerMysteryDataFixerTest {
         assertTrue(result.migrated());
         assertFalse(result.futureSchema());
         assertEquals(15, result.sourceSchema());
-        assertEquals(3, result.appliedSteps().size());
+        assertEquals(4, result.appliedSteps().size());
         assertEquals("characteristic_bundle_upgrade",
                 result.appliedSteps().get(0).id());
         assertEquals("m1_vertical_slice_state",
                 result.appliedSteps().get(1).id());
         assertEquals("case_debrief_archive",
                 result.appliedSteps().get(2).id());
+        assertEquals("case_hypothesis_workspace",
+                result.appliedSteps().get(3).id());
         assertFalse(result.data().getBoolean("identity_anchored"));
         assertEquals(Long.MIN_VALUE,
                 result.data().getLong("last_city_work_day"));
@@ -67,7 +69,7 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(legacy);
 
-        assertEquals(4, result.appliedSteps().size());
+        assertEquals(5, result.appliedSteps().size());
         assertEquals("legacy_key_normalization",
                 result.appliedSteps().get(0).id());
         assertEquals("characteristic_bundle_upgrade",
@@ -76,6 +78,8 @@ class PlayerMysteryDataFixerTest {
                 result.appliedSteps().get(2).id());
         assertEquals("case_debrief_archive",
                 result.appliedSteps().get(3).id());
+        assertEquals("case_hypothesis_workspace",
+                result.appliedSteps().get(4).id());
         assertEquals("lord_of_mysteries:legacy/formula",
                 result.data().getList("known_knowledge", Tag.TAG_STRING)
                         .getString(0));
@@ -93,12 +97,31 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(previous);
 
-        assertEquals(1, result.appliedSteps().size());
+        assertEquals(2, result.appliedSteps().size());
         assertEquals("case_debrief_archive", result.appliedSteps().get(0).id());
+        assertEquals("case_hypothesis_workspace",
+                result.appliedSteps().get(1).id());
         assertTrue(result.data().contains("case_debriefs", Tag.TAG_COMPOUND));
+        assertTrue(result.data().contains("case_hypotheses", Tag.TAG_COMPOUND));
         assertEquals("lord_of_mysteries:commission/lost_cat",
                 result.data().getList("completed_commissions", Tag.TAG_STRING)
                         .getString(0));
+    }
+
+    @Test
+    void migratesSchemaEighteenWithEmptyHypothesisWorkspace() {
+        CompoundTag previous = new CompoundTag();
+        previous.putInt("schema_version", 18);
+        previous.put("case_debriefs", new CompoundTag());
+
+        PlayerMysteryDataFixer.MigrationResult result =
+                PlayerMysteryDataFixer.migrate(previous);
+
+        assertEquals(1, result.appliedSteps().size());
+        assertEquals("case_hypothesis_workspace",
+                result.appliedSteps().get(0).id());
+        assertTrue(result.data().contains("case_hypotheses", Tag.TAG_COMPOUND));
+        assertTrue(result.data().contains("case_debriefs", Tag.TAG_COMPOUND));
     }
 
     @Test

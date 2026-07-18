@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 import top.aurora.lordofmysteries.commission.CaseDebriefRecord;
+import top.aurora.lordofmysteries.commission.CaseHypothesisRecord;
 
 /**
  * 玩家非凡者数据（设计文档 §5.1）。
@@ -29,7 +30,7 @@ import top.aurora.lordofmysteries.commission.CaseDebriefRecord;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 18;
+    public static final int CURRENT_SCHEMA_VERSION = 19;
     private static final int MAX_MIGRATION_BACKUPS = 3;
     private static final int MAX_MIGRATION_HISTORY = 64;
 
@@ -150,6 +151,8 @@ public class PlayerMysteryData {
     public Set<ResourceLocation> completedCommissions = new HashSet<>();
     public Map<ResourceLocation, Long> commissionCooldowns = new HashMap<>();
     public Map<ResourceLocation, CaseDebriefRecord> caseDebriefs = new HashMap<>();
+    public Map<ResourceLocation, CaseHypothesisRecord> caseHypotheses =
+            new HashMap<>();
 
     // 知识系统。保存玩家已经解锁的知识条目 ID，供手册、仪式和配方门槛读取。
     public Set<ResourceLocation> knownKnowledge = new HashSet<>();
@@ -302,6 +305,7 @@ public class PlayerMysteryData {
         this.completedCommissions = new HashSet<>(src.completedCommissions);
         this.commissionCooldowns = new HashMap<>(src.commissionCooldowns);
         this.caseDebriefs = new HashMap<>(src.caseDebriefs);
+        this.caseHypotheses = new HashMap<>(src.caseHypotheses);
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
         this.actingHistory = new HashMap<>(src.actingHistory);
         this.actingCounters = new HashMap<>(src.actingCounters);
@@ -449,6 +453,14 @@ public class PlayerMysteryData {
             }
         });
         tag.put("case_debriefs", caseDebriefTag);
+
+        CompoundTag caseHypothesisTag = new CompoundTag();
+        caseHypotheses.forEach((id, record) -> {
+            if (id != null && record != null) {
+                caseHypothesisTag.put(id.toString(), record.save());
+            }
+        });
+        tag.put("case_hypotheses", caseHypothesisTag);
 
         ListTag known = new ListTag();
         // ListTag 只能存 Tag 对象，因此 ResourceLocation 统一序列化成字符串。
@@ -658,6 +670,30 @@ public class PlayerMysteryData {
                 payload.putString("id", key);
                 if (rawRecord != null) payload.put("value", rawRecord.copy());
                 addOrphan("case_debriefs",
+                        id == null ? "invalid_id" : "invalid_record", payload);
+            }
+        }
+
+        caseHypotheses.clear();
+        Tag rawCaseHypotheses = tag.get("case_hypotheses");
+        if (rawCaseHypotheses != null
+                && !(rawCaseHypotheses instanceof CompoundTag)) {
+            addOrphan("case_hypotheses", "invalid_container",
+                    rawCaseHypotheses.copy());
+        } else if (rawCaseHypotheses instanceof CompoundTag caseHypothesisTag) {
+            for (String key : caseHypothesisTag.getAllKeys()) {
+                ResourceLocation id = ResourceLocation.tryParse(key);
+                Tag rawRecord = caseHypothesisTag.get(key);
+                if (id != null && rawRecord instanceof CompoundTag recordTag
+                        && CaseHypothesisRecord.isValid(recordTag)) {
+                    caseHypotheses.put(id,
+                            CaseHypothesisRecord.load(recordTag));
+                    continue;
+                }
+                CompoundTag payload = new CompoundTag();
+                payload.putString("id", key);
+                if (rawRecord != null) payload.put("value", rawRecord.copy());
+                addOrphan("case_hypotheses",
                         id == null ? "invalid_id" : "invalid_record", payload);
             }
         }
@@ -874,6 +910,7 @@ public class PlayerMysteryData {
         hash = mix(hash, completedCommissions);
         hash = mix(hash, commissionCooldowns);
         hash = mix(hash, caseDebriefs);
+        hash = mix(hash, caseHypotheses);
         hash = mix(hash, orgReputation);
         return hash;
     }

@@ -21,6 +21,7 @@ public record CaseEvidenceView(
         CaseAnalysisStage analysisStage,
         String theoryKey,
         String nextActionKey,
+        CaseHypothesisView hypothesis,
         List<Entry> entries,
         List<Relation> relations) {
 
@@ -33,7 +34,8 @@ public record CaseEvidenceView(
 
     public static final CaseEvidenceView EMPTY = new CaseEvidenceView(
             "", "", 0, 0, 0, 0, 0, 0, false,
-            CaseAnalysisStage.NO_CASE, "", "", List.of(), List.of());
+            CaseAnalysisStage.NO_CASE, "", "", CaseHypothesisView.EMPTY,
+            List.of(), List.of());
 
     public CaseEvidenceView {
         total = Math.max(0, total);
@@ -42,6 +44,7 @@ public record CaseEvidenceView(
         confirmed = Math.min(total, Math.max(0, confirmed));
         suspicious = Math.min(total, Math.max(0, suspicious));
         missing = Math.min(total, Math.max(0, missing));
+        hypothesis = hypothesis == null ? CaseHypothesisView.EMPTY : hypothesis;
         entries = List.copyOf(entries);
         relations = List.copyOf(relations);
     }
@@ -78,7 +81,7 @@ public record CaseEvidenceView(
                 relation("lost_cat", "tracks_to_recovery",
                         EvidenceRelationKind.SUPPORTS,
                         linkState(entries.get(1), entries.get(2))));
-        return view(CommissionService.LOST_CAT,
+        return view(data, CommissionService.LOST_CAT,
                 "commission.lord_of_mysteries.lost_cat.title",
                 catRecovered, entries, relations,
                 nextAction("lost_cat", pressRecord
@@ -124,7 +127,7 @@ public record CaseEvidenceView(
                 : !authorization ? "authorization"
                 : !survivorTestimony ? "rescue"
                 : !nightDefense ? "defense" : "return";
-        return view(CommissionService.MISSING_SQUAD,
+        return view(data, CommissionService.MISSING_SQUAD,
                 "commission.lord_of_mysteries.missing_squad.title",
                 nightDefense, entries, relations,
                 nextAction("missing_squad", next), null);
@@ -170,7 +173,7 @@ public record CaseEvidenceView(
         String readyTheory = synthesisState == EvidenceState.SUSPICIOUS
                 ? "screen.lord_of_mysteries.analysis.counterfeit_formula.theory.contradiction"
                 : "screen.lord_of_mysteries.analysis.counterfeit_formula.theory.consistent";
-        return view(CommissionService.COUNTERFEIT_FORMULA,
+        return view(data, CommissionService.COUNTERFEIT_FORMULA,
                 "commission.lord_of_mysteries.counterfeit_formula.title",
                 dossier.appraised(), entries, relations,
                 nextAction("counterfeit_formula", next), readyTheory);
@@ -205,6 +208,7 @@ public record CaseEvidenceView(
     }
 
     private static CaseEvidenceView view(
+            PlayerMysteryData data,
             ResourceLocation commissionId,
             String titleKey,
             boolean conclusionReady,
@@ -244,6 +248,7 @@ public record CaseEvidenceView(
                 commissionId.toString(), titleKey, discovered,
                 entries.size(), confidence, confirmed, suspicious, missing,
                 conclusionReady, stage, theoryKey, nextActionKey,
+                CaseHypothesisView.from(data.caseHypotheses.get(commissionId)),
                 entries, revealedRelations);
     }
 
@@ -285,7 +290,8 @@ public record CaseEvidenceView(
             EvidenceState state) {
         String prefix = "screen.lord_of_mysteries.analysis."
                 + caseId + ".relation." + relationId;
-        return new Relation(prefix + ".title", prefix + ".detail", kind, state);
+        return new Relation(
+                relationId, prefix + ".title", prefix + ".detail", kind, state);
     }
 
     private static String nextAction(String caseId, String action) {
@@ -316,8 +322,14 @@ public record CaseEvidenceView(
             EvidenceState state) {}
 
     public record Relation(
+            String id,
             String titleKey,
             String detailKey,
             EvidenceRelationKind kind,
-            EvidenceState state) {}
+            EvidenceState state) {
+
+        public Relation {
+            id = id == null ? "" : id;
+        }
+    }
 }

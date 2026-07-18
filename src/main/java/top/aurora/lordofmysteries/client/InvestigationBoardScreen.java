@@ -88,6 +88,29 @@ public final class InvestigationBoardScreen extends Screen {
                     .bounds(left + panelWidth - 202, top + 44, 86, 20)
                     .build());
         }
+        if (mode == ViewMode.ANALYSIS
+                && !view.evidence().commissionId().isBlank()) {
+            if (view.evidence().hypothesis().hasDraft()) {
+                addRenderableWidget(Button.builder(Component.translatable(
+                                "screen.lord_of_mysteries.hypothesis.test"),
+                                pressed -> PMNetwork.CHANNEL.sendToServer(
+                                        new InvestigationBoardActionC2SPacket(
+                                                InvestigationBoardActionC2SPacket.Action.TEST_HYPOTHESIS,
+                                                view.activeCommissionId())))
+                        .bounds(left + 80, top + panelHeight - 26, 86, 20)
+                        .build());
+            }
+            if (view.evidence().hypothesis().unresolvedStrain() > 0) {
+                addRenderableWidget(Button.builder(Component.translatable(
+                                "screen.lord_of_mysteries.hypothesis.reconsider"),
+                                pressed -> PMNetwork.CHANNEL.sendToServer(
+                                        new InvestigationBoardActionC2SPacket(
+                                                InvestigationBoardActionC2SPacket.Action.RECONSIDER_HYPOTHESIS,
+                                                view.activeCommissionId())))
+                        .bounds(left + 170, top + panelHeight - 26, 86, 20)
+                        .build());
+            }
+        }
         addRenderableWidget(Button.builder(Component.translatable(
                         switch (mode) {
                             case CASES -> "screen.lord_of_mysteries.investigation_board.evidence";
@@ -136,9 +159,11 @@ public final class InvestigationBoardScreen extends Screen {
                 case ANALYSIS -> {
                     if (index == 0) {
                         renderAnalysisTheory(graphics, rowY);
+                    } else if (index == 1) {
+                        renderCustomHypothesis(graphics, rowY);
                     } else {
                         renderAnalysisRelation(graphics,
-                                view.evidence().relations().get(index - 1), rowY);
+                                view.evidence().relations().get(index - 2), rowY);
                     }
                 }
             }
@@ -320,11 +345,50 @@ public final class InvestigationBoardScreen extends Screen {
                 panelWidth - 40);
         graphics.drawString(font, detail,
                 left + 20, rowY + 23, 0xFFA79EAD, false);
-        graphics.drawString(font, Component.translatable(
-                        "screen.lord_of_mysteries.analysis.relation_kind."
-                                + relation.kind().name().toLowerCase(
-                                        java.util.Locale.ROOT)),
+        graphics.drawString(font, Component.literal("#" + relation.id() + " · ")
+                        .append(Component.translatable(
+                                "screen.lord_of_mysteries.analysis.relation_kind."
+                                        + relation.kind().name().toLowerCase(
+                                                java.util.Locale.ROOT))),
                 left + 20, rowY + 37, stateColor, false);
+    }
+
+    private void renderCustomHypothesis(GuiGraphics graphics, int rowY) {
+        var hypothesis = view.evidence().hypothesis();
+        graphics.fill(left + 12, rowY, left + panelWidth - 12,
+                rowY + ROW_HEIGHT - 4, 0xD42D2435);
+        graphics.drawString(font, Component.translatable(
+                        "screen.lord_of_mysteries.hypothesis.title"),
+                left + 20, rowY + 8, 0xFFC6A7F7, false);
+        if (!hypothesis.hasDraft()) {
+            String prompt = font.plainSubstrByWidth(Component.translatable(
+                            "screen.lord_of_mysteries.hypothesis.prompt").getString(),
+                    panelWidth - 40);
+            graphics.drawString(font, prompt,
+                    left + 20, rowY + 25, 0xFF8D8393, false);
+            return;
+        }
+        String note = font.plainSubstrByWidth(hypothesis.note(), panelWidth - 40);
+        graphics.drawString(font, note,
+                left + 20, rowY + 23, 0xFFA79EAD, false);
+        String summary = font.plainSubstrByWidth(Component.translatable(
+                        "screen.lord_of_mysteries.hypothesis.summary",
+                        hypothesis.relationId(),
+                        Component.translatable(
+                                "screen.lord_of_mysteries.hypothesis.stance."
+                                        + hypothesis.stance().id()),
+                        Component.translatable(
+                                "screen.lord_of_mysteries.hypothesis.status."
+                                        + hypothesis.status().id()),
+                        hypothesis.unresolvedStrain()).getString(),
+                panelWidth - 40);
+        int color = switch (hypothesis.status()) {
+            case DRAFT -> 0xFF78B9D4;
+            case SUPPORTED -> 0xFF8BC99A;
+            case REJECTED -> 0xFFE08B78;
+        };
+        graphics.drawString(font, summary,
+                left + 20, rowY + 37, color, false);
     }
 
     private int itemCount() {
@@ -332,7 +396,7 @@ public final class InvestigationBoardScreen extends Screen {
             case CASES -> view.entries().size();
             case EVIDENCE -> view.evidence().entries().size();
             case ANALYSIS -> view.evidence().commissionId().isBlank()
-                    ? 0 : 1 + view.evidence().relations().size();
+                    ? 0 : 2 + view.evidence().relations().size();
         };
     }
 
