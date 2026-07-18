@@ -1,6 +1,6 @@
 # 专用服务器与多人一致性验证
 
-> 当前版本：0.9.9-1.20.1 · Capability schema 19 · 内容 schema v4 · 网络协议 12
+> 当前版本：0.9.10-1.20.1 · Capability schema 19 · 内容 schema v4 · 网络协议 12
 
 ## 自动冒烟
 
@@ -10,12 +10,12 @@ python scripts/run_server_restart_matrix.py --timeout 180
 ```
 
 回滚脚本在隔离世界中验证 dry-run、完整恢复、快照后文件清除、恢复前安全备份与路径穿越拒绝。
-重启矩阵连续启动 Forge 专用服务器两次，确认 3 个委托、3 条任务链完成加载并进入 `Done`，随后执行
+重启矩阵连续启动 Forge 专用服务器两次，确认 4 个委托、4 条任务链完成加载并进入 `Done`，随后执行
 `pm servercheck`、`list` 和 `save-all flush`；第二次必须保留相同世界种子与 schema 19 marker。Build 工作流会执行同一检查。
 
 `./gradlew check` 还会运行 `scripts/check_m1_playability.py`，核对 120 分钟、9 项核心目标、7 个里程碑、三份 M1 魔药、
 十二项保底补给、十个关键命令入口和中英文本地化；M2 合同保护调查板、真假配方、三解、持久队伍恢复与旧 13 步索引；
-统一门禁保护 v0.9 设计源、内容图、JSON、双语、模型与注册资源；当前自动化基线为 239 项 JUnit、6 项真实 Forge GameTest，并验证 schema 19 首启迁移快照、Capability Clone、精确特性载荷、两小时状态往返、调查板物理邻近门禁、证据关联/玩家假说/误判恢复/案件物品恢复/结案复盘、日报和城市服务契约。
+统一门禁保护 v0.9 设计源、内容图、JSON、双语、模型与注册资源；当前自动化基线为 248 项 JUnit、6 项真实 Forge GameTest，并验证 schema 19 首启迁移快照、Capability Clone、精确特性载荷、两小时状态往返、调查板物理邻近门禁、动态案件确定性/三日轮换/因果配对、证据关联/玩家假说/误判复议/案件物品恢复/结案复盘、日报和城市服务契约。
 
 ## M2 证据推理与恢复必测项
 
@@ -27,6 +27,8 @@ python scripts/run_server_restart_matrix.py --timeout 180
 - 2–4 人同队和不同队都要核对玩家级卷宗、证据、恢复结果不串档。
 
 详细操作与记录格式见[仓库专服矩阵](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/DEDICATED_SERVER_TEST_MATRIX.md)和[证据关联与案件恢复](M2-Evidence-Reasoning-and-Recovery)。
+
+动态案件还需逐项记录三日轮换、接案跨日、现场/证人/报纸主入口、调查板费用/压力替代、错误结论锁定、复议恢复、重启稳定与多队隔离。完整表格见[八槽位动态案件轮换](M2-Dynamic-Case-Rotation)。
 
 `./gradlew runGameTestServer` 必须显示 6 项测试实际运行并全部通过；报告 `0 tests` 不视为有效门禁。
 

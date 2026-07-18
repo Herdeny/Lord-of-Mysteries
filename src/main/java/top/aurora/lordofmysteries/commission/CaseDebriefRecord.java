@@ -90,6 +90,8 @@ public record CaseDebriefRecord(
         if (sanitized.length() > MAX_ROUTE_LENGTH) return "";
         return sanitized.equals("assault")
                 || sanitized.equals("stealth")
-                || sanitized.equals("divination") ? sanitized : "";
+                || sanitized.equals("divination")
+                || DynamicCaseProfile.Conclusion.fromId(sanitized) != null
+                        ? sanitized : "";
     }
 }

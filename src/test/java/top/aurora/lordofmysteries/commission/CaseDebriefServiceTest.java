@@ -81,6 +81,21 @@ class CaseDebriefServiceTest {
         assertEquals(CaseGrade.B, restored.grade());
     }
 
+    @Test
+    void dynamicConclusionSurvivesDebriefRoundTrip() {
+        CaseDebriefRecord source = CaseDebriefService.evaluate(
+                CommissionService.DYNAMIC_CASE,
+                evidence(5, 5, true),
+                0L, 10_000L, "extraordinary_distortion",
+                6f, 0f, 0, 0);
+
+        CaseDebriefRecord restored = CaseDebriefRecord.load(source.save());
+
+        assertEquals("extraordinary_distortion",
+                restored.resolutionRoute());
+        assertEquals(source.score(), restored.score());
+    }
+
     private static CaseEvidenceView evidence(
             int discovered, int total, boolean conclusionReady) {
         return new CaseEvidenceView(

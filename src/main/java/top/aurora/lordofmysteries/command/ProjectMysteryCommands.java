@@ -44,6 +44,8 @@ import top.aurora.lordofmysteries.commission.CommissionDefinitionManager;
 import top.aurora.lordofmysteries.commission.CommissionService;
 import top.aurora.lordofmysteries.commission.CityLifeService;
 import top.aurora.lordofmysteries.commission.CityServiceDeskService;
+import top.aurora.lordofmysteries.commission.DynamicCaseProfile;
+import top.aurora.lordofmysteries.commission.DynamicCaseService;
 import top.aurora.lordofmysteries.commission.FormulaAppraisalService;
 import top.aurora.lordofmysteries.commission.InvestigationBoardService;
 import top.aurora.lordofmysteries.commission.QuestChainDefinitionManager;
@@ -146,7 +148,11 @@ public final class ProjectMysteryCommands {
                                 .then(Commands.literal("counterfeit_formula").executes(context ->
                                         CaseAnalysisService.showDebrief(
                                                 context.getSource().getPlayerOrException(),
-                                                CommissionService.COUNTERFEIT_FORMULA))))
+                                                CommissionService.COUNTERFEIT_FORMULA)))
+                                .then(Commands.literal("dynamic_case").executes(context ->
+                                        CaseAnalysisService.showDebrief(
+                                                context.getSource().getPlayerOrException(),
+                                                CommissionService.DYNAMIC_CASE))))
                         .then(Commands.literal("hypothesis")
                                 .executes(context -> CaseHypothesisService.show(
                                         context.getSource().getPlayerOrException()))
@@ -195,7 +201,38 @@ public final class ProjectMysteryCommands {
                                                 context.getSource().getPlayerOrException()))))
                         .then(Commands.literal("recover").executes(context ->
                                 CommissionService.recoverCaseItems(
-                                        context.getSource().getPlayerOrException()))))
+                                        context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("rotation")
+                                .executes(context -> DynamicCaseService.show(
+                                        context.getSource().getPlayerOrException()))
+                                .then(Commands.literal("investigate")
+                                        .then(Commands.literal("field").executes(context ->
+                                                DynamicCaseService.investigate(
+                                                        context.getSource().getPlayerOrException(),
+                                                        DynamicCaseService.InvestigationRoute.FIELD)))
+                                        .then(Commands.literal("desk").executes(context ->
+                                                DynamicCaseService.investigate(
+                                                        context.getSource().getPlayerOrException(),
+                                                        DynamicCaseService.InvestigationRoute.DESK))))
+                                .then(Commands.literal("conclude")
+                                        .then(Commands.literal("human_concealment")
+                                                .executes(context ->
+                                                        DynamicCaseService.conclude(
+                                                                context.getSource().getPlayerOrException(),
+                                                                DynamicCaseProfile.Conclusion.HUMAN_CONCEALMENT)))
+                                        .then(Commands.literal("extraordinary_distortion")
+                                                .executes(context ->
+                                                        DynamicCaseService.conclude(
+                                                                context.getSource().getPlayerOrException(),
+                                                                DynamicCaseProfile.Conclusion.EXTRAORDINARY_DISTORTION)))
+                                        .then(Commands.literal("ritual_diversion")
+                                                .executes(context ->
+                                                        DynamicCaseService.conclude(
+                                                                context.getSource().getPlayerOrException(),
+                                                                DynamicCaseProfile.Conclusion.RITUAL_DIVERSION))))
+                                .then(Commands.literal("recover").executes(context ->
+                                        DynamicCaseService.recoverConclusion(
+                                                context.getSource().getPlayerOrException())))))
                 .then(Commands.literal("commission")
                         .executes(context -> CommissionService.showStatus(
                                 context.getSource().getPlayerOrException()))

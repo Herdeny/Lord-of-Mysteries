@@ -1,6 +1,6 @@
 # M2 神秘学家小屋、真假配方与三解救援
 
-> 适用版本：0.9.9-1.20.1
+> 适用版本：0.9.10-1.20.1
 >
 > 路线定位：本页内容是 v0.9 M2 调查与生活阶段的可玩迁移资产，当前正式里程碑仍是 M0
 
@@ -68,7 +68,7 @@ python scripts/run_server_smoke.py --timeout 180
 
 `docs/m2-investigation-contract.json` 冻结以下边界：
 
-- 3 个委托与 3 条任务链。
+- 4 个委托与 4 条任务链。
 - 失踪小队旧 13 步数量和前七步兼容前缀。
 - `assault` / `stealth` / `divination` 三解名称。
 - 真假配方前置、六步顺序、命令入口、双语键与 Capability schema 19。

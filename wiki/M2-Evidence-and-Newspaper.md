@@ -1,6 +1,6 @@
 # M2 证据档案与城市报纸
 
-> 当前版本：0.9.9-1.20.1 · M2 调查与生活 · 网络协议 12
+> 当前版本：0.9.10-1.20.1 · M2 动态案件轮换与误判复议 · 网络协议 12
 
 ## 玩家流程
 
@@ -31,6 +31,6 @@
 
 ## 当前边界
 
-服务端已逐步揭示三案合计 12 条支持/矛盾/去向关系，并提供 `/pm case analyze|archive|recover`。可拖拽节点、自定义假说、错误推理成本、正式城市结构和动态案件生成器仍属于后续 M2。
+服务端已逐步揭示固定三案 12 条以及动态案件 5 条支持/矛盾/去向关系，并提供 `/pm case analyze|archive|recover|rotation`。玩家自定义假说、错误推理成本和动态案件伪证复议已经可玩；可拖拽节点、自由关系编辑、真实动态 NPC/物证和正式城市结构仍属于后续 M2。
 
 继续阅读：[调查板玩家手册](M2-Investigation-Board) · [证据关联与案件恢复](M2-Evidence-Reasoning-and-Recovery) · [雾都委托](M2-Commissions-and-Mist-City-Outpost) · [专服验证](Dedicated-Server-Test-Matrix)

@@ -51,6 +51,9 @@ BOARD_SCREEN = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmyster
 BOARD_PACKET = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "network" / "InvestigationBoardS2CPacket.java"
 NETWORK_PROTOCOL = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "network" / "NetworkProtocol.java"
 NETWORK = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "network" / "PMNetwork.java"
+DYNAMIC_CASE_PROFILE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseProfile.java"
+DYNAMIC_CASE_GENERATOR = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseGenerator.java"
+DYNAMIC_CASE_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseService.java"
 
 
 def load(path):
@@ -99,6 +102,63 @@ def main():
     formula_steps = [step["id"] for step in quests[formula["quest"]]["steps"]]
     require(formula_steps == formula["steps"],
             "counterfeit formula step order drifted")
+
+    dynamic = contract["dynamic_case_rotation"]
+    dynamic_commission = commissions[dynamic["commission"]]
+    require(dynamic_commission["quest_chain"] == dynamic["quest"],
+            "dynamic case quest link drifted")
+    require(dynamic_commission.get("prerequisites")
+            == [dynamic["prerequisite"]],
+            "dynamic case prerequisite drifted")
+    require(dynamic_commission.get("repeatable") == dynamic["repeatable"]
+            and dynamic_commission.get("cooldown_hours")
+            == dynamic["cooldown_hours"],
+            "dynamic case repeatability drifted")
+    dynamic_steps = [step["id"]
+                     for step in quests[dynamic["quest"]]["steps"]]
+    require(dynamic_steps == dynamic["steps"],
+            "dynamic case step order drifted")
+    dynamic_profile = DYNAMIC_CASE_PROFILE.read_text(encoding="utf-8")
+    dynamic_generator = DYNAMIC_CASE_GENERATOR.read_text(encoding="utf-8")
+    dynamic_service = DYNAMIC_CASE_SERVICE.read_text(encoding="utf-8")
+    for archetype in dynamic["archetypes"]:
+        require(archetype in dynamic_profile,
+                f"dynamic case archetype {archetype} is missing")
+    for slot in dynamic["slots"]:
+        parts = slot.split("_")
+        profile_slot = parts[0] + "".join(
+            part.title() for part in parts[1:])
+        require(profile_slot in dynamic_profile,
+                f"dynamic case slot {slot} is missing")
+    for route in dynamic["evidence_routes"]:
+        require(route in dynamic_service,
+                f"dynamic case evidence route {route} is missing")
+    for conclusion in dynamic["conclusions"]:
+        require(conclusion in dynamic_profile,
+                f"dynamic case conclusion {conclusion} is missing")
+    require(f'DESK_RECONSTRUCTION_COST = {dynamic["desk_cost_pence"]}L'
+            in dynamic_service,
+            "dynamic case desk cost drifted")
+    require(f'DESK_RECONSTRUCTION_PRESSURE = '
+            f'{dynamic["desk_pressure_fallback"]}f' in dynamic_service,
+            "dynamic case desk pressure fallback drifted")
+    require(f'WRONG_CONCLUSION_PRESSURE = '
+            f'{dynamic["wrong_conclusion_pressure"]}f' in dynamic_service,
+            "dynamic case wrong-conclusion pressure drifted")
+    for state in dynamic["recovery_states"]:
+        require(f'"{state}"' in dynamic_service,
+                f"dynamic case recovery state {state} is missing")
+    require(not dynamic["stable_from_world_seed_and_accept_tick"]
+            or ("generateForDay" in dynamic_generator
+                and "worldSeed" in dynamic_generator
+                and "commissionAcceptedTick" in dynamic_service),
+            "dynamic case identity is not deterministic across restarts")
+    require(not dynamic["preserves_capability_schema"]
+            or contract["capability_schema"] == 19,
+            "dynamic case unexpectedly changed capability schema")
+    require(not dynamic["preserves_packet_count"]
+            or contract["investigation_board"]["packet_count"] == 14,
+            "dynamic case unexpectedly changed packet count")
 
     command_source = COMMANDS.read_text(encoding="utf-8")
     for token in contract["command_tokens"]:
@@ -424,7 +484,8 @@ def main():
         "persistent party recovery, the server-authoritative evidence archive, "
         "case reasoning, recoverable player hypotheses, board-gated item "
         "recovery, persistent case debriefs, "
-        "the deterministic daily newspaper, and versioned city service desks"
+        "the deterministic daily newspaper, versioned city service desks, "
+        "and the recoverable eight-slot dynamic case rotation"
     )
 
 

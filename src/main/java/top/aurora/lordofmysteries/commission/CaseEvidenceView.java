@@ -52,6 +52,13 @@ public record CaseEvidenceView(
     public static CaseEvidenceView from(
             PlayerMysteryData data,
             FormulaAppraisalService.DossierEvidence dossier) {
+        return from(data, dossier, null);
+    }
+
+    public static CaseEvidenceView from(
+            PlayerMysteryData data,
+            FormulaAppraisalService.DossierEvidence dossier,
+            DynamicCaseProfile dynamicCase) {
         ResourceLocation commissionId = ResourceLocation.tryParse(
                 data.activeCommissionId);
         if (CommissionService.LOST_CAT.equals(commissionId)) {
@@ -62,6 +69,10 @@ public record CaseEvidenceView(
         }
         if (CommissionService.COUNTERFEIT_FORMULA.equals(commissionId)) {
             return counterfeitFormula(data, dossier);
+        }
+        if (CommissionService.DYNAMIC_CASE.equals(commissionId)
+                && dynamicCase != null) {
+            return dynamicCase(data, dynamicCase);
         }
         return EMPTY;
     }
@@ -177,6 +188,78 @@ public record CaseEvidenceView(
                 "commission.lord_of_mysteries.counterfeit_formula.title",
                 dossier.appraised(), entries, relations,
                 nextAction("counterfeit_formula", next), readyTheory);
+    }
+
+    private static CaseEvidenceView dynamicCase(
+            PlayerMysteryData data, DynamicCaseProfile profile) {
+        boolean scene = completedStep(data, 0);
+        boolean testimony = completedStep(data, 1);
+        boolean records = completedStep(data, 2);
+        boolean recovered = "recovered".equals(data.questResolutionRoute);
+        List<Entry> entries = List.of(
+                new Entry(
+                        "screen.lord_of_mysteries.evidence.dynamic_case.brief.title",
+                        profile.archetype().translationKey("archetype"),
+                        EvidenceState.CONFIRMED),
+                generatedEntry("scene", profile.anomaly().translationKey("anomaly"),
+                        scene, EvidenceState.CONFIRMED),
+                generatedEntry("testimony", profile.motive().translationKey("motive"),
+                        testimony, EvidenceState.CONFIRMED),
+                generatedEntry("records", profile.method().translationKey("method"),
+                        records, EvidenceState.CONFIRMED),
+                new Entry(
+                        recovered
+                                ? "screen.lord_of_mysteries.evidence.dynamic_case.false_lead.revealed.title"
+                                : "screen.lord_of_mysteries.evidence.dynamic_case.false_lead.title",
+                        records
+                                ? recovered
+                                        ? "screen.lord_of_mysteries.evidence.dynamic_case.false_lead.recovered"
+                                        : profile.coverUp().translationKey("cover_up")
+                                : "screen.lord_of_mysteries.evidence.not_recorded",
+                        records
+                                ? recovered ? EvidenceState.CONFIRMED
+                                        : EvidenceState.SUSPICIOUS
+                                : EvidenceState.MISSING));
+        List<Relation> relations = List.of(
+                relation("dynamic_case", "brief_to_scene",
+                        EvidenceRelationKind.LEADS_TO,
+                        linkState(entries.get(0), entries.get(1))),
+                relation("dynamic_case", "scene_to_testimony",
+                        EvidenceRelationKind.SUPPORTS,
+                        linkState(entries.get(1), entries.get(2))),
+                relation("dynamic_case", "testimony_to_records",
+                        EvidenceRelationKind.LEADS_TO,
+                        linkState(entries.get(2), entries.get(3))),
+                relation("dynamic_case", "false_lead_conflict",
+                        EvidenceRelationKind.CONTRADICTS,
+                        entries.get(4).state()),
+                relation("dynamic_case", "synthesis_to_conclusion",
+                        EvidenceRelationKind.SUPPORTS,
+                        records ? EvidenceState.CONFIRMED : EvidenceState.MISSING));
+        String next = !scene ? "scene"
+                : !testimony ? "witness"
+                : !records ? "records"
+                : "reconsider".equals(data.questResolutionRoute)
+                        ? "recover"
+                        : data.activeQuestStep >= 4 ? "return" : "conclude";
+        return view(data, CommissionService.DYNAMIC_CASE,
+                "commission.lord_of_mysteries.dynamic_case.title",
+                records, entries, relations,
+                nextAction("dynamic_case", next),
+                "screen.lord_of_mysteries.analysis.dynamic_case.theory.ready");
+    }
+
+    private static Entry generatedEntry(
+            String evidenceId,
+            String detailKey,
+            boolean discovered,
+            EvidenceState discoveredState) {
+        return new Entry(
+                "screen.lord_of_mysteries.evidence.dynamic_case."
+                        + evidenceId + ".title",
+                discovered ? detailKey
+                        : "screen.lord_of_mysteries.evidence.not_recorded",
+                discovered ? discoveredState : EvidenceState.MISSING);
     }
 
     private static Entry progress(String caseId, String evidenceId,
@@ -302,6 +385,9 @@ public record CaseEvidenceView(
     private static String casePath(ResourceLocation commissionId) {
         if (CommissionService.MISSING_SQUAD.equals(commissionId)) {
             return "missing_squad";
+        }
+        if (CommissionService.DYNAMIC_CASE.equals(commissionId)) {
+            return "dynamic_case";
         }
         String path = commissionId.getPath();
         int separator = path.lastIndexOf('/');

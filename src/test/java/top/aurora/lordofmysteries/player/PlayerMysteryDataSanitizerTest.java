@@ -85,4 +85,24 @@ class PlayerMysteryDataSanitizerTest {
         assertEquals(0, data.sanitize());
     }
 
+    @Test
+    void preservesDynamicCaseRecoveryAndConclusionRoutes() {
+        PlayerMysteryData data = new PlayerMysteryData();
+        data.activeCommissionId =
+                "lord_of_mysteries:commission/dynamic_case_rotation";
+        data.activeQuestChainId =
+                "lord_of_mysteries:quest/dynamic_case_rotation";
+        data.activeQuestStep = 3;
+        data.questResolutionRoute = "reconsider";
+
+        assertEquals(0, data.sanitize());
+        assertEquals("reconsider", data.questResolutionRoute);
+
+        data.questResolutionRoute = "ritual_diversion";
+        data.questResolutionReady = true;
+        assertEquals(0, data.sanitize());
+        assertEquals("ritual_diversion", data.questResolutionRoute);
+        assertTrue(data.questResolutionReady);
+    }
+
 }

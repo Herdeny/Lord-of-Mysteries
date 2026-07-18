@@ -41,6 +41,8 @@ public final class CommissionService {
             id("commission/missing_investigation_squad");
     public static final ResourceLocation COUNTERFEIT_FORMULA =
             id("commission/counterfeit_formula");
+    public static final ResourceLocation DYNAMIC_CASE =
+            id("commission/dynamic_case_rotation");
     private static final String RESCUE_GUARD_TAG = "lom_rescue_guard";
     private static final String RESCUE_PARTY_TAG = "lom_rescue_party";
 
@@ -49,6 +51,10 @@ public final class CommissionService {
     public static int interactBoard(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         if (!data.activeCommissionId.isBlank()) {
+            if (DYNAMIC_CASE.toString().equals(data.activeCommissionId)
+                    && isReadyToSettle(data)) {
+                return settle(player);
+            }
             if (LOST_CAT.toString().equals(data.activeCommissionId)) {
                 recordObjective(player, "talk_npc", "nighthawk_contact", 1);
                 if (isReadyToSettle(data)) return settle(player);
@@ -57,7 +63,13 @@ public final class CommissionService {
         }
         ResourceLocation recommended = recommendedCommission(data);
         if (recommended == null) return list(player);
-        if (data.completedCommissions.contains(recommended)) return list(player);
+        CommissionDefinition recommendation = CommissionDefinitionManager.get(
+                recommended);
+        if (recommendation == null
+                || (!recommendation.repeatable()
+                        && data.completedCommissions.contains(recommended))) {
+            return list(player);
+        }
         int accepted = accept(player, recommended);
         if (accepted > 0) {
             recordObjective(player, "enter_structure", "mist_city_outpost", 1);
@@ -314,6 +326,9 @@ public final class CommissionService {
         data.activeQuestStep = 0;
         data.questObjectiveProgress = 0;
         data.commissionAcceptedTick = now;
+        if (DYNAMIC_CASE.equals(commissionId)) {
+            data.caseHypotheses.remove(DYNAMIC_CASE);
+        }
         giveCommissionPaper(player, definition, now);
         QuestPartyService.registerActive(player, chain);
         player.sendSystemMessage(Component.translatable(
@@ -321,6 +336,9 @@ public final class CommissionService {
                 Component.translatable(definition.titleKey()))
                 .withStyle(ChatFormatting.GOLD));
         showCurrentStep(player, data, chain);
+        if (DYNAMIC_CASE.equals(definition.id())) {
+            DynamicCaseService.show(player);
+        }
         return 1;
     }
 
@@ -372,6 +390,9 @@ public final class CommissionService {
                 Component.translatable(definition.titleKey()))
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
         showCurrentStep(player, data, chain);
+        if (DYNAMIC_CASE.equals(definition.id())) {
+            DynamicCaseService.show(player);
+        }
         return 1;
     }
 
@@ -484,7 +505,8 @@ public final class CommissionService {
         if (definition == null || !isReadyToSettle(data)) return 0;
         long completedTick = player.level().getGameTime();
         CaseEvidenceView evidence = CaseEvidenceView.from(
-                data, FormulaAppraisalService.evidence(player));
+                data, FormulaAppraisalService.evidence(player),
+                DynamicCaseService.profileFor(player, data));
         CaseDebriefRecord debrief = CaseDebriefService.evaluate(
                 definition.id(), evidence, data.commissionAcceptedTick,
                 completedTick, data.questResolutionRoute,
@@ -507,6 +529,8 @@ public final class CommissionService {
         } else if (COUNTERFEIT_FORMULA.equals(definition.id())) {
             FormulaAppraisalService.takeDossier(player);
             giveItem(player, new ItemStack(ModItems.FORMULA_FRAGMENT.get(), 2));
+        } else if (DYNAMIC_CASE.equals(definition.id())) {
+            data.knownKnowledge.add(id("knowledge/m2/dynamic_case_rotation"));
         }
         player.sendSystemMessage(Component.translatable(
                 "command.lord_of_mysteries.commission.settled",
@@ -540,6 +564,10 @@ public final class CommissionService {
                             "command.lord_of_mysteries.case.recover.no_active")
                     .withStyle(ChatFormatting.GRAY));
             return 0;
+        }
+        if (DynamicCaseService.isActive(data)
+                && "reconsider".equals(data.questResolutionRoute)) {
+            return DynamicCaseService.recoverConclusion(player);
         }
         if (!InvestigationBoardService.isNearBoard(player)) {
             player.sendSystemMessage(Component.translatable(
@@ -880,7 +908,7 @@ public final class CommissionService {
         if (!data.completedCommissions.contains(COUNTERFEIT_FORMULA)) {
             return COUNTERFEIT_FORMULA;
         }
-        return null;
+        return DYNAMIC_CASE;
     }
 
     private static boolean requirementsMet(PlayerMysteryData data,

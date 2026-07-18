@@ -2,8 +2,8 @@
   "schema_version": 1,
   "capability_schema": 19,
   "data_counts": {
-    "commissions": 3,
-    "quest_chains": 3
+    "commissions": 4,
+    "quest_chains": 4
   },
   "legacy_missing_squad": {
     "step_count": 13,
@@ -31,6 +31,38 @@
       "s6_return"
     ]
   },
+  "dynamic_case_rotation": {
+    "commission": "lord_of_mysteries:commission/dynamic_case_rotation",
+    "quest": "lord_of_mysteries:quest/dynamic_case_rotation",
+    "prerequisite": "lord_of_mysteries:commission/counterfeit_formula",
+    "repeatable": true,
+    "cooldown_hours": 24,
+    "archetypes": ["MISSING_PERSON", "ANOMALOUS_ITEM", "OCCULT_CRIME"],
+    "slots": [
+      "subject",
+      "motive",
+      "method",
+      "location",
+      "anomaly",
+      "cover_up",
+      "victim_impact",
+      "evidence_theme"
+    ],
+    "steps": ["s1_scene", "s2_witness", "s3_records", "s4_conclusion"],
+    "evidence_routes": ["FIELD", "DESK"],
+    "conclusions": [
+      "HUMAN_CONCEALMENT",
+      "EXTRAORDINARY_DISTORTION",
+      "RITUAL_DIVERSION"
+    ],
+    "desk_cost_pence": 6,
+    "desk_pressure_fallback": 3,
+    "wrong_conclusion_pressure": 6,
+    "recovery_states": ["reconsider", "recovered"],
+    "stable_from_world_seed_and_accept_tick": true,
+    "preserves_capability_schema": true,
+    "preserves_packet_count": true
+  },
   "party_recovery": {
     "saved_data": "lord_of_mysteries_quest_parties",
     "maximum_party": 4,
@@ -53,7 +85,7 @@
     "states": ["AVAILABLE", "ACTIVE", "COMPLETED", "LOCKED", "COOLDOWN"]
   },
   "evidence_archive": {
-    "cases": ["lost_cat", "missing_squad", "counterfeit_formula"],
+    "cases": ["lost_cat", "missing_squad", "counterfeit_formula", "dynamic_case"],
     "states": ["CONFIRMED", "SUSPICIOUS", "MISSING"],
     "formula_clues": ["watermark", "ink", "sequence"],
     "server_authoritative": true
@@ -138,7 +170,15 @@
     "test",
     "reconsider",
     "clear",
-    "recover"
+    "recover",
+    "rotation",
+    "investigate",
+    "field",
+    "desk",
+    "conclude",
+    "human_concealment",
+    "extraordinary_distortion",
+    "ritual_diversion"
   ],
   "translation_keys": [
     "item.lord_of_mysteries.sealed_formula_dossier",
@@ -220,6 +260,21 @@
     "message.lord_of_mysteries.city_service.constable",
     "message.lord_of_mysteries.city_service.field_kit",
     "message.lord_of_mysteries.city_service.safe_room",
-    "command.lord_of_mysteries.city.directory"
+    "command.lord_of_mysteries.city.directory",
+    "commission.lord_of_mysteries.dynamic_case.title",
+    "quest.lord_of_mysteries.dynamic_case.title",
+    "command.lord_of_mysteries.dynamic_case.title",
+    "command.lord_of_mysteries.dynamic_case.next.scene",
+    "command.lord_of_mysteries.dynamic_case.conclusion.wrong",
+    "command.lord_of_mysteries.dynamic_case.recover.complete",
+    "dynamic_case.lord_of_mysteries.archetype.missing_person",
+    "dynamic_case.lord_of_mysteries.archetype.anomalous_item",
+    "dynamic_case.lord_of_mysteries.archetype.occult_crime",
+    "dynamic_case.lord_of_mysteries.conclusion.human_concealment",
+    "dynamic_case.lord_of_mysteries.conclusion.extraordinary_distortion",
+    "dynamic_case.lord_of_mysteries.conclusion.ritual_diversion",
+    "screen.lord_of_mysteries.evidence.dynamic_case.false_lead.title",
+    "screen.lord_of_mysteries.analysis.dynamic_case.relation.false_lead_conflict.title",
+    "knowledge.lord_of_mysteries.m2.dynamic_case_rotation"
   ]
 }

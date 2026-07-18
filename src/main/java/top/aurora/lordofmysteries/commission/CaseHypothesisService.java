@@ -198,7 +198,8 @@ public final class CaseHypothesisService {
         ResourceLocation caseId = ResourceLocation.tryParse(
                 data.activeCommissionId);
         CaseEvidenceView evidence = CaseEvidenceView.from(
-                data, FormulaAppraisalService.evidence(player));
+                data, FormulaAppraisalService.evidence(player),
+                DynamicCaseService.profileFor(player, data));
         if (caseId == null || evidence.commissionId().isBlank()) {
             player.sendSystemMessage(Component.translatable(
                             "command.lord_of_mysteries.case.hypothesis.no_active")

@@ -296,7 +296,7 @@ public final class QuestPartySnapshot {
     private static String sanitizeRoute(String route) {
         return switch (route) {
             case "assault", "stealth", "divination" -> route;
-            default -> "";
+            default -> DynamicCaseService.isResolutionState(route) ? route : "";
         };
     }
 

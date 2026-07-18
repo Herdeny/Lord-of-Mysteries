@@ -195,7 +195,9 @@ public final class PlayerMysteryDataSanitizer {
             if (!data.questResolutionRoute.isBlank()
                     && !data.questResolutionRoute.equals("assault")
                     && !data.questResolutionRoute.equals("stealth")
-                    && !data.questResolutionRoute.equals("divination")) {
+                    && !data.questResolutionRoute.equals("divination")
+                    && !top.aurora.lordofmysteries.commission.DynamicCaseService
+                            .isResolutionState(data.questResolutionRoute)) {
                 data.questResolutionRoute = "";
                 data.questResolutionReady = false;
                 repairs++;

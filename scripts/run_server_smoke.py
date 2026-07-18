@@ -22,6 +22,7 @@ PLAYER_DATA_SOURCE = (
     ROOT
     / "src/main/java/top/aurora/lordofmysteries/player/PlayerMysteryData.java"
 )
+DATA_ROOT = ROOT / "src/main/resources/data/lord_of_mysteries"
 
 
 def expected_network_metadata():
@@ -43,12 +44,15 @@ def expected_player_schema():
 
 EXPECTED_PROTOCOL, EXPECTED_PACKET_COUNT = expected_network_metadata()
 EXPECTED_PLAYER_SCHEMA = expected_player_schema()
+EXPECTED_COMMISSION_COUNT = len(list((DATA_ROOT / "commissions").glob("*.json")))
+EXPECTED_QUEST_COUNT = len(list((DATA_ROOT / "quests").glob("*.json")))
 EXPECTED = {
-    "commissions": "Loaded 3 commission definitions",
-    "quests": "Loaded 3 quest chain definitions",
+    "commissions": f"Loaded {EXPECTED_COMMISSION_COUNT} commission definitions",
+    "quests": f"Loaded {EXPECTED_QUEST_COUNT} quest chain definitions",
     "ready": "Done (",
     "servercheck": (
-        "PROJECT_MYSTERY_SERVERCHECK_OK commissions=3 quests=3 "
+        "PROJECT_MYSTERY_SERVERCHECK_OK "
+        f"commissions={EXPECTED_COMMISSION_COUNT} quests={EXPECTED_QUEST_COUNT} "
         f"protocol={EXPECTED_PROTOCOL} packets={EXPECTED_PACKET_COUNT} "
         "overworld=true"
     ),

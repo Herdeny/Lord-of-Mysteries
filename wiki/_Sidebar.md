@@ -14,6 +14,7 @@
 - [证据档案与城市报纸](M2-Evidence-and-Newspaper)
 - [证据关联、案件分析与恢复](M2-Evidence-Reasoning-and-Recovery)
 - [玩家假说与误判恢复](M2-Player-Hypotheses-and-Reasoning-Strain)
+- [八槽位动态案件轮换](M2-Dynamic-Case-Rotation)
 - [结案评价与复盘](M2-Case-Debrief-and-Ratings)
 - [城市服务台与功能区](M2-City-Service-Desks)
 - [雾都前哨、调查板与委托](M2-Commissions-and-Mist-City-Outpost)

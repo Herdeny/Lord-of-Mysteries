@@ -210,6 +210,22 @@ class QuestPartySnapshotTest {
                 activeData(2, 0), FIRST, 100L).validFor(chain));
     }
 
+    @Test
+    void nbtRoundTripPreservesDynamicCaseRecoveryState() {
+        PlayerMysteryData source = activeData(3, 0);
+        source.activeCommissionId = CommissionService.DYNAMIC_CASE.toString();
+        source.activeQuestChainId =
+                "lord_of_mysteries:quest/dynamic_case_rotation";
+        source.questResolutionRoute = "reconsider";
+        QuestPartySnapshot restored = QuestPartySnapshot.load(
+                QuestPartySnapshot.create(source, FIRST, 200L).save());
+        PlayerMysteryData target = new PlayerMysteryData();
+
+        assertTrue(restored.applyTo(target, FIRST));
+        assertEquals("reconsider", target.questResolutionRoute);
+        assertFalse(target.questResolutionReady);
+    }
+
     private static PlayerMysteryData activeData(int step, int progress) {
         PlayerMysteryData data = new PlayerMysteryData();
         data.activeCommissionId =

@@ -15,14 +15,16 @@ public final class CaseAnalysisService {
     private static final List<ResourceLocation> CASE_ORDER = List.of(
             CommissionService.LOST_CAT,
             CommissionService.MISSING_SQUAD,
-            CommissionService.COUNTERFEIT_FORMULA);
+            CommissionService.COUNTERFEIT_FORMULA,
+            CommissionService.DYNAMIC_CASE);
 
     private CaseAnalysisService() {}
 
     public static int showAnalysis(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         CaseEvidenceView evidence = CaseEvidenceView.from(
-                data, FormulaAppraisalService.evidence(player));
+                data, FormulaAppraisalService.evidence(player),
+                DynamicCaseService.profileFor(player, data));
         if (evidence.commissionId().isBlank()) {
             player.sendSystemMessage(Component.translatable(
                             "command.lord_of_mysteries.case.analysis.no_active")

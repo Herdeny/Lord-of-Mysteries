@@ -12,7 +12,7 @@
   <meta property="og:image" content="assets/logo.png">
   <link rel="icon" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="assets/wiki.css?v=0.9.9">
+  <link rel="stylesheet" href="assets/wiki.css?v=0.9.10">
 </head>
 <body>
   <!-- 灵界粒子背景 -->
@@ -94,8 +94,10 @@
             <li>使用 <code>/pm case analyze</code> 获取明确下一步</li>
             <li>使用 <code>/pm case hypothesis</code> 提出、检验并纠正玩家假说</li>
             <li>丢失关键案件物品时在调查板附近执行 <code>/pm case recover</code></li>
+            <li>完成真假配方后接取轮换案件，用 <code>/pm case rotation</code> 查看八槽位卷宗</li>
+            <li>通过 <code>/pm case rotation investigate field|desk</code> 完成三轮取证；误判后回调查板复议</li>
           </ol>
-          <a class="button" href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Evidence-Reasoning-and-Recovery" target="_blank" rel="noopener">打开推理与恢复手册 ↗</a>
+          <a class="button" href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Dynamic-Case-Rotation" target="_blank" rel="noopener">打开动态案件手册 ↗</a>
         </div>
         <div class="about-card">
           <h3>服务器与贡献</h3>
@@ -178,7 +180,7 @@
       <div class="about-grid">
         <div class="about-card">
           <h3>项目简介</h3>
-          <p>Project Mystery 是一个把《诡秘之主》非凡者体系带入 Minecraft 的生存冒险 Mod。当前版本为 <b>0.9.9-1.20.1</b>，路线处于 <b>M2 调查与生活</b>：M0/M1 已完成机器验收，服务端权威调查板现有案件公告、三案证据档案、12 条稳定关系、三阶段推理、玩家假说、可恢复误判代价、明确下一步、关键物品恢复与持久化结案评价；日报、报社轮班、事务所补给和巡警安全室形成首批城市服务循环。当前基线包含 Capability schema 19、网络协议 12、239 项 JUnit、6 项 Forge GameTest、精确回滚与双启动专服矩阵；下一阶段继续建设正式城市街区、动态案件和长期多人经济。</p>
+          <p>Project Mystery 是一个把《诡秘之主》非凡者体系带入 Minecraft 的生存冒险 Mod。当前版本为 <b>0.9.10-1.20.1</b>，路线处于 <b>M2 调查与生活</b>：M0/M1 已完成机器验收，服务端权威调查板现有四种委托、四条任务链、三案固定档案和每日轮换的三类八槽位动态案件；玩家可通过实地或调查板替代入口完成现场、证人和档案取证，并在植入式误导、三种结论、玩家假说、误判压力与复议恢复之间形成完整推理闭环。日报、报社轮班、事务所补给和巡警安全室继续提供城市生活服务。当前基线包含 Capability schema 19、网络协议 12、248 项 JUnit、6 项 Forge GameTest、116 节点/163 关系内容图、精确回滚与双启动专服矩阵；下一阶段将把动态槽位落为真实 NPC、物证、现场互动和组织反馈，并扩建正式城市街区与长期多人经济。</p>
         </div>
         <div class="about-card">
           <h3>技术基线</h3>
@@ -211,6 +213,7 @@
         <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Evidence-and-Newspaper" target="_blank" rel="noopener">证据档案与城市报纸</a>
         <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Evidence-Reasoning-and-Recovery" target="_blank" rel="noopener">证据关联与案件恢复</a>
         <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Player-Hypotheses-and-Reasoning-Strain" target="_blank" rel="noopener">玩家假说与误判恢复</a>
+        <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Dynamic-Case-Rotation" target="_blank" rel="noopener">动态案件轮换</a>
         <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-City-Service-Desks" target="_blank" rel="noopener">城市服务台与功能区</a>
         <a href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/DEDICATED_SERVER_TEST_MATRIX.md" target="_blank" rel="noopener">专服与多人验证矩阵</a>
         <a href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/ROADMAP.md" target="_blank" rel="noopener">完整路线</a>
@@ -243,9 +246,9 @@
     </article>
   </div>
 
-  <script src="assets/project-meta.js?v=0.9.9"></script>
-  <script src="assets/roadmap-data.js?v=0.9.9"></script>
-  <script src="assets/wiki-data.js?v=0.9.9"></script>
-  <script src="assets/wiki.js?v=0.9.9"></script>
+  <script src="assets/project-meta.js?v=0.9.10"></script>
+  <script src="assets/roadmap-data.js?v=0.9.10"></script>
+  <script src="assets/wiki-data.js?v=0.9.10"></script>
+  <script src="assets/wiki.js?v=0.9.10"></script>
 </body>
 </html>
