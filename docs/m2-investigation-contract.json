@@ -47,7 +47,7 @@
   "investigation_board": {
     "block": "commission_board",
     "command": "board",
-    "network_protocol": 10,
+    "network_protocol": 11,
     "packet_count": 14,
     "requires_proximity": true,
     "states": ["AVAILABLE", "ACTIVE", "COMPLETED", "LOCKED", "COOLDOWN"]
@@ -57,6 +57,17 @@
     "states": ["CONFIRMED", "SUSPICIOUS", "MISSING"],
     "formula_clues": ["watermark", "ink", "sequence"],
     "server_authoritative": true
+  },
+  "evidence_reasoning": {
+    "stages": ["NO_CASE", "COLLECTING", "CORRELATING", "READY"],
+    "relation_kinds": ["SUPPORTS", "CONTRADICTS", "LEADS_TO"],
+    "commands": ["analyze", "archive", "recover"],
+    "shows_confidence": true,
+    "shows_next_action": true,
+    "undiscovered_relations_sent": false,
+    "recovery_requires_board": true,
+    "recovery_preserves_dossier_stage": true,
+    "preserves_packet_count": true
   },
   "daily_newspaper": {
     "headline_count": 6,
@@ -83,7 +94,11 @@
     "forged",
     "party",
     "sync",
-    "city"
+    "city",
+    "sites",
+    "analyze",
+    "archive",
+    "recover"
   ],
   "translation_keys": [
     "item.lord_of_mysteries.sealed_formula_dossier",
@@ -115,6 +130,17 @@
     "screen.lord_of_mysteries.evidence.state.confirmed",
     "screen.lord_of_mysteries.evidence.state.suspicious",
     "screen.lord_of_mysteries.evidence.state.missing",
+    "screen.lord_of_mysteries.investigation_board.analysis",
+    "screen.lord_of_mysteries.analysis.confidence",
+    "screen.lord_of_mysteries.analysis.stage.collecting",
+    "screen.lord_of_mysteries.analysis.stage.correlating",
+    "screen.lord_of_mysteries.analysis.stage.ready",
+    "screen.lord_of_mysteries.analysis.relation_kind.supports",
+    "screen.lord_of_mysteries.analysis.relation_kind.contradicts",
+    "screen.lord_of_mysteries.analysis.relation_kind.leads_to",
+    "command.lord_of_mysteries.case.analysis.summary",
+    "command.lord_of_mysteries.case.archive.progress",
+    "command.lord_of_mysteries.case.recover.restored",
     "tooltip.lord_of_mysteries.newspaper",
     "knowledge.lord_of_mysteries.m2.newspaper_rumors",
     "message.lord_of_mysteries.newspaper.masthead",

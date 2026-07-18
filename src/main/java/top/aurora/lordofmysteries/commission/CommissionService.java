@@ -507,16 +507,58 @@ public final class CommissionService {
         return 1;
     }
 
-    public static void restoreCommissionPaper(ServerPlayer player) {
+    public static boolean restoreCommissionPaper(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         if (data.activeCommissionId.isBlank()
-                || hasCommissionPaper(player, data.activeCommissionId)) return;
+                || hasCommissionPaper(player, data.activeCommissionId)) return false;
         ResourceLocation commissionId = ResourceLocation.tryParse(data.activeCommissionId);
         CommissionDefinition definition = commissionId == null
                 ? null : CommissionDefinitionManager.get(commissionId);
         if (definition != null) {
             giveCommissionPaper(player, definition, data.commissionAcceptedTick);
+            return true;
         }
+        return false;
+    }
+
+    public static int recoverCaseItems(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.activeCommissionId.isBlank()) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.case.recover.no_active")
+                    .withStyle(ChatFormatting.GRAY));
+            return 0;
+        }
+        if (!InvestigationBoardService.isNearBoard(player)) {
+            player.sendSystemMessage(Component.translatable(
+                            "screen.lord_of_mysteries.investigation_board.nearby_required")
+                    .withStyle(ChatFormatting.RED));
+            return 0;
+        }
+        CaseRecoveryPolicy.RecoveryPlan plan = CaseRecoveryPolicy.plan(
+                data.activeCommissionId,
+                data.activeQuestStep,
+                hasCommissionPaper(player, data.activeCommissionId),
+                FormulaAppraisalService.hasDossier(player));
+        int restored = 0;
+        if (plan.restoreCommissionPaper() && restoreCommissionPaper(player)) {
+            restored++;
+        }
+        if (plan.restoreFormulaDossier()) {
+            giveItem(player, FormulaAppraisalService.createRecoveryDossier(
+                    player, plan.recoveredDossierAppraised()));
+            restored++;
+        }
+        if (restored == 0) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.case.recover.complete")
+                    .withStyle(ChatFormatting.GRAY));
+            return 0;
+        }
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.case.recover.restored", restored)
+                .withStyle(ChatFormatting.GREEN));
+        return restored;
     }
 
     private static boolean hasCommissionPaper(ServerPlayer player,

@@ -1,6 +1,6 @@
 # 专用服务器与多人一致性验证
 
-> 当前版本：0.9.6-1.20.1 · Capability schema 17 · 内容 schema v4 · 网络协议 10
+> 当前版本：0.9.7-1.20.1 · Capability schema 17 · 内容 schema v4 · 网络协议 11
 
 ## 自动冒烟
 
@@ -15,7 +15,18 @@ python scripts/run_server_restart_matrix.py --timeout 180
 
 `./gradlew check` 还会运行 `scripts/check_m1_playability.py`，核对 120 分钟、9 项核心目标、7 个里程碑、三份 M1 魔药、
 十二项保底补给、十个关键命令入口和中英文本地化；M2 合同保护调查板、真假配方、三解、持久队伍恢复与旧 13 步索引；
-统一门禁保护 v0.9 设计源、内容图、JSON、双语、模型与注册资源；当前自动化基线为 218 项 JUnit、6 项真实 Forge GameTest，并验证 schema 17 首启迁移快照、Capability Clone、精确特性载荷、两小时状态往返、调查板物理邻近门禁、证据/日报和城市服务契约。
+统一门禁保护 v0.9 设计源、内容图、JSON、双语、模型与注册资源；当前自动化基线为 224 项 JUnit、6 项真实 Forge GameTest，并验证 schema 17 首启迁移快照、Capability Clone、精确特性载荷、两小时状态往返、调查板物理邻近门禁、证据关联/案件恢复、日报和城市服务契约。
+
+## M2 证据推理与恢复必测项
+
+- 三案分别从“收集中”推进到“关联中”和“可结论”，完整度与关系只随服务端证据变化。
+- `/pm case analyze` 在每一步给出唯一下一行动；无案件时不得生成结论。
+- 委托纸只在活动案件且背包缺失时恢复；重复执行不得复制。
+- 真假配方卷宗只在第 2–4 步恢复，恢复后的隐藏真伪必须与原案件一致。
+- `/pm case recover` 必须在真实调查板附近执行，远程请求不得改变背包、进度、余额或奖励。
+- 2–4 人同队和不同队都要核对玩家级卷宗、证据、恢复结果不串档。
+
+详细操作与记录格式见[仓库专服矩阵](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/DEDICATED_SERVER_TEST_MATRIX.md)和[证据关联与案件恢复](M2-Evidence-Reasoning-and-Recovery)。
 
 `./gradlew runGameTestServer` 必须显示 6 项测试实际运行并全部通过；报告 `0 tests` 不视为有效门禁。
 

@@ -11,8 +11,10 @@ import org.junit.jupiter.api.Test;
 import net.minecraft.network.FriendlyByteBuf;
 
 import top.aurora.lordofmysteries.commission.CommissionBoardState;
+import top.aurora.lordofmysteries.commission.CaseAnalysisStage;
 import top.aurora.lordofmysteries.commission.CaseEvidenceView;
 import top.aurora.lordofmysteries.commission.EvidenceState;
+import top.aurora.lordofmysteries.commission.EvidenceRelationKind;
 import top.aurora.lordofmysteries.commission.InvestigationBoardView;
 
 class InvestigationBoardPacketTest {
@@ -39,10 +41,22 @@ class InvestigationBoardPacketTest {
                         "commission.test.title",
                         1,
                         2,
+                        50,
+                        0,
+                        1,
+                        1,
                         false,
+                        CaseAnalysisStage.CORRELATING,
+                        "analysis.test.theory",
+                        "analysis.test.next",
                         List.of(new CaseEvidenceView.Entry(
                                 "evidence.test.title",
                                 "evidence.test.detail",
+                                EvidenceState.SUSPICIOUS)),
+                        List.of(new CaseEvidenceView.Relation(
+                                "relation.test.title",
+                                "relation.test.detail",
+                                EvidenceRelationKind.CONTRADICTS,
                                 EvidenceState.SUSPICIOUS))));
         FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
 
@@ -65,10 +79,19 @@ class InvestigationBoardPacketTest {
                         "evidence.test.detail",
                         EvidenceState.CONFIRMED))
                 .toList();
+        List<CaseEvidenceView.Relation> oversizedRelations = IntStream.range(0, 40)
+                .mapToObj(index -> new CaseEvidenceView.Relation(
+                        "relation.test." + index,
+                        "relation.test.detail",
+                        EvidenceRelationKind.SUPPORTS,
+                        EvidenceState.CONFIRMED))
+                .toList();
         InvestigationBoardView oversizedView = new InvestigationBoardView(
                 0L, "", "", "", 0, 0, 0, 0, oversizedEntries,
-                new CaseEvidenceView("", "", 40, 40, true,
-                        oversizedEvidence));
+                new CaseEvidenceView("", "", 40, 40, 100,
+                        40, 0, 0, true, CaseAnalysisStage.READY,
+                        "analysis.test.theory", "analysis.test.next",
+                        oversizedEvidence, oversizedRelations));
         FriendlyByteBuf oversizedBuffer = new FriendlyByteBuf(Unpooled.buffer());
 
         InvestigationBoardS2CPacket.encode(
@@ -78,6 +101,7 @@ class InvestigationBoardPacketTest {
                 InvestigationBoardS2CPacket.decode(oversizedBuffer).view();
         assertEquals(32, decodedOversized.entries().size());
         assertEquals(32, decodedOversized.evidence().entries().size());
+        assertEquals(32, decodedOversized.evidence().relations().size());
     }
 
     @Test

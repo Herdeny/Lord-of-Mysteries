@@ -42,6 +42,16 @@ public final class FormulaAppraisalService {
         return dossier;
     }
 
+    public static ItemStack createRecoveryDossier(
+            ServerPlayer player,
+            boolean appraised) {
+        ItemStack dossier = createDossier(player);
+        if (appraised) {
+            dossier.getOrCreateTag().putBoolean(APPRAISED, true);
+        }
+        return dossier;
+    }
+
     public static int inspect(ServerPlayer player, ItemStack dossier) {
         if (!dossier.is(ModItems.SEALED_FORMULA_DOSSIER.get())) return 0;
         if (!CommissionService.isCurrentObjective(

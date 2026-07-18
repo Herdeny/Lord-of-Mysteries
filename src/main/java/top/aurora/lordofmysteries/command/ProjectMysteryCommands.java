@@ -37,6 +37,7 @@ import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.registry.ModItems;
+import top.aurora.lordofmysteries.commission.CaseAnalysisService;
 import top.aurora.lordofmysteries.commission.CommissionDefinitionManager;
 import top.aurora.lordofmysteries.commission.CommissionService;
 import top.aurora.lordofmysteries.commission.CityLifeService;
@@ -112,11 +113,26 @@ public final class ProjectMysteryCommands {
                 .then(Commands.literal("city").executes(context ->
                         CityServiceDeskService.showDirectory(
                                 context.getSource().getPlayerOrException())))
-                .then(Commands.literal("case").executes(context -> {
-                    InvestigationSiteGenerator.reportSites(
-                            context.getSource().getPlayerOrException());
-                    return 1;
-                }))
+                .then(Commands.literal("case")
+                        .executes(context -> {
+                            InvestigationSiteGenerator.reportSites(
+                                    context.getSource().getPlayerOrException());
+                            return 1;
+                        })
+                        .then(Commands.literal("sites").executes(context -> {
+                            InvestigationSiteGenerator.reportSites(
+                                    context.getSource().getPlayerOrException());
+                            return 1;
+                        }))
+                        .then(Commands.literal("analyze").executes(context ->
+                                CaseAnalysisService.showAnalysis(
+                                        context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("archive").executes(context ->
+                                CaseAnalysisService.showArchive(
+                                        context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("recover").executes(context ->
+                                CommissionService.recoverCaseItems(
+                                        context.getSource().getPlayerOrException()))))
                 .then(Commands.literal("commission")
                         .executes(context -> CommissionService.showStatus(
                                 context.getSource().getPlayerOrException()))

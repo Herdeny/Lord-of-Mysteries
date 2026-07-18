@@ -66,9 +66,10 @@
 - 已完成：服务端权威调查板、三案证据档案页、案件状态/报酬/步骤展示与邻近校验
 - 已完成：每日动态报纸、案件提示、城市轮班状态与报社产出闭环
 - 已完成：版本化事务所/巡警功能亭、调查补给交易、安全室恢复与旧前哨自动补建
+- 已完成：三阶段证据推理、关联链、档案完整度、明确下一步、结案档案与调查板物品恢复
 - 下一步：把前哨功能区扩展为正式报社、事务所与警局街区
 - 下一步：失踪、异常物品、神秘学犯罪三类动态案件生成器
-- 下一步：生活物价、职业扩展、证据关联推理和八小时多人连续性矩阵
+- 下一步：生活物价、职业扩展、结案评价和八小时多人连续性矩阵
 
 ## M3 · 首发五途径
 
@@ -199,7 +200,7 @@
 | structure_specs | 32 |
 | weather_anomaly_specs | 18 |
 
-### repository_evidence_at_0.9.6
+### repository_evidence_at_0.9.7
 
 | 指标 | 数量 |
 |---|---:|
@@ -209,11 +210,11 @@
 | generated_recipes | 13 |
 | playable_commissions | 3 |
 | playable_quest_chains | 3 |
-| junit_tests | 218 |
+| junit_tests | 224 |
 | forge_gametests | 6 |
 | save_rollback_checks | 1 |
 | dedicated_server_starts | 2 |
-| network_protocol | 10 |
+| network_protocol | 11 |
 | player_capability_schema | 17 |
 
 

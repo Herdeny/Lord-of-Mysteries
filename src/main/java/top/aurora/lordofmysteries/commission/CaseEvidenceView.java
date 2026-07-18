@@ -13,8 +13,16 @@ public record CaseEvidenceView(
         String caseTitleKey,
         int discovered,
         int total,
+        int confidence,
+        int confirmed,
+        int suspicious,
+        int missing,
         boolean conclusionReady,
-        List<Entry> entries) {
+        CaseAnalysisStage analysisStage,
+        String theoryKey,
+        String nextActionKey,
+        List<Entry> entries,
+        List<Relation> relations) {
 
     private static final ResourceLocation MISSING_SQUAD_EVIDENCE = id(
             "knowledge/m2/missing_squad_evidence");
@@ -24,10 +32,18 @@ public record CaseEvidenceView(
             "knowledge/m2/formula_authenticity");
 
     public static final CaseEvidenceView EMPTY = new CaseEvidenceView(
-            "", "", 0, 0, false, List.of());
+            "", "", 0, 0, 0, 0, 0, 0, false,
+            CaseAnalysisStage.NO_CASE, "", "", List.of(), List.of());
 
     public CaseEvidenceView {
+        total = Math.max(0, total);
+        discovered = Math.min(total, Math.max(0, discovered));
+        confidence = Math.min(100, Math.max(0, confidence));
+        confirmed = Math.min(total, Math.max(0, confirmed));
+        suspicious = Math.min(total, Math.max(0, suspicious));
+        missing = Math.min(total, Math.max(0, missing));
         entries = List.copyOf(entries);
+        relations = List.copyOf(relations);
     }
 
     public static CaseEvidenceView from(
@@ -48,30 +64,70 @@ public record CaseEvidenceView(
     }
 
     private static CaseEvidenceView lostCat(PlayerMysteryData data) {
+        boolean pressRecord = completedStep(data, 0);
+        boolean campTracks = completedStep(data, 2);
+        boolean catRecovered = completedStep(data, 3);
         List<Entry> entries = List.of(
-                progress("lost_cat", "press_record", completedStep(data, 0)),
-                progress("lost_cat", "camp_tracks", completedStep(data, 2)),
-                progress("lost_cat", "cat_recovered", completedStep(data, 3)));
+                progress("lost_cat", "press_record", pressRecord),
+                progress("lost_cat", "camp_tracks", campTracks),
+                progress("lost_cat", "cat_recovered", catRecovered));
+        List<Relation> relations = List.of(
+                relation("lost_cat", "record_to_tracks",
+                        EvidenceRelationKind.LEADS_TO,
+                        linkState(entries.get(0), entries.get(1))),
+                relation("lost_cat", "tracks_to_recovery",
+                        EvidenceRelationKind.SUPPORTS,
+                        linkState(entries.get(1), entries.get(2))));
         return view(CommissionService.LOST_CAT,
                 "commission.lord_of_mysteries.lost_cat.title",
-                completedStep(data, 3), entries);
+                catRecovered, entries, relations,
+                nextAction("lost_cat", pressRecord
+                        ? campTracks ? catRecovered ? "return" : "recover"
+                        : "camp" : "press"), null);
     }
 
     private static CaseEvidenceView missingSquad(PlayerMysteryData data) {
+        boolean departureLog = completedStep(data, 0);
+        boolean lastCamp = completedStep(data, 2);
+        boolean bloodstainedNotes = completedStep(data, 3)
+                || data.knownKnowledge.contains(MISSING_SQUAD_EVIDENCE);
+        boolean authorization = completedStep(data, 6);
+        boolean survivorTestimony = completedStep(data, 9)
+                || data.knownKnowledge.contains(REPORTER_RESCUED);
+        boolean nightDefense = completedStep(data, 11);
         List<Entry> entries = List.of(
-                progress("missing_squad", "departure_log", completedStep(data, 0)),
-                progress("missing_squad", "last_camp", completedStep(data, 2)),
-                progress("missing_squad", "bloodstained_notes",
-                        completedStep(data, 3)
-                                || data.knownKnowledge.contains(MISSING_SQUAD_EVIDENCE)),
-                progress("missing_squad", "authorization", completedStep(data, 6)),
-                progress("missing_squad", "survivor_testimony",
-                        completedStep(data, 9)
-                                || data.knownKnowledge.contains(REPORTER_RESCUED)),
-                progress("missing_squad", "night_defense", completedStep(data, 11)));
+                progress("missing_squad", "departure_log", departureLog),
+                progress("missing_squad", "last_camp", lastCamp),
+                progress("missing_squad", "bloodstained_notes", bloodstainedNotes),
+                progress("missing_squad", "authorization", authorization),
+                progress("missing_squad", "survivor_testimony", survivorTestimony),
+                progress("missing_squad", "night_defense", nightDefense));
+        List<Relation> relations = List.of(
+                relation("missing_squad", "departure_to_camp",
+                        EvidenceRelationKind.LEADS_TO,
+                        linkState(entries.get(0), entries.get(1))),
+                relation("missing_squad", "camp_to_notes",
+                        EvidenceRelationKind.SUPPORTS,
+                        linkState(entries.get(1), entries.get(2))),
+                relation("missing_squad", "notes_to_authorization",
+                        EvidenceRelationKind.LEADS_TO,
+                        linkState(entries.get(2), entries.get(3))),
+                relation("missing_squad", "notes_to_testimony",
+                        EvidenceRelationKind.SUPPORTS,
+                        linkState(entries.get(2), entries.get(4))),
+                relation("missing_squad", "testimony_to_defense",
+                        EvidenceRelationKind.SUPPORTS,
+                        linkState(entries.get(4), entries.get(5))));
+        String next = !departureLog ? "press"
+                : !lastCamp ? "camp"
+                : !bloodstainedNotes ? "notes"
+                : !authorization ? "authorization"
+                : !survivorTestimony ? "rescue"
+                : !nightDefense ? "defense" : "return";
         return view(CommissionService.MISSING_SQUAD,
                 "commission.lord_of_mysteries.missing_squad.title",
-                completedStep(data, 11), entries);
+                nightDefense, entries, relations,
+                nextAction("missing_squad", next), null);
     }
 
     private static CaseEvidenceView counterfeitFormula(
@@ -91,9 +147,33 @@ public record CaseEvidenceView(
                 dossier.verdictSubmitted()
                         || data.knownKnowledge.contains(FORMULA_AUTHENTICITY)
                         || completedStep(data, 4)));
+        List<Relation> relations = new ArrayList<>();
+        relations.add(relation("counterfeit_formula", "registry_to_dossier",
+                EvidenceRelationKind.SUPPORTS,
+                linkState(entries.get(0), entries.get(2))));
+        relations.add(formulaRelation("watermark", entries.get(3)));
+        relations.add(formulaRelation("ink", entries.get(4)));
+        relations.add(formulaRelation("sequence", entries.get(5)));
+        EvidenceState synthesisState = synthesisState(entries.subList(3, 6));
+        relations.add(relation("counterfeit_formula", "clue_synthesis",
+                synthesisState == EvidenceState.SUSPICIOUS
+                        ? EvidenceRelationKind.CONTRADICTS
+                        : EvidenceRelationKind.SUPPORTS,
+                synthesisState));
+        String next = !completedStep(data, 0) ? "hut"
+                : !completedStep(data, 1) ? "appraiser"
+                : !dossier.present() ? "dossier"
+                : !dossier.appraised() ? "inspect"
+                : !dossier.verdictSubmitted()
+                        && !data.knownKnowledge.contains(FORMULA_AUTHENTICITY)
+                        && !completedStep(data, 4) ? "verdict" : "return";
+        String readyTheory = synthesisState == EvidenceState.SUSPICIOUS
+                ? "screen.lord_of_mysteries.analysis.counterfeit_formula.theory.contradiction"
+                : "screen.lord_of_mysteries.analysis.counterfeit_formula.theory.consistent";
         return view(CommissionService.COUNTERFEIT_FORMULA,
                 "commission.lord_of_mysteries.counterfeit_formula.title",
-                dossier.appraised(), entries);
+                dossier.appraised(), entries, relations,
+                nextAction("counterfeit_formula", next), readyTheory);
     }
 
     private static Entry progress(String caseId, String evidenceId,
@@ -128,13 +208,98 @@ public record CaseEvidenceView(
             ResourceLocation commissionId,
             String titleKey,
             boolean conclusionReady,
-            List<Entry> entries) {
+            List<Entry> entries,
+            List<Relation> relations,
+            String nextActionKey,
+            String readyTheoryKey) {
         int discovered = (int) entries.stream()
                 .filter(entry -> entry.state() != EvidenceState.MISSING)
                 .count();
+        int confirmed = (int) entries.stream()
+                .filter(entry -> entry.state() == EvidenceState.CONFIRMED)
+                .count();
+        int suspicious = (int) entries.stream()
+                .filter(entry -> entry.state() == EvidenceState.SUSPICIOUS)
+                .count();
+        int missing = entries.size() - discovered;
+        int confidence = entries.isEmpty() ? 0
+                : Math.round(discovered * 100f / entries.size());
+        CaseAnalysisStage stage = conclusionReady
+                ? CaseAnalysisStage.READY
+                : discovered * 2 >= entries.size()
+                        ? CaseAnalysisStage.CORRELATING
+                        : CaseAnalysisStage.COLLECTING;
+        String theoryKey = stage == CaseAnalysisStage.READY
+                ? readyTheoryKey == null
+                        ? "screen.lord_of_mysteries.analysis."
+                                + casePath(commissionId) + ".theory.ready"
+                        : readyTheoryKey
+                : "screen.lord_of_mysteries.analysis."
+                        + casePath(commissionId) + ".theory."
+                        + stage.name().toLowerCase(java.util.Locale.ROOT);
+        List<Relation> revealedRelations = relations.stream()
+                .filter(relation -> relation.state() != EvidenceState.MISSING)
+                .toList();
         return new CaseEvidenceView(
                 commissionId.toString(), titleKey, discovered,
-                entries.size(), conclusionReady, entries);
+                entries.size(), confidence, confirmed, suspicious, missing,
+                conclusionReady, stage, theoryKey, nextActionKey,
+                entries, revealedRelations);
+    }
+
+    private static Relation formulaRelation(String clue, Entry entry) {
+        return relation("counterfeit_formula", "appraisal_to_" + clue,
+                entry.state() == EvidenceState.SUSPICIOUS
+                        ? EvidenceRelationKind.CONTRADICTS
+                        : EvidenceRelationKind.SUPPORTS,
+                entry.state());
+    }
+
+    private static EvidenceState synthesisState(List<Entry> clues) {
+        if (clues.stream().anyMatch(entry -> entry.state() == EvidenceState.MISSING)) {
+            return EvidenceState.MISSING;
+        }
+        if (clues.stream().anyMatch(
+                entry -> entry.state() == EvidenceState.SUSPICIOUS)) {
+            return EvidenceState.SUSPICIOUS;
+        }
+        return EvidenceState.CONFIRMED;
+    }
+
+    private static EvidenceState linkState(Entry source, Entry target) {
+        if (source.state() == EvidenceState.MISSING
+                || target.state() == EvidenceState.MISSING) {
+            return EvidenceState.MISSING;
+        }
+        if (source.state() == EvidenceState.SUSPICIOUS
+                || target.state() == EvidenceState.SUSPICIOUS) {
+            return EvidenceState.SUSPICIOUS;
+        }
+        return EvidenceState.CONFIRMED;
+    }
+
+    private static Relation relation(
+            String caseId,
+            String relationId,
+            EvidenceRelationKind kind,
+            EvidenceState state) {
+        String prefix = "screen.lord_of_mysteries.analysis."
+                + caseId + ".relation." + relationId;
+        return new Relation(prefix + ".title", prefix + ".detail", kind, state);
+    }
+
+    private static String nextAction(String caseId, String action) {
+        return "screen.lord_of_mysteries.analysis."
+                + caseId + ".next." + action;
+    }
+
+    private static String casePath(ResourceLocation commissionId) {
+        if (CommissionService.MISSING_SQUAD.equals(commissionId)) {
+            return "missing_squad";
+        }
+        String path = commissionId.getPath();
+        int separator = path.lastIndexOf('/');
+        return separator >= 0 ? path.substring(separator + 1) : path;
     }
 
     private static boolean completedStep(PlayerMysteryData data, int stepIndex) {
@@ -148,5 +313,11 @@ public record CaseEvidenceView(
     public record Entry(
             String titleKey,
             String detailKey,
+            EvidenceState state) {}
+
+    public record Relation(
+            String titleKey,
+            String detailKey,
+            EvidenceRelationKind kind,
             EvidenceState state) {}
 }

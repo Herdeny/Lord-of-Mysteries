@@ -23,6 +23,10 @@ BOARD_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmyste
 BOARD_STATE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CommissionBoardState.java"
 EVIDENCE_VIEW = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseEvidenceView.java"
 EVIDENCE_STATE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "EvidenceState.java"
+ANALYSIS_STAGE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseAnalysisStage.java"
+RELATION_KIND = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "EvidenceRelationKind.java"
+ANALYSIS_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseAnalysisService.java"
+RECOVERY_POLICY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseRecoveryPolicy.java"
 FORMULA_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "FormulaAppraisalService.java"
 NEWS_LOGIC = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CityNewsLogic.java"
 NEWS_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CityNewsService.java"
@@ -186,8 +190,51 @@ def main():
     require(not evidence["server_authoritative"]
             or ("DossierEvidence" in formula_service
                 and "CaseEvidenceView" in board_packet
-                and "evidenceMode" in board_screen),
+                and "renderEvidenceEntry" in board_screen),
             "server-authoritative evidence archive is incomplete")
+
+    reasoning = contract["evidence_reasoning"]
+    analysis_stage = ANALYSIS_STAGE.read_text(encoding="utf-8")
+    relation_kind = RELATION_KIND.read_text(encoding="utf-8")
+    analysis_service = ANALYSIS_SERVICE.read_text(encoding="utf-8")
+    recovery_policy = RECOVERY_POLICY.read_text(encoding="utf-8")
+    for stage in reasoning["stages"]:
+        require(stage in analysis_stage,
+                f"case analysis stage {stage} is missing")
+    for kind in reasoning["relation_kinds"]:
+        require(kind in relation_kind,
+                f"evidence relation kind {kind} is missing")
+    for token in reasoning["commands"]:
+        require(f'literal("{token}")' in command_source,
+                f"case reasoning command {token} is missing")
+    require(not reasoning["shows_confidence"]
+            or ("confidence" in evidence_view
+                and "analysis.confidence" in board_screen),
+            "case analysis confidence is not displayed")
+    require(not reasoning["shows_next_action"]
+            or ("nextActionKey" in evidence_view
+                and "analysis.next_action" in board_screen),
+            "case analysis next action is not displayed")
+    require("relations" in board_packet
+            and "renderAnalysisRelation" in board_screen
+            and "showAnalysis" in analysis_service
+            and "showArchive" in analysis_service,
+            "evidence relation analysis is incomplete")
+    require(reasoning["undiscovered_relations_sent"]
+            or "relation.state() != EvidenceState.MISSING" in evidence_view,
+            "undiscovered evidence relations must not enter the client snapshot")
+    require("restoreCommissionPaper" in recovery_policy
+            and "restoreFormulaDossier" in recovery_policy
+            and "recoveredDossierAppraised" in recovery_policy
+            and "createRecoveryDossier" in commission_service
+            and "recoverCaseItems" in commission_service,
+            "case item recovery policy is incomplete")
+    require(not reasoning["recovery_requires_board"]
+            or "InvestigationBoardService.isNearBoard" in commission_service,
+            "case recovery is not investigation-board gated")
+    require(not reasoning["preserves_packet_count"]
+            or board["packet_count"] == 14,
+            "case reasoning unexpectedly changed packet count")
 
     newspaper = contract["daily_newspaper"]
     news_logic = NEWS_LOGIC.read_text(encoding="utf-8")
@@ -253,6 +300,7 @@ def main():
         f"{len(commissions)} commissions, {len(quests)} quest chains, "
         "occultist hut, formula appraisal, three rescue routes, "
         "persistent party recovery, the server-authoritative evidence archive, "
+        "case reasoning and board-gated item recovery, "
         "the deterministic daily newspaper, and versioned city service desks"
     )
 
