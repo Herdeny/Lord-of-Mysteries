@@ -16,6 +16,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -70,6 +71,17 @@ public final class MistCityOutpostGenerator {
             data.recordOutpost(pending.target());
             ProjectMystery.LOGGER.info("Generated Mist City outpost at {}", pending.target());
         }
+        MistCityOutpostSavedData data = MistCityOutpostSavedData.get(level);
+        data.outpost().filter(level::hasChunkAt).ifPresent(outpost -> {
+            if (data.serviceVersion()
+                    >= MistCityOutpostSavedData.CURRENT_SERVICE_VERSION) return;
+            generateServiceBooths(level, outpost);
+            data.recordServiceVersion(
+                    MistCityOutpostSavedData.CURRENT_SERVICE_VERSION);
+            ProjectMystery.LOGGER.info(
+                    "Upgraded Mist City outpost service booths to version {} at {}",
+                    data.serviceVersion(), outpost);
+        });
     }
 
     public static BlockPos starterOutpostTarget(ServerLevel level) {
@@ -187,6 +199,37 @@ public final class MistCityOutpostGenerator {
                 Blocks.HAY_BLOCK.defaultBlockState(), 3);
         level.setBlock(center.offset(5, 1, 5),
                 Blocks.CAULDRON.defaultBlockState(), 3);
+    }
+
+    private static void generateServiceBooths(
+            ServerLevel level, BlockPos center) {
+        generateServiceBooth(level, center.offset(-5, 0, 3),
+                Blocks.CARTOGRAPHY_TABLE, Blocks.BOOKSHELF);
+        generateServiceBooth(level, center.offset(5, 0, 3),
+                Blocks.SMITHING_TABLE, Blocks.IRON_BARS);
+    }
+
+    private static void generateServiceBooth(
+            ServerLevel level, BlockPos booth,
+            Block counter, Block marker) {
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                level.setBlock(booth.offset(dx, 0, dz),
+                        Blocks.POLISHED_ANDESITE.defaultBlockState(), 3);
+                level.setBlock(booth.offset(dx, 3, dz),
+                        Blocks.DARK_OAK_SLAB.defaultBlockState(), 3);
+            }
+            for (int dy = 1; dy <= 2; dy++) {
+                level.setBlock(booth.offset(dx, dy, 1),
+                        Blocks.SPRUCE_PLANKS.defaultBlockState(), 3);
+            }
+        }
+        level.setBlock(booth.offset(0, 1, -1),
+                counter.defaultBlockState(), 3);
+        level.setBlock(booth.offset(0, 1, 1),
+                marker.defaultBlockState(), 3);
+        level.setBlock(booth.offset(0, 2, 1),
+                Blocks.LANTERN.defaultBlockState(), 3);
     }
 
     private record PendingOutpost(long levelSeed, BlockPos target) {}

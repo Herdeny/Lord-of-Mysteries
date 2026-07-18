@@ -64,6 +64,14 @@
     "granted_by_press_shift": true,
     "knowledge": "lord_of_mysteries:knowledge/m2/newspaper_rumors"
   },
+  "city_service_desks": {
+    "world_service_version": 1,
+    "desks": ["press", "detective", "constabulary"],
+    "field_kit_cost": 18,
+    "safe_room_cost": 28,
+    "command": "city",
+    "upgrades_existing_outposts": true
+  },
   "command_tokens": [
     "board",
     "approach",
@@ -74,7 +82,8 @@
     "authentic",
     "forged",
     "party",
-    "sync"
+    "sync",
+    "city"
   ],
   "translation_keys": [
     "item.lord_of_mysteries.sealed_formula_dossier",
@@ -114,6 +123,13 @@
     "message.lord_of_mysteries.newspaper.case.none",
     "message.lord_of_mysteries.newspaper.case.counterfeit_formula",
     "message.lord_of_mysteries.newspaper.shift.available",
-    "message.lord_of_mysteries.newspaper.shift.done"
+    "message.lord_of_mysteries.newspaper.shift.done",
+    "entity.lord_of_mysteries.detective_clerk",
+    "entity.lord_of_mysteries.constable",
+    "message.lord_of_mysteries.city_service.detective",
+    "message.lord_of_mysteries.city_service.constable",
+    "message.lord_of_mysteries.city_service.field_kit",
+    "message.lord_of_mysteries.city_service.safe_room",
+    "command.lord_of_mysteries.city.directory"
   ]
 }

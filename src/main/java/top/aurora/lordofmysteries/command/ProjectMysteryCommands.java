@@ -40,6 +40,7 @@ import top.aurora.lordofmysteries.registry.ModItems;
 import top.aurora.lordofmysteries.commission.CommissionDefinitionManager;
 import top.aurora.lordofmysteries.commission.CommissionService;
 import top.aurora.lordofmysteries.commission.CityLifeService;
+import top.aurora.lordofmysteries.commission.CityServiceDeskService;
 import top.aurora.lordofmysteries.commission.FormulaAppraisalService;
 import top.aurora.lordofmysteries.commission.InvestigationBoardService;
 import top.aurora.lordofmysteries.commission.QuestChainDefinitionManager;
@@ -107,6 +108,9 @@ public final class ProjectMysteryCommands {
                 }))
                 .then(Commands.literal("life").executes(context ->
                         CityLifeService.showStatus(
+                                context.getSource().getPlayerOrException())))
+                .then(Commands.literal("city").executes(context ->
+                        CityServiceDeskService.showDirectory(
                                 context.getSource().getPlayerOrException())))
                 .then(Commands.literal("case").executes(context -> {
                     InvestigationSiteGenerator.reportSites(

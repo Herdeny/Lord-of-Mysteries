@@ -1,6 +1,6 @@
 # 专用服务器与多人一致性验证
 
-> 当前版本：0.9.5-1.20.1 · Capability schema 17 · 内容 schema v4 · 网络协议 10
+> 当前版本：0.9.6-1.20.1 · Capability schema 17 · 内容 schema v4 · 网络协议 10
 
 ## 自动冒烟
 
@@ -15,7 +15,7 @@ python scripts/run_server_restart_matrix.py --timeout 180
 
 `./gradlew check` 还会运行 `scripts/check_m1_playability.py`，核对 120 分钟、9 项核心目标、7 个里程碑、三份 M1 魔药、
 十二项保底补给、十个关键命令入口和中英文本地化；M2 合同保护调查板、真假配方、三解、持久队伍恢复与旧 13 步索引；
-统一门禁保护 v0.9 设计源、内容图、JSON、双语、模型与注册资源；当前自动化基线为 212 项 JUnit、6 项真实 Forge GameTest，并验证 schema 17 首启迁移快照、Capability Clone、精确特性载荷、两小时状态往返、调查板物理邻近门禁和证据/日报契约。
+统一门禁保护 v0.9 设计源、内容图、JSON、双语、模型与注册资源；当前自动化基线为 218 项 JUnit、6 项真实 Forge GameTest，并验证 schema 17 首启迁移快照、Capability Clone、精确特性载荷、两小时状态往返、调查板物理邻近门禁、证据/日报和城市服务契约。
 
 `./gradlew runGameTestServer` 必须显示 6 项测试实际运行并全部通过；报告 `0 tests` 不视为有效门禁。
 
@@ -41,6 +41,13 @@ python scripts/run_server_restart_matrix.py --timeout 180
 - 不同队伍互不共享；超过 `max_party=4` 时安全降级为单人。
 - 已登记离线成员上线自动追赶，中途加入使用 `/pm party sync`；每名成员独立结算。
 - 换队/退队自动清理与超员结算已实现；正式队伍 GUI、管理员离线改队/队名复用人工矩阵和五途径多人负载矩阵尚未完成。
+
+## M2 城市服务
+
+- 新世界必须生成报社、事务所、巡警三类 NPC 与两个侧翼功能亭；旧前哨加载后自动升级到 `service_version=1`，重启不得重复补建。
+- 事务所补给包按 18 便士结算，余额不足不得扣款或发放；普通交互仍受调查板六格邻近门禁保护。
+- 巡警安全室按 28 便士结算，健康玩家不收费，成功时最多恢复 20 压力与 4 污染。
+- 2–4 人并行交互时，余额、背包和风险状态必须按玩家隔离，不得串档或重复发放。
 
 完整场景、网络重放检查和证据模板见
 [`docs/DEDICATED_SERVER_TEST_MATRIX.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/DEDICATED_SERVER_TEST_MATRIX.md)。

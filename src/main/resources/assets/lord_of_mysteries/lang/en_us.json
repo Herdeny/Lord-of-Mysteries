@@ -883,5 +883,17 @@
   "message.lord_of_mysteries.newspaper.case.missing_squad": "The investigation squad is still missing; do not approach the church alone.",
   "message.lord_of_mysteries.newspaper.case.counterfeit_formula": "Unsigned formulas return; verify watermark, ink, and ingredient order together.",
   "message.lord_of_mysteries.newspaper.shift.available": "Today's press shift is available; current balance %s.",
-  "message.lord_of_mysteries.newspaper.shift.done": "Today's press shift is recorded; current balance %s."
+  "message.lord_of_mysteries.newspaper.shift.done": "Today's press shift is recorded; current balance %s.",
+  "entity.lord_of_mysteries.detective_clerk": "Mist City Detective Agency Clerk",
+  "entity.lord_of_mysteries.constable": "Mist City Constable",
+  "message.lord_of_mysteries.city_service.detective": "The agency clerk opens the case register. Sneak-interact to buy a field kit.",
+  "message.lord_of_mysteries.city_service.constable": "The constable checks your record: balance %s, loss-of-control pressure %s, pollution %s. Sneak-interact to request safe-room care.",
+  "message.lord_of_mysteries.city_service.insufficient": "This service costs %s; your current balance is %s.",
+  "message.lord_of_mysteries.city_service.field_kit": "Paid %s and received 8 torches, 4 paper, and 2 bread. Balance: %s.",
+  "message.lord_of_mysteries.city_service.safe_room": "Safe-room care complete: recovered %s pressure and %s pollution. Balance: %s.",
+  "message.lord_of_mysteries.city_service.safe_room_not_needed": "You do not currently need safe-room care.",
+  "command.lord_of_mysteries.city.directory": "Mist City Outpost Service Directory",
+  "command.lord_of_mysteries.city.press": "Press office: interact for press clues; sneak-interact for the daily paid shift and newspaper.",
+  "command.lord_of_mysteries.city.detective": "Detective agency: interact to open the board; sneak-interact to buy a field kit for %s.",
+  "command.lord_of_mysteries.city.constabulary": "Constabulary: interact for risk and case status; sneak-interact to request safe-room care for %s."
 }

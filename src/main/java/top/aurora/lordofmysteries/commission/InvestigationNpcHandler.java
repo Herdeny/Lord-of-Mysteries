@@ -30,6 +30,8 @@ public final class InvestigationNpcHandler {
     public static final String NIGHTHAWK_CONTACT_TAG = "lom_nighthawk_contact";
     public static final String MISSING_REPORTER_TAG = "lom_missing_reporter";
     public static final String OCCULT_APPRAISER_TAG = "lom_occult_appraiser";
+    public static final String DETECTIVE_CLERK_TAG = "lom_detective_clerk";
+    public static final String CONSTABLE_TAG = "lom_constable";
     public static final String ESCORT_OWNER_TAG = "lom_escort_owner";
 
     private InvestigationNpcHandler() {}
@@ -52,6 +54,10 @@ public final class InvestigationNpcHandler {
             CommissionService.rescueReporter(player, villager);
         } else if (villager.getTags().contains(OCCULT_APPRAISER_TAG)) {
             CommissionService.interactOccultAppraiser(player);
+        } else if (villager.getTags().contains(DETECTIVE_CLERK_TAG)) {
+            CityServiceDeskService.interactDetectiveClerk(player);
+        } else if (villager.getTags().contains(CONSTABLE_TAG)) {
+            CityServiceDeskService.interactConstable(player);
         }
     }
 
@@ -89,7 +95,9 @@ public final class InvestigationNpcHandler {
         return villager.getTags().contains(PRESS_CLERK_TAG)
                 || villager.getTags().contains(NIGHTHAWK_CONTACT_TAG)
                 || villager.getTags().contains(MISSING_REPORTER_TAG)
-                || villager.getTags().contains(OCCULT_APPRAISER_TAG);
+                || villager.getTags().contains(OCCULT_APPRAISER_TAG)
+                || villager.getTags().contains(DETECTIVE_CLERK_TAG)
+                || villager.getTags().contains(CONSTABLE_TAG);
     }
 
     private static void ensureOutpostNpcs(ServerLevel level, BlockPos outpost) {
@@ -99,6 +107,12 @@ public final class InvestigationNpcHandler {
         ensureVillager(level, outpost.offset(2, 1, -1), NIGHTHAWK_CONTACT_TAG,
                 "entity.lord_of_mysteries.nighthawk_contact",
                 VillagerProfession.CLERIC, villager -> villager.setNoAi(true));
+        ensureVillager(level, outpost.offset(-5, 1, 3), DETECTIVE_CLERK_TAG,
+                "entity.lord_of_mysteries.detective_clerk",
+                VillagerProfession.CARTOGRAPHER, villager -> villager.setNoAi(true));
+        ensureVillager(level, outpost.offset(5, 1, 3), CONSTABLE_TAG,
+                "entity.lord_of_mysteries.constable",
+                VillagerProfession.WEAPONSMITH, villager -> villager.setNoAi(true));
     }
 
     private static void ensureReporter(ServerLevel level, BlockPos camp,

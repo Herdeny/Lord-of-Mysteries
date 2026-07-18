@@ -883,5 +883,17 @@
   "message.lord_of_mysteries.newspaper.case.missing_squad": "失踪调查队仍未归来，未经许可不要单独接近教堂。",
   "message.lord_of_mysteries.newspaper.case.counterfeit_formula": "未署名配方再次出现；水印、墨迹和顺序必须同时核验。",
   "message.lord_of_mysteries.newspaper.shift.available": "今日报社轮班尚未完成；当前余额 %s。",
-  "message.lord_of_mysteries.newspaper.shift.done": "今日报社轮班已登记；当前余额 %s。"
+  "message.lord_of_mysteries.newspaper.shift.done": "今日报社轮班已登记；当前余额 %s。",
+  "entity.lord_of_mysteries.detective_clerk": "雾都侦探事务所文员",
+  "entity.lord_of_mysteries.constable": "雾都巡警",
+  "message.lord_of_mysteries.city_service.detective": "事务所文员展开案件登记册。潜行交互可购买调查补给包。",
+  "message.lord_of_mysteries.city_service.constable": "巡警核对了你的登记：余额 %s，失控压力 %s，污染 %s。潜行交互可申请安全室照护。",
+  "message.lord_of_mysteries.city_service.insufficient": "该服务需要 %s；你当前只有 %s。",
+  "message.lord_of_mysteries.city_service.field_kit": "已支付 %s，领取 8 支火把、4 张纸和 2 份面包。余额：%s。",
+  "message.lord_of_mysteries.city_service.safe_room": "安全室照护完成：失控压力恢复 %s，污染恢复 %s。余额：%s。",
+  "message.lord_of_mysteries.city_service.safe_room_not_needed": "你目前无需安全室照护。",
+  "command.lord_of_mysteries.city.directory": "雾都前哨服务目录",
+  "command.lord_of_mysteries.city.press": "报社：普通交互推进报社线索；潜行交互完成每日轮班并领取报纸。",
+  "command.lord_of_mysteries.city.detective": "侦探事务所：普通交互打开调查板；潜行交互以 %s 购买调查补给包。",
+  "command.lord_of_mysteries.city.constabulary": "巡警岗亭：普通交互查看风险与案件；潜行交互以 %s 申请安全室照护。"
 }

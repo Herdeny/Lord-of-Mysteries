@@ -28,6 +28,11 @@ NEWS_LOGIC = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysterie
 NEWS_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CityNewsService.java"
 NEWS_ITEM = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "MistCityNewspaperItem.java"
 CITY_LIFE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CityLifeService.java"
+CITY_DESK_LOGIC = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CityServiceDeskLogic.java"
+CITY_DESK_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CityServiceDeskService.java"
+NPC_HANDLER = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "InvestigationNpcHandler.java"
+OUTPOST_GENERATOR = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "world" / "MistCityOutpostGenerator.java"
+OUTPOST_SAVED_DATA = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "world" / "MistCityOutpostSavedData.java"
 BOARD_SCREEN = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "client" / "InvestigationBoardScreen.java"
 BOARD_PACKET = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "network" / "InvestigationBoardS2CPacket.java"
 NETWORK_PROTOCOL = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "network" / "NetworkProtocol.java"
@@ -205,6 +210,38 @@ def main():
     require(newspaper["knowledge"].split(":", 1)[1] in news_service,
             "daily newspaper knowledge id drifted")
 
+    city_desks = contract["city_service_desks"]
+    city_desk_logic = CITY_DESK_LOGIC.read_text(encoding="utf-8")
+    city_desk_service = CITY_DESK_SERVICE.read_text(encoding="utf-8")
+    npc_handler = NPC_HANDLER.read_text(encoding="utf-8")
+    outpost_generator = OUTPOST_GENERATOR.read_text(encoding="utf-8")
+    outpost_saved_data = OUTPOST_SAVED_DATA.read_text(encoding="utf-8")
+    service_version_match = re.search(
+        r"CURRENT_SERVICE_VERSION\s*=\s*(\d+)", outpost_saved_data)
+    require(service_version_match is not None
+            and int(service_version_match.group(1))
+            == city_desks["world_service_version"],
+            "city service world version drifted")
+    require(f'FIELD_KIT_COST = {city_desks["field_kit_cost"]}L'
+            in city_desk_logic,
+            "detective field kit price drifted")
+    require(f'SAFE_ROOM_COST = {city_desks["safe_room_cost"]}L'
+            in city_desk_logic,
+            "constabulary safe-room price drifted")
+    for desk in city_desks["desks"]:
+        require(desk in (npc_handler + city_desk_service).lower(),
+                f"city service desk {desk} is missing")
+    require("InvestigationBoardService.openNearby" in city_desk_service
+            and "requestSafeRoom" in city_desk_service,
+            "city service interactions are incomplete")
+    require(not city_desks["upgrades_existing_outposts"]
+            or ("serviceVersion" in outpost_generator
+                and "generateServiceBooths" in outpost_generator
+                and '"service_version"' in outpost_saved_data),
+            "legacy outposts do not receive service booths")
+    require(f'literal("{city_desks["command"]}")' in command_source,
+            "city service directory command is missing")
+
     for locale in ("zh_cn", "en_us"):
         translations = load(LANG / f"{locale}.json")
         missing_keys = set(contract["translation_keys"]) - translations.keys()
@@ -216,7 +253,7 @@ def main():
         f"{len(commissions)} commissions, {len(quests)} quest chains, "
         "occultist hut, formula appraisal, three rescue routes, "
         "persistent party recovery, the server-authoritative evidence archive, "
-        "and the deterministic daily newspaper"
+        "the deterministic daily newspaper, and versioned city service desks"
     )
 
 
