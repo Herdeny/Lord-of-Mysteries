@@ -36,7 +36,7 @@
 - 验收：至少 100 个真实样例节点通过关系校验；旧存档可迁移、可备份、可回滚，并通过死亡、重生、维度与重启运行时验证。
 
 - 114 节点、160 关系内容图通过 orphan、spoiler、compat、localization 与 asset 审计
-- Capability schema 17 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema
+- Capability schema 18 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema
 - 世界加载前原子快照、幂等 schema marker、受限路径恢复工具和恢复前安全备份
 - 6 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒、M1 两小时状态和调查板邻近门禁
 - 专服双启动矩阵验证世界种子、schema 快照、保存和干净停服保持稳定
@@ -67,9 +67,10 @@
 - 已完成：每日动态报纸、案件提示、城市轮班状态与报社产出闭环
 - 已完成：版本化事务所/巡警功能亭、调查补给交易、安全室恢复与旧前哨自动补建
 - 已完成：三阶段证据推理、关联链、档案完整度、明确下一步、结案档案与调查板物品恢复
+- 已完成：四维 100 分结案评价、S–D 评级、改进建议、耗时/路线记录与旧档兼容复盘归档
 - 下一步：把前哨功能区扩展为正式报社、事务所与警局街区
 - 下一步：失踪、异常物品、神秘学犯罪三类动态案件生成器
-- 下一步：生活物价、职业扩展、结案评价和八小时多人连续性矩阵
+- 下一步：生活物价、职业扩展和八小时多人连续性矩阵
 
 ## M3 · 首发五途径
 
@@ -200,7 +201,7 @@
 | structure_specs | 32 |
 | weather_anomaly_specs | 18 |
 
-### repository_evidence_at_0.9.7
+### repository_evidence_at_0.9.8
 
 | 指标 | 数量 |
 |---|---:|
@@ -210,12 +211,12 @@
 | generated_recipes | 13 |
 | playable_commissions | 3 |
 | playable_quest_chains | 3 |
-| junit_tests | 224 |
+| junit_tests | 229 |
 | forge_gametests | 6 |
 | save_rollback_checks | 1 |
 | dedicated_server_starts | 2 |
 | network_protocol | 11 |
-| player_capability_schema | 17 |
+| player_capability_schema | 18 |
 
 
 路线数据的唯一来源是 `roadmap.json`。修改后运行：

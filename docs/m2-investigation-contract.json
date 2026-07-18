@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "capability_schema": 17,
+  "capability_schema": 18,
   "data_counts": {
     "commissions": 3,
     "quest_chains": 3
@@ -69,6 +69,22 @@
     "recovery_preserves_dossier_stage": true,
     "preserves_packet_count": true
   },
+  "case_debrief": {
+    "archive_key": "case_debriefs",
+    "score_components": {
+      "evidence": 40,
+      "procedure": 30,
+      "safety": 20,
+      "efficiency": 10
+    },
+    "grades": ["S", "A", "B", "C", "D"],
+    "grade_minimums": {"S": 90, "A": 80, "B": 65, "C": 50, "D": 0},
+    "focuses": ["EVIDENCE", "PROCEDURE", "SAFETY", "EFFICIENCY"],
+    "command": "debrief",
+    "persistent": true,
+    "mutates_rewards": false,
+    "captures_failed_formula_verdicts": true
+  },
   "daily_newspaper": {
     "headline_count": 6,
     "case_bulletins": 4,
@@ -98,6 +114,7 @@
     "sites",
     "analyze",
     "archive",
+    "debrief",
     "recover"
   ],
   "translation_keys": [
@@ -140,6 +157,14 @@
     "screen.lord_of_mysteries.analysis.relation_kind.leads_to",
     "command.lord_of_mysteries.case.analysis.summary",
     "command.lord_of_mysteries.case.archive.progress",
+    "command.lord_of_mysteries.case.archive.rated",
+    "command.lord_of_mysteries.case.debrief.summary",
+    "command.lord_of_mysteries.case.debrief.components",
+    "command.lord_of_mysteries.case.debrief.focus",
+    "command.lord_of_mysteries.case.debrief.focus.evidence",
+    "command.lord_of_mysteries.case.debrief.focus.procedure",
+    "command.lord_of_mysteries.case.debrief.focus.safety",
+    "command.lord_of_mysteries.case.debrief.focus.efficiency",
     "command.lord_of_mysteries.case.recover.restored",
     "tooltip.lord_of_mysteries.newspaper",
     "knowledge.lord_of_mysteries.m2.newspaper_rumors",

@@ -16,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
+import top.aurora.lordofmysteries.commission.CaseDebriefRecord;
 
 /**
  * 玩家非凡者数据（设计文档 §5.1）。
@@ -28,7 +29,7 @@ import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 17;
+    public static final int CURRENT_SCHEMA_VERSION = 18;
     private static final int MAX_MIGRATION_BACKUPS = 3;
     private static final int MAX_MIGRATION_HISTORY = 64;
 
@@ -148,6 +149,7 @@ public class PlayerMysteryData {
     public boolean questResolutionReady = false;
     public Set<ResourceLocation> completedCommissions = new HashSet<>();
     public Map<ResourceLocation, Long> commissionCooldowns = new HashMap<>();
+    public Map<ResourceLocation, CaseDebriefRecord> caseDebriefs = new HashMap<>();
 
     // 知识系统。保存玩家已经解锁的知识条目 ID，供手册、仪式和配方门槛读取。
     public Set<ResourceLocation> knownKnowledge = new HashSet<>();
@@ -299,6 +301,7 @@ public class PlayerMysteryData {
         this.questResolutionReady = src.questResolutionReady;
         this.completedCommissions = new HashSet<>(src.completedCommissions);
         this.commissionCooldowns = new HashMap<>(src.commissionCooldowns);
+        this.caseDebriefs = new HashMap<>(src.caseDebriefs);
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
         this.actingHistory = new HashMap<>(src.actingHistory);
         this.actingCounters = new HashMap<>(src.actingCounters);
@@ -438,6 +441,14 @@ public class PlayerMysteryData {
         commissionCooldowns.forEach((id, tick) ->
                 commissionCooldownTag.putLong(id.toString(), tick));
         tag.put("commission_cooldowns", commissionCooldownTag);
+
+        CompoundTag caseDebriefTag = new CompoundTag();
+        caseDebriefs.forEach((id, record) -> {
+            if (id != null && record != null) {
+                caseDebriefTag.put(id.toString(), record.save());
+            }
+        });
+        tag.put("case_debriefs", caseDebriefTag);
 
         ListTag known = new ListTag();
         // ListTag 只能存 Tag 对象，因此 ResourceLocation 统一序列化成字符串。
@@ -627,6 +638,27 @@ public class PlayerMysteryData {
                 Tag value = commissionCooldownTag.get(key);
                 if (value != null) payload.put("value", value.copy());
                 addOrphan("commission_cooldowns", "invalid_id", payload);
+            }
+        }
+
+        caseDebriefs.clear();
+        Tag rawCaseDebriefs = tag.get("case_debriefs");
+        if (rawCaseDebriefs != null && !(rawCaseDebriefs instanceof CompoundTag)) {
+            addOrphan("case_debriefs", "invalid_container", rawCaseDebriefs.copy());
+        } else if (rawCaseDebriefs instanceof CompoundTag caseDebriefTag) {
+            for (String key : caseDebriefTag.getAllKeys()) {
+                ResourceLocation id = ResourceLocation.tryParse(key);
+                Tag rawRecord = caseDebriefTag.get(key);
+                if (id != null && rawRecord instanceof CompoundTag recordTag
+                        && CaseDebriefRecord.isValid(recordTag)) {
+                    caseDebriefs.put(id, CaseDebriefRecord.load(recordTag));
+                    continue;
+                }
+                CompoundTag payload = new CompoundTag();
+                payload.putString("id", key);
+                if (rawRecord != null) payload.put("value", rawRecord.copy());
+                addOrphan("case_debriefs",
+                        id == null ? "invalid_id" : "invalid_record", payload);
             }
         }
 
@@ -841,6 +873,7 @@ public class PlayerMysteryData {
         hash = mix(hash, questResolutionReady);
         hash = mix(hash, completedCommissions);
         hash = mix(hash, commissionCooldowns);
+        hash = mix(hash, caseDebriefs);
         hash = mix(hash, orgReputation);
         return hash;
     }

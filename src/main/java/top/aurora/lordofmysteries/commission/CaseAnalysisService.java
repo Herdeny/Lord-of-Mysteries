@@ -53,7 +53,7 @@ public final class CaseAnalysisService {
                 .withStyle(ChatFormatting.GOLD));
         for (CaseEvidenceView.Relation relation : evidence.relations()) {
             if (relation.state() == EvidenceState.MISSING) continue;
-            player.sendSystemMessage(Component.literal("• ")
+            player.sendSystemMessage(Component.literal("- ")
                     .append(Component.translatable(
                             "screen.lord_of_mysteries.analysis.relation_kind."
                                     + relation.kind().name().toLowerCase(
@@ -72,15 +72,32 @@ public final class CaseAnalysisService {
                         "command.lord_of_mysteries.case.archive.title")
                 .withStyle(ChatFormatting.GOLD));
         int completed = 0;
+        int rated = 0;
+        int totalScore = 0;
         for (ResourceLocation caseId : CASE_ORDER) {
             CommissionDefinition definition = CommissionDefinitionManager.get(caseId);
-            if (definition == null || !data.completedCommissions.contains(caseId)) continue;
+            if (definition == null || !data.completedCommissions.contains(caseId)) {
+                continue;
+            }
             completed++;
-            player.sendSystemMessage(Component.literal("• ")
+            CaseDebriefRecord record = data.caseDebriefs.get(caseId);
+            if (record == null) {
+                player.sendSystemMessage(Component.literal("- ")
+                        .append(Component.translatable(definition.titleKey()))
+                        .append(Component.literal(" · "))
+                        .append(Component.translatable(
+                                "command.lord_of_mysteries.case.archive.legacy"))
+                        .withStyle(ChatFormatting.GRAY));
+                continue;
+            }
+            rated++;
+            totalScore += record.score();
+            player.sendSystemMessage(Component.literal("- ")
                     .append(Component.translatable(definition.titleKey()))
                     .append(Component.literal(" · "))
                     .append(Component.translatable(
-                            "command.lord_of_mysteries.case.archive.closed"))
+                            "command.lord_of_mysteries.case.archive.rated",
+                            record.score(), record.grade().name()))
                     .withStyle(ChatFormatting.GREEN));
         }
         if (completed == 0) {
@@ -92,6 +109,26 @@ public final class CaseAnalysisService {
                         "command.lord_of_mysteries.case.archive.progress",
                         completed, CASE_ORDER.size())
                 .withStyle(ChatFormatting.DARK_GRAY));
+        if (rated > 0) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.case.archive.average",
+                            Math.round(totalScore / (float) rated), rated)
+                    .withStyle(ChatFormatting.AQUA));
+        }
+        return 1;
+    }
+
+    public static int showDebrief(ServerPlayer player, ResourceLocation caseId) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        CommissionDefinition definition = CommissionDefinitionManager.get(caseId);
+        CaseDebriefRecord record = data.caseDebriefs.get(caseId);
+        if (definition == null || record == null) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.case.debrief.no_record")
+                    .withStyle(ChatFormatting.GRAY));
+            return 0;
+        }
+        CaseDebriefService.sendSummary(player, definition.titleKey(), record);
         return 1;
     }
 

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import net.minecraft.resources.ResourceLocation;
 
+import top.aurora.lordofmysteries.commission.CaseDebriefRecord;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 
 /**
@@ -75,6 +76,7 @@ class PlayerMysteryDataTest {
         assertFalse(d.questResolutionReady);
         assertTrue(d.completedCommissions.isEmpty());
         assertTrue(d.commissionCooldowns.isEmpty());
+        assertTrue(d.caseDebriefs.isEmpty());
     }
 
     /** 只有序列值不足以成为非凡者，必须同时拥有途径 ID。 */
@@ -164,6 +166,9 @@ class PlayerMysteryDataTest {
         source.questResolutionReady = true;
         source.completedCommissions.add(commission);
         source.commissionCooldowns.put(commission, 2400L);
+        source.caseDebriefs.put(commission,
+                new CaseDebriefRecord(40, 25, 18, 8,
+                        1800L, 3000L, "divination"));
 
         PlayerMysteryData copied = new PlayerMysteryData();
         copied.copyFrom(source);
@@ -236,6 +241,7 @@ class PlayerMysteryDataTest {
         assertTrue(copied.questResolutionReady);
         assertTrue(copied.completedCommissions.contains(commission));
         assertEquals(2400L, copied.commissionCooldowns.get(commission));
+        assertEquals(91, copied.caseDebriefs.get(commission).score());
     }
 
     @Test
@@ -267,6 +273,11 @@ class PlayerMysteryDataTest {
         source.activeQuestStep = 9;
         source.questResolutionRoute = "stealth";
         source.questResolutionReady = true;
+        ResourceLocation debriefCase = ResourceLocation.fromNamespaceAndPath(
+                "lord_of_mysteries", "commission/lost_cat");
+        source.caseDebriefs.put(debriefCase,
+                new CaseDebriefRecord(40, 30, 20, 10,
+                        1200L, 1700L, ""));
 
         PlayerMysteryData restored = new PlayerMysteryData();
         restored.load(source.save());
@@ -293,6 +304,7 @@ class PlayerMysteryDataTest {
         assertEquals(2, restored.cityWorkShifts);
         assertEquals("stealth", restored.questResolutionRoute);
         assertTrue(restored.questResolutionReady);
+        assertEquals(100, restored.caseDebriefs.get(debriefCase).score());
         assertEquals(PlayerMysteryData.CURRENT_SCHEMA_VERSION,
                 restored.schemaVersion);
     }
@@ -309,17 +321,24 @@ class PlayerMysteryDataTest {
         legacy.put("known_knowledge", knowledge);
         legacy.putString("active_commission", "invalid id");
         legacy.putString("active_quest_chain", "lord_of_mysteries:quest/test");
+        net.minecraft.nbt.CompoundTag brokenDebriefs =
+                new net.minecraft.nbt.CompoundTag();
+        brokenDebriefs.putString(
+                "lord_of_mysteries:commission/lost_cat", "broken");
+        legacy.put("case_debriefs", brokenDebriefs);
 
         PlayerMysteryData migrated = new PlayerMysteryData();
         migrated.load(legacy);
 
         assertEquals(1, migrated.characteristicBundles.size());
         assertEquals(1, migrated.migrationBackups.size());
-        assertEquals(2, migrated.migrationHistory.size());
+        assertEquals(3, migrated.migrationHistory.size());
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
                 entry.getString("section").equals("known_knowledge")));
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
                 entry.getString("section").equals("active_quest")));
+        assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
+                entry.getString("section").equals("case_debriefs")));
         assertEquals("", migrated.activeCommissionId);
         assertEquals("", migrated.activeQuestChainId);
 
@@ -327,7 +346,7 @@ class PlayerMysteryDataTest {
         restored.load(migrated.save());
 
         assertEquals(1, restored.migrationBackups.size());
-        assertEquals(2, restored.migrationHistory.size());
+        assertEquals(3, restored.migrationHistory.size());
         assertEquals(migrated.orphanedEntries.size(),
                 restored.orphanedEntries.size());
     }

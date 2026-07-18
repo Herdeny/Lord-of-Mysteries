@@ -20,7 +20,9 @@ public final class PlayerMysteryDataFixer {
             new DataFix("characteristic_bundle_upgrade", 16,
                     PlayerMysteryDataFixer::upgradeCharacteristicBundles),
             new DataFix("m1_vertical_slice_state", 17,
-                    PlayerMysteryDataFixer::initializeM1VerticalSliceState));
+                    PlayerMysteryDataFixer::initializeM1VerticalSliceState),
+            new DataFix("case_debrief_archive", 18,
+                    PlayerMysteryDataFixer::initializeCaseDebriefArchive));
 
     private PlayerMysteryDataFixer() {}
 
@@ -132,6 +134,17 @@ public final class PlayerMysteryDataFixer {
         putLongDefault(tag, "m1_trial_identity_anchored_tick", -1L);
         putLongDefault(tag, "m1_trial_reflection_completed_tick", -1L);
         putLongDefault(tag, "m1_trial_street_life_completed_tick", -1L);
+    }
+
+    private static void initializeCaseDebriefArchive(
+            CompoundTag tag, List<CompoundTag> orphanedEntries) {
+        Tag rawArchive = tag.get("case_debriefs");
+        if (rawArchive instanceof CompoundTag) return;
+        if (rawArchive != null) {
+            orphanedEntries.add(orphan("case_debriefs",
+                    "invalid_legacy_payload", rawArchive.copy()));
+        }
+        tag.put("case_debriefs", new CompoundTag());
     }
 
     private static void putBooleanDefault(CompoundTag tag, String key,

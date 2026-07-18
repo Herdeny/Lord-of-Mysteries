@@ -165,6 +165,12 @@ public final class FormulaAppraisalService {
                 tag.getInt(CLUE_MASK));
     }
 
+    public static int failedAttempts(ServerPlayer player) {
+        ItemStack dossier = findDossier(player);
+        CompoundTag tag = dossier.getTag();
+        return tag == null ? 0 : Math.max(0, tag.getInt(FAILED_ATTEMPTS));
+    }
+
     public static void takeDossier(ServerPlayer player) {
         ItemStack dossier = findDossier(player);
         if (!dossier.isEmpty() && !player.getAbilities().instabuild) dossier.shrink(1);

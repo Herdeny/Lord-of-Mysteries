@@ -130,6 +130,21 @@ public final class ProjectMysteryCommands {
                         .then(Commands.literal("archive").executes(context ->
                                 CaseAnalysisService.showArchive(
                                         context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("debrief")
+                                .executes(context -> CaseAnalysisService.showArchive(
+                                        context.getSource().getPlayerOrException()))
+                                .then(Commands.literal("lost_cat").executes(context ->
+                                        CaseAnalysisService.showDebrief(
+                                                context.getSource().getPlayerOrException(),
+                                                CommissionService.LOST_CAT)))
+                                .then(Commands.literal("missing_squad").executes(context ->
+                                        CaseAnalysisService.showDebrief(
+                                                context.getSource().getPlayerOrException(),
+                                                CommissionService.MISSING_SQUAD)))
+                                .then(Commands.literal("counterfeit_formula").executes(context ->
+                                        CaseAnalysisService.showDebrief(
+                                                context.getSource().getPlayerOrException(),
+                                                CommissionService.COUNTERFEIT_FORMULA))))
                         .then(Commands.literal("recover").executes(context ->
                                 CommissionService.recoverCaseItems(
                                         context.getSource().getPlayerOrException()))))

@@ -30,11 +30,13 @@ class PlayerMysteryDataFixerTest {
         assertTrue(result.migrated());
         assertFalse(result.futureSchema());
         assertEquals(15, result.sourceSchema());
-        assertEquals(2, result.appliedSteps().size());
+        assertEquals(3, result.appliedSteps().size());
         assertEquals("characteristic_bundle_upgrade",
                 result.appliedSteps().get(0).id());
         assertEquals("m1_vertical_slice_state",
                 result.appliedSteps().get(1).id());
+        assertEquals("case_debrief_archive",
+                result.appliedSteps().get(2).id());
         assertFalse(result.data().getBoolean("identity_anchored"));
         assertEquals(Long.MIN_VALUE,
                 result.data().getLong("last_city_work_day"));
@@ -65,15 +67,37 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(legacy);
 
-        assertEquals(3, result.appliedSteps().size());
+        assertEquals(4, result.appliedSteps().size());
         assertEquals("legacy_key_normalization",
                 result.appliedSteps().get(0).id());
         assertEquals("characteristic_bundle_upgrade",
                 result.appliedSteps().get(1).id());
         assertEquals("m1_vertical_slice_state",
                 result.appliedSteps().get(2).id());
+        assertEquals("case_debrief_archive",
+                result.appliedSteps().get(3).id());
         assertEquals("lord_of_mysteries:legacy/formula",
                 result.data().getList("known_knowledge", Tag.TAG_STRING)
+                        .getString(0));
+    }
+
+    @Test
+    void migratesSchemaSeventeenWithEmptyDebriefArchive() {
+        CompoundTag previous = new CompoundTag();
+        previous.putInt("schema_version", 17);
+        ListTag completed = new ListTag();
+        completed.add(StringTag.valueOf(
+                "lord_of_mysteries:commission/lost_cat"));
+        previous.put("completed_commissions", completed);
+
+        PlayerMysteryDataFixer.MigrationResult result =
+                PlayerMysteryDataFixer.migrate(previous);
+
+        assertEquals(1, result.appliedSteps().size());
+        assertEquals("case_debrief_archive", result.appliedSteps().get(0).id());
+        assertTrue(result.data().contains("case_debriefs", Tag.TAG_COMPOUND));
+        assertEquals("lord_of_mysteries:commission/lost_cat",
+                result.data().getList("completed_commissions", Tag.TAG_STRING)
                         .getString(0));
     }
 

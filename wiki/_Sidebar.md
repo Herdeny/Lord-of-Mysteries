@@ -13,6 +13,7 @@
 - [调查板：案件状态与操作](M2-Investigation-Board)
 - [证据档案与城市报纸](M2-Evidence-and-Newspaper)
 - [证据关联、案件分析与恢复](M2-Evidence-Reasoning-and-Recovery)
+- [结案评价与复盘](M2-Case-Debrief-and-Ratings)
 - [城市服务台与功能区](M2-City-Service-Desks)
 - [雾都前哨、调查板与委托](M2-Commissions-and-Mist-City-Outpost)
 - [神秘学家小屋、真假配方与三解救援](M2-Occultist-Hut-and-Rescue-Routes)

@@ -8,7 +8,7 @@
 - 增量说明：`docs/Project_Mystery_v0_9_Incremental_Additions.md`
 - 导入清单：`docs/Project_Mystery_v0_9_manifest.json`
 - 工程基线：Minecraft 1.20.1、Forge 47.4.20、Java 17
-- 玩家 Capability：schema 17
+- 玩家 Capability：schema 18
 - 内容定义：schema v4
 - SimpleChannel：协议 11（14 个固定消息 ID）
 
@@ -35,11 +35,11 @@
 - `docs/master/m0_content_catalog.json` 建立首批 M0 迁移目录，覆盖物品、状态、配方和知识门槛。
 - Capability schema 已升至 17；旧档自动回填特性 bundle 与 M1 两小时纵切状态，Provider 生命周期补齐失效监听。
 - 0.9.1 增加 schema 0/15→16 正式 DataFix、世界加载前相关文件快照、原始 NBT 回滚载荷、迁移历史与未知/非法数据孤儿保留。
-- 0.9.2 增加 Core/Knowledge/Social/Endgame 四区 dirty mask、生命周期核心摘要和客户端只读缓存；0.9.3 将 Forge GameTest 扩至 5 项；0.9.4 增加调查板权威快照、邻近门禁并扩至 6 项；0.9.5 在同一快照中加入服务端证据档案和确定性日报；0.9.6 增加版本化城市服务功能区；0.9.7 增加服务端证据关联、三阶段推理、下一步指引和关键案件物品恢复。
+- 0.9.2 增加 Core/Knowledge/Social/Endgame 四区 dirty mask、生命周期核心摘要和客户端只读缓存；0.9.3 将 Forge GameTest 扩至 5 项；0.9.4 增加调查板权威快照、邻近门禁并扩至 6 项；0.9.5 在同一快照中加入服务端证据档案和确定性日报；0.9.6 增加版本化城市服务功能区；0.9.7 增加服务端证据关联、三阶段推理、下一步指引和关键案件物品恢复；0.9.8 增加持久化结案评价、旧档迁移和复盘命令。
 - 五条现有途径的 15 次序列 9–7 晋升都会记录特性层；永久失控会把精确 bundle 转移并掉落为带载荷的破碎特性。
 - 扮演事件写入原则理解和角色过度认同；身份卡、反思日志与 `/pm reflect` 构成身份—行动—反思闭环。
 - 两小时 M1 合同记录 9 项核心目标与 7 个时间里程碑，城市报社工作提供稳定的纸张—便士—面包生活循环。
-- 网络协议为 11；14 个固定消息 ID、224 项 JUnit、6 项 Forge GameTest、精确回滚和双启动专服矩阵组成分层门禁。
+- 网络协议为 11；14 个固定消息 ID、229 项 JUnit、6 项 Forge GameTest、精确回滚和双启动专服矩阵组成分层门禁。
 
 ## 事实边界
 

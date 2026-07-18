@@ -1,6 +1,6 @@
 # 专用服务器与多人一致性验证
 
-> 当前版本：0.9.7-1.20.1 · Capability schema 17 · 内容 schema v4 · 网络协议 11
+> 当前版本：0.9.8-1.20.1 · Capability schema 18 · 内容 schema v4 · 网络协议 11
 
 ## 自动冒烟
 
@@ -11,11 +11,11 @@ python scripts/run_server_restart_matrix.py --timeout 180
 
 回滚脚本在隔离世界中验证 dry-run、完整恢复、快照后文件清除、恢复前安全备份与路径穿越拒绝。
 重启矩阵连续启动 Forge 专用服务器两次，确认 3 个委托、3 条任务链完成加载并进入 `Done`，随后执行
-`pm servercheck`、`list` 和 `save-all flush`；第二次必须保留相同世界种子与 schema 17 marker。Build 工作流会执行同一检查。
+`pm servercheck`、`list` 和 `save-all flush`；第二次必须保留相同世界种子与 schema 18 marker。Build 工作流会执行同一检查。
 
 `./gradlew check` 还会运行 `scripts/check_m1_playability.py`，核对 120 分钟、9 项核心目标、7 个里程碑、三份 M1 魔药、
 十二项保底补给、十个关键命令入口和中英文本地化；M2 合同保护调查板、真假配方、三解、持久队伍恢复与旧 13 步索引；
-统一门禁保护 v0.9 设计源、内容图、JSON、双语、模型与注册资源；当前自动化基线为 224 项 JUnit、6 项真实 Forge GameTest，并验证 schema 17 首启迁移快照、Capability Clone、精确特性载荷、两小时状态往返、调查板物理邻近门禁、证据关联/案件恢复、日报和城市服务契约。
+统一门禁保护 v0.9 设计源、内容图、JSON、双语、模型与注册资源；当前自动化基线为 229 项 JUnit、6 项真实 Forge GameTest，并验证 schema 18 首启迁移快照、Capability Clone、精确特性载荷、两小时状态往返、调查板物理邻近门禁、证据关联/案件恢复/结案复盘、日报和城市服务契约。
 
 ## M2 证据推理与恢复必测项
 

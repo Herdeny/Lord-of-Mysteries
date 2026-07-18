@@ -1,10 +1,10 @@
 # Project Mystery 专用服务器与多人一致性验证矩阵
 
-> 适用版本：0.9.7-1.20.1
+> 适用版本：0.9.8-1.20.1
 >
 > 技术基线：Minecraft 1.20.1 · Forge 47.4.20 · Java 17
 >
-> 数据基线：Capability schema 17 · content schema v4 · SimpleChannel protocol 11
+> 数据基线：Capability schema 18 · content schema v4 · SimpleChannel protocol 11
 
 本矩阵用于验证 M1 连续性，并为 M2 多人内测提前冻结可重复的证据格式。自动冒烟通过不等于
 真人两小时平衡验收通过；任何崩溃、复制、永久卡步、跨玩家串档或客户端越权均为阻断项。
@@ -26,7 +26,7 @@ python scripts/run_server_restart_matrix.py --timeout 180
 `check_save_rollback.py` 会创建隔离测试世界，验证快照 dry-run、完整恢复、快照后文件清除、
 恢复前安全备份与路径穿越拒绝。`run_server_restart_matrix.py` 会连续启动 Forge 专用服务器两次，
 每次确认 3 个委托和 3 条任务链完成加载、进入 `Done`、运行 `/pm servercheck`、执行命令循环、
-强制保存并干净停服；第二次还要求世界种子与 schema 17 marker 保持一致。GitHub Build 工作流执行同一矩阵。
+强制保存并干净停服；第二次还要求世界种子与 schema 18 marker 保持一致。GitHub Build 工作流执行同一矩阵。
 
 ## 开测前诊断
 
@@ -140,6 +140,6 @@ C2S 重放/限流：PASS / FAIL
 
 ## 当前结论边界
 
-- 已自动验证：114 节点/160 关系内容图、M1 两小时合同、M2 调查/证据/关联推理/报纸/城市服务合同、资源完整性门禁、224 项 JUnit、6 项真实 Forge GameTest、schema 17 迁移快照与精确回滚、Capability Clone、特性载荷往返、调查板物理邻近门禁、前哨服务版本、证据/推理快照、案件恢复策略、队伍账本 NBT/SavedData 往返，以及两次专服启动中的种子/marker 幂等、运行诊断、强制保存与干净停服。
+- 已自动验证：114 节点/160 关系内容图、M1 两小时合同、M2 调查/证据/关联推理/结案复盘/报纸/城市服务合同、资源完整性门禁、229 项 JUnit、6 项真实 Forge GameTest、schema 18 迁移快照与精确回滚、Capability Clone、特性载荷/结案归档往返、调查板物理邻近门禁、前哨服务版本、证据/推理快照、案件恢复策略、队伍账本 NBT/SavedData 往返，以及两次专服启动中的种子/marker 幂等、运行诊断、强制保存与干净停服。
 - 已实现基础：同记分板队伍 2–4 人共享进度、离线追赶、换队/退队清理、重复结算防护、个人结算、确定性协调者、仪式重启/离线恢复。
 - 尚未关闭：真人死亡/跨维度整体验收、真实两小时生存与数值平衡、正式队伍 GUI、管理员离线改队/队名复用人工矩阵、五途径多人负载矩阵与 M2 schema 冻结。

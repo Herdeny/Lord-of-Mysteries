@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "version": "0.9.7-1.20.1",
-  "stage": "v0.9 M2 证据关联与案件恢复",
+  "version": "0.9.8-1.20.1",
+  "stage": "v0.9 M2 结案评价与复盘",
   "milestone": "M2",
   "minecraft_version": "1.20.1",
   "forge_version": "47.4.20",
   "java_version": "17",
-  "last_updated": "2026-07-18T12:57:39+01:00",
-  "last_updated_utc": "2026-07-18T11:57:39Z"
+  "last_updated": "2026-07-18T21:50:00+01:00",
+  "last_updated_utc": "2026-07-18T20:50:00Z"
 }

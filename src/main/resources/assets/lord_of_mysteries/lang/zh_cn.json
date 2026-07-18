@@ -972,4 +972,20 @@
   "command.lord_of_mysteries.city.press": "报社：普通交互推进报社线索；潜行交互完成每日轮班并领取报纸。",
   "command.lord_of_mysteries.city.detective": "侦探事务所：普通交互打开调查板；潜行交互以 %s 购买调查补给包。",
   "command.lord_of_mysteries.city.constabulary": "巡警岗亭：普通交互查看风险与案件；潜行交互以 %s 申请安全室照护。"
+,
+  "command.lord_of_mysteries.case.archive.legacy": "已结案 · 历史存档未评级",
+  "command.lord_of_mysteries.case.archive.rated": "评分 %s/100 · %s 级",
+  "command.lord_of_mysteries.case.archive.average": "已评级案件平均分：%s（%s 份复盘）",
+  "command.lord_of_mysteries.case.debrief.title": "结案复盘：%s",
+  "command.lord_of_mysteries.case.debrief.summary": "总评 %s/100 · %s 级",
+  "command.lord_of_mysteries.case.debrief.components": "证据 %s/40 · 程序 %s/30 · 安全 %s/20 · 效率 %s/10",
+  "command.lord_of_mysteries.case.debrief.duration": "用时 %s 分 %s 秒",
+  "command.lord_of_mysteries.case.debrief.route": "结案路线：%s",
+  "command.lord_of_mysteries.case.debrief.route.none": "标准调查",
+  "command.lord_of_mysteries.case.debrief.focus": "下一次优先改进：%s",
+  "command.lord_of_mysteries.case.debrief.focus.evidence": "补全关键证据链，不要仅凭直觉结案",
+  "command.lord_of_mysteries.case.debrief.focus.procedure": "减少错误判断并完成规范鉴定程序",
+  "command.lord_of_mysteries.case.debrief.focus.safety": "先控制失控压力与污染，再进入高危现场",
+  "command.lord_of_mysteries.case.debrief.focus.efficiency": "规划路线并使用调查板减少往返",
+  "command.lord_of_mysteries.case.debrief.no_record": "该案件尚无可读取的结案复盘；完成一次新案件后会自动归档。"
 }

@@ -27,6 +27,7 @@ class PlayerMysteryDataSanitizerTest {
         data.m1TrialSequence7Tick = -9L;
         data.commissionCooldowns.put(null, 20L);
         data.completedCommissions.add(null);
+        data.caseDebriefs.put(null, null);
         data.knownKnowledge.add(null);
         data.actingCounters.put(null, -1);
         data.activeCommissionId = "lord_of_mysteries:commission/test";
@@ -48,6 +49,7 @@ class PlayerMysteryDataSanitizerTest {
         assertEquals(-1L, data.m1TrialSequence7Tick);
         assertTrue(data.commissionCooldowns.isEmpty());
         assertTrue(data.completedCommissions.isEmpty());
+        assertTrue(data.caseDebriefs.isEmpty());
         assertTrue(data.knownKnowledge.isEmpty());
         assertTrue(data.actingCounters.isEmpty());
         assertEquals("", data.questResolutionRoute);

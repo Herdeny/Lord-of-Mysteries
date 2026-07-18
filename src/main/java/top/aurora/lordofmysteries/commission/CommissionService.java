@@ -105,7 +105,6 @@ public final class CommissionService {
         }
         data = MysteryCapability.get(player);
         if (isReadyToSettle(data)) {
-            FormulaAppraisalService.takeDossier(player);
             return settle(player);
         }
         return showStatus(player);
@@ -483,6 +482,15 @@ public final class CommissionService {
         CommissionDefinition definition = commissionId == null
                 ? null : CommissionDefinitionManager.get(commissionId);
         if (definition == null || !isReadyToSettle(data)) return 0;
+        long completedTick = player.level().getGameTime();
+        CaseEvidenceView evidence = CaseEvidenceView.from(
+                data, FormulaAppraisalService.evidence(player));
+        CaseDebriefRecord debrief = CaseDebriefService.evaluate(
+                definition.id(), evidence, data.commissionAcceptedTick,
+                completedTick, data.questResolutionRoute,
+                data.insanityPressure, data.pollution,
+                FormulaAppraisalService.failedAttempts(player));
+        data.caseDebriefs.put(definition.id(), debrief);
         data.moneyPence += definition.reward().pence();
         definition.reward().reputation().forEach((organization, amount) ->
                 data.orgReputation.merge(organization, amount, Integer::sum));
@@ -495,6 +503,7 @@ public final class CommissionService {
         } else if (LOST_CAT.equals(definition.id())) {
             giveItem(player, new ItemStack(ModItems.NEWSPAPER.get()));
         } else if (COUNTERFEIT_FORMULA.equals(definition.id())) {
+            FormulaAppraisalService.takeDossier(player);
             giveItem(player, new ItemStack(ModItems.FORMULA_FRAGMENT.get(), 2));
         }
         player.sendSystemMessage(Component.translatable(
@@ -502,6 +511,7 @@ public final class CommissionService {
                 Component.translatable(definition.titleKey()),
                 CommissionCurrency.format(definition.reward().pence()))
                 .withStyle(ChatFormatting.GREEN));
+        CaseDebriefService.sendSummary(player, definition.titleKey(), debrief);
         if (chain != null) QuestPartyService.markSettled(player, chain);
         clearActive(data);
         return 1;

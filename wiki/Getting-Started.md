@@ -1,6 +1,6 @@
 # 入门与占卜家序列 9–7
 
-> 当前版本：0.9.7-1.20.1 · v0.9 M0/M1 实施完成 · M2 证据关联与案件恢复
+> 当前版本：0.9.8-1.20.1 · v0.9 M0/M1 实施完成 · M2 结案评价与复盘
 >
 > 设计基线：v0.9 · M1 两小时纵切 / M2 实施
 
@@ -71,6 +71,8 @@
 | `/pm camp` | 营地方向与坐标 |
 | `/pm mistcity` | 雾都前哨方向与坐标 |
 | `/pm case` | 废弃教堂与邪教救援营地 |
+| `/pm case analyze|archive|recover` | 分析证据、查看评级档案或在调查板附近恢复案件物品 |
+| `/pm case debrief [lost_cat|missing_squad|counterfeit_formula]` | 查看结案摘要或指定案件四维复盘 |
 | `/pm commission list|status` | 委托列表、步骤、进度和账本 |
 | `/pm commission board` | 站在调查板附近打开可视化案件界面 |
 | `/pm commission accept <id>` | 接取指定委托 |
@@ -115,7 +117,7 @@
 [雾都前哨与调查委托](M2-Commissions-and-Mist-City-Outpost) 和
 [神秘学家小屋与三解救援](M2-Occultist-Hut-and-Rescue-Routes)。同记分板队伍 2–4 名成员共享目标；
 `/pm party` 查看持久账本，已登记离线成员上线自动追赶，中途加入使用 `/pm party sync`。完整规则见
-[调查板玩家手册](M2-Investigation-Board) 解释界面状态与安全边界；[证据档案与城市报纸](M2-Evidence-and-Newspaper) 说明证据和日报；[证据关联、案件分析与恢复](M2-Evidence-Reasoning-and-Recovery) 说明推理、下一步与关键物品恢复；[城市服务台与功能区](M2-City-Service-Desks) 说明事务所、巡警与旧世界补建；[持久化队伍调查与离线追赶](M2-Persistent-Party-Recovery) 说明多人恢复。完整镇区、正式警戒 AI、正式队伍 GUI 和多人负载矩阵仍未完成。
+[调查板玩家手册](M2-Investigation-Board) 解释界面状态与安全边界；[证据档案与城市报纸](M2-Evidence-and-Newspaper) 说明证据和日报；[证据关联、案件分析与恢复](M2-Evidence-Reasoning-and-Recovery) 说明推理、下一步与关键物品恢复；[结案评价与复盘](M2-Case-Debrief-and-Ratings) 说明四维评分、旧档迁移和查询命令；[城市服务台与功能区](M2-City-Service-Desks) 说明事务所、巡警与旧世界补建；[持久化队伍调查与离线追赶](M2-Persistent-Party-Recovery) 说明多人恢复。完整镇区、正式警戒 AI、正式队伍 GUI 和多人负载矩阵仍未完成。
 
 完整手册见
 [`docs/GETTING_STARTED.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/GETTING_STARTED.md)。

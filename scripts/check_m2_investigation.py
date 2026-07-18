@@ -26,6 +26,10 @@ EVIDENCE_STATE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmyst
 ANALYSIS_STAGE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseAnalysisStage.java"
 RELATION_KIND = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "EvidenceRelationKind.java"
 ANALYSIS_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseAnalysisService.java"
+DEBRIEF_RECORD = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseDebriefRecord.java"
+DEBRIEF_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseDebriefService.java"
+CASE_GRADE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseGrade.java"
+DEBRIEF_FOCUS = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseDebriefFocus.java"
 RECOVERY_POLICY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CaseRecoveryPolicy.java"
 FORMULA_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "FormulaAppraisalService.java"
 NEWS_LOGIC = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CityNewsLogic.java"
@@ -236,6 +240,53 @@ def main():
             or board["packet_count"] == 14,
             "case reasoning unexpectedly changed packet count")
 
+    debrief = contract["case_debrief"]
+    debrief_record = DEBRIEF_RECORD.read_text(encoding="utf-8")
+    debrief_service = DEBRIEF_SERVICE.read_text(encoding="utf-8")
+    case_grade = CASE_GRADE.read_text(encoding="utf-8")
+    debrief_focus = DEBRIEF_FOCUS.read_text(encoding="utf-8")
+    require(sum(debrief["score_components"].values()) == 100,
+            "case debrief component weights must total 100")
+    for component, maximum in debrief["score_components"].items():
+        require(f"{component}Score" in debrief_record
+                and str(maximum) in debrief_record,
+                f"case debrief component {component} drifted")
+    for grade in debrief["grades"]:
+        require(grade in case_grade,
+                f"case grade {grade} is missing")
+    for grade, minimum in debrief["grade_minimums"].items():
+        require(grade in case_grade
+                and (grade == "D" or str(minimum) in case_grade),
+                f"case grade threshold {grade} drifted")
+    for focus in debrief["focuses"]:
+        require(focus in debrief_focus,
+                f"case debrief focus {focus} is missing")
+    require(f'"{debrief["archive_key"]}"' in player_source
+            and "caseDebriefs" in player_source
+            and "CaseDebriefRecord.load" in player_source,
+            "persistent case debrief archive is incomplete")
+    require("CaseDebriefService.evaluate" in commission_service
+            and "caseDebriefs.put" in commission_service
+            and "CaseDebriefService.sendSummary" in commission_service,
+            "case settlement does not create and display a debrief")
+    require("evidenceScore" in debrief_service
+            and "procedureScore" in debrief_service
+            and "safetyScore" in debrief_service
+            and "efficiencyScore" in debrief_service,
+            "case debrief scoring dimensions are incomplete")
+    require(not debrief["captures_failed_formula_verdicts"]
+            or ("failedAttempts" in formula_service
+                and "failedVerdictAttempts" in debrief_service),
+            "formula verdict failures are not included in the debrief")
+    require(debrief["mutates_rewards"]
+            or ("moneyPence" not in debrief_service
+                and "orgReputation" not in debrief_service
+                and "giveItem" not in debrief_service),
+            "case debrief unexpectedly mutates settlement rewards")
+    require(f'literal("{debrief["command"]}")' in command_source
+            and "showDebrief" in analysis_service,
+            "case debrief command or archive reader is missing")
+
     newspaper = contract["daily_newspaper"]
     news_logic = NEWS_LOGIC.read_text(encoding="utf-8")
     news_service = NEWS_SERVICE.read_text(encoding="utf-8")
@@ -300,7 +351,7 @@ def main():
         f"{len(commissions)} commissions, {len(quests)} quest chains, "
         "occultist hut, formula appraisal, three rescue routes, "
         "persistent party recovery, the server-authoritative evidence archive, "
-        "case reasoning and board-gated item recovery, "
+        "case reasoning, board-gated item recovery, persistent case debriefs, "
         "the deterministic daily newspaper, and versioned city service desks"
     )
 

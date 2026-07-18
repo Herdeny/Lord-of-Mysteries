@@ -1,12 +1,12 @@
 # M2 证据关联、案件分析与恢复
 
-> 当前版本：0.9.7-1.20.1 · 网络协议 11 · 224 项 JUnit
+> 当前版本：0.9.8-1.20.1 · 网络协议 11 · 229 项 JUnit
 
 ## 怎么使用
 
 1. 在雾都调查板接取案件。
 2. 调查板依次切换“案件公告 → 证据档案 → 关联推理”。
-3. `/pm case analyze` 查看聊天版分析，`/pm case archive` 查看结案进度。
+3. `/pm case analyze` 查看聊天版分析，`/pm case archive` 查看结案进度与评级。
 4. 关键物品遗失时，站在调查板六格范围内执行 `/pm case recover`。
 
 ## 推理页显示什么
@@ -28,7 +28,7 @@
 
 ## 兼容与限制
 
-协议升级到 11，但仍使用原有 14 个消息 ID。旧客户端不能连接。当前没有自由拖线、结案评分、动态案件或完整城市街区。
+协议保持 11，并继续使用原有 14 个消息 ID。当前没有自由拖线、动态案件或完整城市街区；结案评分与旧档迁移见[结案评价与复盘](M2-Case-Debrief-and-Ratings)。
 
 完整规则与测试证据：
 [`docs/M2_EVIDENCE_REASONING_AND_RECOVERY.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M2_EVIDENCE_REASONING_AND_RECOVERY.md)。
