@@ -1,6 +1,6 @@
 # Project Mystery 入门指南
 
-> 适用版本：0.9.11-1.20.1 · v0.9 M2 动态现场、证人和物证交互（M0/M1 实施完成）
+> 适用版本：0.9.12-1.20.1 · v0.9 M2 案件主体、受影响者与差异化物证（M0/M1 实施完成）
 >
 > 当前路线：v0.9 · M2 调查与生活
 
@@ -178,9 +178,9 @@
 - 序列 7 详细规则见 [`M2_SEQUENCE7_PSYCHIATRIST_PYROMANIAC.md`](M2_SEQUENCE7_PSYCHIATRIST_PYROMANIAC.md)。
 - 三案结算后会自动显示证据、程序、安全、效率四维评分和 S–D 评级；详细规则见 [`M2_CASE_DEBRIEF_AND_RATINGS.md`](M2_CASE_DEBRIEF_AND_RATINGS.md)。
 - 玩家可把最多 160 字说明绑定到已揭示关系并选择支持、矛盾或指向立场；错误检验增加 4 点压力和最多 3 点推理负担，正确检验或复议可恢复。详细规则见 [`M2_PLAYER_HYPOTHESES_AND_REASONING_STRAIN.md`](M2_PLAYER_HYPOTHESES_AND_REASONING_STRAIN.md)。
-- 完成“真假配方”后可接取每日轮换案件：执行 `/pm case rotation` 查看八槽位卷宗。接案获得证物袋后，带它到指定现场右键方块采样，再右键指定 NPC 记录证词、右键当日报纸核验档案；随后提交 `human_concealment`、`extraordinary_distortion` 或 `ritual_diversion`。`investigate field|desk` 保留为兼容和无软锁入口，误判后必须在调查板执行 `recover` 才能重试。
-- 证物袋悬浮提示会显示案件编号、关键物证和归档阶段；队伍推进会同步在线成员的袋内阶段，三项证据齐全后产生光效。遗失时在调查板附近 `/pm case recover` 可按当前进度补领，结案或放弃会自动回收。详细规则见 [`M2_DYNAMIC_CASE_ROTATION.md`](M2_DYNAMIC_CASE_ROTATION.md)。
-- M2 当前以轻量雾都前哨、服务端权威调查板、四种委托、玩家假说、可恢复误判代价、持久化结案复盘、三类八槽位轮换案件及实体三轮取证、失踪小队三解、真假配方、报社生活班次、持久队伍账本和离线追赶为可玩基础；完整镇区、正式警戒 AI、正式队伍 GUI、案件专属主体/受害者与现场陈设、多人负载矩阵和 schema 冻结尚未完成。五途径 9–7 中非 M1 途径继续作为 M3 迁移资产。
+- 完成“真假配方”后可接取每日轮换案件：执行 `/pm case rotation` 查看八槽位卷宗。接案获得证物袋后，到指定现场寻找案件相关人、受影响者和悬浮物证；手持证物袋右键物证或附近方块封存黄铜筹码、墨迹、烛蜡或残缺时刻表，再右键指定 NPC 记录证词、右键当日报纸核验档案；随后提交 `human_concealment`、`extraordinary_distortion` 或 `ritual_diversion`。`investigate field|desk` 保留为兼容和无软锁入口，误判后必须在调查板执行 `recover` 才能重试。
+- 证物袋悬浮提示会显示案件编号、关键物证和归档阶段；现场完成后在线队员各取得实例绑定封存样本，队伍推进同步袋内阶段，三项证据齐全后产生光效。证物袋或样本遗失时在调查板附近 `/pm case recover` 可按当前进度补领，结案或放弃会自动回收。详细规则见 [`M2_DYNAMIC_CASE_ROTATION.md`](M2_DYNAMIC_CASE_ROTATION.md)。
+- M2 当前以轻量雾都前哨、服务端权威调查板、四种委托、玩家假说、可恢复误判代价、持久化结案复盘、三类八槽位轮换案件、案件相关人/受影响者/可视物证及实体三轮取证、失踪小队三解、真假配方、报社生活班次、持久队伍账本和离线追赶为可玩基础；完整镇区、正式警戒 AI、正式队伍 GUI、角色关系/日程、周级调度、多人负载矩阵和 schema 冻结尚未完成。五途径 9–7 中非 M1 途径继续作为 M3 迁移资产。
 
 2–4 人联机可用原版 `/team` 组队。各成员接取同一案件后，进度写入世界级队伍账本；已经登记的
 离线成员上线自动追赶，中途加入者执行 `/pm party sync`。奖励、声望和冷却仍按玩家独立结算。

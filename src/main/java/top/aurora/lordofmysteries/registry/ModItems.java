@@ -23,6 +23,8 @@ import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
 import top.aurora.lordofmysteries.knowledge.FormulaFragmentItem;
 import top.aurora.lordofmysteries.knowledge.KnowledgeCopyItem;
 import top.aurora.lordofmysteries.commission.CaseClueItem;
+import top.aurora.lordofmysteries.commission.DynamicCaseEvidenceItem;
+import top.aurora.lordofmysteries.commission.DynamicCaseProfile;
 import top.aurora.lordofmysteries.commission.DynamicEvidencePortfolioItem;
 import top.aurora.lordofmysteries.commission.MistCityNewspaperItem;
 import top.aurora.lordofmysteries.commission.CommissionPaperItem;
@@ -113,6 +115,26 @@ public final class ModItems {
     public static final RegistryObject<Item> DYNAMIC_EVIDENCE_PORTFOLIO = ITEMS.register(
             "dynamic_evidence_portfolio",
             () -> new DynamicEvidencePortfolioItem(
+                    new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> DYNAMIC_CASE_BRASS_TOKEN = ITEMS.register(
+            "dynamic_case_brass_token",
+            () -> new DynamicCaseEvidenceItem(
+                    DynamicCaseProfile.EvidenceTheme.BRASS_TOKEN,
+                    new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> DYNAMIC_CASE_INK_TRACE = ITEMS.register(
+            "dynamic_case_ink_trace",
+            () -> new DynamicCaseEvidenceItem(
+                    DynamicCaseProfile.EvidenceTheme.INK_TRACE,
+                    new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> DYNAMIC_CASE_CANDLE_WAX = ITEMS.register(
+            "dynamic_case_candle_wax",
+            () -> new DynamicCaseEvidenceItem(
+                    DynamicCaseProfile.EvidenceTheme.CANDLE_WAX,
+                    new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> DYNAMIC_CASE_TORN_SCHEDULE = ITEMS.register(
+            "dynamic_case_torn_schedule",
+            () -> new DynamicCaseEvidenceItem(
+                    DynamicCaseProfile.EvidenceTheme.TORN_SCHEDULE,
                     new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> SEALED_FORMULA_DOSSIER = ITEMS.register(
             "sealed_formula_dossier",

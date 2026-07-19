@@ -35,7 +35,7 @@
 - 计划周期：4 周
 - 验收：至少 100 个真实样例节点通过关系校验；旧存档可迁移、可备份、可回滚，并通过死亡、重生、维度与重启运行时验证。
 
-- 116 节点、164 关系内容图通过 orphan、spoiler、compat、localization 与 asset 审计
+- 116 节点、168 关系内容图通过 orphan、spoiler、compat、localization 与 asset 审计
 - Capability schema 19 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema
 - 世界加载前原子快照、幂等 schema marker、受限路径恢复工具和恢复前安全备份
 - 6 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒、M1 两小时状态和调查板邻近门禁
@@ -71,8 +71,9 @@
 - 已完成：玩家自定义假说、已揭示关系绑定、服务端检验、误判压力/推理负担与可恢复复议
 - 已完成：世界种子与接案时间确定的三类案件轮换、八槽位生成、三轮双入口取证、植入式误导、三结论与误判恢复
 - 已完成：绑定案件实例的实体证物袋、现场方块采样、指定 NPC 证词、报纸档案核验、队伍进度同步及调查板补领/结案回收
+- 已完成：案件相关人、受影响者、可直接采样的可视物证、四类差异化封存样本、旧现场清理与跨日队伍实例对齐
 - 下一步：把前哨功能区扩展为正式报社、事务所与警局街区
-- 下一步：生成案件主体/受害者实体、专属现场陈设，并连接组织反馈与周级调度
+- 下一步：把案件主体和受影响者扩展为关系、日程与组织反馈节点，并加入周级调度
 - 下一步：生活物价、职业扩展和八小时多人连续性矩阵
 
 ## M3 · 首发五途径
@@ -204,17 +205,17 @@
 | structure_specs | 32 |
 | weather_anomaly_specs | 18 |
 
-### repository_evidence_at_0.9.11
+### repository_evidence_at_0.9.12
 
 | 指标 | 数量 |
 |---|---:|
 | content_graph_nodes | 116 |
-| content_graph_edges | 164 |
+| content_graph_edges | 168 |
 | schema4_sequence_definitions | 15 |
 | generated_recipes | 13 |
 | playable_commissions | 4 |
 | playable_quest_chains | 4 |
-| junit_tests | 251 |
+| junit_tests | 260 |
 | forge_gametests | 6 |
 | save_rollback_checks | 1 |
 | dedicated_server_starts | 2 |

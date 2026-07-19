@@ -64,6 +64,10 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.NEWSPAPER.get());
                         output.accept(ModItems.COMMISSION_PAPER.get());
                         output.accept(ModItems.DYNAMIC_EVIDENCE_PORTFOLIO.get());
+                        output.accept(ModItems.DYNAMIC_CASE_BRASS_TOKEN.get());
+                        output.accept(ModItems.DYNAMIC_CASE_INK_TRACE.get());
+                        output.accept(ModItems.DYNAMIC_CASE_CANDLE_WAX.get());
+                        output.accept(ModItems.DYNAMIC_CASE_TORN_SCHEDULE.get());
                         output.accept(ModItems.SEALED_FORMULA_DOSSIER.get());
                         output.accept(ModItems.BLOODSTAINED_NOTEBOOK.get());
                         output.accept(ModItems.PRESS_CARD.get());

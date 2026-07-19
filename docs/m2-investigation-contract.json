@@ -62,10 +62,34 @@
     "world_interactions": {
       "portfolio_item": "lord_of_mysteries:dynamic_evidence_portfolio",
       "scene_use": "right_click_site_block",
+      "highlighted_scene_use": "right_click_evidence_display",
       "witness_use": "right_click_tagged_npc",
       "records_use": "right_click_newspaper",
       "recovery": "board_restore_current_stage",
       "party_sync": true,
+      "returned_on_settle_or_abandon": true
+    },
+    "manifestations": {
+      "subject_tag": "lom_dynamic_case_subject",
+      "affected_tag": "lom_dynamic_case_affected",
+      "evidence_tag": "lom_dynamic_case_evidence",
+      "roles": ["subject", "affected", "evidence"],
+      "spawn_only_at_generated_site": true,
+      "cleanup_inactive_loaded_scenes": true,
+      "old_instance_cannot_progress": true
+    },
+    "sealed_evidence_items": [
+      "lord_of_mysteries:dynamic_case_brass_token",
+      "lord_of_mysteries:dynamic_case_ink_trace",
+      "lord_of_mysteries:dynamic_case_candle_wax",
+      "lord_of_mysteries:dynamic_case_torn_schedule"
+    ],
+    "sealed_evidence_policy": {
+      "instance_bound_nbt": true,
+      "issued_after_scene": true,
+      "party_sync": true,
+      "late_join_restore": true,
+      "board_recovery": true,
       "returned_on_settle_or_abandon": true
     },
     "stable_from_world_seed_and_accept_tick": true,
@@ -274,11 +298,14 @@
     "quest.lord_of_mysteries.dynamic_case.title",
     "command.lord_of_mysteries.dynamic_case.title",
     "command.lord_of_mysteries.dynamic_case.next.scene",
+    "command.lord_of_mysteries.dynamic_case.sample.collected",
     "command.lord_of_mysteries.dynamic_case.conclusion.wrong",
     "command.lord_of_mysteries.dynamic_case.recover.complete",
     "dynamic_case.lord_of_mysteries.archetype.missing_person",
     "dynamic_case.lord_of_mysteries.archetype.anomalous_item",
     "dynamic_case.lord_of_mysteries.archetype.occult_crime",
+    "entity.lord_of_mysteries.dynamic_case_subject",
+    "entity.lord_of_mysteries.dynamic_case_affected.family_panic",
     "dynamic_case.lord_of_mysteries.conclusion.human_concealment",
     "dynamic_case.lord_of_mysteries.conclusion.extraordinary_distortion",
     "dynamic_case.lord_of_mysteries.conclusion.ritual_diversion",

@@ -309,12 +309,18 @@ public final class QuestPartyService {
             savedData.remove(key.get());
             snapshot = null;
         }
+        boolean existingSnapshot = snapshot != null;
+        boolean existingMember = snapshot != null
+                && snapshot.hasMember(player.getUUID());
         if (snapshot == null) {
             snapshot = QuestPartySnapshot.create(
                     playerData, player.getUUID(), level.getGameTime());
         }
         boolean changed = snapshot.addMember(
                 player.getUUID(), chain.maximumPartySize());
+        if (existingSnapshot && !existingMember) {
+            changed |= snapshot.applyTo(playerData, player.getUUID());
+        }
         changed |= snapshot.mergeProgress(
                 playerData, player.getUUID(), level.getGameTime());
         for (ServerPlayer participant : participants(player, chain)) {
@@ -324,7 +330,7 @@ public final class QuestPartyService {
             changed |= snapshot.mergeProgress(participantData,
                     participant.getUUID(), level.getGameTime());
         }
-        if (authoritative) {
+        if (authoritative && (!existingSnapshot || existingMember)) {
             changed |= snapshot.updateAuthoritative(playerData, level.getGameTime());
         }
         if (changed || savedData.snapshot(key.get()).isEmpty()) {

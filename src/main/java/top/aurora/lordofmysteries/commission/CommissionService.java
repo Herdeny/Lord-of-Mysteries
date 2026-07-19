@@ -329,8 +329,8 @@ public final class CommissionService {
         if (DYNAMIC_CASE.equals(commissionId)) {
             data.caseHypotheses.remove(DYNAMIC_CASE);
         }
-        giveCommissionPaper(player, definition, now);
         QuestPartyService.registerActive(player, chain);
+        giveCommissionPaper(player, definition, data.commissionAcceptedTick);
         player.sendSystemMessage(Component.translatable(
                 "command.lord_of_mysteries.commission.accepted",
                 Component.translatable(definition.titleKey()))

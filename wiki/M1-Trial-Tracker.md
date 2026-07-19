@@ -1,6 +1,6 @@
 # M1 两小时试炼追踪器
 
-> 当前版本：`0.9.11-1.20.1` · Capability schema 19
+> 当前版本：`0.9.12-1.20.1` · Capability schema 19
 
 使用 `/pm trial start|resume|status|report|verify|stop|reset` 记录 M1 两小时玩法。命令无需管理员权限，离线时间不计入时长。
 

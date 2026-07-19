@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerType;
@@ -38,6 +39,24 @@ public final class InvestigationNpcHandler {
 
     @SubscribeEvent
     public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+        if (event.getTarget() instanceof ArmorStand armorStand
+                && DynamicCaseManifestationService.isEvidenceDisplay(armorStand)) {
+            boolean portfolioHeld = event.getEntity()
+                    .getItemInHand(event.getHand()).getItem()
+                    instanceof DynamicEvidencePortfolioItem;
+            event.setCanceled(true);
+            event.setCancellationResult(portfolioHeld
+                    ? InteractionResult.sidedSuccess(
+                            event.getEntity().level().isClientSide())
+                    : InteractionResult.PASS);
+            if (portfolioHeld
+                    && event.getEntity() instanceof ServerPlayer player) {
+                DynamicCaseService.collectSceneEvidence(
+                        player, armorStand.blockPosition(),
+                        player.getItemInHand(event.getHand()));
+            }
+            return;
+        }
         if (!(event.getTarget() instanceof Villager villager)
                 || !isInvestigationNpc(villager)) return;
         event.setCanceled(true);
@@ -45,6 +64,7 @@ public final class InvestigationNpcHandler {
                 event.getEntity().level().isClientSide()));
         if (event.getHand() != InteractionHand.MAIN_HAND
                 || !(event.getEntity() instanceof ServerPlayer player)) return;
+        if (DynamicCaseManifestationService.tryInteract(player, villager)) return;
         if (DynamicCaseService.tryInterviewWitness(player, villager)) return;
         if (villager.getTags().contains(PRESS_CLERK_TAG)) {
             if (CityLifeService.tryWorkPressShift(player)) return;
@@ -76,6 +96,7 @@ public final class InvestigationNpcHandler {
                 .ifPresent(position -> ensureReporter(level, position, data));
         data.occultistHut().filter(level::hasChunkAt)
                 .ifPresent(position -> ensureOccultAppraiser(level, position, data));
+        DynamicCaseManifestationService.tick(level);
     }
 
     public static void beginEscort(Villager reporter, ServerPlayer owner) {
@@ -98,7 +119,8 @@ public final class InvestigationNpcHandler {
                 || villager.getTags().contains(MISSING_REPORTER_TAG)
                 || villager.getTags().contains(OCCULT_APPRAISER_TAG)
                 || villager.getTags().contains(DETECTIVE_CLERK_TAG)
-                || villager.getTags().contains(CONSTABLE_TAG);
+                || villager.getTags().contains(CONSTABLE_TAG)
+                || DynamicCaseManifestationService.isManifestationNpc(villager);
     }
 
     private static void ensureOutpostNpcs(ServerLevel level, BlockPos outpost) {

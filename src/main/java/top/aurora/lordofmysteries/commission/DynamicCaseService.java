@@ -120,6 +120,9 @@ public final class DynamicCaseService {
                 player, "custom_callback", target, 1)) {
             return 0;
         }
+        if (step == 0) {
+            synchronizeEvidenceSamples(player, profile);
+        }
         player.sendSystemMessage(Component.translatable(
                         "command.lord_of_mysteries.dynamic_case.evidence_recorded",
                         Component.translatable(
@@ -152,8 +155,16 @@ public final class DynamicCaseService {
                     .withStyle(ChatFormatting.RED));
             return 0;
         }
+        if (player.level().dimension() != Level.OVERWORLD) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.field_unavailable.0")
+                    .withStyle(ChatFormatting.RED));
+            return 0;
+        }
+        ServerLevel overworld = player.getServer().getLevel(Level.OVERWORLD);
+        if (overworld == null) return 0;
         Optional<BlockPos> target = caseLocationTarget(
-                player.serverLevel(), profile.location());
+                overworld, profile.location());
         if (target.isEmpty()
                 || target.get().distSqr(clickedPosition)
                         > FIELD_RANGE * FIELD_RANGE) {
@@ -186,19 +197,41 @@ public final class DynamicCaseService {
     public static boolean issuePortfolio(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         DynamicCaseProfile profile = profileFor(player, data);
-        if (profile == null || hasPortfolio(player, profile)) return false;
-        givePortfolio(player, profile, data.activeQuestStep,
-                "command.lord_of_mysteries.dynamic_case.portfolio.issued");
-        return true;
+        if (profile == null) return false;
+        DynamicCaseArtifactPolicy.RecoveryPlan plan =
+                DynamicCaseArtifactPolicy.plan(
+                        data.activeQuestStep,
+                        hasPortfolio(player, profile),
+                        hasEvidenceSample(player, profile));
+        if (plan.restorePortfolio()) {
+            givePortfolio(player, profile, data.activeQuestStep,
+                    "command.lord_of_mysteries.dynamic_case.portfolio.issued");
+        }
+        if (plan.restoreEvidenceSample()) {
+            giveEvidenceSample(player, profile,
+                    "command.lord_of_mysteries.dynamic_case.sample.issued");
+        }
+        return plan.artifactCount() > 0;
     }
 
     public static int recoverPortfolio(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         DynamicCaseProfile profile = profileFor(player, data);
-        if (profile == null || hasPortfolio(player, profile)) return 0;
-        givePortfolio(player, profile, data.activeQuestStep,
-                "command.lord_of_mysteries.dynamic_case.portfolio.recovered");
-        return 1;
+        if (profile == null) return 0;
+        DynamicCaseArtifactPolicy.RecoveryPlan plan =
+                DynamicCaseArtifactPolicy.plan(
+                        data.activeQuestStep,
+                        hasPortfolio(player, profile),
+                        hasEvidenceSample(player, profile));
+        if (plan.restorePortfolio()) {
+            givePortfolio(player, profile, data.activeQuestStep,
+                    "command.lord_of_mysteries.dynamic_case.portfolio.recovered");
+        }
+        if (plan.restoreEvidenceSample()) {
+            giveEvidenceSample(player, profile,
+                    "command.lord_of_mysteries.dynamic_case.sample.recovered");
+        }
+        return plan.artifactCount();
     }
 
     public static void returnPortfolio(ServerPlayer player) {
@@ -209,7 +242,8 @@ public final class DynamicCaseService {
         for (int index = 0;
                 index < player.getInventory().getContainerSize(); index++) {
             ItemStack stack = player.getInventory().getItem(index);
-            if (DynamicEvidencePortfolioItem.matches(stack, profile)) {
+            if (DynamicEvidencePortfolioItem.matches(stack, profile)
+                    || DynamicCaseEvidenceItem.matches(stack, profile)) {
                 stack.shrink(stack.getCount());
                 removed = true;
             }
@@ -358,7 +392,7 @@ public final class DynamicCaseService {
                 .isPresent();
     }
 
-    private static Optional<BlockPos> caseLocationTarget(
+    static Optional<BlockPos> caseLocationTarget(
             ServerLevel level, DynamicCaseProfile.CaseLocation location) {
         return switch (location) {
             case MIST_CITY_OUTPOST -> MistCityOutpostSavedData.get(level).outpost();
@@ -424,11 +458,35 @@ public final class DynamicCaseService {
         }
     }
 
+    private static void synchronizeEvidenceSamples(
+            ServerPlayer player, DynamicCaseProfile profile) {
+        QuestChainDefinition chain = activeChain(MysteryCapability.get(player));
+        if (chain == null) return;
+        for (ServerPlayer participant : QuestPartyService.participants(player, chain)) {
+            if (!hasEvidenceSample(participant, profile)) {
+                giveEvidenceSample(participant, profile,
+                        "command.lord_of_mysteries.dynamic_case.sample.collected");
+            }
+        }
+    }
+
     private static boolean hasPortfolio(
             ServerPlayer player, DynamicCaseProfile profile) {
         for (int index = 0;
                 index < player.getInventory().getContainerSize(); index++) {
             if (DynamicEvidencePortfolioItem.matches(
+                    player.getInventory().getItem(index), profile)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean hasEvidenceSample(
+            ServerPlayer player, DynamicCaseProfile profile) {
+        for (int index = 0;
+                index < player.getInventory().getContainerSize(); index++) {
+            if (DynamicCaseEvidenceItem.matches(
                     player.getInventory().getItem(index), profile)) {
                 return true;
             }
@@ -450,6 +508,22 @@ public final class DynamicCaseService {
         }
         player.sendSystemMessage(Component.translatable(
                         messageKey, profile.instanceId())
+                .withStyle(ChatFormatting.AQUA));
+    }
+
+    private static void giveEvidenceSample(
+            ServerPlayer player,
+            DynamicCaseProfile profile,
+            String messageKey) {
+        ItemStack sample = DynamicCaseEvidenceItem.create(profile);
+        if (!player.getInventory().add(sample)) {
+            player.drop(sample, false);
+        }
+        player.sendSystemMessage(Component.translatable(
+                        messageKey,
+                        Component.translatable(profile.evidenceTheme()
+                                .translationKey("evidence_theme")),
+                        profile.instanceId())
                 .withStyle(ChatFormatting.AQUA));
     }
 

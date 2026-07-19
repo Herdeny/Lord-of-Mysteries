@@ -57,6 +57,9 @@ DYNAMIC_CASE_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lord
 DYNAMIC_PORTFOLIO = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicEvidencePortfolioItem.java"
 DYNAMIC_PORTFOLIO_DATA = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicEvidencePortfolioData.java"
 DYNAMIC_PORTFOLIO_MODEL = ROOT / "src" / "main" / "resources" / "assets" / "lord_of_mysteries" / "models" / "item" / "dynamic_evidence_portfolio.json"
+DYNAMIC_EVIDENCE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseEvidenceItem.java"
+DYNAMIC_EVIDENCE_DATA = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseEvidenceData.java"
+DYNAMIC_MANIFESTATION = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseManifestationService.java"
 
 
 def load(path):
@@ -159,6 +162,9 @@ def main():
     npc_source = NPC_HANDLER.read_text(encoding="utf-8")
     newspaper_source = NEWS_ITEM.read_text(encoding="utf-8")
     party_source = PARTY_SERVICE.read_text(encoding="utf-8")
+    evidence_source = DYNAMIC_EVIDENCE.read_text(encoding="utf-8")
+    evidence_data_source = DYNAMIC_EVIDENCE_DATA.read_text(encoding="utf-8")
+    manifestation_source = DYNAMIC_MANIFESTATION.read_text(encoding="utf-8")
     require(portfolio_id in ITEMS.read_text(encoding="utf-8")
             and DYNAMIC_PORTFOLIO_MODEL.exists(),
             "dynamic evidence portfolio registry or model is missing")
@@ -167,6 +173,11 @@ def main():
                 and "collectSceneEvidence" in portfolio_source
                 and "caseLocationTarget" in dynamic_service),
             "dynamic scene evidence is not a physical site interaction")
+    require(interactions.get("highlighted_scene_use")
+            != "right_click_evidence_display"
+            or ("isEvidenceDisplay" in manifestation_source
+                and "DynamicCaseService.collectSceneEvidence" in npc_source),
+            "dynamic scene display is not directly collectable")
     require(interactions["witness_use"] != "right_click_tagged_npc"
             or ("tryInterviewWitness" in dynamic_service
                 and "DynamicCaseService.tryInterviewWitness" in npc_source),
@@ -191,6 +202,48 @@ def main():
     require(interactions["portfolio_item"]
             in quests[dynamic["quest"]]["links"]["produces"],
             "dynamic quest content graph does not produce the portfolio")
+    manifestations = dynamic["manifestations"]
+    for tag_key in ["subject_tag", "affected_tag", "evidence_tag"]:
+        require(f'"{manifestations[tag_key]}"' in manifestation_source,
+                f"dynamic manifestation {tag_key} is missing")
+    require(not manifestations["spawn_only_at_generated_site"]
+            or "manifestationTarget" in manifestation_source,
+            "dynamic manifestations may spawn before their site exists")
+    require(not manifestations["cleanup_inactive_loaded_scenes"]
+            or "cleanupInactive" in manifestation_source,
+            "inactive dynamic manifestations are not cleaned up")
+    require(not manifestations["old_instance_cannot_progress"]
+            or "INSTANCE_DATA" in manifestation_source,
+            "dynamic manifestations are not bound to a case instance")
+    item_registry = ITEMS.read_text(encoding="utf-8")
+    for evidence_id in dynamic["sealed_evidence_items"]:
+        path = evidence_id.split(":", 1)[1]
+        model = ROOT / "src" / "main" / "resources" / "assets" \
+            / "lord_of_mysteries" / "models" / "item" / f"{path}.json"
+        require(path in item_registry and model.exists(),
+                f"sealed dynamic evidence {evidence_id} is missing")
+        require(evidence_id in quests[dynamic["quest"]]["links"]["produces"],
+                f"sealed dynamic evidence {evidence_id} is not linked")
+    evidence_policy = dynamic["sealed_evidence_policy"]
+    require(not evidence_policy["instance_bound_nbt"]
+            or ("dynamic_case_instance" in evidence_data_source
+                and "dynamic_case_evidence_theme" in evidence_data_source),
+            "sealed evidence is not bound to its case instance and theme")
+    require(not evidence_policy["issued_after_scene"]
+            or "synchronizeEvidenceSamples" in dynamic_service,
+            "sealed evidence is not issued after scene collection")
+    require(not evidence_policy["party_sync"]
+            or "QuestPartyService.participants" in dynamic_service,
+            "sealed evidence is not synchronized to online participants")
+    require(not evidence_policy["late_join_restore"]
+            or "hasEvidenceSample" in dynamic_service,
+            "late-joining participants cannot restore sealed evidence")
+    require(not evidence_policy["board_recovery"]
+            or "giveEvidenceSample" in dynamic_service,
+            "sealed evidence cannot be recovered at the board")
+    require(not evidence_policy["returned_on_settle_or_abandon"]
+            or "DynamicCaseEvidenceItem.matches" in dynamic_service,
+            "sealed evidence is not returned with the portfolio")
     require(not dynamic["stable_from_world_seed_and_accept_tick"]
             or ("generateForDay" in dynamic_generator
                 and "worldSeed" in dynamic_generator

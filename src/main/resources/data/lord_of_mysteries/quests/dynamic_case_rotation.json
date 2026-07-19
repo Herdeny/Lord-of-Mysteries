@@ -9,7 +9,13 @@
   "knowledge_gate": "lord_of_mysteries:knowledge/commission_board",
   "links": {
     "requires": [],
-    "produces": ["lord_of_mysteries:dynamic_evidence_portfolio"],
+    "produces": [
+      "lord_of_mysteries:dynamic_evidence_portfolio",
+      "lord_of_mysteries:dynamic_case_brass_token",
+      "lord_of_mysteries:dynamic_case_ink_trace",
+      "lord_of_mysteries:dynamic_case_candle_wax",
+      "lord_of_mysteries:dynamic_case_torn_schedule"
+    ],
     "used_by": ["lord_of_mysteries:commission/dynamic_case_rotation"],
     "countered_by": []
   },

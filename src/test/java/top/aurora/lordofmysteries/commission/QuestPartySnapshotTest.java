@@ -226,6 +226,21 @@ class QuestPartySnapshotTest {
         assertFalse(target.questResolutionReady);
     }
 
+    @Test
+    void equalProgressJoinerAdoptsTheAuthoritativeAcceptanceTick() {
+        PlayerMysteryData source = activeData(0, 0);
+        source.commissionAcceptedTick = 120L;
+        QuestPartySnapshot snapshot = QuestPartySnapshot.create(
+                source, FIRST, 200L);
+        assertTrue(snapshot.addMember(SECOND, 4));
+        PlayerMysteryData joiner = activeData(0, 0);
+        joiner.commissionAcceptedTick = 48_120L;
+
+        assertTrue(snapshot.applyTo(joiner, SECOND));
+
+        assertEquals(120L, joiner.commissionAcceptedTick);
+    }
+
     private static PlayerMysteryData activeData(int step, int progress) {
         PlayerMysteryData data = new PlayerMysteryData();
         data.activeCommissionId =
