@@ -45,6 +45,7 @@ public final class InvestigationNpcHandler {
                 event.getEntity().level().isClientSide()));
         if (event.getHand() != InteractionHand.MAIN_HAND
                 || !(event.getEntity() instanceof ServerPlayer player)) return;
+        if (DynamicCaseService.tryInterviewWitness(player, villager)) return;
         if (villager.getTags().contains(PRESS_CLERK_TAG)) {
             if (CityLifeService.tryWorkPressShift(player)) return;
             CommissionService.talkPressClerk(player);

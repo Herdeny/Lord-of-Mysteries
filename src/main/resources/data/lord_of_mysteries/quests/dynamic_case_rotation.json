@@ -9,7 +9,7 @@
   "knowledge_gate": "lord_of_mysteries:knowledge/commission_board",
   "links": {
     "requires": [],
-    "produces": [],
+    "produces": ["lord_of_mysteries:dynamic_evidence_portfolio"],
     "used_by": ["lord_of_mysteries:commission/dynamic_case_rotation"],
     "countered_by": []
   },

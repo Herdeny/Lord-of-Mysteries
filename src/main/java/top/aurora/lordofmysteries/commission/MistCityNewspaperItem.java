@@ -26,6 +26,7 @@ public final class MistCityNewspaperItem extends Item {
             Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (player instanceof ServerPlayer serverPlayer) {
+            DynamicCaseService.tryReviewRecords(serverPlayer);
             CityNewsService.read(serverPlayer);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());

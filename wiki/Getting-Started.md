@@ -1,6 +1,6 @@
 # 入门与占卜家序列 9–7
 
-> 当前版本：0.9.10-1.20.1 · v0.9 M0/M1 实施完成 · M2 动态案件轮换与误判复议
+> 当前版本：0.9.11-1.20.1 · v0.9 M0/M1 实施完成 · M2 动态现场、证人和物证交互
 >
 > 设计基线：v0.9 · M1 两小时纵切 / M2 实施
 
@@ -119,8 +119,8 @@
 用 `/pm formula inspect` 和 `verdict authentic|forged` 处理真假配方。详见
 [雾都前哨与调查委托](M2-Commissions-and-Mist-City-Outpost) 和
 [神秘学家小屋与三解救援](M2-Occultist-Hut-and-Rescue-Routes)。同记分板队伍 2–4 名成员共享目标；
-`/pm party` 查看持久账本，已登记离线成员上线自动追赶，中途加入使用 `/pm party sync`。完成“真假配方”后可接取每日轮换案件；`/pm case rotation` 查看八槽位卷宗，`investigate field|desk` 取得三类证据，误判后必须在调查板 `recover`。完整规则见
-[调查板玩家手册](M2-Investigation-Board) 解释界面状态与安全边界；[证据档案与城市报纸](M2-Evidence-and-Newspaper) 说明证据和日报；[证据关联、案件分析与恢复](M2-Evidence-Reasoning-and-Recovery) 说明推理、下一步与关键物品恢复；[玩家假说与误判恢复](M2-Player-Hypotheses-and-Reasoning-Strain) 说明稳定关系 ID、误判代价与恢复；[八槽位动态案件轮换](M2-Dynamic-Case-Rotation) 说明每日生成、双入口、结论与复议；[结案评价与复盘](M2-Case-Debrief-and-Ratings) 说明四维评分、旧档迁移和查询命令；[城市服务台与功能区](M2-City-Service-Desks) 说明事务所、巡警与旧世界补建；[持久化队伍调查与离线追赶](M2-Persistent-Party-Recovery) 说明多人恢复。完整镇区、正式警戒 AI、正式队伍 GUI、动态槽位实体化和多人负载矩阵仍未完成。
+`/pm party` 查看持久账本，已登记离线成员上线自动追赶，中途加入使用 `/pm party sync`。完成“真假配方”后可接取每日轮换案件；`/pm case rotation` 查看八槽位卷宗。接案后携带证物袋到指定现场右键方块采样，再右键指定 NPC 和当日报纸取得证词与档案；`investigate field|desk` 保留为兼容/恢复入口，误判后必须在调查板 `recover`。证物袋遗失时也可在调查板附近用 `/pm case recover` 按当前阶段补领。完整规则见
+[调查板玩家手册](M2-Investigation-Board) 解释界面状态与安全边界；[证据档案与城市报纸](M2-Evidence-and-Newspaper) 说明证据和日报；[证据关联、案件分析与恢复](M2-Evidence-Reasoning-and-Recovery) 说明推理、下一步与关键物品恢复；[玩家假说与误判恢复](M2-Player-Hypotheses-and-Reasoning-Strain) 说明稳定关系 ID、误判代价与恢复；[八槽位动态案件轮换](M2-Dynamic-Case-Rotation) 说明每日生成、证物袋、三类世界交互、替代入口、结论与复议；[结案评价与复盘](M2-Case-Debrief-and-Ratings) 说明四维评分、旧档迁移和查询命令；[城市服务台与功能区](M2-City-Service-Desks) 说明事务所、巡警与旧世界补建；[持久化队伍调查与离线追赶](M2-Persistent-Party-Recovery) 说明多人恢复。完整镇区、正式警戒 AI、正式队伍 GUI、案件专属主体/受害者和多人负载矩阵仍未完成。
 
 完整手册见
 [`docs/GETTING_STARTED.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/GETTING_STARTED.md)。

@@ -23,6 +23,7 @@ import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
 import top.aurora.lordofmysteries.knowledge.FormulaFragmentItem;
 import top.aurora.lordofmysteries.knowledge.KnowledgeCopyItem;
 import top.aurora.lordofmysteries.commission.CaseClueItem;
+import top.aurora.lordofmysteries.commission.DynamicEvidencePortfolioItem;
 import top.aurora.lordofmysteries.commission.MistCityNewspaperItem;
 import top.aurora.lordofmysteries.commission.CommissionPaperItem;
 import top.aurora.lordofmysteries.commission.SealedFormulaDossierItem;
@@ -109,6 +110,10 @@ public final class ModItems {
     public static final RegistryObject<Item> COMMISSION_PAPER = ITEMS.register(
             "commission_paper",
             () -> new CommissionPaperItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> DYNAMIC_EVIDENCE_PORTFOLIO = ITEMS.register(
+            "dynamic_evidence_portfolio",
+            () -> new DynamicEvidencePortfolioItem(
+                    new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> SEALED_FORMULA_DOSSIER = ITEMS.register(
             "sealed_formula_dossier",
             () -> new SealedFormulaDossierItem(

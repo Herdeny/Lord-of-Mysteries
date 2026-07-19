@@ -54,6 +54,9 @@ NETWORK = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" 
 DYNAMIC_CASE_PROFILE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseProfile.java"
 DYNAMIC_CASE_GENERATOR = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseGenerator.java"
 DYNAMIC_CASE_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseService.java"
+DYNAMIC_PORTFOLIO = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicEvidencePortfolioItem.java"
+DYNAMIC_PORTFOLIO_DATA = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicEvidencePortfolioData.java"
+DYNAMIC_PORTFOLIO_MODEL = ROOT / "src" / "main" / "resources" / "assets" / "lord_of_mysteries" / "models" / "item" / "dynamic_evidence_portfolio.json"
 
 
 def load(path):
@@ -121,6 +124,7 @@ def main():
     dynamic_profile = DYNAMIC_CASE_PROFILE.read_text(encoding="utf-8")
     dynamic_generator = DYNAMIC_CASE_GENERATOR.read_text(encoding="utf-8")
     dynamic_service = DYNAMIC_CASE_SERVICE.read_text(encoding="utf-8")
+    commission_source = COMMISSION_SERVICE.read_text(encoding="utf-8")
     for archetype in dynamic["archetypes"]:
         require(archetype in dynamic_profile,
                 f"dynamic case archetype {archetype} is missing")
@@ -148,6 +152,45 @@ def main():
     for state in dynamic["recovery_states"]:
         require(f'"{state}"' in dynamic_service,
                 f"dynamic case recovery state {state} is missing")
+    interactions = dynamic["world_interactions"]
+    portfolio_id = interactions["portfolio_item"].split(":", 1)[1]
+    portfolio_source = DYNAMIC_PORTFOLIO.read_text(encoding="utf-8")
+    portfolio_data_source = DYNAMIC_PORTFOLIO_DATA.read_text(encoding="utf-8")
+    npc_source = NPC_HANDLER.read_text(encoding="utf-8")
+    newspaper_source = NEWS_ITEM.read_text(encoding="utf-8")
+    party_source = PARTY_SERVICE.read_text(encoding="utf-8")
+    require(portfolio_id in ITEMS.read_text(encoding="utf-8")
+            and DYNAMIC_PORTFOLIO_MODEL.exists(),
+            "dynamic evidence portfolio registry or model is missing")
+    require(interactions["scene_use"] != "right_click_site_block"
+            or ("useOn" in portfolio_source
+                and "collectSceneEvidence" in portfolio_source
+                and "caseLocationTarget" in dynamic_service),
+            "dynamic scene evidence is not a physical site interaction")
+    require(interactions["witness_use"] != "right_click_tagged_npc"
+            or ("tryInterviewWitness" in dynamic_service
+                and "DynamicCaseService.tryInterviewWitness" in npc_source),
+            "dynamic witness evidence is not wired to tagged NPC interaction")
+    require(interactions["records_use"] != "right_click_newspaper"
+            or ("tryReviewRecords" in dynamic_service
+                and "DynamicCaseService.tryReviewRecords" in newspaper_source),
+            "dynamic record evidence is not wired to newspaper interaction")
+    require(interactions["recovery"] != "board_restore_current_stage"
+            or ("recoverPortfolio" in dynamic_service
+                and "DynamicCaseService.recoverPortfolio" in commission_source
+                and "collectedStage" in portfolio_data_source),
+            "dynamic portfolio recovery does not preserve its stage")
+    require(not interactions["party_sync"]
+            or ("synchronizePortfolios" in dynamic_service
+                and "QuestPartyService.participants" in dynamic_service
+                and party_source.count("DynamicCaseService.issuePortfolio") >= 2),
+            "dynamic portfolio progress is not synchronized to the party")
+    require(not interactions["returned_on_settle_or_abandon"]
+            or commission_source.count("DynamicCaseService.returnPortfolio") >= 2,
+            "dynamic portfolio is not returned on settlement and abandonment")
+    require(interactions["portfolio_item"]
+            in quests[dynamic["quest"]]["links"]["produces"],
+            "dynamic quest content graph does not produce the portfolio")
     require(not dynamic["stable_from_world_seed_and_accept_tick"]
             or ("generateForDay" in dynamic_generator
                 and "worldSeed" in dynamic_generator
@@ -485,7 +528,8 @@ def main():
         "case reasoning, recoverable player hypotheses, board-gated item "
         "recovery, persistent case debriefs, "
         "the deterministic daily newspaper, versioned city service desks, "
-        "and the recoverable eight-slot dynamic case rotation"
+        "and the recoverable eight-slot dynamic case rotation with physical "
+        "scene, witness, and records interactions"
     )
 
 

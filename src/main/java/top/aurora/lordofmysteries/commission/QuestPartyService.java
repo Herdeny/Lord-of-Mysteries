@@ -148,6 +148,7 @@ public final class QuestPartyService {
         if (caughtUp || advancedLedger) savedData.put(key, snapshot);
         if (caughtUp) {
             CommissionService.restoreCommissionPaper(player);
+            DynamicCaseService.issuePortfolio(player);
             player.sendSystemMessage(Component.translatable(
                     "command.lord_of_mysteries.party.catchup")
                     .withStyle(ChatFormatting.AQUA));
@@ -209,6 +210,9 @@ public final class QuestPartyService {
         snapshot.mergeProgress(data, player.getUUID(), level.getGameTime());
         savedData.put(key, snapshot);
         CommissionService.restoreCommissionPaper(player);
+        if (!alreadyMember || caughtUp) {
+            DynamicCaseService.issuePortfolio(player);
+        }
         if (alreadyMember && !caughtUp) {
             return message(player, "command.lord_of_mysteries.party.already_synced");
         }

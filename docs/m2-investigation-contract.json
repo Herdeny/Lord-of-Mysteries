@@ -59,6 +59,15 @@
     "desk_pressure_fallback": 3,
     "wrong_conclusion_pressure": 6,
     "recovery_states": ["reconsider", "recovered"],
+    "world_interactions": {
+      "portfolio_item": "lord_of_mysteries:dynamic_evidence_portfolio",
+      "scene_use": "right_click_site_block",
+      "witness_use": "right_click_tagged_npc",
+      "records_use": "right_click_newspaper",
+      "recovery": "board_restore_current_stage",
+      "party_sync": true,
+      "returned_on_settle_or_abandon": true
+    },
     "stable_from_world_seed_and_accept_tick": true,
     "preserves_capability_schema": true,
     "preserves_packet_count": true

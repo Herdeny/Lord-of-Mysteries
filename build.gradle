@@ -177,6 +177,8 @@ tasks.register('checkM2Investigation', Exec) {
             'src/main/java/top/aurora/lordofmysteries/commission/DynamicCaseProfile.java',
             'src/main/java/top/aurora/lordofmysteries/commission/DynamicCaseGenerator.java',
             'src/main/java/top/aurora/lordofmysteries/commission/DynamicCaseService.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/DynamicEvidencePortfolioItem.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/DynamicEvidencePortfolioData.java',
             'src/main/java/top/aurora/lordofmysteries/client/InvestigationBoardScreen.java',
             'src/main/java/top/aurora/lordofmysteries/network/InvestigationBoardS2CPacket.java',
             'src/main/java/top/aurora/lordofmysteries/network/InvestigationBoardActionC2SPacket.java',

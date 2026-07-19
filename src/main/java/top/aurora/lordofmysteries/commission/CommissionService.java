@@ -337,6 +337,7 @@ public final class CommissionService {
                 .withStyle(ChatFormatting.GOLD));
         showCurrentStep(player, data, chain);
         if (DYNAMIC_CASE.equals(definition.id())) {
+            DynamicCaseService.issuePortfolio(player);
             DynamicCaseService.show(player);
         }
         return 1;
@@ -399,6 +400,10 @@ public final class CommissionService {
     public static int abandon(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         if (data.activeCommissionId.isBlank()) return 0;
+        if (DYNAMIC_CASE.equals(ResourceLocation.tryParse(
+                data.activeCommissionId))) {
+            DynamicCaseService.returnPortfolio(player);
+        }
         QuestPartyService.leave(player);
         clearActive(data);
         player.sendSystemMessage(Component.translatable(
@@ -531,6 +536,7 @@ public final class CommissionService {
             giveItem(player, new ItemStack(ModItems.FORMULA_FRAGMENT.get(), 2));
         } else if (DYNAMIC_CASE.equals(definition.id())) {
             data.knownKnowledge.add(id("knowledge/m2/dynamic_case_rotation"));
+            DynamicCaseService.returnPortfolio(player);
         }
         player.sendSystemMessage(Component.translatable(
                 "command.lord_of_mysteries.commission.settled",
@@ -574,6 +580,10 @@ public final class CommissionService {
                             "screen.lord_of_mysteries.investigation_board.nearby_required")
                     .withStyle(ChatFormatting.RED));
             return 0;
+        }
+        if (DynamicCaseService.isActive(data)) {
+            int restoredPortfolio = DynamicCaseService.recoverPortfolio(player);
+            if (restoredPortfolio > 0) return restoredPortfolio;
         }
         CaseRecoveryPolicy.RecoveryPlan plan = CaseRecoveryPolicy.plan(
                 data.activeCommissionId,

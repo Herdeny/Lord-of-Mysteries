@@ -129,9 +129,96 @@ public final class DynamicCaseService {
                         Component.translatable(clueKey(profile, step)))
                 .withStyle(ChatFormatting.GREEN));
         data = MysteryCapability.get(player);
+        synchronizePortfolios(player, profile, data.activeQuestStep);
         sendNextStep(player, data, profile);
         InvestigationBoardService.refresh(player);
         return 1;
+    }
+
+    public static int collectSceneEvidence(
+            ServerPlayer player, BlockPos clickedPosition, ItemStack portfolio) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        DynamicCaseProfile profile = profileFor(player, data);
+        if (profile == null) return noActive(player);
+        if (data.activeQuestStep != 0) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.investigate.wrong_stage")
+                    .withStyle(ChatFormatting.YELLOW));
+            return 0;
+        }
+        if (!DynamicEvidencePortfolioItem.matches(portfolio, profile)) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.portfolio.outdated")
+                    .withStyle(ChatFormatting.RED));
+            return 0;
+        }
+        Optional<BlockPos> target = caseLocationTarget(
+                player.serverLevel(), profile.location());
+        if (target.isEmpty()
+                || target.get().distSqr(clickedPosition)
+                        > FIELD_RANGE * FIELD_RANGE) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.field_unavailable.0")
+                    .withStyle(ChatFormatting.RED));
+            return 0;
+        }
+        return investigate(player, InvestigationRoute.FIELD);
+    }
+
+    public static boolean tryInterviewWitness(
+            ServerPlayer player, Villager villager) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        DynamicCaseProfile profile = profileFor(player, data);
+        if (profile == null || data.activeQuestStep != 1
+                || !villager.getTags().contains(
+                        expectedWitnessTag(profile.archetype()))) {
+            return false;
+        }
+        return investigate(player, InvestigationRoute.FIELD) > 0;
+    }
+
+    public static boolean tryReviewRecords(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (!isActive(data) || data.activeQuestStep != 2) return false;
+        return investigate(player, InvestigationRoute.FIELD) > 0;
+    }
+
+    public static boolean issuePortfolio(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        DynamicCaseProfile profile = profileFor(player, data);
+        if (profile == null || hasPortfolio(player, profile)) return false;
+        givePortfolio(player, profile, data.activeQuestStep,
+                "command.lord_of_mysteries.dynamic_case.portfolio.issued");
+        return true;
+    }
+
+    public static int recoverPortfolio(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        DynamicCaseProfile profile = profileFor(player, data);
+        if (profile == null || hasPortfolio(player, profile)) return 0;
+        givePortfolio(player, profile, data.activeQuestStep,
+                "command.lord_of_mysteries.dynamic_case.portfolio.recovered");
+        return 1;
+    }
+
+    public static void returnPortfolio(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        DynamicCaseProfile profile = profileFor(player, data);
+        if (profile == null) return;
+        boolean removed = false;
+        for (int index = 0;
+                index < player.getInventory().getContainerSize(); index++) {
+            ItemStack stack = player.getInventory().getItem(index);
+            if (DynamicEvidencePortfolioItem.matches(stack, profile)) {
+                stack.shrink(stack.getCount());
+                removed = true;
+            }
+        }
+        if (removed) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.portfolio.returned")
+                    .withStyle(ChatFormatting.GRAY));
+        }
     }
 
     public static int conclude(
@@ -265,8 +352,15 @@ public final class DynamicCaseService {
     private static boolean nearCaseLocation(
             ServerPlayer player, DynamicCaseProfile.CaseLocation location) {
         if (player.level().dimension() != Level.OVERWORLD) return false;
-        ServerLevel level = player.serverLevel();
-        Optional<BlockPos> target = switch (location) {
+        return caseLocationTarget(player.serverLevel(), location)
+                .filter(position -> position.distToCenterSqr(player.position())
+                        <= FIELD_RANGE * FIELD_RANGE)
+                .isPresent();
+    }
+
+    private static Optional<BlockPos> caseLocationTarget(
+            ServerLevel level, DynamicCaseProfile.CaseLocation location) {
+        return switch (location) {
             case MIST_CITY_OUTPOST -> MistCityOutpostSavedData.get(level).outpost();
             case ABANDONED_CHURCH -> Optional.of(
                     InvestigationSiteSavedData.get(level).church()
@@ -278,22 +372,25 @@ public final class DynamicCaseService {
                     InvestigationSiteSavedData.get(level).occultistHut()
                             .orElseGet(() -> InvestigationSiteGenerator.occultistHutTarget(level)));
         };
-        return target.filter(position -> position.distToCenterSqr(player.position())
-                <= FIELD_RANGE * FIELD_RANGE).isPresent();
     }
 
     private static boolean nearWitness(
             ServerPlayer player, DynamicCaseProfile.Archetype archetype) {
-        String tag = switch (archetype) {
-            case MISSING_PERSON -> InvestigationNpcHandler.PRESS_CLERK_TAG;
-            case ANOMALOUS_ITEM -> InvestigationNpcHandler.OCCULT_APPRAISER_TAG;
-            case OCCULT_CRIME -> InvestigationNpcHandler.NIGHTHAWK_CONTACT_TAG;
-        };
+        String tag = expectedWitnessTag(archetype);
         return !player.level().getEntitiesOfClass(
                 Villager.class,
                 player.getBoundingBox().inflate(WITNESS_RANGE),
                 villager -> villager.isAlive() && villager.getTags().contains(tag))
                 .isEmpty();
+    }
+
+    static String expectedWitnessTag(
+            DynamicCaseProfile.Archetype archetype) {
+        return switch (archetype) {
+            case MISSING_PERSON -> InvestigationNpcHandler.PRESS_CLERK_TAG;
+            case ANOMALOUS_ITEM -> InvestigationNpcHandler.OCCULT_APPRAISER_TAG;
+            case OCCULT_CRIME -> InvestigationNpcHandler.NIGHTHAWK_CONTACT_TAG;
+        };
     }
 
     private static boolean hasNewspaper(ServerPlayer player) {
@@ -309,6 +406,51 @@ public final class DynamicCaseService {
     private static QuestChainDefinition activeChain(PlayerMysteryData data) {
         ResourceLocation id = ResourceLocation.tryParse(data.activeQuestChainId);
         return id == null ? null : QuestChainDefinitionManager.get(id);
+    }
+
+    private static void synchronizePortfolios(
+            ServerPlayer player, DynamicCaseProfile profile, int collectedStage) {
+        QuestChainDefinition chain = activeChain(MysteryCapability.get(player));
+        if (chain == null) return;
+        for (ServerPlayer participant : QuestPartyService.participants(player, chain)) {
+            for (int index = 0;
+                    index < participant.getInventory().getContainerSize(); index++) {
+                ItemStack stack = participant.getInventory().getItem(index);
+                if (DynamicEvidencePortfolioItem.matches(stack, profile)) {
+                    DynamicEvidencePortfolioItem.bind(
+                            stack, profile, collectedStage);
+                }
+            }
+        }
+    }
+
+    private static boolean hasPortfolio(
+            ServerPlayer player, DynamicCaseProfile profile) {
+        for (int index = 0;
+                index < player.getInventory().getContainerSize(); index++) {
+            if (DynamicEvidencePortfolioItem.matches(
+                    player.getInventory().getItem(index), profile)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void givePortfolio(
+            ServerPlayer player,
+            DynamicCaseProfile profile,
+            int collectedStage,
+            String messageKey) {
+        ItemStack portfolio = new ItemStack(
+                ModItems.DYNAMIC_EVIDENCE_PORTFOLIO.get());
+        DynamicEvidencePortfolioItem.bind(
+                portfolio, profile, collectedStage);
+        if (!player.getInventory().add(portfolio)) {
+            player.drop(portfolio, false);
+        }
+        player.sendSystemMessage(Component.translatable(
+                        messageKey, profile.instanceId())
+                .withStyle(ChatFormatting.AQUA));
     }
 
     private static void sendSlot(
