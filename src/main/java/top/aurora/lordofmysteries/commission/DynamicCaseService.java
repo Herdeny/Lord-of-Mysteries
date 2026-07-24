@@ -92,6 +92,8 @@ public final class DynamicCaseService {
                         "command.lord_of_mysteries.dynamic_case.directive",
                         Component.translatable(directive.translationKey()))
                 .withStyle(ChatFormatting.AQUA));
+        expireOrganizationResponse(
+                player, data, currentCaseDay(player), true);
         sendContinuityState(player, data);
         sendScheduleState(player, profile);
         if (!active) {
@@ -443,6 +445,10 @@ public final class DynamicCaseService {
                         debrief.completedTick(),
                         feedback.adjustment(),
                         DynamicCaseHistoryEntry.FollowUpStatus.PENDING));
+        DynamicCaseRelationshipPolicy.recordCaseResult(
+                data.dynamicCaseContactStandings,
+                profile.subject(),
+                debrief.grade());
         data.markDirty(PlayerDataSection.SOCIAL);
     }
 
@@ -459,6 +465,8 @@ public final class DynamicCaseService {
                                     Component.translatable(entry.organization()
                                             .translationKey("organization")))
                             .withStyle(ChatFormatting.GOLD));
+                    sendContactStanding(
+                            player, data, entry.subject());
                 });
     }
 
@@ -502,11 +510,31 @@ public final class DynamicCaseService {
         return 1;
     }
 
+    public static int showContacts(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.dynamic_case.contacts.title")
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
+        for (DynamicCaseProfile.Subject contact
+                : DynamicCaseProfile.Subject.values()) {
+            sendContactStanding(player, data, contact);
+        }
+        return 1;
+    }
+
     public static int claimFollowUp(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         if (!data.activeCommissionId.isBlank()) {
             player.sendSystemMessage(Component.translatable(
                             "command.lord_of_mysteries.dynamic_case.follow_up.active_case")
+                    .withStyle(ChatFormatting.YELLOW));
+            return 0;
+        }
+        long currentDay = currentCaseDay(player);
+        expireOrganizationResponse(player, data, currentDay, true);
+        if (data.organizationResponseTask != null) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.response.active")
                     .withStyle(ChatFormatting.YELLOW));
             return 0;
         }
@@ -527,6 +555,8 @@ public final class DynamicCaseService {
         }
 
         DynamicCaseHistoryEntry entry = pending.get();
+        ServerLevel overworld = player.getServer().getLevel(Level.OVERWORLD);
+        if (overworld == null) return 0;
         DynamicCaseContinuityPolicy.Reward reward =
                 DynamicCaseContinuityPolicy.reward(entry.grade());
         data.moneyPence = saturatingAdd(data.moneyPence, reward.moneyPence());
@@ -553,6 +583,14 @@ public final class DynamicCaseService {
                 break;
             }
         }
+        DynamicCaseWeeklyDirective directive =
+                DynamicCaseWeeklyDirective.select(
+                        overworld.getSeed(),
+                        entry.caseWeek(),
+                        entry.organization());
+        data.organizationResponseTask =
+                DynamicCaseResponsePolicy.assign(
+                        entry, directive, currentDay);
         data.markDirty(PlayerDataSection.SOCIAL);
         if (Float.compare(previousPressure, data.insanityPressure) != 0) {
             data.markDirty(PlayerDataSection.CORE);
@@ -567,6 +605,166 @@ public final class DynamicCaseService {
                         reward.reputation(),
                         Math.round(previousPressure - data.insanityPressure))
                 .withStyle(ChatFormatting.GREEN));
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.dynamic_case.response.assigned",
+                        Component.translatable(directive.translationKey()),
+                        Component.translatable(entry.organization()
+                                .translationKey("organization")),
+                        Component.translatable(entry.subject()
+                                .translationKey("subject")),
+                        data.organizationResponseTask.expiresDay() + 1L)
+                .withStyle(ChatFormatting.GOLD));
+        InvestigationBoardService.refresh(player);
+        return 1;
+    }
+
+    public static int showOrganizationResponse(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        expireOrganizationResponse(
+                player, data, currentCaseDay(player), true);
+        DynamicCaseResponseTask task = data.organizationResponseTask;
+        if (task == null) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.response.none")
+                    .withStyle(ChatFormatting.GRAY));
+            return 0;
+        }
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.dynamic_case.response.status",
+                        Component.translatable(task.directive().translationKey()),
+                        Component.translatable(task.organization()
+                                .translationKey("organization")),
+                        Component.translatable(task.contact()
+                                .translationKey("subject")),
+                        Component.translatable(
+                                "dynamic_case.lord_of_mysteries.response_stage."
+                                        + task.stage().id()),
+                        task.expiresDay() + 1L)
+                .withStyle(task.stage()
+                        == DynamicCaseResponseTask.Stage.ASSIGNED
+                                ? ChatFormatting.GOLD
+                                : ChatFormatting.AQUA));
+        sendContactStanding(player, data, task.contact());
+        player.sendSystemMessage(Component.translatable(
+                        task.stage()
+                                == DynamicCaseResponseTask.Stage.ASSIGNED
+                                        ? "command.lord_of_mysteries.dynamic_case.response.next_briefing"
+                                        : "command.lord_of_mysteries.dynamic_case.response.next_submit")
+                .withStyle(ChatFormatting.GRAY));
+        return 1;
+    }
+
+    public static boolean tryBriefOrganizationResponse(
+            ServerPlayer player,
+            DynamicCaseProfile.Organization organization) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        expireOrganizationResponse(
+                player, data, currentCaseDay(player), true);
+        DynamicCaseResponseTask task = data.organizationResponseTask;
+        if (task == null || task.organization() != organization) {
+            return false;
+        }
+        if (task.stage() == DynamicCaseResponseTask.Stage.BRIEFED) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.response.already_briefed")
+                    .withStyle(ChatFormatting.GRAY));
+            return true;
+        }
+        data.organizationResponseTask = task.withStage(
+                DynamicCaseResponseTask.Stage.BRIEFED);
+        data.markDirty(PlayerDataSection.SOCIAL);
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.dynamic_case.response.briefed",
+                        Component.translatable(task.directive().translationKey()),
+                        Component.translatable(task.contact()
+                                .translationKey("subject")))
+                .withStyle(ChatFormatting.AQUA));
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.dynamic_case.response.next_submit")
+                .withStyle(ChatFormatting.GRAY));
+        return true;
+    }
+
+    public static int submitOrganizationResponse(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        expireOrganizationResponse(
+                player, data, currentCaseDay(player), true);
+        DynamicCaseResponseTask task = data.organizationResponseTask;
+        if (task == null) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.response.none")
+                    .withStyle(ChatFormatting.GRAY));
+            return 0;
+        }
+        if (task.stage() != DynamicCaseResponseTask.Stage.BRIEFED) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.response.briefing_required")
+                    .withStyle(ChatFormatting.YELLOW));
+            return 0;
+        }
+        if (!InvestigationBoardService.isNearBoard(player)) {
+            player.sendSystemMessage(Component.translatable(
+                            "screen.lord_of_mysteries.investigation_board.nearby_required")
+                    .withStyle(ChatFormatting.RED));
+            return 0;
+        }
+
+        DynamicCaseResponsePolicy.Reward reward =
+                DynamicCaseResponsePolicy.reward(task.directive());
+        data.moneyPence = saturatingAdd(
+                data.moneyPence, reward.moneyPence());
+        ResourceLocation organizationId = organizationId(task.organization());
+        data.orgReputation.put(
+                organizationId,
+                saturatingAdd(
+                        data.orgReputation.getOrDefault(organizationId, 0),
+                        reward.reputation()));
+        int standing = DynamicCaseRelationshipPolicy.adjust(
+                data.dynamicCaseContactStandings,
+                task.contact(),
+                reward.contactStanding());
+        data.organizationResponseTask = null;
+        data.markDirty(PlayerDataSection.SOCIAL);
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.dynamic_case.response.completed",
+                        Component.translatable(task.directive().translationKey()),
+                        CommissionCurrency.format(reward.moneyPence()),
+                        reward.reputation(),
+                        reward.contactStanding())
+                .withStyle(ChatFormatting.GREEN));
+        sendContactStanding(player, task.contact(), standing);
+        InvestigationBoardService.refresh(player);
+        return 1;
+    }
+
+    public static int abandonOrganizationResponse(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        expireOrganizationResponse(
+                player, data, currentCaseDay(player), true);
+        DynamicCaseResponseTask task = data.organizationResponseTask;
+        if (task == null) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.response.none")
+                    .withStyle(ChatFormatting.GRAY));
+            return 0;
+        }
+        if (!InvestigationBoardService.isNearBoard(player)) {
+            player.sendSystemMessage(Component.translatable(
+                            "screen.lord_of_mysteries.investigation_board.nearby_required")
+                    .withStyle(ChatFormatting.RED));
+            return 0;
+        }
+        int standing = DynamicCaseRelationshipPolicy.adjust(
+                data.dynamicCaseContactStandings,
+                task.contact(), -1);
+        data.organizationResponseTask = null;
+        data.markDirty(PlayerDataSection.SOCIAL);
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.dynamic_case.response.abandoned",
+                        Component.translatable(task.contact()
+                                .translationKey("subject")))
+                .withStyle(ChatFormatting.YELLOW));
+        sendContactStanding(player, task.contact(), standing);
         InvestigationBoardService.refresh(player);
         return 1;
     }
@@ -836,6 +1034,79 @@ public final class DynamicCaseService {
                             "command.lord_of_mysteries.dynamic_case.follow_up.reminder")
                     .withStyle(ChatFormatting.GOLD));
         }
+        if (data.organizationResponseTask != null) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.response.reminder",
+                            Component.translatable(
+                                    data.organizationResponseTask.directive()
+                                            .translationKey()))
+                    .withStyle(ChatFormatting.AQUA));
+        }
+    }
+
+    private static void sendContactStanding(
+            ServerPlayer player,
+            PlayerMysteryData data,
+            DynamicCaseProfile.Subject contact) {
+        sendContactStanding(
+                player, contact,
+                data.dynamicCaseContactStandings.getOrDefault(contact, 0));
+    }
+
+    private static void sendContactStanding(
+            ServerPlayer player,
+            DynamicCaseProfile.Subject contact,
+            int standing) {
+        DynamicCaseRelationshipPolicy.Attitude attitude =
+                DynamicCaseRelationshipPolicy.attitude(standing);
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.dynamic_case.contacts.entry",
+                        Component.translatable(
+                                contact.translationKey("subject")),
+                        standing,
+                        Component.translatable(attitude.translationKey()))
+                .withStyle(standing > 2
+                        ? ChatFormatting.GREEN
+                        : standing < -2
+                                ? ChatFormatting.RED : ChatFormatting.GRAY));
+    }
+
+    private static void expireOrganizationResponse(
+            ServerPlayer player,
+            PlayerMysteryData data,
+            long currentDay,
+            boolean announce) {
+        DynamicCaseResponseTask task = data.organizationResponseTask;
+        if (!DynamicCaseResponsePolicy.isExpired(task, currentDay)) return;
+        int standing = DynamicCaseRelationshipPolicy.adjust(
+                data.dynamicCaseContactStandings,
+                task.contact(), -1);
+        data.organizationResponseTask = null;
+        data.markDirty(PlayerDataSection.SOCIAL);
+        if (!announce) return;
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.dynamic_case.response.expired",
+                        Component.translatable(task.contact()
+                                .translationKey("subject")))
+                .withStyle(ChatFormatting.RED));
+        sendContactStanding(player, task.contact(), standing);
+    }
+
+    private static long currentCaseDay(ServerPlayer player) {
+        ServerLevel overworld = player.getServer().getLevel(Level.OVERWORLD);
+        long gameTime = overworld == null
+                ? player.level().getGameTime()
+                : overworld.getGameTime();
+        return Math.floorDiv(
+                Math.max(0L, gameTime),
+                DynamicCaseGenerator.TICKS_PER_CASE_DAY);
+    }
+
+    private static ResourceLocation organizationId(
+            DynamicCaseProfile.Organization organization) {
+        return ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID,
+                organization.reputationPath());
     }
 
     private static String clueKey(DynamicCaseProfile profile, int step) {

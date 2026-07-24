@@ -208,9 +208,22 @@ public final class ProjectMysteryCommands {
                                 .then(Commands.literal("history").executes(context ->
                                         DynamicCaseService.showHistory(
                                                 context.getSource().getPlayerOrException())))
+                                .then(Commands.literal("contacts").executes(context ->
+                                        DynamicCaseService.showContacts(
+                                                context.getSource().getPlayerOrException())))
                                 .then(Commands.literal("followup").executes(context ->
                                         DynamicCaseService.claimFollowUp(
                                                 context.getSource().getPlayerOrException())))
+                                .then(Commands.literal("response")
+                                        .executes(context ->
+                                                DynamicCaseService.showOrganizationResponse(
+                                                        context.getSource().getPlayerOrException()))
+                                        .then(Commands.literal("submit").executes(context ->
+                                                DynamicCaseService.submitOrganizationResponse(
+                                                        context.getSource().getPlayerOrException())))
+                                        .then(Commands.literal("abandon").executes(context ->
+                                                DynamicCaseService.abandonOrganizationResponse(
+                                                        context.getSource().getPlayerOrException()))))
                                 .then(Commands.literal("investigate")
                                         .then(Commands.literal("field").executes(context ->
                                                 DynamicCaseService.investigate(

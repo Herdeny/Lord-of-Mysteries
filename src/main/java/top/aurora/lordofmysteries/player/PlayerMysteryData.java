@@ -19,6 +19,8 @@ import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 import top.aurora.lordofmysteries.commission.CaseDebriefRecord;
 import top.aurora.lordofmysteries.commission.CaseHypothesisRecord;
 import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
+import top.aurora.lordofmysteries.commission.DynamicCaseProfile;
+import top.aurora.lordofmysteries.commission.DynamicCaseResponseTask;
 
 /**
  * 玩家非凡者数据（设计文档 §5.1）。
@@ -31,7 +33,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 20;
+    public static final int CURRENT_SCHEMA_VERSION = 21;
     private static final int MAX_MIGRATION_BACKUPS = 3;
     private static final int MAX_MIGRATION_HISTORY = 64;
 
@@ -156,6 +158,9 @@ public class PlayerMysteryData {
             new HashMap<>();
     public List<DynamicCaseHistoryEntry> dynamicCaseHistory =
             new ArrayList<>();
+    public Map<DynamicCaseProfile.Subject, Integer>
+            dynamicCaseContactStandings = new HashMap<>();
+    public DynamicCaseResponseTask organizationResponseTask = null;
 
     // 知识系统。保存玩家已经解锁的知识条目 ID，供手册、仪式和配方门槛读取。
     public Set<ResourceLocation> knownKnowledge = new HashSet<>();
@@ -310,6 +315,9 @@ public class PlayerMysteryData {
         this.caseDebriefs = new HashMap<>(src.caseDebriefs);
         this.caseHypotheses = new HashMap<>(src.caseHypotheses);
         this.dynamicCaseHistory = new ArrayList<>(src.dynamicCaseHistory);
+        this.dynamicCaseContactStandings =
+                new HashMap<>(src.dynamicCaseContactStandings);
+        this.organizationResponseTask = src.organizationResponseTask;
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
         this.actingHistory = new HashMap<>(src.actingHistory);
         this.actingCounters = new HashMap<>(src.actingCounters);
@@ -471,6 +479,18 @@ public class PlayerMysteryData {
             if (entry != null) dynamicCaseHistoryTag.add(entry.save());
         }
         tag.put("dynamic_case_history", dynamicCaseHistoryTag);
+
+        CompoundTag contactStandingsTag = new CompoundTag();
+        dynamicCaseContactStandings.forEach((contact, standing) -> {
+            if (contact != null && standing != null) {
+                contactStandingsTag.putInt(contact.id(), standing);
+            }
+        });
+        tag.put("dynamic_case_contact_standings", contactStandingsTag);
+        tag.put("organization_response_task",
+                organizationResponseTask == null
+                        ? new CompoundTag()
+                        : organizationResponseTask.save());
 
         ListTag known = new ListTag();
         // ListTag 只能存 Tag 对象，因此 ResourceLocation 统一序列化成字符串。
@@ -730,6 +750,54 @@ public class PlayerMysteryData {
             }
         }
 
+        dynamicCaseContactStandings.clear();
+        Tag rawContactStandings =
+                tag.get("dynamic_case_contact_standings");
+        if (rawContactStandings != null
+                && !(rawContactStandings instanceof CompoundTag)) {
+            addOrphan("dynamic_case_contact_standings",
+                    "invalid_container", rawContactStandings.copy());
+        } else if (rawContactStandings
+                instanceof CompoundTag contactStandingsTag) {
+            for (String key : contactStandingsTag.getAllKeys()) {
+                DynamicCaseProfile.Subject contact =
+                        DynamicCaseProfile.Subject.fromId(key);
+                Tag rawStanding = contactStandingsTag.get(key);
+                if (contact != null && rawStanding != null
+                        && rawStanding.getId() == Tag.TAG_INT) {
+                    dynamicCaseContactStandings.put(
+                            contact, contactStandingsTag.getInt(key));
+                    continue;
+                }
+                CompoundTag payload = new CompoundTag();
+                payload.putString("contact", key);
+                if (rawStanding != null) {
+                    payload.put("value", rawStanding.copy());
+                }
+                addOrphan("dynamic_case_contact_standings",
+                        contact == null ? "invalid_contact"
+                                : "invalid_standing",
+                        payload);
+            }
+        }
+
+        organizationResponseTask = null;
+        Tag rawResponseTask = tag.get("organization_response_task");
+        if (rawResponseTask != null
+                && !(rawResponseTask instanceof CompoundTag)) {
+            addOrphan("organization_response_task",
+                    "invalid_container", rawResponseTask.copy());
+        } else if (rawResponseTask instanceof CompoundTag responseTaskTag
+                && !responseTaskTag.isEmpty()) {
+            if (DynamicCaseResponseTask.isValid(responseTaskTag)) {
+                organizationResponseTask =
+                        DynamicCaseResponseTask.load(responseTaskTag);
+            } else {
+                addOrphan("organization_response_task",
+                        "invalid_record", responseTaskTag.copy());
+            }
+        }
+
         knownKnowledge.clear();
         ListTag known = tag.getList("known_knowledge", Tag.TAG_STRING);
         for (int i = 0; i < known.size(); i++) {
@@ -944,6 +1012,8 @@ public class PlayerMysteryData {
         hash = mix(hash, caseDebriefs);
         hash = mix(hash, caseHypotheses);
         hash = mix(hash, dynamicCaseHistory);
+        hash = mix(hash, dynamicCaseContactStandings);
+        hash = mix(hash, organizationResponseTask);
         hash = mix(hash, orgReputation);
         return hash;
     }

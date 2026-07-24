@@ -1,11 +1,14 @@
 package top.aurora.lordofmysteries.player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 import net.minecraft.resources.ResourceLocation;
 
 import top.aurora.lordofmysteries.commission.DynamicCaseContinuityPolicy;
+import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
+import top.aurora.lordofmysteries.commission.DynamicCaseRelationshipPolicy;
 import top.aurora.lordofmysteries.potion.PotionQuality;
 
 public final class PlayerMysteryDataSanitizer {
@@ -64,6 +67,29 @@ public final class PlayerMysteryDataSanitizer {
         } else {
             repairs += DynamicCaseContinuityPolicy.sanitize(
                     data.dynamicCaseHistory);
+        }
+        if (data.dynamicCaseContactStandings == null) {
+            data.dynamicCaseContactStandings = new HashMap<>();
+            repairs++;
+        } else {
+            repairs += DynamicCaseRelationshipPolicy.sanitize(
+                    data.dynamicCaseContactStandings);
+        }
+        if (data.organizationResponseTask != null) {
+            boolean matchingHistory = data.dynamicCaseHistory.stream()
+                    .filter(entry -> entry != null)
+                    .anyMatch(entry -> entry.instanceId().equals(
+                                    data.organizationResponseTask.instanceId())
+                            && entry.organization()
+                                    == data.organizationResponseTask.organization()
+                            && entry.subject()
+                                    == data.organizationResponseTask.contact()
+                            && entry.followUpStatus()
+                                    == DynamicCaseHistoryEntry.FollowUpStatus.CLAIMED);
+            if (!matchingHistory) {
+                data.organizationResponseTask = null;
+                repairs++;
+            }
         }
         int originalKnowledge = data.knownKnowledge.size();
         data.knownKnowledge.removeIf(id -> id == null);

@@ -11,6 +11,7 @@ DATA = ROOT / "src" / "main" / "resources" / "data" / "lord_of_mysteries"
 LANG = ROOT / "src" / "main" / "resources" / "assets" / "lord_of_mysteries" / "lang"
 COMMANDS = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "command" / "ProjectMysteryCommands.java"
 PLAYER_DATA = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "player" / "PlayerMysteryData.java"
+PLAYER_FIXER = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "player" / "PlayerMysteryDataFixer.java"
 SITE_GENERATOR = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "world" / "InvestigationSiteGenerator.java"
 ITEMS = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "registry" / "ModItems.java"
 COMMISSION_SERVICE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "CommissionService.java"
@@ -66,6 +67,9 @@ DYNAMIC_FEEDBACK = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmy
 DYNAMIC_HISTORY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseHistoryEntry.java"
 DYNAMIC_CONTINUITY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseContinuityPolicy.java"
 DYNAMIC_DIRECTIVE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseWeeklyDirective.java"
+DYNAMIC_RESPONSE_TASK = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseResponseTask.java"
+DYNAMIC_RESPONSE_POLICY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseResponsePolicy.java"
+DYNAMIC_RELATIONSHIP = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseRelationshipPolicy.java"
 PARTY_POLICY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestPartyPolicy.java"
 QUEST_ITEM_DELIVERY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestItemDelivery.java"
 
@@ -342,6 +346,69 @@ def main():
     require("recordCompletion" in commission_source
             and "announceFollowUp" in commission_source,
             "dynamic case completion is not connected to continuity")
+    response = continuity["organization_response"]
+    response_task_source = DYNAMIC_RESPONSE_TASK.read_text(encoding="utf-8")
+    response_policy_source = DYNAMIC_RESPONSE_POLICY.read_text(encoding="utf-8")
+    relationship_source = DYNAMIC_RELATIONSHIP.read_text(encoding="utf-8")
+    player_data_source = PLAYER_DATA.read_text(encoding="utf-8")
+    npc_source = NPC_HANDLER.read_text(encoding="utf-8")
+    fixer_source = PLAYER_FIXER.read_text(encoding="utf-8")
+    command_source = COMMANDS.read_text(encoding="utf-8")
+    require(
+        f'TASK_DURATION_DAYS = {response["duration_days"]}L'
+        in response_policy_source,
+        "organization response duration drifted")
+    require(f'"{response["task_key"]}"' in player_data_source,
+            "organization response task key drifted")
+    require(f'"{response["contact_standings_key"]}"' in player_data_source,
+            "dynamic contact standings key drifted")
+    require("organization_response_state" in fixer_source
+            and "21" in fixer_source,
+            "organization response schema migration is missing")
+    for stage in response["stages"]:
+        require(stage in response_task_source,
+                f"organization response stage {stage} is missing")
+    for command in response["commands"]:
+        require(f'literal("{command}")' in command_source,
+                f"organization response command {command} is missing")
+    minimum, maximum = response["contact_standing_bounds"]
+    require(f"MIN_STANDING = {minimum}" in relationship_source
+            and f"MAX_STANDING = {maximum}" in relationship_source,
+            "dynamic contact standing bounds drifted")
+    for attitude in response["contact_attitudes"]:
+        require(attitude in relationship_source,
+                f"dynamic contact attitude {attitude} is missing")
+    for grade, adjustment in response["case_grade_standing"].items():
+        require(f"case {grade} -> {adjustment}" in relationship_source,
+                f"dynamic contact grade result {grade} drifted")
+    for organization, npc_tag in response["npc_tags"].items():
+        require(organization in npc_source and f'"{npc_tag}"' in npc_source,
+                f"organization response NPC {organization} is missing")
+    require(not response["requires_organization_npc_briefing"]
+            or ("tryBriefOrganizationResponse" in dynamic_service
+                and "tryBriefOrganizationResponse" in npc_source),
+            "organization response no longer requires an organization NPC")
+    require(not response["requires_board_submission"]
+            or ("submitOrganizationResponse" in dynamic_service
+                and "InvestigationBoardService.isNearBoard" in dynamic_service),
+            "organization response submission no longer requires a board")
+    require(not response["abandon_requires_board"]
+            or ("abandonOrganizationResponse" in dynamic_service
+                and "InvestigationBoardService.isNearBoard" in dynamic_service),
+            "organization response abandonment no longer requires a board")
+    require(not response["expiry_and_abandon_release_slot"]
+            or ("isExpired" in dynamic_service
+                and "organizationResponseTask = null" in dynamic_service),
+            "organization response cannot release an expired task slot")
+    for reward in response["directive_rewards"].values():
+        for directive in reward["directives"]:
+            require(directive in response_policy_source,
+                    f"organization response directive {directive} is missing")
+        signature = (
+            f"new Reward({reward['money_pence']}L, "
+            f"{reward['reputation']}, {reward['contact_standing']})")
+        require(signature in response_policy_source,
+                "organization response reward drifted")
     item_registry = ITEMS.read_text(encoding="utf-8")
     for evidence_id in dynamic["sealed_evidence_items"]:
         path = evidence_id.split(":", 1)[1]
@@ -722,7 +789,8 @@ def main():
         "recovery, persistent case debriefs, "
         "the deterministic daily newspaper, versioned city service desks, "
         "and the recoverable eight-slot dynamic case rotation with physical "
-        "scene, witness, and records interactions"
+        "scene, witness, and records interactions, persistent contact "
+        "attitudes, and two-stage physical organization response tasks"
     )
 
 

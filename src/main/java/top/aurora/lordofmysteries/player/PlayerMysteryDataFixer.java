@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
+import top.aurora.lordofmysteries.commission.DynamicCaseResponseTask;
 
 public final class PlayerMysteryDataFixer {
 
@@ -26,7 +27,9 @@ public final class PlayerMysteryDataFixer {
             new DataFix("case_hypothesis_workspace", 19,
                     PlayerMysteryDataFixer::initializeCaseHypothesisWorkspace),
             new DataFix("dynamic_case_history", 20,
-                    PlayerMysteryDataFixer::initializeDynamicCaseHistory));
+                    PlayerMysteryDataFixer::initializeDynamicCaseHistory),
+            new DataFix("organization_response_state", 21,
+                    PlayerMysteryDataFixer::initializeOrganizationResponseState));
 
     private PlayerMysteryDataFixer() {}
 
@@ -175,6 +178,31 @@ public final class PlayerMysteryDataFixer {
                     "invalid_legacy_payload", rawHistory.copy()));
         }
         tag.put("dynamic_case_history", new ListTag());
+    }
+
+    private static void initializeOrganizationResponseState(
+            CompoundTag tag, List<CompoundTag> orphanedEntries) {
+        Tag rawStandings = tag.get("dynamic_case_contact_standings");
+        if (!(rawStandings instanceof CompoundTag)) {
+            if (rawStandings != null) {
+                orphanedEntries.add(orphan(
+                        "dynamic_case_contact_standings",
+                        "invalid_legacy_payload", rawStandings.copy()));
+            }
+            tag.put("dynamic_case_contact_standings", new CompoundTag());
+        }
+
+        Tag rawTask = tag.get("organization_response_task");
+        boolean validTask = rawTask instanceof CompoundTag taskTag
+                && (taskTag.isEmpty()
+                        || DynamicCaseResponseTask.isValid(taskTag));
+        if (validTask) return;
+        if (rawTask != null) {
+            orphanedEntries.add(orphan(
+                    "organization_response_task",
+                    "invalid_legacy_payload", rawTask.copy()));
+        }
+        tag.put("organization_response_task", new CompoundTag());
     }
 
     private static void putBooleanDefault(CompoundTag tag, String key,

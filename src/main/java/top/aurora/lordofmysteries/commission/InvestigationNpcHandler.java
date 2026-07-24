@@ -76,6 +76,11 @@ public final class InvestigationNpcHandler {
         if (DynamicCaseManifestationService.tryInteract(player, villager)) return;
         if (DynamicCaseService.tryInterviewWitness(player, villager)) return;
         if (villager.getTags().contains(PRESS_CLERK_TAG)) {
+            if (DynamicCaseService.tryBriefOrganizationResponse(
+                    player,
+                    DynamicCaseProfile.Organization.MIST_CITY_PRESS)) {
+                return;
+            }
             if (CityLifeService.tryWorkPressShift(player)) return;
             CommissionService.talkPressClerk(player);
         } else if (villager.getTags().contains(NIGHTHAWK_CONTACT_TAG)) {
@@ -85,8 +90,18 @@ public final class InvestigationNpcHandler {
         } else if (villager.getTags().contains(OCCULT_APPRAISER_TAG)) {
             CommissionService.interactOccultAppraiser(player);
         } else if (villager.getTags().contains(DETECTIVE_CLERK_TAG)) {
+            if (DynamicCaseService.tryBriefOrganizationResponse(
+                    player,
+                    DynamicCaseProfile.Organization.DETECTIVE_AGENCY)) {
+                return;
+            }
             CityServiceDeskService.interactDetectiveClerk(player);
         } else if (villager.getTags().contains(CONSTABLE_TAG)) {
+            if (DynamicCaseService.tryBriefOrganizationResponse(
+                    player,
+                    DynamicCaseProfile.Organization.CONSTABULARY)) {
+                return;
+            }
             CityServiceDeskService.interactConstable(player);
         } else if (villager.getTags().contains(ESCORT_REPORTER_TAG)) {
             player.sendSystemMessage(Component.translatable(

@@ -77,6 +77,14 @@ public record DynamicCaseProfile(
         public String id() {
             return name().toLowerCase(Locale.ROOT);
         }
+
+        public static Subject fromId(String value) {
+            if (value == null) return null;
+            for (Subject subject : values()) {
+                if (subject.id().equals(value)) return subject;
+            }
+            return null;
+        }
     }
 
     public enum Organization implements SlotOption {

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "capability_schema": 20,
+  "capability_schema": 21,
   "data_counts": {
     "commissions": 4,
     "quest_chains": 4
@@ -147,6 +147,59 @@
         "B": {"money_pence": 4, "reputation": 0, "pressure_recovery": 0},
         "C": {"money_pence": 2, "reputation": 0, "pressure_recovery": 0},
         "D": {"money_pence": 0, "reputation": 1, "pressure_recovery": 4}
+      },
+      "organization_response": {
+        "task_key": "organization_response_task",
+        "contact_standings_key": "dynamic_case_contact_standings",
+        "duration_days": 3,
+        "stages": ["ASSIGNED", "BRIEFED"],
+        "commands": ["contacts", "response", "submit", "abandon"],
+        "requires_organization_npc_briefing": true,
+        "requires_board_submission": true,
+        "abandon_requires_board": true,
+        "expiry_and_abandon_release_slot": true,
+        "contact_standing_bounds": [-20, 20],
+        "contact_attitudes": [
+          "HOSTILE",
+          "WARY",
+          "NEUTRAL",
+          "TRUSTING",
+          "ALLIED"
+        ],
+        "case_grade_standing": {
+          "S": 3,
+          "A": 2,
+          "B": 1,
+          "C": 0,
+          "D": -2
+        },
+        "npc_tags": {
+          "DETECTIVE_AGENCY": "lom_detective_clerk",
+          "MIST_CITY_PRESS": "lom_press_clerk",
+          "CONSTABULARY": "lom_constable"
+        },
+        "directive_rewards": {
+          "audit": {
+            "directives": [
+              "PATTERN_AUDIT",
+              "SOURCE_VERIFICATION",
+              "CHAIN_OF_CUSTODY"
+            ],
+            "money_pence": 8,
+            "reputation": 1,
+            "contact_standing": 1
+          },
+          "relationship": {
+            "directives": [
+              "CLIENT_REINTERVIEW",
+              "PUBLIC_REASSURANCE",
+              "DISTRICT_PATROL"
+            ],
+            "money_pence": 6,
+            "reputation": 1,
+            "contact_standing": 2
+          }
+        }
       }
     },
     "sealed_evidence_items": [
@@ -280,7 +333,11 @@
     "recover",
     "rotation",
     "history",
+    "contacts",
     "followup",
+    "response",
+    "submit",
+    "abandon",
     "investigate",
     "field",
     "desk",
@@ -385,6 +442,14 @@
     "command.lord_of_mysteries.dynamic_case.history.title",
     "command.lord_of_mysteries.dynamic_case.follow_up.available",
     "command.lord_of_mysteries.dynamic_case.follow_up.claimed",
+    "command.lord_of_mysteries.dynamic_case.contacts.title",
+    "command.lord_of_mysteries.dynamic_case.contacts.entry",
+    "command.lord_of_mysteries.dynamic_case.response.assigned",
+    "command.lord_of_mysteries.dynamic_case.response.status",
+    "command.lord_of_mysteries.dynamic_case.response.briefed",
+    "command.lord_of_mysteries.dynamic_case.response.completed",
+    "command.lord_of_mysteries.dynamic_case.response.abandoned",
+    "command.lord_of_mysteries.dynamic_case.response.expired",
     "command.lord_of_mysteries.dynamic_case.time.open",
     "command.lord_of_mysteries.dynamic_case.feedback.positive",
     "message.lord_of_mysteries.dynamic_case.evidence.outdated",
@@ -395,6 +460,10 @@
     "dynamic_case.lord_of_mysteries.directive.pattern_audit",
     "dynamic_case.lord_of_mysteries.follow_up.priority_briefing",
     "dynamic_case.lord_of_mysteries.follow_up_status.pending",
+    "dynamic_case.lord_of_mysteries.response_stage.assigned",
+    "dynamic_case.lord_of_mysteries.response_stage.briefed",
+    "dynamic_case.lord_of_mysteries.contact_attitude.neutral",
+    "dynamic_case.lord_of_mysteries.contact_attitude.allied",
     "dynamic_case.lord_of_mysteries.relationship.editorial_supervisor",
     "dynamic_case.lord_of_mysteries.schedule.press_morning",
     "entity.lord_of_mysteries.dynamic_case_subject",

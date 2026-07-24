@@ -31,6 +31,14 @@ public enum DynamicCaseWeeklyDirective {
         return "dynamic_case.lord_of_mysteries.directive." + id();
     }
 
+    public static DynamicCaseWeeklyDirective fromId(String value) {
+        if (value == null) return null;
+        for (DynamicCaseWeeklyDirective directive : values()) {
+            if (directive.id().equals(value)) return directive;
+        }
+        return null;
+    }
+
     public static DynamicCaseWeeklyDirective select(
             long worldSeed,
             long caseWeek,
