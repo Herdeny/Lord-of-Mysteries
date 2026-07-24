@@ -18,6 +18,7 @@ import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 import top.aurora.lordofmysteries.commission.CaseDebriefRecord;
 import top.aurora.lordofmysteries.commission.CaseHypothesisRecord;
+import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
 
 /**
  * 玩家非凡者数据（设计文档 §5.1）。
@@ -30,7 +31,7 @@ import top.aurora.lordofmysteries.commission.CaseHypothesisRecord;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 19;
+    public static final int CURRENT_SCHEMA_VERSION = 20;
     private static final int MAX_MIGRATION_BACKUPS = 3;
     private static final int MAX_MIGRATION_HISTORY = 64;
 
@@ -153,6 +154,8 @@ public class PlayerMysteryData {
     public Map<ResourceLocation, CaseDebriefRecord> caseDebriefs = new HashMap<>();
     public Map<ResourceLocation, CaseHypothesisRecord> caseHypotheses =
             new HashMap<>();
+    public List<DynamicCaseHistoryEntry> dynamicCaseHistory =
+            new ArrayList<>();
 
     // 知识系统。保存玩家已经解锁的知识条目 ID，供手册、仪式和配方门槛读取。
     public Set<ResourceLocation> knownKnowledge = new HashSet<>();
@@ -306,6 +309,7 @@ public class PlayerMysteryData {
         this.commissionCooldowns = new HashMap<>(src.commissionCooldowns);
         this.caseDebriefs = new HashMap<>(src.caseDebriefs);
         this.caseHypotheses = new HashMap<>(src.caseHypotheses);
+        this.dynamicCaseHistory = new ArrayList<>(src.dynamicCaseHistory);
         this.knownKnowledge = new HashSet<>(src.knownKnowledge);
         this.actingHistory = new HashMap<>(src.actingHistory);
         this.actingCounters = new HashMap<>(src.actingCounters);
@@ -461,6 +465,12 @@ public class PlayerMysteryData {
             }
         });
         tag.put("case_hypotheses", caseHypothesisTag);
+
+        ListTag dynamicCaseHistoryTag = new ListTag();
+        for (DynamicCaseHistoryEntry entry : dynamicCaseHistory) {
+            if (entry != null) dynamicCaseHistoryTag.add(entry.save());
+        }
+        tag.put("dynamic_case_history", dynamicCaseHistoryTag);
 
         ListTag known = new ListTag();
         // ListTag 只能存 Tag 对象，因此 ResourceLocation 统一序列化成字符串。
@@ -698,6 +708,28 @@ public class PlayerMysteryData {
             }
         }
 
+        dynamicCaseHistory.clear();
+        Tag rawDynamicCaseHistory = tag.get("dynamic_case_history");
+        if (rawDynamicCaseHistory != null
+                && (!(rawDynamicCaseHistory instanceof ListTag historyTag)
+                        || !historyTag.isEmpty()
+                        && historyTag.getElementType() != Tag.TAG_COMPOUND)) {
+            addOrphan("dynamic_case_history", "invalid_container",
+                    rawDynamicCaseHistory.copy());
+        } else if (rawDynamicCaseHistory instanceof ListTag historyTag) {
+            for (int index = 0; index < historyTag.size(); index++) {
+                Tag rawEntry = historyTag.get(index);
+                if (rawEntry instanceof CompoundTag entryTag
+                        && DynamicCaseHistoryEntry.isValid(entryTag)) {
+                    dynamicCaseHistory.add(
+                            DynamicCaseHistoryEntry.load(entryTag));
+                    continue;
+                }
+                addOrphan("dynamic_case_history", "invalid_record",
+                        rawEntry.copy());
+            }
+        }
+
         knownKnowledge.clear();
         ListTag known = tag.getList("known_knowledge", Tag.TAG_STRING);
         for (int i = 0; i < known.size(); i++) {
@@ -911,6 +943,7 @@ public class PlayerMysteryData {
         hash = mix(hash, commissionCooldowns);
         hash = mix(hash, caseDebriefs);
         hash = mix(hash, caseHypotheses);
+        hash = mix(hash, dynamicCaseHistory);
         hash = mix(hash, orgReputation);
         return hash;
     }

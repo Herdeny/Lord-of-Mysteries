@@ -30,7 +30,7 @@ class PlayerMysteryDataFixerTest {
         assertTrue(result.migrated());
         assertFalse(result.futureSchema());
         assertEquals(15, result.sourceSchema());
-        assertEquals(4, result.appliedSteps().size());
+        assertEquals(5, result.appliedSteps().size());
         assertEquals("characteristic_bundle_upgrade",
                 result.appliedSteps().get(0).id());
         assertEquals("m1_vertical_slice_state",
@@ -39,6 +39,8 @@ class PlayerMysteryDataFixerTest {
                 result.appliedSteps().get(2).id());
         assertEquals("case_hypothesis_workspace",
                 result.appliedSteps().get(3).id());
+        assertEquals("dynamic_case_history",
+                result.appliedSteps().get(4).id());
         assertFalse(result.data().getBoolean("identity_anchored"));
         assertEquals(Long.MIN_VALUE,
                 result.data().getLong("last_city_work_day"));
@@ -69,7 +71,7 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(legacy);
 
-        assertEquals(5, result.appliedSteps().size());
+        assertEquals(6, result.appliedSteps().size());
         assertEquals("legacy_key_normalization",
                 result.appliedSteps().get(0).id());
         assertEquals("characteristic_bundle_upgrade",
@@ -80,6 +82,8 @@ class PlayerMysteryDataFixerTest {
                 result.appliedSteps().get(3).id());
         assertEquals("case_hypothesis_workspace",
                 result.appliedSteps().get(4).id());
+        assertEquals("dynamic_case_history",
+                result.appliedSteps().get(5).id());
         assertEquals("lord_of_mysteries:legacy/formula",
                 result.data().getList("known_knowledge", Tag.TAG_STRING)
                         .getString(0));
@@ -97,10 +101,12 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(previous);
 
-        assertEquals(2, result.appliedSteps().size());
+        assertEquals(3, result.appliedSteps().size());
         assertEquals("case_debrief_archive", result.appliedSteps().get(0).id());
         assertEquals("case_hypothesis_workspace",
                 result.appliedSteps().get(1).id());
+        assertEquals("dynamic_case_history",
+                result.appliedSteps().get(2).id());
         assertTrue(result.data().contains("case_debriefs", Tag.TAG_COMPOUND));
         assertTrue(result.data().contains("case_hypotheses", Tag.TAG_COMPOUND));
         assertEquals("lord_of_mysteries:commission/lost_cat",
@@ -117,11 +123,32 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(previous);
 
-        assertEquals(1, result.appliedSteps().size());
+        assertEquals(2, result.appliedSteps().size());
         assertEquals("case_hypothesis_workspace",
                 result.appliedSteps().get(0).id());
+        assertEquals("dynamic_case_history",
+                result.appliedSteps().get(1).id());
         assertTrue(result.data().contains("case_hypotheses", Tag.TAG_COMPOUND));
         assertTrue(result.data().contains("case_debriefs", Tag.TAG_COMPOUND));
+    }
+
+    @Test
+    void migratesSchemaNineteenWithEmptyDynamicCaseHistory() {
+        CompoundTag previous = new CompoundTag();
+        previous.putInt("schema_version", 19);
+        previous.put("case_debriefs", new CompoundTag());
+        previous.put("case_hypotheses", new CompoundTag());
+
+        PlayerMysteryDataFixer.MigrationResult result =
+                PlayerMysteryDataFixer.migrate(previous);
+
+        assertEquals(1, result.appliedSteps().size());
+        assertEquals("dynamic_case_history",
+                result.appliedSteps().get(0).id());
+        assertTrue(result.data().contains(
+                "dynamic_case_history", Tag.TAG_LIST));
+        assertTrue(result.data().getList(
+                "dynamic_case_history", Tag.TAG_COMPOUND).isEmpty());
     }
 
     @Test

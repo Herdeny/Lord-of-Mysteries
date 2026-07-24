@@ -547,8 +547,11 @@ public final class CommissionService {
         definition.reward().reputation().forEach((organization, amount) ->
                 data.orgReputation.merge(organization, amount, Integer::sum));
         if (DYNAMIC_CASE.equals(definition.id()) && dynamicProfile != null) {
-            DynamicCaseService.applyOrganizationFeedback(
-                    player, data, dynamicProfile, debrief);
+            DynamicCaseFeedbackPolicy.Feedback feedback =
+                    DynamicCaseService.applyOrganizationFeedback(
+                            player, data, dynamicProfile, debrief);
+            DynamicCaseService.recordCompletion(
+                    data, dynamicProfile, debrief, feedback);
         }
         data.completedCommissions.add(definition.id());
         data.commissionCooldowns.put(definition.id(),
@@ -575,6 +578,9 @@ public final class CommissionService {
         CaseDebriefService.sendSummary(player, definition.titleKey(), debrief);
         if (chain != null) QuestPartyService.markSettled(player, chain);
         clearActive(data);
+        if (DYNAMIC_CASE.equals(definition.id())) {
+            DynamicCaseService.announceFollowUp(player, data);
+        }
         return 1;
     }
 

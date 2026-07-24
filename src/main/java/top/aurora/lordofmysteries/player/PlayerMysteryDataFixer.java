@@ -24,7 +24,9 @@ public final class PlayerMysteryDataFixer {
             new DataFix("case_debrief_archive", 18,
                     PlayerMysteryDataFixer::initializeCaseDebriefArchive),
             new DataFix("case_hypothesis_workspace", 19,
-                    PlayerMysteryDataFixer::initializeCaseHypothesisWorkspace));
+                    PlayerMysteryDataFixer::initializeCaseHypothesisWorkspace),
+            new DataFix("dynamic_case_history", 20,
+                    PlayerMysteryDataFixer::initializeDynamicCaseHistory));
 
     private PlayerMysteryDataFixer() {}
 
@@ -158,6 +160,21 @@ public final class PlayerMysteryDataFixer {
                     "invalid_legacy_payload", rawWorkspace.copy()));
         }
         tag.put("case_hypotheses", new CompoundTag());
+    }
+
+    private static void initializeDynamicCaseHistory(
+            CompoundTag tag, List<CompoundTag> orphanedEntries) {
+        Tag rawHistory = tag.get("dynamic_case_history");
+        if (rawHistory instanceof ListTag history
+                && (history.isEmpty()
+                        || history.getElementType() == Tag.TAG_COMPOUND)) {
+            return;
+        }
+        if (rawHistory != null) {
+            orphanedEntries.add(orphan("dynamic_case_history",
+                    "invalid_legacy_payload", rawHistory.copy()));
+        }
+        tag.put("dynamic_case_history", new ListTag());
     }
 
     private static void putBooleanDefault(CompoundTag tag, String key,

@@ -205,6 +205,12 @@ public final class ProjectMysteryCommands {
                         .then(Commands.literal("rotation")
                                 .executes(context -> DynamicCaseService.show(
                                         context.getSource().getPlayerOrException()))
+                                .then(Commands.literal("history").executes(context ->
+                                        DynamicCaseService.showHistory(
+                                                context.getSource().getPlayerOrException())))
+                                .then(Commands.literal("followup").executes(context ->
+                                        DynamicCaseService.claimFollowUp(
+                                                context.getSource().getPlayerOrException())))
                                 .then(Commands.literal("investigate")
                                         .then(Commands.literal("field").executes(context ->
                                                 DynamicCaseService.investigate(

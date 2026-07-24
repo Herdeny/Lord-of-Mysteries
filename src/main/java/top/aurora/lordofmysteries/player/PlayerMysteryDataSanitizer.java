@@ -1,9 +1,11 @@
 package top.aurora.lordofmysteries.player;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import net.minecraft.resources.ResourceLocation;
 
+import top.aurora.lordofmysteries.commission.DynamicCaseContinuityPolicy;
 import top.aurora.lordofmysteries.potion.PotionQuality;
 
 public final class PlayerMysteryDataSanitizer {
@@ -56,6 +58,13 @@ public final class PlayerMysteryDataSanitizer {
         data.caseHypotheses.entrySet().removeIf(entry ->
                 entry.getKey() == null || entry.getValue() == null);
         repairs += originalHypotheses - data.caseHypotheses.size();
+        if (data.dynamicCaseHistory == null) {
+            data.dynamicCaseHistory = new ArrayList<>();
+            repairs++;
+        } else {
+            repairs += DynamicCaseContinuityPolicy.sanitize(
+                    data.dynamicCaseHistory);
+        }
         int originalKnowledge = data.knownKnowledge.size();
         data.knownKnowledge.removeIf(id -> id == null);
         repairs += originalKnowledge - data.knownKnowledge.size();

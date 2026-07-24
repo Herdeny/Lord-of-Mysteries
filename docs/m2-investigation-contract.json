@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "capability_schema": 19,
+  "capability_schema": 20,
   "data_counts": {
     "commissions": 4,
     "quest_chains": 4
@@ -118,7 +118,36 @@
         "C": 0,
         "D": -2
       },
-      "persists_in_org_reputation": true
+      "persists_in_org_reputation": true,
+      "directives": [
+        "PATTERN_AUDIT",
+        "CLIENT_REINTERVIEW",
+        "SOURCE_VERIFICATION",
+        "PUBLIC_REASSURANCE",
+        "CHAIN_OF_CUSTODY",
+        "DISTRICT_PATROL"
+      ]
+    },
+    "continuity": {
+      "archive_key": "dynamic_case_history",
+      "maximum_entries": 8,
+      "statuses": ["PENDING", "CLAIMED", "EXPIRED"],
+      "responses": [
+        "PRIORITY_BRIEFING",
+        "STANDARD_FOLLOW_UP",
+        "CORRECTIVE_REVIEW"
+      ],
+      "commands": ["history", "followup"],
+      "requires_board": true,
+      "requires_no_active_commission": true,
+      "new_completion_expires_previous_pending": true,
+      "grade_rewards": {
+        "S": {"money_pence": 8, "reputation": 1, "pressure_recovery": 0},
+        "A": {"money_pence": 6, "reputation": 1, "pressure_recovery": 0},
+        "B": {"money_pence": 4, "reputation": 0, "pressure_recovery": 0},
+        "C": {"money_pence": 2, "reputation": 0, "pressure_recovery": 0},
+        "D": {"money_pence": 0, "reputation": 1, "pressure_recovery": 4}
+      }
     },
     "sealed_evidence_items": [
       "lord_of_mysteries:dynamic_case_brass_token",
@@ -135,7 +164,7 @@
       "returned_on_settle_or_abandon": true
     },
     "stable_from_world_seed_and_accept_tick": true,
-    "preserves_capability_schema": true,
+    "preserves_capability_schema": false,
     "preserves_packet_count": true
   },
   "party_recovery": {
@@ -250,6 +279,8 @@
     "clear",
     "recover",
     "rotation",
+    "history",
+    "followup",
     "investigate",
     "field",
     "desk",
@@ -350,6 +381,10 @@
     "command.lord_of_mysteries.dynamic_case.conclusion.wrong",
     "command.lord_of_mysteries.dynamic_case.recover.complete",
     "command.lord_of_mysteries.dynamic_case.weekly_rotation",
+    "command.lord_of_mysteries.dynamic_case.directive",
+    "command.lord_of_mysteries.dynamic_case.history.title",
+    "command.lord_of_mysteries.dynamic_case.follow_up.available",
+    "command.lord_of_mysteries.dynamic_case.follow_up.claimed",
     "command.lord_of_mysteries.dynamic_case.time.open",
     "command.lord_of_mysteries.dynamic_case.feedback.positive",
     "message.lord_of_mysteries.dynamic_case.evidence.outdated",
@@ -357,6 +392,9 @@
     "dynamic_case.lord_of_mysteries.archetype.anomalous_item",
     "dynamic_case.lord_of_mysteries.archetype.occult_crime",
     "dynamic_case.lord_of_mysteries.organization.mist_city_press",
+    "dynamic_case.lord_of_mysteries.directive.pattern_audit",
+    "dynamic_case.lord_of_mysteries.follow_up.priority_briefing",
+    "dynamic_case.lord_of_mysteries.follow_up_status.pending",
     "dynamic_case.lord_of_mysteries.relationship.editorial_supervisor",
     "dynamic_case.lord_of_mysteries.schedule.press_morning",
     "entity.lord_of_mysteries.dynamic_case_subject",

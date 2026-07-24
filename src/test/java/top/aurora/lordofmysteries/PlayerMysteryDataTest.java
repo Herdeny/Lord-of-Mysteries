@@ -7,8 +7,11 @@ import org.junit.jupiter.api.Test;
 import net.minecraft.resources.ResourceLocation;
 
 import top.aurora.lordofmysteries.commission.CaseDebriefRecord;
+import top.aurora.lordofmysteries.commission.CaseGrade;
 import top.aurora.lordofmysteries.commission.CaseHypothesisRecord;
 import top.aurora.lordofmysteries.commission.CaseHypothesisStance;
+import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
+import top.aurora.lordofmysteries.commission.DynamicCaseProfile;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 
 /**
@@ -80,6 +83,7 @@ class PlayerMysteryDataTest {
         assertTrue(d.commissionCooldowns.isEmpty());
         assertTrue(d.caseDebriefs.isEmpty());
         assertTrue(d.caseHypotheses.isEmpty());
+        assertTrue(d.dynamicCaseHistory.isEmpty());
     }
 
     /** 只有序列值不足以成为非凡者，必须同时拥有途径 ID。 */
@@ -176,6 +180,15 @@ class PlayerMysteryDataTest {
                 CaseHypothesisRecord.EMPTY.propose(
                         "clue_synthesis", CaseHypothesisStance.CONTRADICTS,
                         "The clues conflict."));
+        DynamicCaseHistoryEntry historyEntry = new DynamicCaseHistoryEntry(
+                14L, 2L, "copy-test",
+                DynamicCaseProfile.Archetype.MISSING_PERSON,
+                DynamicCaseProfile.Subject.APPRENTICE_REPORTER,
+                DynamicCaseProfile.Organization.MIST_CITY_PRESS,
+                DynamicCaseProfile.CaseLocation.MIST_CITY_OUTPOST,
+                CaseGrade.A, 84, 3000L, 2,
+                DynamicCaseHistoryEntry.FollowUpStatus.PENDING);
+        source.dynamicCaseHistory.add(historyEntry);
 
         PlayerMysteryData copied = new PlayerMysteryData();
         copied.copyFrom(source);
@@ -251,6 +264,8 @@ class PlayerMysteryDataTest {
         assertEquals(91, copied.caseDebriefs.get(commission).score());
         assertEquals("The clues conflict.",
                 copied.caseHypotheses.get(commission).note());
+        assertEquals(historyEntry, copied.dynamicCaseHistory.get(0));
+        assertNotSame(source.dynamicCaseHistory, copied.dynamicCaseHistory);
     }
 
     @Test
@@ -287,6 +302,15 @@ class PlayerMysteryDataTest {
         source.caseDebriefs.put(debriefCase,
                 new CaseDebriefRecord(40, 30, 20, 10,
                         1200L, 1700L, ""));
+        DynamicCaseHistoryEntry historyEntry = new DynamicCaseHistoryEntry(
+                21L, 3L, "round-trip",
+                DynamicCaseProfile.Archetype.OCCULT_CRIME,
+                DynamicCaseProfile.Subject.RETIRED_CONSTABLE,
+                DynamicCaseProfile.Organization.CONSTABULARY,
+                DynamicCaseProfile.CaseLocation.ABANDONED_CHURCH,
+                CaseGrade.S, 100, 1700L, 3,
+                DynamicCaseHistoryEntry.FollowUpStatus.CLAIMED);
+        source.dynamicCaseHistory.add(historyEntry);
 
         PlayerMysteryData restored = new PlayerMysteryData();
         restored.load(source.save());
@@ -314,6 +338,7 @@ class PlayerMysteryDataTest {
         assertEquals("stealth", restored.questResolutionRoute);
         assertTrue(restored.questResolutionReady);
         assertEquals(100, restored.caseDebriefs.get(debriefCase).score());
+        assertEquals(historyEntry, restored.dynamicCaseHistory.get(0));
         assertEquals(PlayerMysteryData.CURRENT_SCHEMA_VERSION,
                 restored.schemaVersion);
     }
@@ -346,7 +371,7 @@ class PlayerMysteryDataTest {
 
         assertEquals(1, migrated.characteristicBundles.size());
         assertEquals(1, migrated.migrationBackups.size());
-        assertEquals(4, migrated.migrationHistory.size());
+        assertEquals(5, migrated.migrationHistory.size());
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
                 entry.getString("section").equals("known_knowledge")));
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
@@ -362,7 +387,7 @@ class PlayerMysteryDataTest {
         restored.load(migrated.save());
 
         assertEquals(1, restored.migrationBackups.size());
-        assertEquals(4, restored.migrationHistory.size());
+        assertEquals(5, restored.migrationHistory.size());
         assertEquals(migrated.orphanedEntries.size(),
                 restored.orphanedEntries.size());
     }

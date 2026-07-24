@@ -8,6 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import net.minecraft.resources.ResourceLocation;
 
+import top.aurora.lordofmysteries.commission.CaseGrade;
+import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
+import top.aurora.lordofmysteries.commission.DynamicCaseProfile;
+
 class PlayerMysteryDataSanitizerTest {
 
     @Test
@@ -29,6 +33,9 @@ class PlayerMysteryDataSanitizerTest {
         data.completedCommissions.add(null);
         data.caseDebriefs.put(null, null);
         data.caseHypotheses.put(null, null);
+        data.dynamicCaseHistory.add(historyEntry(7L, "duplicate"));
+        data.dynamicCaseHistory.add(historyEntry(8L, "duplicate"));
+        data.dynamicCaseHistory.add(null);
         data.knownKnowledge.add(null);
         data.actingCounters.put(null, -1);
         data.activeCommissionId = "lord_of_mysteries:commission/test";
@@ -52,6 +59,8 @@ class PlayerMysteryDataSanitizerTest {
         assertTrue(data.completedCommissions.isEmpty());
         assertTrue(data.caseDebriefs.isEmpty());
         assertTrue(data.caseHypotheses.isEmpty());
+        assertEquals(1, data.dynamicCaseHistory.size());
+        assertEquals(8L, data.dynamicCaseHistory.get(0).caseDay());
         assertTrue(data.knownKnowledge.isEmpty());
         assertTrue(data.actingCounters.isEmpty());
         assertEquals("", data.questResolutionRoute);
@@ -103,6 +112,18 @@ class PlayerMysteryDataSanitizerTest {
         assertEquals(0, data.sanitize());
         assertEquals("ritual_diversion", data.questResolutionRoute);
         assertTrue(data.questResolutionReady);
+    }
+
+    private static DynamicCaseHistoryEntry historyEntry(
+            long caseDay, String instanceId) {
+        return new DynamicCaseHistoryEntry(
+                caseDay, Math.floorDiv(caseDay, 7L), instanceId,
+                DynamicCaseProfile.Archetype.MISSING_PERSON,
+                DynamicCaseProfile.Subject.APPRENTICE_REPORTER,
+                DynamicCaseProfile.Organization.MIST_CITY_PRESS,
+                DynamicCaseProfile.CaseLocation.MIST_CITY_OUTPOST,
+                CaseGrade.A, 84, 900L, 2,
+                DynamicCaseHistoryEntry.FollowUpStatus.PENDING);
     }
 
 }

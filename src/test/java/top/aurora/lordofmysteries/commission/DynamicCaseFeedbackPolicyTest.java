@@ -40,4 +40,16 @@ class DynamicCaseFeedbackPolicyTest {
         assertEquals(0, feedback.adjustment());
         assertEquals(7, feedback.updatedReputation());
     }
+
+    @Test
+    void reputationArithmeticSaturatesAtIntegerBounds() {
+        assertEquals(Integer.MAX_VALUE,
+                DynamicCaseFeedbackPolicy.evaluate(
+                        DynamicCaseProfile.Organization.DETECTIVE_AGENCY,
+                        CaseGrade.S, Integer.MAX_VALUE).updatedReputation());
+        assertEquals(Integer.MIN_VALUE,
+                DynamicCaseFeedbackPolicy.evaluate(
+                        DynamicCaseProfile.Organization.CONSTABULARY,
+                        CaseGrade.D, Integer.MIN_VALUE).updatedReputation());
+    }
 }

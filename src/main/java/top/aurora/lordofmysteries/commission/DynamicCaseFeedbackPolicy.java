@@ -21,7 +21,18 @@ final class DynamicCaseFeedbackPolicy {
             case D -> -2;
         };
         return new Feedback(
-                organization, grade, adjustment, currentReputation + adjustment);
+                organization, grade, adjustment,
+                saturatingAdd(currentReputation, adjustment));
+    }
+
+    private static int saturatingAdd(int current, int adjustment) {
+        if (adjustment > 0 && current > Integer.MAX_VALUE - adjustment) {
+            return Integer.MAX_VALUE;
+        }
+        if (adjustment < 0 && current < Integer.MIN_VALUE - adjustment) {
+            return Integer.MIN_VALUE;
+        }
+        return current + adjustment;
     }
 
     record Feedback(

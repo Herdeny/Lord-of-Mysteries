@@ -63,6 +63,9 @@ DYNAMIC_MANIFESTATION = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lor
 DYNAMIC_SITE_LAYOUT = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseSiteLayoutPolicy.java"
 DYNAMIC_SCHEDULE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseSchedulePolicy.java"
 DYNAMIC_FEEDBACK = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseFeedbackPolicy.java"
+DYNAMIC_HISTORY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseHistoryEntry.java"
+DYNAMIC_CONTINUITY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseContinuityPolicy.java"
+DYNAMIC_DIRECTIVE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseWeeklyDirective.java"
 PARTY_POLICY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestPartyPolicy.java"
 QUEST_ITEM_DELIVERY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestItemDelivery.java"
 
@@ -298,6 +301,47 @@ def main():
                 and "orgReputation.put" in dynamic_service
                 and "PlayerDataSection.SOCIAL" in dynamic_service),
             "dynamic organization feedback is not persisted")
+    directive_source = DYNAMIC_DIRECTIVE.read_text(encoding="utf-8")
+    for directive in weekly["directives"]:
+        require(directive in directive_source,
+                f"dynamic weekly directive {directive} is missing")
+    require("DynamicCaseWeeklyDirective.select" in dynamic_service,
+            "dynamic weekly directive is not displayed")
+    continuity = dynamic["continuity"]
+    history_source = DYNAMIC_HISTORY.read_text(encoding="utf-8")
+    continuity_source = DYNAMIC_CONTINUITY.read_text(encoding="utf-8")
+    require(f'MAX_HISTORY_ENTRIES = {continuity["maximum_entries"]}'
+            in continuity_source,
+            "dynamic case history limit drifted")
+    require(f'"{continuity["archive_key"]}"'
+            in PLAYER_DATA.read_text(encoding="utf-8"),
+            "dynamic case history archive key drifted")
+    for status in continuity["statuses"]:
+        require(status in history_source,
+                f"dynamic case follow-up status {status} is missing")
+    for response in continuity["responses"]:
+        require(response in continuity_source,
+                f"dynamic case organization response {response} is missing")
+    for grade, reward in continuity["grade_rewards"].items():
+        reward_signature = (
+            f"case {grade} -> new Reward("
+            f"Response.{continuity['responses'][0] if grade in ['S', 'A'] else continuity['responses'][1] if grade in ['B', 'C'] else continuity['responses'][2]}, "
+            f"{reward['money_pence']}L, {reward['reputation']}, "
+            f"{reward['pressure_recovery']}f)")
+        require(reward_signature in continuity_source,
+                f"dynamic case follow-up reward for grade {grade} drifted")
+    require(not continuity["requires_board"]
+            or "InvestigationBoardService.isNearBoard" in dynamic_service,
+            "dynamic case follow-up no longer requires a board")
+    require(not continuity["requires_no_active_commission"]
+            or "!data.activeCommissionId.isBlank()" in dynamic_service,
+            "dynamic case follow-up can overlap an active commission")
+    require(not continuity["new_completion_expires_previous_pending"]
+            or "FollowUpStatus.EXPIRED" in continuity_source,
+            "dynamic case previous follow-up does not expire")
+    require("recordCompletion" in commission_source
+            and "announceFollowUp" in commission_source,
+            "dynamic case completion is not connected to continuity")
     item_registry = ITEMS.read_text(encoding="utf-8")
     for evidence_id in dynamic["sealed_evidence_items"]:
         path = evidence_id.split(":", 1)[1]
@@ -332,9 +376,6 @@ def main():
                 and "worldSeed" in dynamic_generator
                 and "commissionAcceptedTick" in dynamic_service),
             "dynamic case identity is not deterministic across restarts")
-    require(not dynamic["preserves_capability_schema"]
-            or contract["capability_schema"] == 19,
-            "dynamic case unexpectedly changed capability schema")
     require(not dynamic["preserves_packet_count"]
             or contract["investigation_board"]["packet_count"] == 14,
             "dynamic case unexpectedly changed packet count")
