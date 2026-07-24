@@ -1,6 +1,6 @@
 # 入门与占卜家序列 9–7
 
-> 当前版本：0.9.12-1.20.1 · v0.9 M0/M1 实施完成 · M2 案件主体、受影响者与差异化物证
+> 当前版本：0.9.13-1.20.1 · v0.9 M0/M1 实施完成 · M2 周轮值、角色日程、关系节点与组织反馈
 >
 > 设计基线：v0.9 · M1 两小时纵切 / M2 实施
 
@@ -119,8 +119,8 @@
 用 `/pm formula inspect` 和 `verdict authentic|forged` 处理真假配方。详见
 [雾都前哨与调查委托](M2-Commissions-and-Mist-City-Outpost) 和
 [神秘学家小屋与三解救援](M2-Occultist-Hut-and-Rescue-Routes)。同记分板队伍 2–4 名成员共享目标；
-`/pm party` 查看持久账本，已登记离线成员上线自动追赶，中途加入使用 `/pm party sync`。完成“真假配方”后可接取每日轮换案件；`/pm case rotation` 查看八槽位卷宗。接案后到指定现场寻找案件相关人、受影响者和悬浮物证；携带证物袋右键物证或附近方块封存差异化样本，再右键指定 NPC 和当日报纸取得证词与档案。`investigate field|desk` 保留为兼容/恢复入口，误判后必须在调查板 `recover`；证物袋或样本遗失时可在调查板附近用 `/pm case recover` 按当前阶段补领。完整规则见
-[调查板玩家手册](M2-Investigation-Board) 解释界面状态与安全边界；[证据档案与城市报纸](M2-Evidence-and-Newspaper) 说明证据和日报；[证据关联、案件分析与恢复](M2-Evidence-Reasoning-and-Recovery) 说明推理、下一步与关键物品恢复；[玩家假说与误判恢复](M2-Player-Hypotheses-and-Reasoning-Strain) 说明稳定关系 ID、误判代价与恢复；[八槽位动态案件轮换](M2-Dynamic-Case-Rotation) 说明每日生成、案件角色、可视物证、封存样本、替代入口、结论与复议；[结案评价与复盘](M2-Case-Debrief-and-Ratings) 说明四维评分、旧档迁移和查询命令；[城市服务台与功能区](M2-City-Service-Desks) 说明事务所、巡警与旧世界补建；[持久化队伍调查与离线追赶](M2-Persistent-Party-Recovery) 说明多人恢复。完整镇区、正式警戒 AI、正式队伍 GUI、角色关系/日程和多人负载矩阵仍未完成。
+`/pm party` 查看持久账本，已登记离线成员上线自动追赶，中途加入使用 `/pm party sync`。完成“真假配方”后可接取每日轮换案件；`/pm case rotation` 查看八槽位卷宗、本周协调组织、主体关系、当前日程窗口和等待时间。接案后到指定现场寻找案件相关人、受影响者和悬浮物证；主体会在日常点与观察点之间移动，但错过 6000 tick 观察窗口不会锁死调查。携带证物袋右键物证或附近方块封存差异化样本，再右键指定 NPC 和当日报纸取得证词与档案。`investigate field|desk` 保留为兼容/恢复入口，误判后必须在调查板 `recover`；证物袋或样本遗失时可在调查板附近用 `/pm case recover` 按当前阶段补领。结案后，S/A/B/C/D 评级会对本周协调组织追加 `+3/+2/+1/0/-2` 声望。完整规则见
+[调查板玩家手册](M2-Investigation-Board) 解释界面状态与安全边界；[证据档案与城市报纸](M2-Evidence-and-Newspaper) 说明证据和日报；[证据关联、案件分析与恢复](M2-Evidence-Reasoning-and-Recovery) 说明推理、下一步与关键物品恢复；[玩家假说与误判恢复](M2-Player-Hypotheses-and-Reasoning-Strain) 说明稳定关系 ID、误判代价与恢复；[八槽位动态案件轮换](M2-Dynamic-Case-Rotation) 说明每日生成、周轮值、关系/日程、可视物证、封存样本、组织反馈、替代入口、结论与复议；[结案评价与复盘](M2-Case-Debrief-and-Ratings) 说明四维评分、旧档迁移和查询命令；[城市服务台与功能区](M2-City-Service-Desks) 说明事务所、巡警与旧世界补建；[持久化队伍调查与离线追赶](M2-Persistent-Party-Recovery) 说明多人恢复。完整镇区、正式警戒 AI、正式队伍 GUI、多角色关系演化、扩展周级案件池和多人负载矩阵仍未完成。
 
 完整手册见
 [`docs/GETTING_STARTED.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/GETTING_STARTED.md)。

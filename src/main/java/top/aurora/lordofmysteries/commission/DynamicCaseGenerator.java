@@ -13,9 +13,12 @@ public final class DynamicCaseGenerator {
 
     public static DynamicCaseProfile generateForDay(long worldSeed, long caseDay) {
         long safeDay = Math.max(0L, caseDay);
+        long caseWeek = Math.floorDiv(safeDay, 7L);
         long entropy = mix(worldSeed ^ safeDay * 0x9E3779B97F4A7C15L);
         DynamicCaseProfile.Archetype archetype = rotatingArchetype(
                 worldSeed, safeDay);
+        DynamicCaseProfile.Subject subject = pick(
+                DynamicCaseProfile.Subject.values(), entropy, 0x31L);
         DynamicCaseProfile.Conclusion conclusion = pick(
                 DynamicCaseProfile.Conclusion.values(), entropy, 0x11L);
         DynamicCaseProfile.Method method = methodFor(
@@ -25,9 +28,13 @@ public final class DynamicCaseGenerator {
                 + shortHash(mix(entropy ^ 0x5EEDL));
         return new DynamicCaseProfile(
                 safeDay,
+                caseWeek,
                 instanceId,
                 archetype,
-                pick(DynamicCaseProfile.Subject.values(), entropy, 0x31L),
+                subject,
+                rotatingOrganization(worldSeed, caseWeek),
+                relationshipFor(subject),
+                scheduleFor(subject),
                 pick(DynamicCaseProfile.Motive.values(), entropy, 0x41L),
                 method,
                 pick(DynamicCaseProfile.CaseLocation.values(), entropy, 0x51L),
@@ -36,6 +43,43 @@ public final class DynamicCaseGenerator {
                 pick(DynamicCaseProfile.VictimImpact.values(), entropy, 0x81L),
                 pick(DynamicCaseProfile.EvidenceTheme.values(), entropy, 0x91L),
                 conclusion);
+    }
+
+    private static DynamicCaseProfile.Organization rotatingOrganization(
+            long worldSeed, long caseWeek) {
+        DynamicCaseProfile.Organization[] values =
+                DynamicCaseProfile.Organization.values();
+        int worldOffset = Math.floorMod(mix(worldSeed ^ 0x0A6A_1A7EL),
+                values.length);
+        return values[Math.floorMod(caseWeek + worldOffset, values.length)];
+    }
+
+    private static DynamicCaseProfile.Relationship relationshipFor(
+            DynamicCaseProfile.Subject subject) {
+        return switch (subject) {
+            case APPRENTICE_REPORTER ->
+                    DynamicCaseProfile.Relationship.EDITORIAL_SUPERVISOR;
+            case DOCK_ACCOUNTANT ->
+                    DynamicCaseProfile.Relationship.DEPENDENT_RELATIVE;
+            case HERBALIST_ASSISTANT ->
+                    DynamicCaseProfile.Relationship.SHOP_MENTOR;
+            case RETIRED_CONSTABLE ->
+                    DynamicCaseProfile.Relationship.FORMER_PATROL_PARTNER;
+        };
+    }
+
+    private static DynamicCaseProfile.Schedule scheduleFor(
+            DynamicCaseProfile.Subject subject) {
+        return switch (subject) {
+            case APPRENTICE_REPORTER ->
+                    DynamicCaseProfile.Schedule.PRESS_MORNING;
+            case DOCK_ACCOUNTANT ->
+                    DynamicCaseProfile.Schedule.DOCK_AFTERNOON;
+            case HERBALIST_ASSISTANT ->
+                    DynamicCaseProfile.Schedule.APOTHECARY_EVENING;
+            case RETIRED_CONSTABLE ->
+                    DynamicCaseProfile.Schedule.CONSTABLE_NIGHT;
+        };
     }
 
     private static DynamicCaseProfile.Archetype rotatingArchetype(

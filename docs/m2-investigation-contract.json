@@ -76,7 +76,42 @@
       "roles": ["subject", "affected", "evidence"],
       "spawn_only_at_generated_site": true,
       "cleanup_inactive_loaded_scenes": true,
-      "old_instance_cannot_progress": true
+      "old_instance_cannot_progress": true,
+      "subject_moves_with_schedule": true
+    },
+    "weekly_rotation": {
+      "days_per_week": 7,
+      "organizations": [
+        "DETECTIVE_AGENCY",
+        "MIST_CITY_PRESS",
+        "CONSTABULARY"
+      ],
+      "schedule_periods": [
+        "MORNING",
+        "AFTERNOON",
+        "EVENING",
+        "NIGHT"
+      ],
+      "observation_window_ticks": 6000,
+      "observation_is_hard_gate": false,
+      "relationship_nodes": [
+        "EDITORIAL_SUPERVISOR",
+        "DEPENDENT_RELATIVE",
+        "SHOP_MENTOR",
+        "FORMER_PATROL_PARTNER"
+      ],
+      "stable_relation_ids": [
+        "schedule_to_scene",
+        "relationship_to_testimony"
+      ],
+      "grade_feedback": {
+        "S": 3,
+        "A": 2,
+        "B": 1,
+        "C": 0,
+        "D": -2
+      },
+      "persists_in_org_reputation": true
     },
     "sealed_evidence_items": [
       "lord_of_mysteries:dynamic_case_brass_token",
@@ -301,9 +336,15 @@
     "command.lord_of_mysteries.dynamic_case.sample.collected",
     "command.lord_of_mysteries.dynamic_case.conclusion.wrong",
     "command.lord_of_mysteries.dynamic_case.recover.complete",
+    "command.lord_of_mysteries.dynamic_case.weekly_rotation",
+    "command.lord_of_mysteries.dynamic_case.time.open",
+    "command.lord_of_mysteries.dynamic_case.feedback.positive",
     "dynamic_case.lord_of_mysteries.archetype.missing_person",
     "dynamic_case.lord_of_mysteries.archetype.anomalous_item",
     "dynamic_case.lord_of_mysteries.archetype.occult_crime",
+    "dynamic_case.lord_of_mysteries.organization.mist_city_press",
+    "dynamic_case.lord_of_mysteries.relationship.editorial_supervisor",
+    "dynamic_case.lord_of_mysteries.schedule.press_morning",
     "entity.lord_of_mysteries.dynamic_case_subject",
     "entity.lord_of_mysteries.dynamic_case_affected.family_panic",
     "dynamic_case.lord_of_mysteries.conclusion.human_concealment",
@@ -311,6 +352,8 @@
     "dynamic_case.lord_of_mysteries.conclusion.ritual_diversion",
     "screen.lord_of_mysteries.evidence.dynamic_case.false_lead.title",
     "screen.lord_of_mysteries.analysis.dynamic_case.relation.false_lead_conflict.title",
+    "screen.lord_of_mysteries.analysis.dynamic_case.relation.schedule_to_scene.title",
+    "screen.lord_of_mysteries.analysis.dynamic_case.relation.relationship_to_testimony.title",
     "knowledge.lord_of_mysteries.m2.dynamic_case_rotation"
   ]
 }

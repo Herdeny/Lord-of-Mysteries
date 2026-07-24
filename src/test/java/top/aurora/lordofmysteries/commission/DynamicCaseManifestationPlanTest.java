@@ -23,6 +23,9 @@ class DynamicCaseManifestationPlanTest {
         assertEquals(first, second);
         assertNotEquals(first.subject(), first.affected());
         assertNotEquals(first.subject(), first.evidence());
+        assertNotEquals(first.routine(), first.subject());
+        assertNotEquals(first.routine(), first.affected());
+        assertNotEquals(first.routine(), first.evidence());
         assertNotEquals(first.affected(), first.evidence());
     }
 
@@ -33,7 +36,8 @@ class DynamicCaseManifestationPlanTest {
                     DynamicCaseManifestationPlan.forProfile(
                             DynamicCaseGenerator.generateForDay(8128L, day));
             for (DynamicCaseManifestationPlan.Offset offset
-                    : List.of(plan.subject(), plan.affected(), plan.evidence())) {
+                    : List.of(plan.subject(), plan.routine(),
+                            plan.affected(), plan.evidence())) {
                 assertTrue(Math.abs(offset.x()) <= 3);
                 assertTrue(Math.abs(offset.z()) <= 3);
             }

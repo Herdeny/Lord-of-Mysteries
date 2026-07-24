@@ -40,11 +40,18 @@ class DynamicCaseEvidenceViewTest {
         assertEquals(1, view.suspicious());
         assertTrue(view.conclusionReady());
         assertEquals(CaseAnalysisStage.READY, view.analysisStage());
-        assertEquals(5, view.relations().size());
-        assertEquals(EvidenceRelationKind.CONTRADICTS,
+        assertEquals(7, view.relations().size());
+        assertEquals("schedule_to_scene", view.relations().get(1).id());
+        assertEquals(EvidenceRelationKind.LEADS_TO,
+                view.relations().get(1).kind());
+        assertEquals("relationship_to_testimony",
+                view.relations().get(3).id());
+        assertEquals(EvidenceRelationKind.SUPPORTS,
                 view.relations().get(3).kind());
+        assertEquals(EvidenceRelationKind.CONTRADICTS,
+                view.relations().get(5).kind());
         assertEquals(EvidenceState.SUSPICIOUS,
-                view.relations().get(3).state());
+                view.relations().get(5).state());
         assertEquals(
                 "screen.lord_of_mysteries.evidence.dynamic_case.false_lead.title",
                 view.entries().get(4).titleKey());
@@ -68,7 +75,7 @@ class DynamicCaseEvidenceViewTest {
                 "screen.lord_of_mysteries.evidence.dynamic_case.false_lead.revealed.title",
                 view.entries().get(4).titleKey());
         assertEquals(EvidenceState.CONFIRMED,
-                view.relations().get(3).state());
+                view.relations().get(5).state());
     }
 
     private static PlayerMysteryData activeData(int step) {

@@ -33,6 +33,7 @@ final class DynamicCaseManifestationService {
     private static final String EVIDENCE_TAG = "lom_dynamic_case_evidence";
     private static final String INSTANCE_DATA = "lom_dynamic_case_instance";
     private static final String ROLE_DATA = "lom_dynamic_case_role";
+    private static final String SCHEDULE_DATA = "lom_dynamic_case_schedule_state";
     private static final double SEARCH_RANGE = 18d;
 
     private DynamicCaseManifestationService() {
@@ -94,12 +95,20 @@ final class DynamicCaseManifestationService {
                             Component.translatable(
                                     profile.archetype().translationKey("archetype")))
                     .withStyle(ChatFormatting.AQUA));
+            sendScheduleState(player, profile);
         } else {
             player.sendSystemMessage(Component.translatable(
                             "message.lord_of_mysteries.dynamic_case.affected",
                             Component.translatable(profile.victimImpact()
                                     .translationKey("victim_impact")))
                     .withStyle(ChatFormatting.YELLOW));
+            player.sendSystemMessage(Component.translatable(
+                            "message.lord_of_mysteries.dynamic_case.relationship",
+                            Component.translatable(profile.relationship()
+                                    .translationKey("relationship")),
+                            Component.translatable(profile.organization()
+                                    .translationKey("organization")))
+                    .withStyle(ChatFormatting.GRAY));
         }
         DynamicCaseService.show(player);
         return true;
@@ -109,10 +118,17 @@ final class DynamicCaseManifestationService {
             ServerLevel level, BlockPos anchor, DynamicCaseProfile profile) {
         DynamicCaseManifestationPlan plan =
                 DynamicCaseManifestationPlan.forProfile(profile);
+        DynamicCaseSchedulePolicy.State scheduleState =
+                DynamicCaseSchedulePolicy.state(profile, level.getGameTime());
         int verticalOffset = verticalOffset(profile.location());
         BlockPos subjectPosition = findOpenPosition(level,
-                anchor.offset(plan.subject().x(), verticalOffset,
-                        plan.subject().z()), Set.of());
+                anchor.offset(
+                        (scheduleState.observationOpen()
+                                ? plan.subject() : plan.routine()).x(),
+                        verticalOffset,
+                        (scheduleState.observationOpen()
+                                ? plan.subject() : plan.routine()).z()),
+                Set.of());
         BlockPos affectedPosition = findOpenPosition(level,
                 anchor.offset(plan.affected().x(), verticalOffset,
                         plan.affected().z()), Set.of(subjectPosition));
@@ -122,10 +138,14 @@ final class DynamicCaseManifestationService {
                 Set.of(subjectPosition, affectedPosition));
         ensureVillager(level, subjectPosition,
                 SUBJECT_TAG, profile, subjectName(profile),
-                subjectProfession(profile.subject()), "subject");
+                subjectProfession(profile.subject()), "subject",
+                scheduleState.observationOpen()
+                        ? "observation"
+                        : scheduleState.currentPeriod().id());
         ensureVillager(level, affectedPosition,
                 AFFECTED_TAG, profile, affectedName(profile.victimImpact()),
-                affectedProfession(profile.victimImpact()), "affected");
+                affectedProfession(profile.victimImpact()), "affected",
+                "stationary");
         ensureEvidenceDisplay(level, evidencePosition, profile);
     }
 
@@ -136,7 +156,8 @@ final class DynamicCaseManifestationService {
             DynamicCaseProfile profile,
             Component name,
             VillagerProfession profession,
-            String role) {
+            String role,
+            String scheduleState) {
         Villager existing = level.getEntitiesOfClass(
                         Villager.class, new AABB(position).inflate(SEARCH_RANGE),
                         villager -> villager.isAlive()
@@ -145,7 +166,17 @@ final class DynamicCaseManifestationService {
                                         .getPersistentData()
                                         .getString(INSTANCE_DATA)))
                 .stream().findFirst().orElse(null);
-        if (existing != null) return;
+        if (existing != null) {
+            if (!existing.blockPosition().equals(position)) {
+                existing.getNavigation().stop();
+                existing.moveTo(position.getX() + 0.5d, position.getY(),
+                        position.getZ() + 0.5d,
+                        existing.getYRot(), existing.getXRot());
+            }
+            existing.getPersistentData().putString(
+                    SCHEDULE_DATA, scheduleState);
+            return;
+        }
         Villager villager = EntityType.VILLAGER.create(level);
         if (villager == null) return;
         villager.setVillagerData(villager.getVillagerData()
@@ -163,6 +194,8 @@ final class DynamicCaseManifestationService {
         villager.getPersistentData().putString(
                 INSTANCE_DATA, profile.instanceId());
         villager.getPersistentData().putString(ROLE_DATA, role);
+        villager.getPersistentData().putString(
+                SCHEDULE_DATA, scheduleState);
         level.addFreshEntity(villager);
         ProjectMystery.LOGGER.info(
                 "Manifested dynamic case {} {} at {}",
@@ -232,6 +265,31 @@ final class DynamicCaseManifestationService {
             DynamicCaseProfile.VictimImpact impact) {
         return Component.translatable(
                 "entity.lord_of_mysteries.dynamic_case_affected." + impact.id());
+    }
+
+    private static void sendScheduleState(
+            ServerPlayer player, DynamicCaseProfile profile) {
+        DynamicCaseSchedulePolicy.State state =
+                DynamicCaseSchedulePolicy.state(
+                        profile, player.level().getGameTime());
+        if (state.observationOpen()) {
+            player.sendSystemMessage(Component.translatable(
+                            "message.lord_of_mysteries.dynamic_case.schedule.open",
+                            Component.translatable(profile.schedule()
+                                    .translationKey("schedule")),
+                            Component.translatable(state.currentPeriod()
+                                    .translationKey("day_period")))
+                    .withStyle(ChatFormatting.GREEN));
+            return;
+        }
+        player.sendSystemMessage(Component.translatable(
+                        "message.lord_of_mysteries.dynamic_case.schedule.wait",
+                        Component.translatable(profile.schedule()
+                                .translationKey("schedule")),
+                        Component.translatable(state.currentPeriod()
+                                .translationKey("day_period")),
+                        state.minutesUntilOpen())
+                .withStyle(ChatFormatting.GRAY));
     }
 
     private static VillagerProfession subjectProfession(

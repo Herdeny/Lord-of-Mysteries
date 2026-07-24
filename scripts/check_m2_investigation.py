@@ -60,6 +60,8 @@ DYNAMIC_PORTFOLIO_MODEL = ROOT / "src" / "main" / "resources" / "assets" / "lord
 DYNAMIC_EVIDENCE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseEvidenceItem.java"
 DYNAMIC_EVIDENCE_DATA = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseEvidenceData.java"
 DYNAMIC_MANIFESTATION = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseManifestationService.java"
+DYNAMIC_SCHEDULE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseSchedulePolicy.java"
+DYNAMIC_FEEDBACK = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseFeedbackPolicy.java"
 
 
 def load(path):
@@ -165,6 +167,8 @@ def main():
     evidence_source = DYNAMIC_EVIDENCE.read_text(encoding="utf-8")
     evidence_data_source = DYNAMIC_EVIDENCE_DATA.read_text(encoding="utf-8")
     manifestation_source = DYNAMIC_MANIFESTATION.read_text(encoding="utf-8")
+    schedule_source = DYNAMIC_SCHEDULE.read_text(encoding="utf-8")
+    feedback_source = DYNAMIC_FEEDBACK.read_text(encoding="utf-8")
     require(portfolio_id in ITEMS.read_text(encoding="utf-8")
             and DYNAMIC_PORTFOLIO_MODEL.exists(),
             "dynamic evidence portfolio registry or model is missing")
@@ -215,6 +219,43 @@ def main():
     require(not manifestations["old_instance_cannot_progress"]
             or "INSTANCE_DATA" in manifestation_source,
             "dynamic manifestations are not bound to a case instance")
+    require(not manifestations["subject_moves_with_schedule"]
+            or ("SCHEDULE_DATA" in manifestation_source
+                and "scheduleState.observationOpen()" in manifestation_source
+                and "plan.routine()" in manifestation_source),
+            "dynamic subject does not move with its schedule")
+    weekly = dynamic["weekly_rotation"]
+    require(f"Math.floorDiv(safeDay, {weekly['days_per_week']}L)"
+            in dynamic_generator,
+            "dynamic case week duration drifted")
+    for organization in weekly["organizations"]:
+        require(organization in dynamic_profile,
+                f"dynamic weekly organization {organization} is missing")
+    for period in weekly["schedule_periods"]:
+        require(period in dynamic_profile,
+                f"dynamic schedule period {period} is missing")
+    for relationship in weekly["relationship_nodes"]:
+        require(relationship in dynamic_profile,
+                f"dynamic relationship {relationship} is missing")
+    require(f"TICKS_PER_PERIOD = "
+            f"{weekly['observation_window_ticks']:,}L".replace(",", "_")
+            in schedule_source,
+            "dynamic observation-window duration drifted")
+    require(weekly["observation_is_hard_gate"]
+            or "fieldRequirementMet" not in schedule_source,
+            "dynamic observation window became a hard quest gate")
+    evidence_view_source = EVIDENCE_VIEW.read_text(encoding="utf-8")
+    for relation_id in weekly["stable_relation_ids"]:
+        require(f'"{relation_id}"' in evidence_view_source,
+                f"dynamic schedule relation {relation_id} is missing")
+    for grade, adjustment in weekly["grade_feedback"].items():
+        require(f"case {grade} -> {adjustment}" in feedback_source,
+                f"dynamic organization feedback for grade {grade} drifted")
+    require(not weekly["persists_in_org_reputation"]
+            or ("applyOrganizationFeedback" in commission_source
+                and "orgReputation.put" in dynamic_service
+                and "PlayerDataSection.SOCIAL" in dynamic_service),
+            "dynamic organization feedback is not persisted")
     item_registry = ITEMS.read_text(encoding="utf-8")
     for evidence_id in dynamic["sealed_evidence_items"]:
         path = evidence_id.split(":", 1)[1]

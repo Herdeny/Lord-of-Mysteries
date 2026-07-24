@@ -12,6 +12,7 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerDataSection;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
@@ -61,6 +62,9 @@ public final class DynamicCaseService {
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
         sendSlot(player, "archetype", profile.archetype());
         sendSlot(player, "subject", profile.subject());
+        sendSlot(player, "organization", profile.organization());
+        sendSlot(player, "relationship", profile.relationship());
+        sendSlot(player, "schedule", profile.schedule());
         sendSlot(player, "motive", active && data.activeQuestStep > 1
                 ? profile.motive() : null);
         sendSlot(player, "method", active && data.activeQuestStep > 2
@@ -74,6 +78,13 @@ public final class DynamicCaseService {
                 ? profile.coverUp() : null);
         sendSlot(player, "victim_impact", profile.victimImpact());
         sendSlot(player, "evidence_theme", profile.evidenceTheme());
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.dynamic_case.weekly_rotation",
+                        profile.caseWeek() + 1L,
+                        Component.translatable(profile.organization()
+                                .translationKey("organization")))
+                .withStyle(ChatFormatting.DARK_AQUA));
+        sendScheduleState(player, profile);
         if (!active) {
             player.sendSystemMessage(Component.translatable(
                             "command.lord_of_mysteries.dynamic_case.preview")
@@ -346,6 +357,36 @@ public final class DynamicCaseService {
                 || RECOVERED_ROUTE.equals(route));
     }
 
+    public static DynamicCaseFeedbackPolicy.Feedback applyOrganizationFeedback(
+            ServerPlayer player,
+            PlayerMysteryData data,
+            DynamicCaseProfile profile,
+            CaseDebriefRecord debrief) {
+        ResourceLocation organizationId = ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID, profile.organization().reputationPath());
+        int current = data.orgReputation.getOrDefault(organizationId, 0);
+        DynamicCaseFeedbackPolicy.Feedback feedback =
+                DynamicCaseFeedbackPolicy.evaluate(
+                        profile.organization(), debrief.grade(), current);
+        data.orgReputation.put(organizationId, feedback.updatedReputation());
+        data.markDirty(PlayerDataSection.SOCIAL);
+        String tone = feedback.adjustment() > 0 ? "positive"
+                : feedback.adjustment() < 0 ? "negative" : "neutral";
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.dynamic_case.feedback." + tone,
+                        Component.translatable(profile.organization()
+                                .translationKey("organization")),
+                        debrief.grade().name(),
+                        String.format(java.util.Locale.ROOT, "%+d",
+                                feedback.adjustment()),
+                        feedback.updatedReputation())
+                .withStyle(feedback.adjustment() > 0
+                        ? ChatFormatting.GREEN
+                        : feedback.adjustment() < 0
+                                ? ChatFormatting.RED : ChatFormatting.YELLOW));
+        return feedback;
+    }
+
     private static boolean applyDeskRecovery(
             ServerPlayer player, PlayerMysteryData data) {
         if (!InvestigationBoardService.isNearBoard(player)) {
@@ -564,6 +605,31 @@ public final class DynamicCaseService {
         }
         player.sendSystemMessage(Component.translatable(key, arguments)
                 .withStyle(ChatFormatting.GOLD));
+    }
+
+    private static void sendScheduleState(
+            ServerPlayer player, DynamicCaseProfile profile) {
+        DynamicCaseSchedulePolicy.State state =
+                DynamicCaseSchedulePolicy.state(
+                        profile, player.level().getGameTime());
+        String key = state.observationOpen()
+                ? "command.lord_of_mysteries.dynamic_case.time.open"
+                : "command.lord_of_mysteries.dynamic_case.time.wait";
+        Object[] arguments = state.observationOpen()
+                ? new Object[]{
+                        Component.translatable(state.currentPeriod()
+                                .translationKey("day_period")),
+                        Component.translatable(profile.schedule()
+                                .translationKey("schedule"))}
+                : new Object[]{
+                        Component.translatable(state.currentPeriod()
+                                .translationKey("day_period")),
+                        Component.translatable(profile.schedule()
+                                .translationKey("schedule")),
+                        state.minutesUntilOpen()};
+        player.sendSystemMessage(Component.translatable(key, arguments)
+                .withStyle(state.observationOpen()
+                        ? ChatFormatting.GREEN : ChatFormatting.GRAY));
     }
 
     private static String clueKey(DynamicCaseProfile profile, int step) {

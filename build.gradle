@@ -176,6 +176,8 @@ tasks.register('checkM2Investigation', Exec) {
             'src/main/java/top/aurora/lordofmysteries/commission/CaseHypothesisStatus.java',
             'src/main/java/top/aurora/lordofmysteries/commission/DynamicCaseProfile.java',
             'src/main/java/top/aurora/lordofmysteries/commission/DynamicCaseGenerator.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/DynamicCaseSchedulePolicy.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/DynamicCaseFeedbackPolicy.java',
             'src/main/java/top/aurora/lordofmysteries/commission/DynamicCaseService.java',
             'src/main/java/top/aurora/lordofmysteries/commission/DynamicEvidencePortfolioItem.java',
             'src/main/java/top/aurora/lordofmysteries/commission/DynamicEvidencePortfolioData.java',

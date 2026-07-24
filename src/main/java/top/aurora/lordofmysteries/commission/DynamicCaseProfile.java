@@ -4,9 +4,13 @@ import java.util.Locale;
 
 public record DynamicCaseProfile(
         long caseDay,
+        long caseWeek,
         String instanceId,
         Archetype archetype,
         Subject subject,
+        Organization organization,
+        Relationship relationship,
+        Schedule schedule,
         Motive motive,
         Method method,
         CaseLocation location,
@@ -19,10 +23,24 @@ public record DynamicCaseProfile(
     public DynamicCaseProfile {
         if (caseDay < 0L || instanceId == null || instanceId.isBlank()
                 || archetype == null || subject == null || motive == null
+                || organization == null || relationship == null
+                || schedule == null
                 || method == null || location == null || anomaly == null
                 || coverUp == null || victimImpact == null
                 || evidenceTheme == null || conclusion == null) {
             throw new IllegalArgumentException("dynamic case profile is incomplete");
+        }
+        if (caseWeek != Math.floorDiv(caseDay, 7L)) {
+            throw new IllegalArgumentException(
+                    "dynamic case week does not match its day");
+        }
+        if (!relationship.supports(subject)) {
+            throw new IllegalArgumentException(
+                    "dynamic case relationship does not match its subject");
+        }
+        if (!schedule.supports(subject)) {
+            throw new IllegalArgumentException(
+                    "dynamic case schedule does not match its subject");
         }
         if (!conclusion.supports(method)) {
             throw new IllegalArgumentException(
@@ -58,6 +76,104 @@ public record DynamicCaseProfile(
         @Override
         public String id() {
             return name().toLowerCase(Locale.ROOT);
+        }
+    }
+
+    public enum Organization implements SlotOption {
+        DETECTIVE_AGENCY("organization/detective_agency"),
+        MIST_CITY_PRESS("organization/mist_city_press"),
+        CONSTABULARY("organization/constabulary");
+
+        private final String reputationPath;
+
+        Organization(String reputationPath) {
+            this.reputationPath = reputationPath;
+        }
+
+        @Override
+        public String id() {
+            return name().toLowerCase(Locale.ROOT);
+        }
+
+        public String reputationPath() {
+            return reputationPath;
+        }
+    }
+
+    public enum Relationship implements SlotOption {
+        EDITORIAL_SUPERVISOR(Subject.APPRENTICE_REPORTER),
+        DEPENDENT_RELATIVE(Subject.DOCK_ACCOUNTANT),
+        SHOP_MENTOR(Subject.HERBALIST_ASSISTANT),
+        FORMER_PATROL_PARTNER(Subject.RETIRED_CONSTABLE);
+
+        private final Subject subject;
+
+        Relationship(Subject subject) {
+            this.subject = subject;
+        }
+
+        @Override
+        public String id() {
+            return name().toLowerCase(Locale.ROOT);
+        }
+
+        public boolean supports(Subject candidate) {
+            return subject == candidate;
+        }
+    }
+
+    public enum DayPeriod implements SlotOption {
+        MORNING(0),
+        AFTERNOON(6_000),
+        EVENING(12_000),
+        NIGHT(18_000);
+
+        private final int startTick;
+
+        DayPeriod(int startTick) {
+            this.startTick = startTick;
+        }
+
+        @Override
+        public String id() {
+            return name().toLowerCase(Locale.ROOT);
+        }
+
+        public int startTick() {
+            return startTick;
+        }
+
+        public static DayPeriod at(long gameTime) {
+            int dayTick = Math.floorMod(gameTime, 24_000);
+            return values()[dayTick / 6_000];
+        }
+    }
+
+    public enum Schedule implements SlotOption {
+        PRESS_MORNING(Subject.APPRENTICE_REPORTER, DayPeriod.MORNING),
+        DOCK_AFTERNOON(Subject.DOCK_ACCOUNTANT, DayPeriod.AFTERNOON),
+        APOTHECARY_EVENING(Subject.HERBALIST_ASSISTANT, DayPeriod.EVENING),
+        CONSTABLE_NIGHT(Subject.RETIRED_CONSTABLE, DayPeriod.NIGHT);
+
+        private final Subject subject;
+        private final DayPeriod observationPeriod;
+
+        Schedule(Subject subject, DayPeriod observationPeriod) {
+            this.subject = subject;
+            this.observationPeriod = observationPeriod;
+        }
+
+        @Override
+        public String id() {
+            return name().toLowerCase(Locale.ROOT);
+        }
+
+        public DayPeriod observationPeriod() {
+            return observationPeriod;
+        }
+
+        public boolean supports(Subject candidate) {
+            return subject == candidate;
         }
     }
 

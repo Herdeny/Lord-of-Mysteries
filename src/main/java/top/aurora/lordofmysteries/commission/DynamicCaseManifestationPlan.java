@@ -1,12 +1,13 @@
 package top.aurora.lordofmysteries.commission;
 
 record DynamicCaseManifestationPlan(
-        Offset subject, Offset affected, Offset evidence) {
+        Offset subject, Offset routine, Offset affected, Offset evidence) {
 
     static DynamicCaseManifestationPlan forProfile(DynamicCaseProfile profile) {
         int rotation = Math.floorMod(profile.instanceId().hashCode(), 4);
         return new DynamicCaseManifestationPlan(
                 rotate(new Offset(2, 1), rotation),
+                rotate(new Offset(0, 2), rotation),
                 rotate(new Offset(-2, 1), rotation),
                 rotate(new Offset(0, -2), rotation));
     }

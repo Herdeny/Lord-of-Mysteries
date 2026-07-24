@@ -509,9 +509,11 @@ public final class CommissionService {
                 ? null : CommissionDefinitionManager.get(commissionId);
         if (definition == null || !isReadyToSettle(data)) return 0;
         long completedTick = player.level().getGameTime();
+        DynamicCaseProfile dynamicProfile =
+                DynamicCaseService.profileFor(player, data);
         CaseEvidenceView evidence = CaseEvidenceView.from(
                 data, FormulaAppraisalService.evidence(player),
-                DynamicCaseService.profileFor(player, data));
+                dynamicProfile);
         CaseDebriefRecord debrief = CaseDebriefService.evaluate(
                 definition.id(), evidence, data.commissionAcceptedTick,
                 completedTick, data.questResolutionRoute,
@@ -523,6 +525,10 @@ public final class CommissionService {
         data.moneyPence += definition.reward().pence();
         definition.reward().reputation().forEach((organization, amount) ->
                 data.orgReputation.merge(organization, amount, Integer::sum));
+        if (DYNAMIC_CASE.equals(definition.id()) && dynamicProfile != null) {
+            DynamicCaseService.applyOrganizationFeedback(
+                    player, data, dynamicProfile, debrief);
+        }
         data.completedCommissions.add(definition.id());
         data.commissionCooldowns.put(definition.id(),
                 player.level().getGameTime() + definition.cooldownTicks());
