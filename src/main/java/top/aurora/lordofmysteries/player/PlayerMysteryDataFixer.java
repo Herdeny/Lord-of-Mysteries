@@ -10,6 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 
 import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
+import top.aurora.lordofmysteries.commission.DynamicCaseContactEvent;
+import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
+import top.aurora.lordofmysteries.commission.DynamicCaseResponseBranch;
 import top.aurora.lordofmysteries.commission.DynamicCaseResponseTask;
 
 public final class PlayerMysteryDataFixer {
@@ -29,7 +32,9 @@ public final class PlayerMysteryDataFixer {
             new DataFix("dynamic_case_history", 20,
                     PlayerMysteryDataFixer::initializeDynamicCaseHistory),
             new DataFix("organization_response_state", 21,
-                    PlayerMysteryDataFixer::initializeOrganizationResponseState));
+                    PlayerMysteryDataFixer::initializeOrganizationResponseState),
+            new DataFix("contact_memory_and_response_branches", 22,
+                    PlayerMysteryDataFixer::initializeContactMemoryState));
 
     private PlayerMysteryDataFixer() {}
 
@@ -203,6 +208,48 @@ public final class PlayerMysteryDataFixer {
                     "invalid_legacy_payload", rawTask.copy()));
         }
         tag.put("organization_response_task", new CompoundTag());
+    }
+
+    private static void initializeContactMemoryState(
+            CompoundTag tag, List<CompoundTag> orphanedEntries) {
+        Tag rawEvents = tag.get("dynamic_case_contact_events");
+        ListTag contactEvents;
+        if (rawEvents instanceof ListTag events
+                && (events.isEmpty()
+                        || events.getElementType() == Tag.TAG_COMPOUND)) {
+            contactEvents = events;
+        } else {
+            if (rawEvents != null) {
+                orphanedEntries.add(orphan(
+                        "dynamic_case_contact_events",
+                        "invalid_legacy_payload", rawEvents.copy()));
+            }
+            contactEvents = new ListTag();
+        }
+
+        if (contactEvents.isEmpty()) {
+            Tag rawHistory = tag.get("dynamic_case_history");
+            if (rawHistory instanceof ListTag history
+                    && (history.isEmpty()
+                            || history.getElementType()
+                                    == Tag.TAG_COMPOUND)) {
+                for (int index = 0; index < history.size(); index++) {
+                    CompoundTag entryTag = history.getCompound(index);
+                    if (!DynamicCaseHistoryEntry.isValid(entryTag)) continue;
+                    contactEvents.add(DynamicCaseContactEvent.caseClosed(
+                            DynamicCaseHistoryEntry.load(entryTag)).save());
+                }
+            }
+        }
+        tag.put("dynamic_case_contact_events", contactEvents);
+
+        Tag rawTask = tag.get("organization_response_task");
+        if (rawTask instanceof CompoundTag taskTag
+                && !taskTag.isEmpty()
+                && !taskTag.contains("branch", Tag.TAG_STRING)) {
+            taskTag.putString("branch",
+                    DynamicCaseResponseBranch.ROUTINE.id());
+        }
     }
 
     private static void putBooleanDefault(CompoundTag tag, String key,

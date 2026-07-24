@@ -127,7 +127,8 @@ public final class PlayerPersistenceGameTests {
         helper.assertTrue(saved.getInt("schema_version")
                         == PlayerMysteryData.CURRENT_SCHEMA_VERSION,
                 "provider must persist the migrated schema");
-        helper.assertTrue(saved.getList("migration_history", 10).size() == 6,
+        helper.assertTrue(saved.getList("migration_history", 10).size()
+                        == PlayerMysteryData.CURRENT_SCHEMA_VERSION - 15,
                 "provider must persist the applied migration history");
         helper.succeed();
     }

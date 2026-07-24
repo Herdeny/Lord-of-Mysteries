@@ -38,6 +38,35 @@ class DynamicCaseResponsePolicyTest {
     }
 
     @Test
+    void relationshipBranchesChangeDeadlineAndRewardWithoutPenalty() {
+        DynamicCaseResponseTask priority =
+                DynamicCaseResponsePolicy.assign(
+                        historyEntry(),
+                        DynamicCaseWeeklyDirective.CHAIN_OF_CUSTODY,
+                        22L,
+                        DynamicCaseResponseBranch.PRIORITY);
+        DynamicCaseResponseTask reconciliation =
+                DynamicCaseResponsePolicy.assign(
+                        historyEntry(),
+                        DynamicCaseWeeklyDirective.CHAIN_OF_CUSTODY,
+                        22L,
+                        DynamicCaseResponseBranch.RECONCILIATION);
+
+        assertEquals(26L, priority.expiresDay());
+        assertEquals(26L, reconciliation.expiresDay());
+        assertEquals(12L, DynamicCaseResponsePolicy.reward(
+                priority.directive(), priority.branch()).moneyPence());
+        assertEquals(2, DynamicCaseResponsePolicy.reward(
+                priority.directive(), priority.branch()).reputation());
+        assertEquals(6L, DynamicCaseResponsePolicy.reward(
+                reconciliation.directive(),
+                reconciliation.branch()).moneyPence());
+        assertEquals(3, DynamicCaseResponsePolicy.reward(
+                reconciliation.directive(),
+                reconciliation.branch()).contactStanding());
+    }
+
+    @Test
     void directiveRewardsFavorAuditOrRelationshipWork() {
         DynamicCaseResponsePolicy.Reward audit =
                 DynamicCaseResponsePolicy.reward(

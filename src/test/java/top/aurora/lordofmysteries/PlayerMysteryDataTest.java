@@ -10,6 +10,7 @@ import top.aurora.lordofmysteries.commission.CaseDebriefRecord;
 import top.aurora.lordofmysteries.commission.CaseGrade;
 import top.aurora.lordofmysteries.commission.CaseHypothesisRecord;
 import top.aurora.lordofmysteries.commission.CaseHypothesisStance;
+import top.aurora.lordofmysteries.commission.DynamicCaseContactEvent;
 import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
 import top.aurora.lordofmysteries.commission.DynamicCaseProfile;
 import top.aurora.lordofmysteries.commission.DynamicCaseResponseTask;
@@ -86,6 +87,7 @@ class PlayerMysteryDataTest {
         assertTrue(d.caseDebriefs.isEmpty());
         assertTrue(d.caseHypotheses.isEmpty());
         assertTrue(d.dynamicCaseHistory.isEmpty());
+        assertTrue(d.dynamicCaseContactEvents.isEmpty());
         assertTrue(d.dynamicCaseContactStandings.isEmpty());
         assertNull(d.organizationResponseTask);
     }
@@ -193,6 +195,8 @@ class PlayerMysteryDataTest {
                 CaseGrade.A, 84, 3000L, 2,
                 DynamicCaseHistoryEntry.FollowUpStatus.CLAIMED);
         source.dynamicCaseHistory.add(historyEntry);
+        source.dynamicCaseContactEvents.add(
+                DynamicCaseContactEvent.caseClosed(historyEntry));
         source.dynamicCaseContactStandings.put(
                 DynamicCaseProfile.Subject.APPRENTICE_REPORTER, 6);
         source.organizationResponseTask = new DynamicCaseResponseTask(
@@ -279,6 +283,10 @@ class PlayerMysteryDataTest {
                 copied.caseHypotheses.get(commission).note());
         assertEquals(historyEntry, copied.dynamicCaseHistory.get(0));
         assertNotSame(source.dynamicCaseHistory, copied.dynamicCaseHistory);
+        assertEquals(source.dynamicCaseContactEvents,
+                copied.dynamicCaseContactEvents);
+        assertNotSame(source.dynamicCaseContactEvents,
+                copied.dynamicCaseContactEvents);
         assertEquals(6, copied.dynamicCaseContactStandings.get(
                 DynamicCaseProfile.Subject.APPRENTICE_REPORTER));
         assertNotSame(source.dynamicCaseContactStandings,
@@ -330,6 +338,8 @@ class PlayerMysteryDataTest {
                 CaseGrade.S, 100, 1700L, 3,
                 DynamicCaseHistoryEntry.FollowUpStatus.CLAIMED);
         source.dynamicCaseHistory.add(historyEntry);
+        source.dynamicCaseContactEvents.add(
+                DynamicCaseContactEvent.caseClosed(historyEntry));
         source.dynamicCaseContactStandings.put(
                 DynamicCaseProfile.Subject.RETIRED_CONSTABLE, 9);
         source.organizationResponseTask = new DynamicCaseResponseTask(
@@ -367,6 +377,8 @@ class PlayerMysteryDataTest {
         assertTrue(restored.questResolutionReady);
         assertEquals(100, restored.caseDebriefs.get(debriefCase).score());
         assertEquals(historyEntry, restored.dynamicCaseHistory.get(0));
+        assertEquals(source.dynamicCaseContactEvents,
+                restored.dynamicCaseContactEvents);
         assertEquals(9, restored.dynamicCaseContactStandings.get(
                 DynamicCaseProfile.Subject.RETIRED_CONSTABLE));
         assertEquals(source.organizationResponseTask,
@@ -403,7 +415,7 @@ class PlayerMysteryDataTest {
 
         assertEquals(1, migrated.characteristicBundles.size());
         assertEquals(1, migrated.migrationBackups.size());
-        assertEquals(6, migrated.migrationHistory.size());
+        assertEquals(7, migrated.migrationHistory.size());
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
                 entry.getString("section").equals("known_knowledge")));
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
@@ -419,7 +431,7 @@ class PlayerMysteryDataTest {
         restored.load(migrated.save());
 
         assertEquals(1, restored.migrationBackups.size());
-        assertEquals(6, restored.migrationHistory.size());
+        assertEquals(7, restored.migrationHistory.size());
         assertEquals(migrated.orphanedEntries.size(),
                 restored.orphanedEntries.size());
     }

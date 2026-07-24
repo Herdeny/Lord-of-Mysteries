@@ -18,14 +18,20 @@ public final class DynamicCaseRelationshipPolicy {
         if (grade == null) {
             throw new IllegalArgumentException("case grade is required");
         }
-        int adjustment = switch (grade) {
+        return adjust(standings, contact, adjustment(grade));
+    }
+
+    public static int adjustment(CaseGrade grade) {
+        if (grade == null) {
+            throw new IllegalArgumentException("case grade is required");
+        }
+        return switch (grade) {
             case S -> 3;
             case A -> 2;
             case B -> 1;
             case C -> 0;
             case D -> -2;
         };
-        return adjust(standings, contact, adjustment);
     }
 
     public static int adjust(

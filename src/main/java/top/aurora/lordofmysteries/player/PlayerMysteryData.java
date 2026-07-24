@@ -18,6 +18,7 @@ import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 import top.aurora.lordofmysteries.commission.CaseDebriefRecord;
 import top.aurora.lordofmysteries.commission.CaseHypothesisRecord;
+import top.aurora.lordofmysteries.commission.DynamicCaseContactEvent;
 import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
 import top.aurora.lordofmysteries.commission.DynamicCaseProfile;
 import top.aurora.lordofmysteries.commission.DynamicCaseResponseTask;
@@ -33,7 +34,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseResponseTask;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 21;
+    public static final int CURRENT_SCHEMA_VERSION = 22;
     private static final int MAX_MIGRATION_BACKUPS = 3;
     private static final int MAX_MIGRATION_HISTORY = 64;
 
@@ -157,6 +158,8 @@ public class PlayerMysteryData {
     public Map<ResourceLocation, CaseHypothesisRecord> caseHypotheses =
             new HashMap<>();
     public List<DynamicCaseHistoryEntry> dynamicCaseHistory =
+            new ArrayList<>();
+    public List<DynamicCaseContactEvent> dynamicCaseContactEvents =
             new ArrayList<>();
     public Map<DynamicCaseProfile.Subject, Integer>
             dynamicCaseContactStandings = new HashMap<>();
@@ -315,6 +318,8 @@ public class PlayerMysteryData {
         this.caseDebriefs = new HashMap<>(src.caseDebriefs);
         this.caseHypotheses = new HashMap<>(src.caseHypotheses);
         this.dynamicCaseHistory = new ArrayList<>(src.dynamicCaseHistory);
+        this.dynamicCaseContactEvents =
+                new ArrayList<>(src.dynamicCaseContactEvents);
         this.dynamicCaseContactStandings =
                 new HashMap<>(src.dynamicCaseContactStandings);
         this.organizationResponseTask = src.organizationResponseTask;
@@ -479,6 +484,12 @@ public class PlayerMysteryData {
             if (entry != null) dynamicCaseHistoryTag.add(entry.save());
         }
         tag.put("dynamic_case_history", dynamicCaseHistoryTag);
+
+        ListTag contactEventsTag = new ListTag();
+        for (DynamicCaseContactEvent event : dynamicCaseContactEvents) {
+            if (event != null) contactEventsTag.add(event.save());
+        }
+        tag.put("dynamic_case_contact_events", contactEventsTag);
 
         CompoundTag contactStandingsTag = new CompoundTag();
         dynamicCaseContactStandings.forEach((contact, standing) -> {
@@ -750,6 +761,30 @@ public class PlayerMysteryData {
             }
         }
 
+        dynamicCaseContactEvents.clear();
+        Tag rawContactEvents = tag.get("dynamic_case_contact_events");
+        if (rawContactEvents != null
+                && (!(rawContactEvents instanceof ListTag contactEventsTag)
+                        || !contactEventsTag.isEmpty()
+                        && contactEventsTag.getElementType()
+                                != Tag.TAG_COMPOUND)) {
+            addOrphan("dynamic_case_contact_events", "invalid_container",
+                    rawContactEvents.copy());
+        } else if (rawContactEvents
+                instanceof ListTag contactEventsTag) {
+            for (int index = 0; index < contactEventsTag.size(); index++) {
+                Tag rawEvent = contactEventsTag.get(index);
+                if (rawEvent instanceof CompoundTag eventTag
+                        && DynamicCaseContactEvent.isValid(eventTag)) {
+                    dynamicCaseContactEvents.add(
+                            DynamicCaseContactEvent.load(eventTag));
+                    continue;
+                }
+                addOrphan("dynamic_case_contact_events", "invalid_record",
+                        rawEvent.copy());
+            }
+        }
+
         dynamicCaseContactStandings.clear();
         Tag rawContactStandings =
                 tag.get("dynamic_case_contact_standings");
@@ -1012,6 +1047,7 @@ public class PlayerMysteryData {
         hash = mix(hash, caseDebriefs);
         hash = mix(hash, caseHypotheses);
         hash = mix(hash, dynamicCaseHistory);
+        hash = mix(hash, dynamicCaseContactEvents);
         hash = mix(hash, dynamicCaseContactStandings);
         hash = mix(hash, organizationResponseTask);
         hash = mix(hash, orgReputation);

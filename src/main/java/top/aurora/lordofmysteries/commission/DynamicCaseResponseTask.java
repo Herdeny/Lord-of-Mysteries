@@ -12,7 +12,8 @@ public record DynamicCaseResponseTask(
         DynamicCaseWeeklyDirective directive,
         long assignedDay,
         long expiresDay,
-        Stage stage) {
+        Stage stage,
+        DynamicCaseResponseBranch branch) {
 
     private static final int MAX_INSTANCE_ID_LENGTH = 64;
 
@@ -24,17 +25,30 @@ public record DynamicCaseResponseTask(
                 || directive == null || directive.organization() != organization
                 || assignedDay < 0L
                 || expiresDay != assignedDay
-                        + DynamicCaseResponsePolicy.TASK_DURATION_DAYS
-                || stage == null) {
+                        + (branch == null ? -1L : branch.durationDays())
+                || stage == null || branch == null) {
             throw new IllegalArgumentException(
                     "dynamic case organization response task is invalid");
         }
     }
 
+    public DynamicCaseResponseTask(
+            String instanceId,
+            DynamicCaseProfile.Organization organization,
+            DynamicCaseProfile.Subject contact,
+            DynamicCaseWeeklyDirective directive,
+            long assignedDay,
+            long expiresDay,
+            Stage stage) {
+        this(instanceId, organization, contact, directive,
+                assignedDay, expiresDay, stage,
+                DynamicCaseResponseBranch.ROUTINE);
+    }
+
     public DynamicCaseResponseTask withStage(Stage nextStage) {
         return new DynamicCaseResponseTask(
                 instanceId, organization, contact, directive,
-                assignedDay, expiresDay, nextStage);
+                assignedDay, expiresDay, nextStage, branch);
     }
 
     public CompoundTag save() {
@@ -46,6 +60,7 @@ public record DynamicCaseResponseTask(
         tag.putLong("assigned_day", assignedDay);
         tag.putLong("expires_day", expiresDay);
         tag.putString("stage", stage.id());
+        tag.putString("branch", branch.id());
         return tag;
     }
 
@@ -62,7 +77,9 @@ public record DynamicCaseResponseTask(
                         tag.getString("directive")),
                 tag.getLong("assigned_day"),
                 tag.getLong("expires_day"),
-                Stage.fromId(tag.getString("stage")));
+                Stage.fromId(tag.getString("stage")),
+                DynamicCaseResponseBranch.fromId(
+                        tag.getString("branch")));
     }
 
     public static boolean isValid(CompoundTag tag) {
@@ -83,7 +100,8 @@ public record DynamicCaseResponseTask(
                 && tag.contains("directive", Tag.TAG_STRING)
                 && tag.contains("assigned_day", Tag.TAG_LONG)
                 && tag.contains("expires_day", Tag.TAG_LONG)
-                && tag.contains("stage", Tag.TAG_STRING);
+                && tag.contains("stage", Tag.TAG_STRING)
+                && tag.contains("branch", Tag.TAG_STRING);
     }
 
     private static DynamicCaseProfile.Organization organizationFromId(

@@ -430,25 +430,29 @@ public final class DynamicCaseService {
             throw new IllegalArgumentException(
                     "dynamic case completion data is required");
         }
-        DynamicCaseContinuityPolicy.record(
-                data.dynamicCaseHistory,
-                new DynamicCaseHistoryEntry(
-                        profile.caseDay(),
-                        profile.caseWeek(),
-                        profile.instanceId(),
-                        profile.archetype(),
-                        profile.subject(),
-                        profile.organization(),
-                        profile.location(),
-                        debrief.grade(),
-                        debrief.score(),
-                        debrief.completedTick(),
-                        feedback.adjustment(),
-                        DynamicCaseHistoryEntry.FollowUpStatus.PENDING));
-        DynamicCaseRelationshipPolicy.recordCaseResult(
-                data.dynamicCaseContactStandings,
+        DynamicCaseHistoryEntry historyEntry = new DynamicCaseHistoryEntry(
+                profile.caseDay(),
+                profile.caseWeek(),
+                profile.instanceId(),
+                profile.archetype(),
                 profile.subject(),
-                debrief.grade());
+                profile.organization(),
+                profile.location(),
+                debrief.grade(),
+                debrief.score(),
+                debrief.completedTick(),
+                feedback.adjustment(),
+                DynamicCaseHistoryEntry.FollowUpStatus.PENDING);
+        DynamicCaseContinuityPolicy.record(
+                data.dynamicCaseHistory, historyEntry);
+        if (DynamicCaseContactMemoryPolicy.record(
+                data.dynamicCaseContactEvents,
+                DynamicCaseContactEvent.caseClosed(historyEntry))) {
+            DynamicCaseRelationshipPolicy.recordCaseResult(
+                    data.dynamicCaseContactStandings,
+                    profile.subject(),
+                    debrief.grade());
+        }
         data.markDirty(PlayerDataSection.SOCIAL);
     }
 
@@ -512,12 +516,56 @@ public final class DynamicCaseService {
 
     public static int showContacts(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
+        expireOrganizationResponse(
+                player, data, currentCaseDay(player), true);
         player.sendSystemMessage(Component.translatable(
                         "command.lord_of_mysteries.dynamic_case.contacts.title")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
         for (DynamicCaseProfile.Subject contact
                 : DynamicCaseProfile.Subject.values()) {
             sendContactStanding(player, data, contact);
+            sendContactMemory(player, data, contact);
+        }
+        return 1;
+    }
+
+    public static int showContactHistory(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        expireOrganizationResponse(
+                player, data, currentCaseDay(player), true);
+        if (data.dynamicCaseContactEvents.isEmpty()) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.contacts.history.empty")
+                    .withStyle(ChatFormatting.GRAY));
+            return 0;
+        }
+        int displayed = Math.min(8, data.dynamicCaseContactEvents.size());
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.dynamic_case.contacts.history.title",
+                        displayed,
+                        data.dynamicCaseContactEvents.size())
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
+        int first = data.dynamicCaseContactEvents.size() - displayed;
+        for (int index = data.dynamicCaseContactEvents.size() - 1;
+                index >= first; index--) {
+            DynamicCaseContactEvent event =
+                    data.dynamicCaseContactEvents.get(index);
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.contacts.history.entry",
+                            Component.translatable(event.contact()
+                                    .translationKey("subject")),
+                            Component.translatable(
+                                    event.eventTranslationKey()),
+                            Component.translatable(
+                                    event.detailTranslationKey()),
+                            signed(event.standingDelta()),
+                            event.caseDay() + 1L,
+                            event.instanceId())
+                    .withStyle(event.standingDelta() > 0
+                            ? ChatFormatting.GREEN
+                            : event.standingDelta() < 0
+                                    ? ChatFormatting.RED
+                                    : ChatFormatting.GRAY));
         }
         return 1;
     }
@@ -588,9 +636,18 @@ public final class DynamicCaseService {
                         overworld.getSeed(),
                         entry.caseWeek(),
                         entry.organization());
+        DynamicCaseContactMemoryPolicy.Summary contactMemory =
+                DynamicCaseContactMemoryPolicy.summarize(
+                        data.dynamicCaseContactEvents,
+                        entry.subject());
+        DynamicCaseResponseBranch branch =
+                DynamicCaseContactMemoryPolicy.selectResponseBranch(
+                        data.dynamicCaseContactStandings.getOrDefault(
+                                entry.subject(), 0),
+                        contactMemory);
         data.organizationResponseTask =
                 DynamicCaseResponsePolicy.assign(
-                        entry, directive, currentDay);
+                        entry, directive, currentDay, branch);
         data.markDirty(PlayerDataSection.SOCIAL);
         if (Float.compare(previousPressure, data.insanityPressure) != 0) {
             data.markDirty(PlayerDataSection.CORE);
@@ -612,6 +669,7 @@ public final class DynamicCaseService {
                                 .translationKey("organization")),
                         Component.translatable(entry.subject()
                                 .translationKey("subject")),
+                        Component.translatable(branch.translationKey()),
                         data.organizationResponseTask.expiresDay() + 1L)
                 .withStyle(ChatFormatting.GOLD));
         InvestigationBoardService.refresh(player);
@@ -636,6 +694,7 @@ public final class DynamicCaseService {
                                 .translationKey("organization")),
                         Component.translatable(task.contact()
                                 .translationKey("subject")),
+                        Component.translatable(task.branch().translationKey()),
                         Component.translatable(
                                 "dynamic_case.lord_of_mysteries.response_stage."
                                         + task.stage().id()),
@@ -677,7 +736,8 @@ public final class DynamicCaseService {
                         "command.lord_of_mysteries.dynamic_case.response.briefed",
                         Component.translatable(task.directive().translationKey()),
                         Component.translatable(task.contact()
-                                .translationKey("subject")))
+                                .translationKey("subject")),
+                        Component.translatable(task.branch().translationKey()))
                 .withStyle(ChatFormatting.AQUA));
         player.sendSystemMessage(Component.translatable(
                         "command.lord_of_mysteries.dynamic_case.response.next_submit")
@@ -687,8 +747,8 @@ public final class DynamicCaseService {
 
     public static int submitOrganizationResponse(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
-        expireOrganizationResponse(
-                player, data, currentCaseDay(player), true);
+        long currentDay = currentCaseDay(player);
+        expireOrganizationResponse(player, data, currentDay, true);
         DynamicCaseResponseTask task = data.organizationResponseTask;
         if (task == null) {
             player.sendSystemMessage(Component.translatable(
@@ -710,7 +770,8 @@ public final class DynamicCaseService {
         }
 
         DynamicCaseResponsePolicy.Reward reward =
-                DynamicCaseResponsePolicy.reward(task.directive());
+                DynamicCaseResponsePolicy.reward(
+                        task.directive(), task.branch());
         data.moneyPence = saturatingAdd(
                 data.moneyPence, reward.moneyPence());
         ResourceLocation organizationId = organizationId(task.organization());
@@ -723,11 +784,19 @@ public final class DynamicCaseService {
                 data.dynamicCaseContactStandings,
                 task.contact(),
                 reward.contactStanding());
+        DynamicCaseContactMemoryPolicy.record(
+                data.dynamicCaseContactEvents,
+                DynamicCaseContactEvent.response(
+                        task,
+                        DynamicCaseContactEvent.Kind.RESPONSE_COMPLETED,
+                        currentDay,
+                        reward.contactStanding()));
         data.organizationResponseTask = null;
         data.markDirty(PlayerDataSection.SOCIAL);
         player.sendSystemMessage(Component.translatable(
                         "command.lord_of_mysteries.dynamic_case.response.completed",
                         Component.translatable(task.directive().translationKey()),
+                        Component.translatable(task.branch().translationKey()),
                         CommissionCurrency.format(reward.moneyPence()),
                         reward.reputation(),
                         reward.contactStanding())
@@ -739,8 +808,8 @@ public final class DynamicCaseService {
 
     public static int abandonOrganizationResponse(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
-        expireOrganizationResponse(
-                player, data, currentCaseDay(player), true);
+        long currentDay = currentCaseDay(player);
+        expireOrganizationResponse(player, data, currentDay, true);
         DynamicCaseResponseTask task = data.organizationResponseTask;
         if (task == null) {
             player.sendSystemMessage(Component.translatable(
@@ -757,6 +826,13 @@ public final class DynamicCaseService {
         int standing = DynamicCaseRelationshipPolicy.adjust(
                 data.dynamicCaseContactStandings,
                 task.contact(), -1);
+        DynamicCaseContactMemoryPolicy.record(
+                data.dynamicCaseContactEvents,
+                DynamicCaseContactEvent.response(
+                        task,
+                        DynamicCaseContactEvent.Kind.RESPONSE_ABANDONED,
+                        currentDay,
+                        -1));
         data.organizationResponseTask = null;
         data.markDirty(PlayerDataSection.SOCIAL);
         player.sendSystemMessage(Component.translatable(
@@ -1071,6 +1147,31 @@ public final class DynamicCaseService {
                                 ? ChatFormatting.RED : ChatFormatting.GRAY));
     }
 
+    private static void sendContactMemory(
+            ServerPlayer player,
+            PlayerMysteryData data,
+            DynamicCaseProfile.Subject contact) {
+        DynamicCaseContactMemoryPolicy.Summary summary =
+                DynamicCaseContactMemoryPolicy.summarize(
+                        data.dynamicCaseContactEvents, contact);
+        if (summary.eventCount() == 0) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.dynamic_case.contacts.memory.empty")
+                    .withStyle(ChatFormatting.DARK_GRAY));
+            return;
+        }
+        DynamicCaseContactEvent last = summary.lastEvent();
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.dynamic_case.contacts.memory",
+                        summary.resolvedCases(),
+                        summary.completedResponses(),
+                        summary.missedResponses(),
+                        Component.translatable(last.eventTranslationKey()),
+                        Component.translatable(last.detailTranslationKey()),
+                        last.caseDay() + 1L)
+                .withStyle(ChatFormatting.DARK_GRAY));
+    }
+
     private static void expireOrganizationResponse(
             ServerPlayer player,
             PlayerMysteryData data,
@@ -1081,6 +1182,13 @@ public final class DynamicCaseService {
         int standing = DynamicCaseRelationshipPolicy.adjust(
                 data.dynamicCaseContactStandings,
                 task.contact(), -1);
+        DynamicCaseContactMemoryPolicy.record(
+                data.dynamicCaseContactEvents,
+                DynamicCaseContactEvent.response(
+                        task,
+                        DynamicCaseContactEvent.Kind.RESPONSE_EXPIRED,
+                        currentDay,
+                        -1));
         data.organizationResponseTask = null;
         data.markDirty(PlayerDataSection.SOCIAL);
         if (!announce) return;
@@ -1142,5 +1250,9 @@ public final class DynamicCaseService {
         if (amount <= 0) return current;
         return current > Integer.MAX_VALUE - amount
                 ? Integer.MAX_VALUE : current + amount;
+    }
+
+    private static String signed(int value) {
+        return value > 0 ? "+" + value : Integer.toString(value);
     }
 }

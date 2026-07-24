@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import net.minecraft.resources.ResourceLocation;
 
 import top.aurora.lordofmysteries.commission.CaseGrade;
+import top.aurora.lordofmysteries.commission.DynamicCaseContactEvent;
 import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
 import top.aurora.lordofmysteries.commission.DynamicCaseProfile;
 import top.aurora.lordofmysteries.commission.DynamicCaseRelationshipPolicy;
@@ -37,9 +38,16 @@ class PlayerMysteryDataSanitizerTest {
         data.completedCommissions.add(null);
         data.caseDebriefs.put(null, null);
         data.caseHypotheses.put(null, null);
-        data.dynamicCaseHistory.add(historyEntry(7L, "duplicate"));
-        data.dynamicCaseHistory.add(historyEntry(8L, "duplicate"));
+        DynamicCaseHistoryEntry older = historyEntry(7L, "duplicate");
+        DynamicCaseHistoryEntry newer = historyEntry(8L, "duplicate");
+        data.dynamicCaseHistory.add(older);
+        data.dynamicCaseHistory.add(newer);
         data.dynamicCaseHistory.add(null);
+        data.dynamicCaseContactEvents.add(
+                DynamicCaseContactEvent.caseClosed(older));
+        data.dynamicCaseContactEvents.add(null);
+        data.dynamicCaseContactEvents.add(
+                DynamicCaseContactEvent.caseClosed(newer));
         data.dynamicCaseContactStandings.put(
                 DynamicCaseProfile.Subject.DOCK_ACCOUNTANT, 99);
         data.dynamicCaseContactStandings.put(
@@ -76,6 +84,9 @@ class PlayerMysteryDataSanitizerTest {
         assertTrue(data.caseHypotheses.isEmpty());
         assertEquals(1, data.dynamicCaseHistory.size());
         assertEquals(8L, data.dynamicCaseHistory.get(0).caseDay());
+        assertEquals(1, data.dynamicCaseContactEvents.size());
+        assertEquals(8L,
+                data.dynamicCaseContactEvents.get(0).caseDay());
         assertEquals(DynamicCaseRelationshipPolicy.MAX_STANDING,
                 data.dynamicCaseContactStandings.get(
                         DynamicCaseProfile.Subject.DOCK_ACCOUNTANT));
@@ -127,6 +138,8 @@ class PlayerMysteryDataSanitizerTest {
                 CaseGrade.A, 84, 900L, 2,
                 DynamicCaseHistoryEntry.FollowUpStatus.CLAIMED);
         data.dynamicCaseHistory.add(history);
+        data.dynamicCaseContactEvents.add(
+                DynamicCaseContactEvent.caseClosed(history));
         data.dynamicCaseContactStandings.put(
                 history.subject(), 5);
         data.organizationResponseTask = new DynamicCaseResponseTask(

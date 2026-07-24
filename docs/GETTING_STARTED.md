@@ -1,6 +1,6 @@
 # Project Mystery 入门指南
 
-> 适用版本：0.9.16-1.20.1 · v0.9 M2 实体组织响应任务与联系人态度演化（M0/M1 实施完成）
+> 适用版本：0.9.17-1.20.1 · v0.9 M2 跨案件联系人记忆与组织响应分支（M0/M1 实施完成）
 >
 > 当前路线：v0.9 · M2 调查与生活
 
@@ -178,7 +178,7 @@
 - 序列 7 详细规则见 [`M2_SEQUENCE7_PSYCHIATRIST_PYROMANIAC.md`](M2_SEQUENCE7_PSYCHIATRIST_PYROMANIAC.md)。
 - 三案结算后会自动显示证据、程序、安全、效率四维评分和 S–D 评级；详细规则见 [`M2_CASE_DEBRIEF_AND_RATINGS.md`](M2_CASE_DEBRIEF_AND_RATINGS.md)。
 - 玩家可把最多 160 字说明绑定到已揭示关系并选择支持、矛盾或指向立场；错误检验增加 4 点压力和最多 3 点推理负担，正确检验或复议可恢复。详细规则见 [`M2_PLAYER_HYPOTHESES_AND_REASONING_STRAIN.md`](M2_PLAYER_HYPOTHESES_AND_REASONING_STRAIN.md)。
-- 完成“真假配方”后可接取每日轮换案件：执行 `/pm case rotation` 查看八槽位卷宗、本周协调组织、主体关系、当前日程窗口与等待时间。接案获得证物袋后，到指定现场寻找案件相关人、受影响者和悬浮物证；主体会在日常点与观察点间移动，但错过 6000 tick 观察窗口不会锁死任务。手持证物袋右键物证或附近方块封存黄铜筹码、墨迹、烛蜡或残缺时刻表，再右键指定 NPC 记录证词、右键当日报纸核验档案；随后提交 `human_concealment`、`extraordinary_distortion` 或 `ritual_diversion`。`investigate field|desk` 保留为兼容和无软锁入口，误判后必须在调查板执行 `recover` 才能重试。结案后在调查板执行 `rotation followup` 领取后续；用 `rotation response` 查看三日任务，右键对应事务所/报社/巡警 NPC 简报，再回调查板执行 `response submit`。`rotation contacts` 显示四名联系人态度；无法继续时可在调查板 `response abandon`，不会永久卡住下一轮。
+- 完成“真假配方”后可接取每日轮换案件：执行 `/pm case rotation` 查看八槽位卷宗、本周协调组织、主体关系、当前日程窗口与等待时间。接案获得证物袋后，到指定现场寻找案件相关人、受影响者和悬浮物证；主体会在日常点与观察点间移动，但错过 6000 tick 观察窗口不会锁死任务。手持证物袋右键物证或附近方块封存黄铜筹码、墨迹、烛蜡或残缺时刻表，再右键指定 NPC 记录证词、右键当日报纸核验档案；随后提交 `human_concealment`、`extraordinary_distortion` 或 `ritual_diversion`。`investigate field|desk` 保留为兼容和无软锁入口，误判后必须在调查板执行 `recover` 才能重试。结案后在调查板执行 `rotation followup` 领取后续；用 `rotation response` 查看由关系与履约历史冻结的 3–4 日优先协作、常规跟进或关系修复任务，右键对应事务所/报社/巡警 NPC 简报，再回调查板执行 `response submit`。`rotation contacts` 显示四名联系人态度和履约摘要，`rotation contacts history` 查看最近八条关系事件；无法继续时可在调查板 `response abandon`，过期或放弃只影响本次个人响应，不会卡住队友、基础案件奖励或下一轮。
 - 证物袋悬浮提示会显示案件编号、关键物证和归档阶段；现场完成后在线队员各取得实例绑定封存样本，队伍推进同步袋内阶段，三项证据齐全后产生光效。证物袋或样本遗失时在调查板附近 `/pm case recover` 可按当前进度补领，结案或放弃会自动回收。详细规则见 [`M2_DYNAMIC_CASE_ROTATION.md`](M2_DYNAMIC_CASE_ROTATION.md)。
 - 多队在同一站点调查不同日期案件时使用独立现场槽位；可视物证、真假配方卷宗和委托纸均验证当前实例。任务物遇到满背包不会掉到地上形成副本，清出空位后再执行 `/pm case recover`。
 - 失踪小队的记者按队伍创建独立护送实例；旧存档自动迁移。队伍中途拆分时，离队玩家保留个人步骤并获得自己的护送分支，不会抢走原队记者。

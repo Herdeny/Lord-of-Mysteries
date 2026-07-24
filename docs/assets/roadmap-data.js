@@ -14,7 +14,7 @@ window.LOM_ROADMAP_META = {
       "acceptance": "至少 100 个真实样例节点通过关系校验；旧存档可迁移、可备份、可回滚，并通过死亡、重生、维度与重启运行时验证。",
       "points": [
         "116 节点、168 关系内容图通过 orphan、spoiler、compat、localization 与 asset 审计",
-        "Capability schema 21 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema",
+        "Capability schema 22 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema",
         "世界加载前原子快照、幂等 schema marker、受限路径恢复工具和恢复前安全备份",
         "6 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒、M1 两小时状态和调查板邻近门禁",
         "专服双启动矩阵验证世界种子、schema 快照、保存和干净停服保持稳定"
@@ -60,8 +60,9 @@ window.LOM_ROADMAP_META = {
         "已完成：单人/多人稳定性加固、跨队实例隔离、每队独立护送、任务物防复制与中途队伍变更续玩",
         "已完成：八案案件历史账本、六项每周组织指令、S–D 差异化结案后续、过期规则与 schema 20 安全迁移",
         "已完成：四名动态案件联系人独立态度、两阶段实体组织响应任务、组织 NPC 简报、调查板提交、三日过期/主动放弃与 schema 21 安全迁移",
+        "已完成：24 条跨案件联系人事件账本、旧八案记忆回填、优先/常规/关系修复三类响应分支与 schema 22 安全迁移",
         "下一步：把前哨功能区扩展为正式报社、事务所与警局街区",
-        "下一步：扩展更多联系人、跨案件记忆、组织任务分支和更大的周级案件池",
+        "下一步：扩展更多联系人、组织立场、任务场景和更大的周级案件池",
         "下一步：生活物价、职业扩展和八小时多人连续性矩阵"
       ]
     },
@@ -221,19 +222,19 @@ window.LOM_ROADMAP_META = {
       "structure_specs": 32,
       "weather_anomaly_specs": 18
     },
-    "repository_evidence_at_0.9.16": {
+    "repository_evidence_at_0.9.17": {
       "content_graph_nodes": 116,
       "content_graph_edges": 168,
       "schema4_sequence_definitions": 15,
       "generated_recipes": 13,
       "playable_commissions": 4,
       "playable_quest_chains": 4,
-      "junit_tests": 295,
+      "junit_tests": 308,
       "forge_gametests": 6,
       "save_rollback_checks": 1,
       "dedicated_server_starts": 2,
       "network_protocol": 12,
-      "player_capability_schema": 21
+      "player_capability_schema": 22
     }
   }
 };

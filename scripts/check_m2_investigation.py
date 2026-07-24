@@ -69,7 +69,10 @@ DYNAMIC_CONTINUITY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordof
 DYNAMIC_DIRECTIVE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseWeeklyDirective.java"
 DYNAMIC_RESPONSE_TASK = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseResponseTask.java"
 DYNAMIC_RESPONSE_POLICY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseResponsePolicy.java"
+DYNAMIC_RESPONSE_BRANCH = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseResponseBranch.java"
 DYNAMIC_RELATIONSHIP = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseRelationshipPolicy.java"
+DYNAMIC_CONTACT_EVENT = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseContactEvent.java"
+DYNAMIC_CONTACT_MEMORY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseContactMemoryPolicy.java"
 PARTY_POLICY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestPartyPolicy.java"
 QUEST_ITEM_DELIVERY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestItemDelivery.java"
 
@@ -349,25 +352,66 @@ def main():
     response = continuity["organization_response"]
     response_task_source = DYNAMIC_RESPONSE_TASK.read_text(encoding="utf-8")
     response_policy_source = DYNAMIC_RESPONSE_POLICY.read_text(encoding="utf-8")
+    response_branch_source = DYNAMIC_RESPONSE_BRANCH.read_text(encoding="utf-8")
     relationship_source = DYNAMIC_RELATIONSHIP.read_text(encoding="utf-8")
+    contact_event_source = DYNAMIC_CONTACT_EVENT.read_text(encoding="utf-8")
+    contact_memory_source = DYNAMIC_CONTACT_MEMORY.read_text(encoding="utf-8")
     player_data_source = PLAYER_DATA.read_text(encoding="utf-8")
     npc_source = NPC_HANDLER.read_text(encoding="utf-8")
     fixer_source = PLAYER_FIXER.read_text(encoding="utf-8")
     command_source = COMMANDS.read_text(encoding="utf-8")
-    require(
-        f'TASK_DURATION_DAYS = {response["duration_days"]}L'
-        in response_policy_source,
-        "organization response duration drifted")
     require(f'"{response["task_key"]}"' in player_data_source,
             "organization response task key drifted")
     require(f'"{response["contact_standings_key"]}"' in player_data_source,
             "dynamic contact standings key drifted")
-    require("organization_response_state" in fixer_source
-            and "21" in fixer_source,
-            "organization response schema migration is missing")
+    require(f'"{response["contact_events_key"]}"' in player_data_source,
+            "dynamic contact event ledger key drifted")
+    require(
+        f'MAX_EVENTS = {response["maximum_contact_events"]}'
+        in contact_memory_source,
+        "dynamic contact event ledger limit drifted")
+    require(response["migration_fix"] in fixer_source
+            and str(contract["capability_schema"]) in fixer_source,
+            "contact memory schema migration is missing")
     for stage in response["stages"]:
         require(stage in response_task_source,
                 f"organization response stage {stage} is missing")
+    for event_kind in response["event_kinds"]:
+        require(event_kind in contact_event_source,
+                f"contact memory event {event_kind} is missing")
+    for branch, rules in response["branches"].items():
+        require(branch in response_branch_source
+                and f'{branch}({rules["duration_days"]}L)'
+                in response_branch_source,
+                f"organization response branch {branch} duration drifted")
+        require(branch in contact_memory_source,
+                f"organization response branch {branch} selection is missing")
+        if branch == "ROUTINE":
+            require("case ROUTINE -> base" in response_policy_source,
+                    "routine organization response reward drifted")
+            continue
+        money = rules["money_adjustment"]
+        money_token = (
+            f"base.moneyPence() + {money}L"
+            if money > 0
+            else f"base.moneyPence() - {abs(money)}L"
+        )
+        reputation = rules["reputation_adjustment"]
+        reputation_token = (
+            "base.reputation()"
+            if reputation == 0
+            else f"base.reputation() + {reputation}"
+        )
+        standing = rules["contact_standing_adjustment"]
+        standing_token = (
+            "base.contactStanding()"
+            if standing == 0
+            else f"base.contactStanding() + {standing}"
+        )
+        require(money_token in response_policy_source
+                and reputation_token in response_policy_source
+                and standing_token in response_policy_source,
+                f"organization response branch {branch} reward drifted")
     for command in response["commands"]:
         require(f'literal("{command}")' in command_source,
                 f"organization response command {command} is missing")
@@ -790,7 +834,8 @@ def main():
         "the deterministic daily newspaper, versioned city service desks, "
         "and the recoverable eight-slot dynamic case rotation with physical "
         "scene, witness, and records interactions, persistent contact "
-        "attitudes, and two-stage physical organization response tasks"
+        "attitudes, bounded cross-case relationship memory, and three "
+        "two-stage physical organization response branches"
     )
 
 

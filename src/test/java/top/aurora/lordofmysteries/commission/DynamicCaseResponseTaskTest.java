@@ -58,6 +58,33 @@ class DynamicCaseResponseTaskTest {
                 () -> DynamicCaseResponseTask.load(malformed));
     }
 
+    @Test
+    void branchRoundTripPreservesCanonicalWindow() {
+        DynamicCaseResponseTask priority =
+                new DynamicCaseResponseTask(
+                        "priority-response",
+                        DynamicCaseProfile.Organization.MIST_CITY_PRESS,
+                        DynamicCaseProfile.Subject.APPRENTICE_REPORTER,
+                        DynamicCaseWeeklyDirective.SOURCE_VERIFICATION,
+                        10L, 14L,
+                        DynamicCaseResponseTask.Stage.ASSIGNED,
+                        DynamicCaseResponseBranch.PRIORITY);
+
+        assertEquals(priority,
+                DynamicCaseResponseTask.load(priority.save()));
+        assertEquals(DynamicCaseResponseBranch.PRIORITY,
+                priority.branch());
+    }
+
+    @Test
+    void missingBranchPayloadFailsClosedUntilMigrated() {
+        CompoundTag legacy = task(
+                DynamicCaseResponseTask.Stage.ASSIGNED).save();
+        legacy.remove("branch");
+
+        assertFalse(DynamicCaseResponseTask.isValid(legacy));
+    }
+
     private static DynamicCaseResponseTask task(
             DynamicCaseResponseTask.Stage stage) {
         return new DynamicCaseResponseTask(

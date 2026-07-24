@@ -7,6 +7,7 @@ import java.util.UUID;
 import net.minecraft.resources.ResourceLocation;
 
 import top.aurora.lordofmysteries.commission.DynamicCaseContinuityPolicy;
+import top.aurora.lordofmysteries.commission.DynamicCaseContactMemoryPolicy;
 import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
 import top.aurora.lordofmysteries.commission.DynamicCaseRelationshipPolicy;
 import top.aurora.lordofmysteries.potion.PotionQuality;
@@ -67,6 +68,13 @@ public final class PlayerMysteryDataSanitizer {
         } else {
             repairs += DynamicCaseContinuityPolicy.sanitize(
                     data.dynamicCaseHistory);
+        }
+        if (data.dynamicCaseContactEvents == null) {
+            data.dynamicCaseContactEvents = new ArrayList<>();
+            repairs++;
+        } else {
+            repairs += DynamicCaseContactMemoryPolicy.sanitize(
+                    data.dynamicCaseContactEvents);
         }
         if (data.dynamicCaseContactStandings == null) {
             data.dynamicCaseContactStandings = new HashMap<>();

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "capability_schema": 21,
+  "capability_schema": 22,
   "data_counts": {
     "commissions": 4,
     "quest_chains": 4
@@ -151,9 +151,37 @@
       "organization_response": {
         "task_key": "organization_response_task",
         "contact_standings_key": "dynamic_case_contact_standings",
-        "duration_days": 3,
+        "contact_events_key": "dynamic_case_contact_events",
+        "maximum_contact_events": 24,
+        "migration_fix": "contact_memory_and_response_branches",
         "stages": ["ASSIGNED", "BRIEFED"],
-        "commands": ["contacts", "response", "submit", "abandon"],
+        "event_kinds": [
+          "CASE_CLOSED",
+          "RESPONSE_COMPLETED",
+          "RESPONSE_ABANDONED",
+          "RESPONSE_EXPIRED"
+        ],
+        "branches": {
+          "PRIORITY": {
+            "duration_days": 4,
+            "money_adjustment": 4,
+            "reputation_adjustment": 1,
+            "contact_standing_adjustment": 1
+          },
+          "ROUTINE": {
+            "duration_days": 3,
+            "money_adjustment": 0,
+            "reputation_adjustment": 0,
+            "contact_standing_adjustment": 0
+          },
+          "RECONCILIATION": {
+            "duration_days": 4,
+            "money_adjustment": -2,
+            "reputation_adjustment": 0,
+            "contact_standing_adjustment": 2
+          }
+        },
+        "commands": ["contacts", "history", "response", "submit", "abandon"],
         "requires_organization_npc_briefing": true,
         "requires_board_submission": true,
         "abandon_requires_board": true,
@@ -444,6 +472,9 @@
     "command.lord_of_mysteries.dynamic_case.follow_up.claimed",
     "command.lord_of_mysteries.dynamic_case.contacts.title",
     "command.lord_of_mysteries.dynamic_case.contacts.entry",
+    "command.lord_of_mysteries.dynamic_case.contacts.memory",
+    "command.lord_of_mysteries.dynamic_case.contacts.history.title",
+    "command.lord_of_mysteries.dynamic_case.contacts.history.entry",
     "command.lord_of_mysteries.dynamic_case.response.assigned",
     "command.lord_of_mysteries.dynamic_case.response.status",
     "command.lord_of_mysteries.dynamic_case.response.briefed",
@@ -462,6 +493,13 @@
     "dynamic_case.lord_of_mysteries.follow_up_status.pending",
     "dynamic_case.lord_of_mysteries.response_stage.assigned",
     "dynamic_case.lord_of_mysteries.response_stage.briefed",
+    "dynamic_case.lord_of_mysteries.response_branch.priority",
+    "dynamic_case.lord_of_mysteries.response_branch.routine",
+    "dynamic_case.lord_of_mysteries.response_branch.reconciliation",
+    "dynamic_case.lord_of_mysteries.contact_event.case_closed",
+    "dynamic_case.lord_of_mysteries.contact_event.response_completed",
+    "dynamic_case.lord_of_mysteries.contact_event.response_abandoned",
+    "dynamic_case.lord_of_mysteries.contact_event.response_expired",
     "dynamic_case.lord_of_mysteries.contact_attitude.neutral",
     "dynamic_case.lord_of_mysteries.contact_attitude.allied",
     "dynamic_case.lord_of_mysteries.relationship.editorial_supervisor",
