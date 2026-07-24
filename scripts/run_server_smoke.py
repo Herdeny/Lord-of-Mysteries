@@ -58,6 +58,8 @@ EXPECTED = {
     ),
     "party_storage": "party_storage=true active_parties=",
     "party_members": "party_members=",
+    "world_event": "world_event=",
+    "city_service": "city_service_version=",
     "command_loop": "There are 0 of a max of",
     "seed": "Seed: [",
     "save": "Saved the game",

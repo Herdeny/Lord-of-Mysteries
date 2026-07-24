@@ -34,7 +34,9 @@ public final class PlayerMysteryDataFixer {
             new DataFix("organization_response_state", 21,
                     PlayerMysteryDataFixer::initializeOrganizationResponseState),
             new DataFix("contact_memory_and_response_branches", 22,
-                    PlayerMysteryDataFixer::initializeContactMemoryState));
+                    PlayerMysteryDataFixer::initializeContactMemoryState),
+            new DataFix("city_economy_and_exposure", 23,
+                    PlayerMysteryDataFixer::initializeCityEconomyState));
 
     private PlayerMysteryDataFixer() {}
 
@@ -249,6 +251,16 @@ public final class PlayerMysteryDataFixer {
                 && !taskTag.contains("branch", Tag.TAG_STRING)) {
             taskTag.putString("branch",
                     DynamicCaseResponseBranch.ROUTINE.id());
+        }
+    }
+
+    private static void initializeCityEconomyState(
+            CompoundTag tag, List<CompoundTag> orphanedEntries) {
+        putIntDefault(tag, "press_work_shifts", 0);
+        putIntDefault(tag, "agency_work_shifts", 0);
+        putIntDefault(tag, "patrol_work_shifts", 0);
+        if (!tag.contains("mystical_exposure", Tag.TAG_FLOAT)) {
+            tag.putFloat("mystical_exposure", 0f);
         }
     }
 

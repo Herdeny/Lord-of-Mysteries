@@ -178,6 +178,7 @@ tasks.register('checkM2Investigation', Exec) {
             'src/main/java/top/aurora/lordofmysteries/commission/DynamicCaseGenerator.java',
             'src/main/java/top/aurora/lordofmysteries/commission/DynamicCaseSchedulePolicy.java',
             'src/main/java/top/aurora/lordofmysteries/commission/DynamicCaseFeedbackPolicy.java',
+            'src/main/java/top/aurora/lordofmysteries/commission/DynamicCaseOrganizationStancePolicy.java',
             'src/main/java/top/aurora/lordofmysteries/commission/DynamicCaseService.java',
             'src/main/java/top/aurora/lordofmysteries/commission/DynamicEvidencePortfolioItem.java',
             'src/main/java/top/aurora/lordofmysteries/commission/DynamicEvidencePortfolioData.java',
@@ -188,7 +189,31 @@ tasks.register('checkM2Investigation', Exec) {
             'src/main/java/top/aurora/lordofmysteries/commission/QuestPartyService.java',
             'src/main/java/top/aurora/lordofmysteries/commission/QuestPartySnapshot.java',
             'src/main/java/top/aurora/lordofmysteries/commission/QuestPartySavedData.java',
-            'src/main/java/top/aurora/lordofmysteries/commission/QuestProgressHandler.java'
+            'src/main/java/top/aurora/lordofmysteries/commission/QuestProgressHandler.java',
+            'src/main/java/top/aurora/lordofmysteries/world/MistCityDistrictLayout.java',
+            'src/main/java/top/aurora/lordofmysteries/world/MistCityOutpostGenerator.java',
+            'src/main/java/top/aurora/lordofmysteries/world/MistCityOutpostSavedData.java'
+}
+
+tasks.register('checkM3Foundation', Exec) {
+    group = 'verification'
+    description = 'Checks M3 economy, events, and five launch pathways at sequences 6-5.'
+    commandLine pythonExecutable, 'scripts/check_m3_foundation.py'
+    inputs.files 'scripts/check_m3_foundation.py',
+            'docs/m3-foundation-contract.json',
+            fileTree('src/main/java/top/aurora/lordofmysteries/commission'),
+            fileTree('src/main/java/top/aurora/lordofmysteries/world'),
+            fileTree('src/main/java/top/aurora/lordofmysteries/player'),
+            fileTree('src/main/java/top/aurora/lordofmysteries/command'),
+            fileTree('src/main/java/top/aurora/lordofmysteries/ability'),
+            fileTree('src/main/java/top/aurora/lordofmysteries/acting'),
+            fileTree('src/main/java/top/aurora/lordofmysteries/potion'),
+            fileTree('src/main/java/top/aurora/lordofmysteries/registry'),
+            fileTree('src/main/resources/data/lord_of_mysteries/sequences'),
+            fileTree('src/main/resources/assets/lord_of_mysteries/lang'),
+            fileTree('src/test/java/top/aurora/lordofmysteries'),
+            'src/main/java/top/aurora/lordofmysteries/gametest/PlayerPersistenceGameTests.java',
+            'scripts/run_server_restart_matrix.py'
 }
 
 tasks.register('checkResourceIntegrity', Exec) {
@@ -200,6 +225,25 @@ tasks.register('checkResourceIntegrity', Exec) {
             fileTree('src/main/resources'),
             fileTree('src/generated/resources'),
             fileTree('src/main/java')
+}
+
+tasks.register('generatePagesCatalog', Exec) {
+    group = 'project mystery'
+    description = 'Generates the GitHub Pages catalog from actual Forge registries and translations.'
+    commandLine pythonExecutable, 'scripts/gen_pages_catalog.py'
+    inputs.files 'scripts/gen_pages_catalog.py',
+            'src/main/java/top/aurora/lordofmysteries/registry/ModItems.java',
+            'src/main/java/top/aurora/lordofmysteries/registry/ModBlocks.java',
+            'src/main/java/top/aurora/lordofmysteries/registry/ModEntities.java',
+            'src/main/resources/assets/lord_of_mysteries/lang/zh_cn.json',
+            'src/main/resources/assets/lord_of_mysteries/lang/en_us.json'
+    outputs.file 'docs/assets/catalog-data.js'
+}
+
+tasks.register('checkPagesCatalog', Exec) {
+    group = 'verification'
+    description = 'Checks the generated GitHub Pages catalog is complete and current.'
+    commandLine pythonExecutable, 'scripts/gen_pages_catalog.py', '--check'
 }
 
 repositories {
@@ -260,7 +304,9 @@ test {
 tasks.named('check').configure {
     dependsOn 'checkProjectMysteryData', 'checkV09Design',
             'checkContentGraph', 'checkM1Playability',
-            'checkM2Investigation', 'checkResourceIntegrity'
+            'checkM2Investigation', 'checkM3Foundation',
+            'checkResourceIntegrity',
+            'checkPagesCatalog'
 }
 
 jar {

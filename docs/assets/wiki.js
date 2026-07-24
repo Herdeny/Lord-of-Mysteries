@@ -56,10 +56,12 @@
   /* ── Stats ── */
   var statsEl = $("#stats");
   if (statsEl) {
-    var cAbil = entries.filter(function (e) { return e.type === "ability"; }).length;
-    var cPotion = entries.filter(function (e) { return e.type === "potion" || e.type === "item"; }).length;
+    var catalogMeta = D.catalogMeta || {};
+    var registeredContent = (catalogMeta.registeredItems || 0) +
+      (catalogMeta.registeredBlocks || 0) + (catalogMeta.registeredEntities || 0);
     var stats = [
       [entries.length, "图鉴条目"],
+      [registeredContent, "注册内容"],
       [(D.pathwaysOverview || []).length, "途径"],
       [(D.seerSequences || []).length + (D.spectatorSequences || []).length + (D.hunterSequences || []).length + (D.foundationSequences || []).length, "序列条目"],
       [entries.filter(function (e) { return e.type === "ability"; }).length, "能力"],
@@ -149,6 +151,13 @@
 
   /* ── Catalog: filters + search + cards ── */
   var filterGroup = $("#filter-group"), cardsEl = $("#cards"), searchEl = $("#search"), countEl = $("#result-count");
+  var coverageEl = $("#catalog-coverage"), catalogMeta = D.catalogMeta || {};
+  if (coverageEl) {
+    coverageEl.textContent = "注册表同步：物品 " + (catalogMeta.registeredItems || 0) +
+      " · 方块 " + (catalogMeta.registeredBlocks || 0) +
+      " · 实体 " + (catalogMeta.registeredEntities || 0) +
+      " · 数据源 " + (catalogMeta.source || "未知");
+  }
   var activeFilter = "all";
 
   var types = ["all"].concat(Object.keys(labels).filter(function (k) { return entries.some(function (e) { return e.type === k; }); }));

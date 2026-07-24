@@ -134,30 +134,48 @@ public final class CrucibleBlockEntity extends BlockEntity {
             case SEER_9 -> SeerPotionItem.create(ModItems.SEER_POTION_9.get(), brew.quality());
             case SEER_8 -> SeerPotionItem.create(ModItems.SEER_POTION_8.get(), brew.quality());
             case SEER_7 -> SeerPotionItem.create(ModItems.SEER_POTION_7.get(), brew.quality());
+            case SEER_6 -> SeerPotionItem.create(ModItems.SEER_POTION_6.get(), brew.quality());
+            case SEER_5 -> SeerPotionItem.create(ModItems.SEER_POTION_5.get(), brew.quality());
             case SPECTATOR_9 ->
                     SeerPotionItem.create(ModItems.SPECTATOR_POTION_9.get(), brew.quality());
             case SPECTATOR_8 ->
                     SeerPotionItem.create(ModItems.SPECTATOR_POTION_8.get(), brew.quality());
             case SPECTATOR_7 ->
                     SeerPotionItem.create(ModItems.SPECTATOR_POTION_7.get(), brew.quality());
+            case SPECTATOR_6 ->
+                    SeerPotionItem.create(ModItems.SPECTATOR_POTION_6.get(), brew.quality());
+            case SPECTATOR_5 ->
+                    SeerPotionItem.create(ModItems.SPECTATOR_POTION_5.get(), brew.quality());
             case HUNTER_9 ->
                     SeerPotionItem.create(ModItems.HUNTER_POTION_9.get(), brew.quality());
             case HUNTER_8 ->
                     SeerPotionItem.create(ModItems.HUNTER_POTION_8.get(), brew.quality());
             case HUNTER_7 ->
                     SeerPotionItem.create(ModItems.HUNTER_POTION_7.get(), brew.quality());
+            case HUNTER_6 ->
+                    SeerPotionItem.create(ModItems.HUNTER_POTION_6.get(), brew.quality());
+            case HUNTER_5 ->
+                    SeerPotionItem.create(ModItems.HUNTER_POTION_5.get(), brew.quality());
             case THIEF_9 ->
                     SeerPotionItem.create(ModItems.THIEF_POTION_9.get(), brew.quality());
             case THIEF_8 ->
                     SeerPotionItem.create(ModItems.THIEF_POTION_8.get(), brew.quality());
             case THIEF_7 ->
                     SeerPotionItem.create(ModItems.THIEF_POTION_7.get(), brew.quality());
+            case THIEF_6 ->
+                    SeerPotionItem.create(ModItems.THIEF_POTION_6.get(), brew.quality());
+            case THIEF_5 ->
+                    SeerPotionItem.create(ModItems.THIEF_POTION_5.get(), brew.quality());
             case APPRENTICE_9 ->
                     SeerPotionItem.create(ModItems.APPRENTICE_POTION_9.get(), brew.quality());
             case APPRENTICE_8 ->
                     SeerPotionItem.create(ModItems.APPRENTICE_POTION_8.get(), brew.quality());
             case APPRENTICE_7 ->
                     SeerPotionItem.create(ModItems.APPRENTICE_POTION_7.get(), brew.quality());
+            case APPRENTICE_6 ->
+                    SeerPotionItem.create(ModItems.APPRENTICE_POTION_6.get(), brew.quality());
+            case APPRENTICE_5 ->
+                    SeerPotionItem.create(ModItems.APPRENTICE_POTION_5.get(), brew.quality());
             case CONTAMINATED -> new ItemStack(ModItems.CONTAMINATED_MIXTURE.get());
         };
         brewing = false;
@@ -183,6 +201,9 @@ public final class CrucibleBlockEntity extends BlockEntity {
                 || stack.is(ModItems.SHAPESHIFTER_SERPENT_GLAND.get())
                 || stack.is(ModItems.ASH_POWDER.get())
                 || stack.is(ModItems.SILVER_FILINGS.get())
+                || stack.is(ModItems.SPIRIT_SALT.get())
+                || stack.is(ModItems.ASHEN_THREAD.get())
+                || stack.is(ModItems.WHITE_CANDLE.get())
                 || stack.is(ModItems.SHADOW_MARTEN_CLAW.get())
                 || stack.is(ModItems.STARLIGHT_MOSS.get())
                 || stack.is(ModItems.MYSTIC_INK.get())
@@ -192,6 +213,7 @@ public final class CrucibleBlockEntity extends BlockEntity {
                 || stack.is(ModItems.ANCIENT_TABLET_SPORE_SAC.get())
                 || stack.is(ModItems.IRIDESCENT_TRICKBIRD_FEATHER.get())
                 || stack.is(ModItems.METEOR_DUST.get())
+                || stack.is(ModItems.BLANK_MANUSCRIPT.get())
                 || stack.is(Items.FERMENTED_SPIDER_EYE)
                 || stack.is(Items.HONEY_BOTTLE)
                 || stack.is(Items.BOOK)

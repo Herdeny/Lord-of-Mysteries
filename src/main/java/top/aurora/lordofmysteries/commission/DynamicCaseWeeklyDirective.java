@@ -7,10 +7,16 @@ import java.util.Locale;
 public enum DynamicCaseWeeklyDirective {
     PATTERN_AUDIT(DynamicCaseProfile.Organization.DETECTIVE_AGENCY),
     CLIENT_REINTERVIEW(DynamicCaseProfile.Organization.DETECTIVE_AGENCY),
+    WITNESS_TIMELINE(DynamicCaseProfile.Organization.DETECTIVE_AGENCY),
+    CLIENT_SAFETY_REVIEW(DynamicCaseProfile.Organization.DETECTIVE_AGENCY),
     SOURCE_VERIFICATION(DynamicCaseProfile.Organization.MIST_CITY_PRESS),
     PUBLIC_REASSURANCE(DynamicCaseProfile.Organization.MIST_CITY_PRESS),
+    EDITORIAL_CORROBORATION(DynamicCaseProfile.Organization.MIST_CITY_PRESS),
+    RUMOR_CONTAINMENT(DynamicCaseProfile.Organization.MIST_CITY_PRESS),
     CHAIN_OF_CUSTODY(DynamicCaseProfile.Organization.CONSTABULARY),
-    DISTRICT_PATROL(DynamicCaseProfile.Organization.CONSTABULARY);
+    DISTRICT_PATROL(DynamicCaseProfile.Organization.CONSTABULARY),
+    WATCH_HANDOVER(DynamicCaseProfile.Organization.CONSTABULARY),
+    CIVILIAN_SAFETY_CHECK(DynamicCaseProfile.Organization.CONSTABULARY);
 
     private final DynamicCaseProfile.Organization organization;
 

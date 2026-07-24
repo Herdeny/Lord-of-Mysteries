@@ -10,6 +10,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseContinuityPolicy;
 import top.aurora.lordofmysteries.commission.DynamicCaseContactMemoryPolicy;
 import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
 import top.aurora.lordofmysteries.commission.DynamicCaseRelationshipPolicy;
+import top.aurora.lordofmysteries.commission.MysticalExposurePolicy;
 import top.aurora.lordofmysteries.potion.PotionQuality;
 
 public final class PlayerMysteryDataSanitizer {
@@ -126,6 +127,9 @@ public final class PlayerMysteryDataSanitizer {
         repairs += setFloat(data.insanityPressure,
                 finiteClamp(data.insanityPressure, 0f, 100f, 0f),
                 value -> data.insanityPressure = value);
+        repairs += setFloat(data.mysticalExposure,
+                MysticalExposurePolicy.adjust(data.mysticalExposure, 0f),
+                value -> data.mysticalExposure = value);
         return repairs;
     }
 
@@ -261,6 +265,12 @@ public final class PlayerMysteryDataSanitizer {
         }
         repairs += clampNonNegativeInt(data.cityWorkShifts,
                 value -> data.cityWorkShifts = value);
+        repairs += clampNonNegativeInt(data.pressWorkShifts,
+                value -> data.pressWorkShifts = value);
+        repairs += clampNonNegativeInt(data.agencyWorkShifts,
+                value -> data.agencyWorkShifts = value);
+        repairs += clampNonNegativeInt(data.patrolWorkShifts,
+                value -> data.patrolWorkShifts = value);
         return repairs;
     }
 

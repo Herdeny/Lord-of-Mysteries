@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import top.aurora.lordofmysteries.core.config.ServerConfig;
 import top.aurora.lordofmysteries.knowledge.M1TrialTracker;
 import top.aurora.lordofmysteries.player.MysteryCapability;
+import top.aurora.lordofmysteries.player.PlayerFeedback;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.PotionQuality;
 
@@ -43,7 +44,7 @@ public final class ActingEventHandler {
         if (gain > 0f) M1TrialTracker.recordActing(player);
 
         if (ServerConfig.SHOW_EXACT_DIGESTION.get()) {
-            player.sendSystemMessage(Component.translatable(
+            PlayerFeedback.send(player, Component.translatable(
                     "message.lord_of_mysteries.acting.exact",
                     String.format(java.util.Locale.ROOT, "%+.1f", gain),
                     String.format(java.util.Locale.ROOT, "%.1f", data.digestion))
@@ -56,7 +57,8 @@ public final class ActingEventHandler {
                     : gain >= 10f
                     ? "message.lord_of_mysteries.acting.strong"
                     : "message.lord_of_mysteries.acting.faint";
-            player.sendSystemMessage(Component.translatable(key).withStyle(ChatFormatting.DARK_AQUA));
+            PlayerFeedback.send(player,
+                    Component.translatable(key).withStyle(ChatFormatting.DARK_AQUA));
         }
         return gain;
     }

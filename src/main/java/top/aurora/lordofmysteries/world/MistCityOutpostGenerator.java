@@ -73,14 +73,21 @@ public final class MistCityOutpostGenerator {
         }
         MistCityOutpostSavedData data = MistCityOutpostSavedData.get(level);
         data.outpost().filter(level::hasChunkAt).ifPresent(outpost -> {
-            if (data.serviceVersion()
-                    >= MistCityOutpostSavedData.CURRENT_SERVICE_VERSION) return;
-            generateServiceBooths(level, outpost);
-            data.recordServiceVersion(
-                    MistCityOutpostSavedData.CURRENT_SERVICE_VERSION);
-            ProjectMystery.LOGGER.info(
-                    "Upgraded Mist City outpost service booths to version {} at {}",
-                    data.serviceVersion(), outpost);
+            if (data.serviceVersion() < 1) {
+                generateServiceBooths(level, outpost);
+                data.recordServiceVersion(1);
+                ProjectMystery.LOGGER.info(
+                        "Upgraded Mist City outpost service booths to version 1 at {}",
+                        outpost);
+            }
+            if (data.serviceVersion() < 2
+                    && districtChunksLoaded(level, outpost)) {
+                generateFormalDistricts(level, outpost);
+                data.recordServiceVersion(2);
+                ProjectMystery.LOGGER.info(
+                        "Upgraded Mist City outpost to formal service districts at {}",
+                        outpost);
+            }
         });
     }
 
@@ -207,6 +214,106 @@ public final class MistCityOutpostGenerator {
                 Blocks.CARTOGRAPHY_TABLE, Blocks.BOOKSHELF);
         generateServiceBooth(level, center.offset(5, 0, 3),
                 Blocks.SMITHING_TABLE, Blocks.IRON_BARS);
+    }
+
+    private static boolean districtChunksLoaded(
+            ServerLevel level, BlockPos center) {
+        int radius = MistCityDistrictLayout.maximumHorizontalRadius();
+        return level.hasChunkAt(center.offset(-radius, 0, -radius))
+                && level.hasChunkAt(center.offset(-radius, 0, radius))
+                && level.hasChunkAt(center.offset(radius, 0, -radius))
+                && level.hasChunkAt(center.offset(radius, 0, radius));
+    }
+
+    private static void generateFormalDistricts(
+            ServerLevel level, BlockPos outpost) {
+        generateDistrict(
+                level,
+                MistCityDistrictLayout.center(
+                        outpost, MistCityDistrictLayout.District.PRESS),
+                Blocks.CARTOGRAPHY_TABLE,
+                Blocks.LECTERN,
+                Blocks.BOOKSHELF);
+        generateDistrict(
+                level,
+                MistCityDistrictLayout.center(
+                        outpost,
+                        MistCityDistrictLayout.District.DETECTIVE_AGENCY),
+                ModBlocks.COMMISSION_BOARD.get(),
+                Blocks.LECTERN,
+                Blocks.BOOKSHELF);
+        generateDistrict(
+                level,
+                MistCityDistrictLayout.center(
+                        outpost, MistCityDistrictLayout.District.CONSTABULARY),
+                Blocks.SMITHING_TABLE,
+                Blocks.IRON_BARS,
+                Blocks.CHAIN);
+        generateDistrictPath(level, outpost, Direction.WEST);
+        generateDistrictPath(level, outpost, Direction.EAST);
+        generateDistrictPath(level, outpost, Direction.SOUTH);
+    }
+
+    private static void generateDistrict(
+            ServerLevel level,
+            BlockPos center,
+            Block counter,
+            Block marker,
+            Block accent) {
+        for (int dx = -3; dx <= 3; dx++) {
+            for (int dz = -3; dz <= 3; dz++) {
+                level.setBlock(center.offset(dx, -1, dz),
+                        Blocks.STONE_BRICKS.defaultBlockState(), 3);
+                level.setBlock(center.offset(dx, 0, dz),
+                        Blocks.POLISHED_ANDESITE.defaultBlockState(), 3);
+                for (int dy = 1; dy <= 4; dy++) {
+                    level.setBlock(center.offset(dx, dy, dz),
+                            Blocks.AIR.defaultBlockState(), 3);
+                }
+                boolean boundary = Math.abs(dx) == 3 || Math.abs(dz) == 3;
+                if (boundary) {
+                    for (int dy = 1; dy <= 3; dy++) {
+                        level.setBlock(center.offset(dx, dy, dz),
+                                Blocks.DARK_OAK_PLANKS.defaultBlockState(), 3);
+                    }
+                }
+                level.setBlock(center.offset(dx, 4, dz),
+                        Blocks.DARK_OAK_SLAB.defaultBlockState(), 3);
+            }
+        }
+        level.setBlock(center.offset(0, 1, -3),
+                Blocks.AIR.defaultBlockState(), 3);
+        level.setBlock(center.offset(0, 2, -3),
+                Blocks.AIR.defaultBlockState(), 3);
+        level.setBlock(center.offset(-3, 2, 0),
+                Blocks.GLASS_PANE.defaultBlockState(), 3);
+        level.setBlock(center.offset(3, 2, 0),
+                Blocks.GLASS_PANE.defaultBlockState(), 3);
+        level.setBlock(center.offset(0, 2, 3),
+                Blocks.GLASS_PANE.defaultBlockState(), 3);
+        level.setBlock(center.offset(0, 1, 1),
+                counter.defaultBlockState(), 3);
+        level.setBlock(center.offset(-2, 1, 2),
+                marker.defaultBlockState(), 3);
+        level.setBlock(center.offset(2, 1, 2),
+                accent.defaultBlockState(), 3);
+        level.setBlock(center.offset(0, 3, 0),
+                Blocks.LANTERN.defaultBlockState(), 3);
+    }
+
+    private static void generateDistrictPath(
+            ServerLevel level, BlockPos outpost, Direction direction) {
+        for (int distance = 7; distance <= 9; distance++) {
+            BlockPos path = outpost.relative(direction, distance);
+            for (int width = -1; width <= 1; width++) {
+                BlockPos paved = direction.getAxis() == Direction.Axis.X
+                        ? path.offset(0, 0, width)
+                        : path.offset(width, 0, 0);
+                level.setBlock(paved, Blocks.STONE_BRICKS.defaultBlockState(), 3);
+                level.setBlock(paved.above(), Blocks.AIR.defaultBlockState(), 3);
+                level.setBlock(paved.above(2), Blocks.AIR.defaultBlockState(), 3);
+            }
+        }
     }
 
     private static void generateServiceBooth(

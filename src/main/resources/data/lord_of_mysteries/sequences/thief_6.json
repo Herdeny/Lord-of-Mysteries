@@ -1,0 +1,21 @@
+{
+  "id": "lord_of_mysteries:thief_6",
+  "type": "sequence",
+  "schema_version": 4,
+  "canon_status": "adaptation",
+  "source_tier": "B-tech",
+  "source_refs": ["GDD:v0.9/7.6/sequence-6", "REPO:M3LaunchAbilityHandler"],
+  "spoiler_level": 2,
+  "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+  "links": {"requires": ["lord_of_mysteries:thief", "lord_of_mysteries:thief_potion_6"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "code_ready",
+  "pathway": "lord_of_mysteries:thief",
+  "sequence": 6,
+  "spirituality_max": 198,
+  "initial_pressure": 26,
+  "abilities": ["lord_of_mysteries:beneficial_effect_theft", "lord_of_mysteries:unowned_retrieval"],
+  "acting_events": ["lord_of_mysteries:prometheus6_steal_power", "lord_of_mysteries:prometheus6_recover_unowned"],
+  "potion_id": "lord_of_mysteries:thief_potion_6",
+  "digestion_target": 100.0,
+  "adaptation_scope": "Zero-sum non-player beneficial-effect theft and vanilla-owner-safe item retrieval; ability seed collection remains planned."
+}

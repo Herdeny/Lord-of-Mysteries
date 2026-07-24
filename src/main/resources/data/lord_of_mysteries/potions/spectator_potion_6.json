@@ -1,0 +1,15 @@
+{
+  "id": "lord_of_mysteries:spectator_potion_6",
+  "target_pathway": "lord_of_mysteries:spectator",
+  "target_sequence": 6,
+  "requires": { "pathway": "lord_of_mysteries:spectator", "sequence": 7, "digestion": 100.0 },
+  "ingredients": [
+    { "item": "lord_of_mysteries:dream_scale_fragment", "order": 1, "required": true },
+    { "item": "lord_of_mysteries:heather", "order": 2, "required": true },
+    { "item": "minecraft:honey_bottle", "order": 3, "required": false, "quality_bonus": 0.2 }
+  ],
+  "temperature_range": [55, 85],
+  "brewing_time_ticks": 1200,
+  "failure_result": "lord_of_mysteries:contaminated_mixture",
+  "adaptation_notes": "v0.9 proxy recipe until cradle moth eyes and black wax are registered"
+}

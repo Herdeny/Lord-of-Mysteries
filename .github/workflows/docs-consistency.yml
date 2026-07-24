@@ -20,6 +20,13 @@ on:
       - "scripts/build_content_graph.py"
       - "scripts/check_resource_integrity.py"
       - "scripts/check_github_text_encoding.py"
+      - "scripts/gen_pages_catalog.py"
+      - "scripts/check_release_timestamp.py"
+      - "scripts/check_m3_foundation.py"
+      - "src/main/java/top/aurora/lordofmysteries/registry/ModItems.java"
+      - "src/main/java/top/aurora/lordofmysteries/registry/ModBlocks.java"
+      - "src/main/java/top/aurora/lordofmysteries/registry/ModEntities.java"
+      - "src/main/resources/assets/lord_of_mysteries/lang/*.json"
       - "build.gradle"
       - ".github/workflows/docs-consistency.yml"
   pull_request:
@@ -38,6 +45,13 @@ on:
       - "scripts/build_content_graph.py"
       - "scripts/check_resource_integrity.py"
       - "scripts/check_github_text_encoding.py"
+      - "scripts/gen_pages_catalog.py"
+      - "scripts/check_release_timestamp.py"
+      - "scripts/check_m3_foundation.py"
+      - "src/main/java/top/aurora/lordofmysteries/registry/ModItems.java"
+      - "src/main/java/top/aurora/lordofmysteries/registry/ModBlocks.java"
+      - "src/main/java/top/aurora/lordofmysteries/registry/ModEntities.java"
+      - "src/main/resources/assets/lord_of_mysteries/lang/*.json"
       - "build.gradle"
       - ".github/workflows/docs-consistency.yml"
   issues:
@@ -62,6 +76,19 @@ jobs:
 
       - name: Verify generated metadata
         run: python3 scripts/sync_project_metadata.py --check
+
+      - name: Verify release timestamp drift
+        run: python3 scripts/check_release_timestamp.py
+
+      - name: Require metadata in final push commit
+        if: github.event_name == 'push' && github.actor != 'dependabot[bot]'
+        run: python3 scripts/check_release_timestamp.py --require-head
+
+      - name: Verify generated Pages catalog
+        run: python3 scripts/gen_pages_catalog.py --check
+
+      - name: Verify M3 foundation contract
+        run: python3 scripts/check_m3_foundation.py
 
       - name: Verify generated datapack
         run: python3 scripts/gen_datapack.py --check
@@ -100,4 +127,5 @@ jobs:
         run: |
           node --check docs/assets/project-meta.js
           node --check docs/assets/wiki-data.js
+          node --check docs/assets/catalog-data.js
           node --check docs/assets/wiki.js

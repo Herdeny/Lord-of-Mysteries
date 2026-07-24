@@ -13,10 +13,10 @@ window.LOM_ROADMAP_META = {
       "summary": "Schema v4、内容关系图、生成器、迁移与回滚工具、来源审计及 CI 门禁。",
       "acceptance": "至少 100 个真实样例节点通过关系校验；旧存档可迁移、可备份、可回滚，并通过死亡、重生、维度与重启运行时验证。",
       "points": [
-        "116 节点、168 关系内容图通过 orphan、spoiler、compat、localization 与 asset 审计",
-        "Capability schema 22 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema",
+        "126 节点、188 关系内容图通过 orphan、spoiler、compat、localization 与 asset 审计",
+        "Capability schema 23 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema",
         "世界加载前原子快照、幂等 schema marker、受限路径恢复工具和恢复前安全备份",
-        "6 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒、M1 两小时状态和调查板邻近门禁",
+        "9 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒、M1 状态、调查板邻近、城市经济、五途径进阶和五途径能力世界行为",
         "专服双启动矩阵验证世界种子、schema 快照、保存和干净停服保持稳定"
       ]
     },
@@ -43,7 +43,7 @@ window.LOM_ROADMAP_META = {
       "phase": "Investigation and life",
       "state": "active",
       "duration_weeks": 8,
-      "summary": "把现有雾都前哨、委托和持久队伍资产扩展为正式报社、事务所、警局、经济与动态案件。",
+      "summary": "正式报社、事务所、警局、三职业经济、神秘暴露、世界事件与动态案件的自动化实施范围已闭环，保留四人八小时真人验收。",
       "acceptance": "四人服务器连续八小时无任务锁死；案件可恢复、可解释、可独立结算，生活与调查资源不会形成不可逆软锁。",
       "points": [
         "现有资产：4 种委托、4 条任务链、三路线救援、真假配方、动态案件轮换和 2–4 人持久调查账本",
@@ -60,10 +60,13 @@ window.LOM_ROADMAP_META = {
         "已完成：单人/多人稳定性加固、跨队实例隔离、每队独立护送、任务物防复制与中途队伍变更续玩",
         "已完成：八案案件历史账本、六项每周组织指令、S–D 差异化结案后续、过期规则与 schema 20 安全迁移",
         "已完成：四名动态案件联系人独立态度、两阶段实体组织响应任务、组织 NPC 简报、调查板提交、三日过期/主动放弃与 schema 21 安全迁移",
-        "已完成：24 条跨案件联系人事件账本、旧八案记忆回填、优先/常规/关系修复三类响应分支与 schema 22 安全迁移",
-        "下一步：把前哨功能区扩展为正式报社、事务所与警局街区",
-        "下一步：扩展更多联系人、组织立场、任务场景和更大的周级案件池",
-        "下一步：生活物价、职业扩展和八小时多人连续性矩阵"
+        "已完成：24 条跨案件联系人事件账本、旧八案记忆回填、五档组织立场、优先/常规/关系修复三类响应分支",
+        "已完成：报社、事务所与警局三座正式街区建筑，旧功能亭幂等迁移为 service_version 2",
+        "已完成：动态案件扩为 6 类主体关系与 12 项周指令，并按组织立场改变后续任务优先级",
+        "已完成：报社、事务所、巡警三职业共享每日限制，拥有独立工资、成本、压力、暴露与世界事件修正",
+        "已完成：神秘暴露 0–100、五档可见状态、S–D 结案变化、报纸信息及 schema 23 安全迁移",
+        "已完成：16 日确定性六事件周期、重启持久化、报纸/诊断显示、事件经济、灵性与仪式修正，以及户外/压力/庇护后果",
+        "待真人验收：四人服务器连续八小时、断线重连、跨日轮班、并行案件、事件切换和经济平衡记录"
       ]
     },
     {
@@ -75,9 +78,11 @@ window.LOM_ROADMAP_META = {
       "summary": "占卜家、观众、猎人、偷盗者和学徒序列 9–5 的差异化闭环。",
       "acceptance": "每条途径都有生活、调查、战斗与风险闭环，并通过无唯一最优途径的多人验证。",
       "points": [
-        "扩展五途径序列 6–5、晋升仪式和特性需求",
-        "建立能力同意、PvP、领地与反滥用策略",
-        "验证五途径经济定位和组队互补矩阵"
+        "已预实现：五途径序列 6–5 共 10 瓶魔药、坩埚代理配方、v0.9 灵性/压力数值与 7→6→5 特性守恒",
+        "已预实现：每序列主/副能力各一项，共 20 项服务端能力与 20 项扮演事件；玩家控制默认禁止，伤害遵循 PvP 权限",
+        "已预实现：无主物归属、签名书代数、村民每日窃梦、安全传送落点、Boss 控制免疫与收割标记重启边界",
+        "待完成：五种序列 5 晋升仪式、完整原典能力组、形体/梦境/空间标记/秘偶持久系统与专属素材生物",
+        "待验收：五途径经济定位、领地兼容、无唯一最优途径和多人组队互补矩阵"
       ]
     },
     {
@@ -222,19 +227,23 @@ window.LOM_ROADMAP_META = {
       "structure_specs": 32,
       "weather_anomaly_specs": 18
     },
-    "repository_evidence_at_0.9.17": {
-      "content_graph_nodes": 116,
-      "content_graph_edges": 168,
-      "schema4_sequence_definitions": 15,
+    "repository_evidence_at_0.9.18": {
+      "content_graph_nodes": 126,
+      "content_graph_edges": 188,
+      "schema4_sequence_definitions": 25,
+      "crucible_potions": 25,
       "generated_recipes": 13,
       "playable_commissions": 4,
       "playable_quest_chains": 4,
-      "junit_tests": 308,
-      "forge_gametests": 6,
+      "junit_tests": 340,
+      "forge_gametests": 9,
       "save_rollback_checks": 1,
       "dedicated_server_starts": 2,
       "network_protocol": 12,
-      "player_capability_schema": 22
+      "player_capability_schema": 23,
+      "registered_items": 85,
+      "registered_blocks": 5,
+      "registered_entities": 8
     }
   }
 };

@@ -23,6 +23,7 @@ import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.acting.IdentityKitService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 import top.aurora.lordofmysteries.player.MysteryCapability;
+import top.aurora.lordofmysteries.player.PlayerFeedback;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 
 public final class SeerPotionItem extends Item {
@@ -34,8 +35,8 @@ public final class SeerPotionItem extends Item {
 
     public SeerPotionItem(Properties properties, int targetSequence) {
         super(properties.stacksTo(1));
-        if (targetSequence < 7 || targetSequence > 9) {
-            throw new IllegalArgumentException("Seer potion only supports sequences 9 through 7");
+        if (targetSequence < 5 || targetSequence > 9) {
+            throw new IllegalArgumentException("Seer potion only supports sequences 9 through 5");
         }
         this.targetSequence = targetSequence;
     }
@@ -62,7 +63,8 @@ public final class SeerPotionItem extends Item {
                         && data.digestion < 100f
                         ? "message.lord_of_mysteries.potion.digestion_incomplete"
                         : "message.lord_of_mysteries.potion.incompatible";
-                player.sendSystemMessage(Component.translatable(key, targetSequence));
+                PlayerFeedback.send(player,
+                        Component.translatable(key, targetSequence));
                 return InteractionResultHolder.fail(stack);
             }
         }
@@ -100,7 +102,7 @@ public final class SeerPotionItem extends Item {
         player.level().playSound(null, player.blockPosition(),
                 SoundEvents.BREWING_STAND_BREW, SoundSource.PLAYERS, 1f,
                 0.75f + (9 - targetSequence) * 0.18f);
-        player.sendSystemMessage(Component.translatable(
+        PlayerFeedback.send(player, Component.translatable(
                 "message.lord_of_mysteries.potion.seer_advanced",
                 targetSequence,
                 Component.translatable("sequence.lord_of_mysteries.seer_" + targetSequence),
@@ -137,6 +139,14 @@ public final class SeerPotionItem extends Item {
             data.knownKnowledge.add(id("knowledge/air_bullet"));
             data.knownKnowledge.add(id("knowledge/stage_illusion"));
         }
+        if (targetSequence <= 6) {
+            data.knownKnowledge.add(id("knowledge/faceless_veil"));
+            data.knownKnowledge.add(id("knowledge/form_record"));
+        }
+        if (targetSequence <= 5) {
+            data.knownKnowledge.add(id("knowledge/spirit_threads"));
+            data.knownKnowledge.add(id("knowledge/thread_restraint"));
+        }
     }
 
     private static ResourceLocation id(String path) {
@@ -148,6 +158,8 @@ public final class SeerPotionItem extends Item {
             case 9 -> 122f;
             case 8 -> 144f;
             case 7 -> 175f;
+            case 6 -> 212f;
+            case 5 -> 265f;
             default -> throw new IllegalArgumentException("Unsupported Seer sequence");
         };
     }
@@ -157,6 +169,8 @@ public final class SeerPotionItem extends Item {
             case 9 -> 10f;
             case 8 -> 12f;
             case 7 -> 15f;
+            case 6 -> 22f;
+            case 5 -> 30f;
             default -> 0f;
         };
     }

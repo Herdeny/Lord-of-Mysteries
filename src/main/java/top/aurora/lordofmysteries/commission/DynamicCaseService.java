@@ -453,7 +453,11 @@ public final class DynamicCaseService {
                     profile.subject(),
                     debrief.grade());
         }
+        data.mysticalExposure = MysticalExposurePolicy.adjust(
+                data.mysticalExposure,
+                MysticalExposurePolicy.caseDelta(debrief.grade()));
         data.markDirty(PlayerDataSection.SOCIAL);
+        data.markDirty(PlayerDataSection.CORE);
     }
 
     public static void announceFollowUp(
@@ -521,6 +525,10 @@ public final class DynamicCaseService {
         player.sendSystemMessage(Component.translatable(
                         "command.lord_of_mysteries.dynamic_case.contacts.title")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
+        for (DynamicCaseProfile.Organization organization
+                : DynamicCaseProfile.Organization.values()) {
+            sendOrganizationStance(player, data, organization);
+        }
         for (DynamicCaseProfile.Subject contact
                 : DynamicCaseProfile.Subject.values()) {
             sendContactStanding(player, data, contact);
@@ -640,11 +648,18 @@ public final class DynamicCaseService {
                 DynamicCaseContactMemoryPolicy.summarize(
                         data.dynamicCaseContactEvents,
                         entry.subject());
-        DynamicCaseResponseBranch branch =
+        DynamicCaseResponseBranch contactBranch =
                 DynamicCaseContactMemoryPolicy.selectResponseBranch(
                         data.dynamicCaseContactStandings.getOrDefault(
                                 entry.subject(), 0),
                         contactMemory);
+        DynamicCaseOrganizationStancePolicy.Stance organizationStance =
+                DynamicCaseOrganizationStancePolicy.stance(
+                        DynamicCaseOrganizationStancePolicy.reputation(
+                                data.orgReputation, entry.organization()));
+        DynamicCaseResponseBranch branch =
+                DynamicCaseOrganizationStancePolicy.adjustBranch(
+                        contactBranch, organizationStance);
         data.organizationResponseTask =
                 DynamicCaseResponsePolicy.assign(
                         entry, directive, currentDay, branch);
@@ -1127,6 +1142,26 @@ public final class DynamicCaseService {
         sendContactStanding(
                 player, contact,
                 data.dynamicCaseContactStandings.getOrDefault(contact, 0));
+    }
+
+    private static void sendOrganizationStance(
+            ServerPlayer player,
+            PlayerMysteryData data,
+            DynamicCaseProfile.Organization organization) {
+        int reputation = DynamicCaseOrganizationStancePolicy.reputation(
+                data.orgReputation, organization);
+        DynamicCaseOrganizationStancePolicy.Stance stance =
+                DynamicCaseOrganizationStancePolicy.stance(reputation);
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.dynamic_case.contacts.organization",
+                        Component.translatable(
+                                organization.translationKey("organization")),
+                        reputation,
+                        Component.translatable(stance.translationKey()))
+                .withStyle(reputation > 2
+                        ? ChatFormatting.GREEN
+                        : reputation < -2
+                                ? ChatFormatting.RED : ChatFormatting.GRAY));
     }
 
     private static void sendContactStanding(

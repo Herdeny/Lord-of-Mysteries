@@ -23,6 +23,7 @@ import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.acting.IdentityKitService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 import top.aurora.lordofmysteries.player.MysteryCapability;
+import top.aurora.lordofmysteries.player.PlayerFeedback;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 
 public final class M2PathwayPotionItem extends Item {
@@ -50,12 +51,19 @@ public final class M2PathwayPotionItem extends Item {
                 case THIEF -> switch (sequence) {
                     case 9 -> 108f;
                     case 8 -> 130f;
-                    default -> 158f;
+                    case 7 -> 158f;
+                    case 6 -> 198f;
+                    case 5 -> 246f;
+                    default -> throw new IllegalArgumentException("Unsupported Thief sequence");
                 };
                 case APPRENTICE -> switch (sequence) {
                     case 9 -> 115f;
                     case 8 -> 138f;
-                    default -> 165f;
+                    case 7 -> 165f;
+                    case 6 -> 200f;
+                    case 5 -> 250f;
+                    default -> throw new IllegalArgumentException(
+                            "Unsupported Apprentice sequence");
                 };
             };
         }
@@ -65,12 +73,19 @@ public final class M2PathwayPotionItem extends Item {
                 case THIEF -> switch (sequence) {
                     case 9 -> 10f;
                     case 8 -> 14f;
-                    default -> 15f;
+                    case 7 -> 15f;
+                    case 6 -> 26f;
+                    case 5 -> 32f;
+                    default -> throw new IllegalArgumentException("Unsupported Thief sequence");
                 };
                 case APPRENTICE -> switch (sequence) {
                     case 9 -> 9f;
                     case 8 -> 12f;
-                    default -> 14f;
+                    case 7 -> 14f;
+                    case 6 -> 18f;
+                    case 5 -> 24f;
+                    default -> throw new IllegalArgumentException(
+                            "Unsupported Apprentice sequence");
                 };
             };
         }
@@ -82,9 +97,9 @@ public final class M2PathwayPotionItem extends Item {
     public M2PathwayPotionItem(Properties properties, Pathway pathway,
                                int targetSequence) {
         super(properties.stacksTo(1));
-        if (targetSequence < 7 || targetSequence > 9) {
+        if (targetSequence < 5 || targetSequence > 9) {
             throw new IllegalArgumentException(
-                    "M2 pathway potion only supports sequences 9 through 7");
+                    "M3 pathway potion only supports sequences 9 through 5");
         }
         this.pathway = pathway;
         this.targetSequence = targetSequence;
@@ -103,7 +118,8 @@ public final class M2PathwayPotionItem extends Item {
                         && data.digestion < 100f
                         ? "message.lord_of_mysteries.potion.digestion_incomplete"
                         : "message.lord_of_mysteries.potion.incompatible";
-                player.sendSystemMessage(Component.translatable(key, targetSequence));
+                PlayerFeedback.send(player,
+                        Component.translatable(key, targetSequence));
                 return InteractionResultHolder.fail(stack);
             }
         }
@@ -143,7 +159,7 @@ public final class M2PathwayPotionItem extends Item {
         level.playSound(null, player.blockPosition(),
                 SoundEvents.BREWING_STAND_BREW, SoundSource.PLAYERS,
                 1f, pathway == Pathway.THIEF ? 0.8f : 1.2f);
-        player.sendSystemMessage(Component.translatable(
+        PlayerFeedback.send(player, Component.translatable(
                 "message.lord_of_mysteries.potion.m2_pathway_advanced",
                 Component.translatable(
                         "sequence.lord_of_mysteries." + pathway.path()
@@ -173,6 +189,14 @@ public final class M2PathwayPotionItem extends Item {
                 data.knownKnowledge.add(id("knowledge/master_lockpick"));
                 data.knownKnowledge.add(id("knowledge/trace_erasure"));
             }
+            if (targetSequence <= 6) {
+                data.knownKnowledge.add(id("knowledge/ability_theft"));
+                data.knownKnowledge.add(id("knowledge/unowned_retrieval"));
+            }
+            if (targetSequence <= 5) {
+                data.knownKnowledge.add(id("knowledge/dream_theft"));
+                data.knownKnowledge.add(id("knowledge/reality_dislocation"));
+            }
         } else {
             data.knownKnowledge.add(id("knowledge/quick_learning"));
             data.knownKnowledge.add(id("knowledge/spiritual_sight"));
@@ -187,6 +211,14 @@ public final class M2PathwayPotionItem extends Item {
                 data.knownKnowledge.add(id("knowledge/stellar_divination"));
                 data.knownKnowledge.add(id("knowledge/starlight_ward"));
                 data.knownKnowledge.add(id("knowledge/star_atlas"));
+            }
+            if (targetSequence <= 6) {
+                data.knownKnowledge.add(id("knowledge/perfect_copy"));
+                data.knownKnowledge.add(id("knowledge/archive_focus"));
+            }
+            if (targetSequence <= 5) {
+                data.knownKnowledge.add(id("knowledge/traveler_door"));
+                data.knownKnowledge.add(id("knowledge/outpost_return"));
             }
         }
     }

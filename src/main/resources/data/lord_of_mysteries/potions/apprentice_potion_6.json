@@ -1,0 +1,15 @@
+{
+  "id": "lord_of_mysteries:apprentice_potion_6",
+  "target_pathway": "lord_of_mysteries:apprentice",
+  "target_sequence": 6,
+  "requires": { "pathway": "lord_of_mysteries:apprentice", "sequence": 7, "digestion": 100.0 },
+  "ingredients": [
+    { "item": "lord_of_mysteries:blank_manuscript", "order": 1, "required": true },
+    { "item": "lord_of_mysteries:spirit_salt", "order": 2, "required": true },
+    { "item": "lord_of_mysteries:mystic_ink", "order": 3, "required": false, "quality_bonus": 0.2 }
+  ],
+  "temperature_range": [50, 80],
+  "brewing_time_ticks": 1200,
+  "failure_result": "lord_of_mysteries:contaminated_mixture",
+  "adaptation_notes": "v0.9 proxy recipe until the scribing-golem finger bone enters the runtime registry"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "lord_of_mysteries:apprentice_potion_5",
+  "target_pathway": "lord_of_mysteries:apprentice",
+  "target_sequence": 5,
+  "requires": { "pathway": "lord_of_mysteries:apprentice", "sequence": 6, "digestion": 100.0 },
+  "ingredients": [
+    { "item": "lord_of_mysteries:meteor_dust", "order": 1, "required": true },
+    { "item": "lord_of_mysteries:silver_filings", "order": 2, "required": true },
+    { "item": "minecraft:ender_pearl", "order": 3, "required": false, "quality_bonus": 0.2 }
+  ],
+  "temperature_range": [60, 90],
+  "brewing_time_ticks": 1200,
+  "failure_result": "lord_of_mysteries:contaminated_mixture",
+  "adaptation_notes": "v0.9 proxy recipe; spatial-mark ritual and team portal remain planned"
+}

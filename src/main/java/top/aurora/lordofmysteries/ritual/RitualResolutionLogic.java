@@ -6,11 +6,23 @@ public final class RitualResolutionLogic {
 
     public static float completionScore(boolean materialsValid, boolean environmentValid,
                                         float structureCompletion, boolean qualifiedLeader) {
+        return completionScore(
+                materialsValid, environmentValid, structureCompletion,
+                qualifiedLeader, 0f);
+    }
+
+    public static float completionScore(
+            boolean materialsValid,
+            boolean environmentValid,
+            float structureCompletion,
+            boolean qualifiedLeader,
+            float eventBonus) {
         float score = 0.05f;
         if (materialsValid) score += 0.40f;
         if (environmentValid) score += 0.20f;
         score += Math.max(0f, Math.min(1f, structureCompletion)) * 0.25f;
         if (qualifiedLeader) score += 0.10f;
+        score += Math.max(0f, Math.min(0.10f, eventBonus));
         return Math.min(1f, score);
     }
 

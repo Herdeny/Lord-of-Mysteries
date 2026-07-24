@@ -10,7 +10,7 @@ import net.minecraft.world.level.saveddata.SavedData;
 
 public final class MistCityOutpostSavedData extends SavedData {
 
-    public static final int CURRENT_SERVICE_VERSION = 1;
+    public static final int CURRENT_SERVICE_VERSION = 2;
     private static final String DATA_NAME = "lord_of_mysteries_mist_city_outpost";
     private long outpostPosition;
     private boolean generated;

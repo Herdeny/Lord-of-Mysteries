@@ -65,6 +65,10 @@ public final class DynamicCaseGenerator {
                     DynamicCaseProfile.Relationship.SHOP_MENTOR;
             case RETIRED_CONSTABLE ->
                     DynamicCaseProfile.Relationship.FORMER_PATROL_PARTNER;
+            case ARCHIVE_CLERK ->
+                    DynamicCaseProfile.Relationship.SENIOR_CATALOGUER;
+            case NIGHT_PHARMACIST ->
+                    DynamicCaseProfile.Relationship.DISTRICT_PHYSICIAN;
         };
     }
 
@@ -79,6 +83,10 @@ public final class DynamicCaseGenerator {
                     DynamicCaseProfile.Schedule.APOTHECARY_EVENING;
             case RETIRED_CONSTABLE ->
                     DynamicCaseProfile.Schedule.CONSTABLE_NIGHT;
+            case ARCHIVE_CLERK ->
+                    DynamicCaseProfile.Schedule.ARCHIVE_AFTERNOON;
+            case NIGHT_PHARMACIST ->
+                    DynamicCaseProfile.Schedule.CLINIC_NIGHT;
         };
     }
 

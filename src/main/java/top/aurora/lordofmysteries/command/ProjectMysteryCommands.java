@@ -43,6 +43,7 @@ import top.aurora.lordofmysteries.commission.CaseHypothesisStance;
 import top.aurora.lordofmysteries.commission.CommissionDefinitionManager;
 import top.aurora.lordofmysteries.commission.CommissionService;
 import top.aurora.lordofmysteries.commission.CityLifeService;
+import top.aurora.lordofmysteries.commission.CityEconomyPolicy;
 import top.aurora.lordofmysteries.commission.CityServiceDeskService;
 import top.aurora.lordofmysteries.commission.DynamicCaseProfile;
 import top.aurora.lordofmysteries.commission.DynamicCaseService;
@@ -55,6 +56,9 @@ import top.aurora.lordofmysteries.world.AbandonedCampGenerator;
 import top.aurora.lordofmysteries.world.CampGenerationSavedData;
 import top.aurora.lordofmysteries.world.MistCityOutpostGenerator;
 import top.aurora.lordofmysteries.world.MistCityOutpostSavedData;
+import top.aurora.lordofmysteries.world.MistCityWorldEvent;
+import top.aurora.lordofmysteries.world.MistCityWorldEventPolicy;
+import top.aurora.lordofmysteries.world.MistCityWorldEventSavedData;
 import top.aurora.lordofmysteries.world.InvestigationSiteGenerator;
 import top.aurora.lordofmysteries.world.InvestigationSiteSavedData;
 
@@ -111,9 +115,28 @@ public final class ProjectMysteryCommands {
                             context.getSource().getPlayerOrException());
                     return 1;
                 }))
-                .then(Commands.literal("life").executes(context ->
-                        CityLifeService.showStatus(
-                                context.getSource().getPlayerOrException())))
+                .then(Commands.literal("life")
+                        .executes(context -> CityLifeService.showStatus(
+                                context.getSource().getPlayerOrException()))
+                        .then(Commands.literal("work")
+                                .then(Commands.literal("press")
+                                        .executes(context ->
+                                                CityLifeService.workAtDistrict(
+                                                        context.getSource()
+                                                                .getPlayerOrException(),
+                                                        CityEconomyPolicy.Job.PRESS)))
+                                .then(Commands.literal("agency")
+                                        .executes(context ->
+                                                CityLifeService.workAtDistrict(
+                                                        context.getSource()
+                                                                .getPlayerOrException(),
+                                                        CityEconomyPolicy.Job.AGENCY)))
+                                .then(Commands.literal("patrol")
+                                        .executes(context ->
+                                                CityLifeService.workAtDistrict(
+                                                        context.getSource()
+                                                                .getPlayerOrException(),
+                                                        CityEconomyPolicy.Job.PATROL)))))
                 .then(Commands.literal("city").executes(context ->
                         CityServiceDeskService.showDirectory(
                                 context.getSource().getPlayerOrException())))
@@ -676,8 +699,22 @@ public final class ProjectMysteryCommands {
         boolean partyStorageReady = overworld != null;
         QuestPartySavedData partyStorage = overworld == null
                 ? null : QuestPartySavedData.get(overworld);
+        MistCityWorldEventSavedData eventStorage = overworld == null
+                ? null : MistCityWorldEventSavedData.get(overworld);
+        long currentDay = overworld == null
+                ? 0L : Math.floorDiv(overworld.getDayTime(), 24_000L);
+        MistCityWorldEvent worldEvent = overworld == null
+                ? MistCityWorldEvent.CLEAR
+                : MistCityWorldEventPolicy.eventForDay(
+                        overworld.getSeed(), currentDay);
+        if (eventStorage != null) {
+            eventStorage.update(currentDay, worldEvent);
+        }
+        MistCityOutpostSavedData outpostStorage = overworld == null
+                ? null : MistCityOutpostSavedData.get(overworld);
         boolean healthy = commissions > 0 && quests > 0 && worldReady
-                && partyStorageReady && NetworkProtocol.PACKET_COUNT > 0;
+                && partyStorageReady && eventStorage != null
+                && NetworkProtocol.PACKET_COUNT > 0;
         String marker = "PROJECT_MYSTERY_SERVERCHECK_"
                 + (healthy ? "OK" : "FAILED")
                 + " commissions=" + commissions
@@ -689,7 +726,11 @@ public final class ProjectMysteryCommands {
                 + " active_parties=" + (partyStorage == null
                         ? 0 : partyStorage.activePartyCount())
                 + " party_members=" + (partyStorage == null
-                        ? 0 : partyStorage.activeMemberCount());
+                        ? 0 : partyStorage.activeMemberCount())
+                + " world_event=" + worldEvent.id()
+                + " event_day=" + currentDay
+                + " city_service_version=" + (outpostStorage == null
+                        ? 0 : outpostStorage.serviceVersion());
         if (healthy) {
             source.sendSuccess(() -> Component.literal(marker), false);
             return 1;

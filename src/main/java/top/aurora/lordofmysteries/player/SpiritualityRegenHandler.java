@@ -10,6 +10,9 @@ import net.minecraftforge.fml.common.Mod;
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.ability.HunterAbilityLogic;
 import top.aurora.lordofmysteries.potion.HunterPotionItem;
+import top.aurora.lordofmysteries.world.MistCityWorldEvent;
+import top.aurora.lordofmysteries.world.MistCityWorldEventModifiers;
+import top.aurora.lordofmysteries.world.MistCityWorldEventPolicy;
 
 /**
  * 灵性自然恢复（Forge 1.20.1，设计文档 §5.2）。
@@ -59,6 +62,14 @@ public final class SpiritualityRegenHandler {
                         regenRate, data.sequence,
                         player.level().canSeeSky(player.blockPosition()));
             }
+            var overworld = player.level().getServer().overworld();
+            long day = Math.max(
+                    0L, Math.floorDiv(overworld.getDayTime(), 24_000L));
+            MistCityWorldEvent worldEvent =
+                    MistCityWorldEventPolicy.eventForDay(
+                            overworld.getSeed(), day);
+            regenRate *= MistCityWorldEventModifiers
+                    .spiritualityRegenMultiplier(worldEvent);
             if (player.level().getGameTime() < data.mentalTraumaEndTick) regenRate *= 0.5f;
             // 恢复值必须被上限截断，避免长时间 tick 后超过 spiritualityMax。
             data.spirituality = Math.min(data.spiritualityMax, data.spirituality + regenRate);

@@ -24,6 +24,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
+import top.aurora.lordofmysteries.world.MistCityWorldEvent;
+import top.aurora.lordofmysteries.world.MistCityWorldEventModifiers;
+import top.aurora.lordofmysteries.world.MistCityWorldEventPolicy;
 import top.aurora.lordofmysteries.registry.ModBlockEntities;
 import top.aurora.lordofmysteries.registry.ModEntities;
 import top.aurora.lordofmysteries.registry.ModItems;
@@ -175,11 +178,21 @@ public final class RitualAltarBlockEntity extends BlockEntity {
 
         boolean qualifiedLeader = leaderPlayer != null
                 && qualifiedLeader(MysteryCapability.get(leaderPlayer));
+        long eventDay = Math.max(
+                0L, Math.floorDiv(
+                        serverLevel.getServer().overworld().getDayTime(),
+                        24_000L));
+        MistCityWorldEvent worldEvent =
+                MistCityWorldEventPolicy.eventForDay(
+                        serverLevel.getServer().overworld().getSeed(),
+                        eventDay);
         float score = RitualResolutionLogic.completionScore(
                 materialsValid,
                 altar.environmentValid(serverLevel),
                 structure.completion(),
-                qualifiedLeader);
+                qualifiedLeader,
+                MistCityWorldEventModifiers
+                        .ritualCompletionBonus(worldEvent));
         float randomDelta = (serverLevel.random.nextFloat() - 0.5f) * 0.30f;
         altar.lastOutcome = RitualResolutionLogic.escalateFailure(
                 RitualResolutionLogic.resolve(score, randomDelta),

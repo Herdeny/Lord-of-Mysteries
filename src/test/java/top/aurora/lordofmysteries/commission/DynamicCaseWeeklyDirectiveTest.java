@@ -27,15 +27,15 @@ class DynamicCaseWeeklyDirectiveTest {
     }
 
     @Test
-    void weeklyPoolCanReachBothDirectivesForEveryOrganization() {
+    void weeklyPoolCanReachAllFourDirectivesForEveryOrganization() {
         for (DynamicCaseProfile.Organization organization
                 : DynamicCaseProfile.Organization.values()) {
             Set<DynamicCaseWeeklyDirective> observed = new HashSet<>();
-            for (long week = 0L; week < 32L; week++) {
+            for (long week = 0L; week < 256L; week++) {
                 observed.add(DynamicCaseWeeklyDirective.select(
                         48271L, week, organization));
             }
-            assertEquals(2, observed.size());
+            assertEquals(4, observed.size());
             assertTrue(observed.stream().allMatch(directive ->
                     directive.organization() == organization));
         }

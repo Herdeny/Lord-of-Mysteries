@@ -23,6 +23,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.world.InvestigationSiteSavedData;
+import top.aurora.lordofmysteries.world.MistCityDistrictLayout;
 import top.aurora.lordofmysteries.world.MistCityOutpostSavedData;
 
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -192,16 +193,31 @@ public final class InvestigationNpcHandler {
     }
 
     private static void ensureOutpostNpcs(ServerLevel level, BlockPos outpost) {
-        ensureVillager(level, outpost.offset(-2, 1, -1), PRESS_CLERK_TAG,
+        boolean formalDistricts = MistCityOutpostSavedData.get(level)
+                .serviceVersion() >= 2;
+        BlockPos pressPosition = formalDistricts
+                ? MistCityDistrictLayout.servicePosition(
+                        outpost, MistCityDistrictLayout.District.PRESS)
+                : outpost.offset(-2, 1, -1);
+        BlockPos detectivePosition = formalDistricts
+                ? MistCityDistrictLayout.servicePosition(
+                        outpost,
+                        MistCityDistrictLayout.District.DETECTIVE_AGENCY)
+                : outpost.offset(-5, 1, 3);
+        BlockPos constablePosition = formalDistricts
+                ? MistCityDistrictLayout.servicePosition(
+                        outpost, MistCityDistrictLayout.District.CONSTABULARY)
+                : outpost.offset(5, 1, 3);
+        ensureVillager(level, pressPosition, PRESS_CLERK_TAG,
                 "entity.lord_of_mysteries.press_clerk",
                 VillagerProfession.LIBRARIAN, villager -> villager.setNoAi(true));
         ensureVillager(level, outpost.offset(2, 1, -1), NIGHTHAWK_CONTACT_TAG,
                 "entity.lord_of_mysteries.nighthawk_contact",
                 VillagerProfession.CLERIC, villager -> villager.setNoAi(true));
-        ensureVillager(level, outpost.offset(-5, 1, 3), DETECTIVE_CLERK_TAG,
+        ensureVillager(level, detectivePosition, DETECTIVE_CLERK_TAG,
                 "entity.lord_of_mysteries.detective_clerk",
                 VillagerProfession.CARTOGRAPHER, villager -> villager.setNoAi(true));
-        ensureVillager(level, outpost.offset(5, 1, 3), CONSTABLE_TAG,
+        ensureVillager(level, constablePosition, CONSTABLE_TAG,
                 "entity.lord_of_mysteries.constable",
                 VillagerProfession.WEAPONSMITH, villager -> villager.setNoAi(true));
     }
@@ -238,10 +254,22 @@ public final class InvestigationNpcHandler {
                                            VillagerProfession profession,
                                            Consumer<Villager> setup) {
         Villager existing = level.getEntitiesOfClass(
-                        Villager.class, new AABB(position).inflate(12d),
+                        Villager.class, new AABB(position).inflate(16d),
                         villager -> villager.getTags().contains(tag))
                 .stream().findFirst().orElse(null);
-        if (existing != null) return existing;
+        if (existing != null) {
+            if (existing.distanceToSqr(
+                    position.getX() + 0.5d,
+                    position.getY(),
+                    position.getZ() + 0.5d) > 4d) {
+                existing.getNavigation().stop();
+                existing.moveTo(position.getX() + 0.5d, position.getY(),
+                        position.getZ() + 0.5d,
+                        existing.getYRot(), existing.getXRot());
+            }
+            setup.accept(existing);
+            return existing;
+        }
         Villager villager = EntityType.VILLAGER.create(level);
         if (villager == null) return null;
         villager.setVillagerData(villager.getVillagerData()

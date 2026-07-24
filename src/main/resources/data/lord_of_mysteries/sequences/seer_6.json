@@ -1,0 +1,21 @@
+{
+  "id": "lord_of_mysteries:seer_6",
+  "type": "sequence",
+  "schema_version": 4,
+  "canon_status": "adaptation",
+  "source_tier": "B-tech",
+  "source_refs": ["GDD:v0.9/7.3/sequence-6", "REPO:M3LaunchAbilityHandler"],
+  "spoiler_level": 2,
+  "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+  "links": {"requires": ["lord_of_mysteries:seer", "lord_of_mysteries:seer_potion_6"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "code_ready",
+  "pathway": "lord_of_mysteries:seer",
+  "sequence": 6,
+  "spirituality_max": 212,
+  "potion_pressure": 22,
+  "abilities": ["lord_of_mysteries:faceless_veil", "lord_of_mysteries:faceless_restraint"],
+  "acting_events": ["lord_of_mysteries:faceless6_maintain_cover", "lord_of_mysteries:faceless6_restrain_without_identity"],
+  "potion_id": "lord_of_mysteries:seer_potion_6",
+  "digestion_target": 100.0,
+  "adaptation_scope": "Executable disguise veil and non-player restraint; recorded forms, name synchronization, and voice imitation remain planned."
+}

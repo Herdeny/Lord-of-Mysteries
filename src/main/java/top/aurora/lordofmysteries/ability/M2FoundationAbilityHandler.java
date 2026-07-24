@@ -74,6 +74,11 @@ public final class M2FoundationAbilityHandler {
 
     public static boolean use(ServerPlayer player, AbilitySlot slot) {
         PlayerMysteryData data = MysteryCapability.get(player);
+        if (data.pathway != null
+                && M3LaunchAbilityLogic.supports(
+                        data.pathway.getPath(), data.sequence)) {
+            return M3LaunchAbilityHandler.use(player, slot);
+        }
         if (data.sequence == 7
                 && (SpectatorPotionItem.SPECTATOR_PATHWAY.equals(data.pathway)
                     || HunterPotionItem.HUNTER_PATHWAY.equals(data.pathway))) {

@@ -73,6 +73,8 @@ DYNAMIC_RESPONSE_BRANCH = ROOT / "src" / "main" / "java" / "top" / "aurora" / "l
 DYNAMIC_RELATIONSHIP = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseRelationshipPolicy.java"
 DYNAMIC_CONTACT_EVENT = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseContactEvent.java"
 DYNAMIC_CONTACT_MEMORY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseContactMemoryPolicy.java"
+DYNAMIC_ORGANIZATION_STANCE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseOrganizationStancePolicy.java"
+DISTRICT_LAYOUT = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "world" / "MistCityDistrictLayout.java"
 PARTY_POLICY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestPartyPolicy.java"
 QUEST_ITEM_DELIVERY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestItemDelivery.java"
 
@@ -356,6 +358,7 @@ def main():
     relationship_source = DYNAMIC_RELATIONSHIP.read_text(encoding="utf-8")
     contact_event_source = DYNAMIC_CONTACT_EVENT.read_text(encoding="utf-8")
     contact_memory_source = DYNAMIC_CONTACT_MEMORY.read_text(encoding="utf-8")
+    organization_stance_source = DYNAMIC_ORGANIZATION_STANCE.read_text(encoding="utf-8")
     player_data_source = PLAYER_DATA.read_text(encoding="utf-8")
     npc_source = NPC_HANDLER.read_text(encoding="utf-8")
     fixer_source = PLAYER_FIXER.read_text(encoding="utf-8")
@@ -422,6 +425,14 @@ def main():
     for attitude in response["contact_attitudes"]:
         require(attitude in relationship_source,
                 f"dynamic contact attitude {attitude} is missing")
+    for stance in response["organization_stances"]:
+        require(stance in organization_stance_source,
+                f"dynamic organization stance {stance} is missing")
+    require(not response["organization_stance_adjusts_response"]
+            or ("DynamicCaseOrganizationStancePolicy.adjustBranch"
+                in dynamic_service
+                and "orgReputation" in dynamic_service),
+            "organization reputation no longer adjusts response branches")
     for grade, adjustment in response["case_grade_standing"].items():
         require(f"case {grade} -> {adjustment}" in relationship_source,
                 f"dynamic contact grade result {grade} drifted")
@@ -783,6 +794,12 @@ def main():
     require(not newspaper["granted_by_press_shift"]
             or "ModItems.NEWSPAPER" in city_life,
             "press shift does not grant the daily newspaper")
+    require(not newspaper["shows_world_event"]
+            or "issue.worldEventKey()" in news_service,
+            "daily newspaper no longer reports the active world event")
+    require(not newspaper["shows_exposure"]
+            or "issue.exposureBandKey()" in news_service,
+            "daily newspaper no longer reports mystical exposure")
     require(newspaper["knowledge"].split(":", 1)[1] in news_service,
             "daily newspaper knowledge id drifted")
 
@@ -792,6 +809,7 @@ def main():
     npc_handler = NPC_HANDLER.read_text(encoding="utf-8")
     outpost_generator = OUTPOST_GENERATOR.read_text(encoding="utf-8")
     outpost_saved_data = OUTPOST_SAVED_DATA.read_text(encoding="utf-8")
+    district_layout = DISTRICT_LAYOUT.read_text(encoding="utf-8")
     service_version_match = re.search(
         r"CURRENT_SERVICE_VERSION\s*=\s*(\d+)", outpost_saved_data)
     require(service_version_match is not None
@@ -815,6 +833,16 @@ def main():
                 and "generateServiceBooths" in outpost_generator
                 and '"service_version"' in outpost_saved_data),
             "legacy outposts do not receive service booths")
+    require(not city_desks["formal_districts"]
+            or ("generateFormalDistricts" in outpost_generator
+                and "MistCityDistrictLayout" in outpost_generator
+                and "DETECTIVE_AGENCY" in district_layout
+                and "CONSTABULARY" in district_layout),
+            "formal city districts are missing")
+    require(not city_desks["migrates_existing_npcs"]
+            or ("servicePosition" in npc_handler
+                and "existing.moveTo" in npc_handler),
+            "existing service NPCs are not migrated into formal districts")
     require(f'literal("{city_desks["command"]}")' in command_source,
             "city service directory command is missing")
 
@@ -831,11 +859,12 @@ def main():
         "persistent party recovery, the server-authoritative evidence archive, "
         "case reasoning, recoverable player hypotheses, board-gated item "
         "recovery, persistent case debriefs, "
-        "the deterministic daily newspaper, versioned city service desks, "
+        "the event-aware daily newspaper, versioned formal city districts, "
         "and the recoverable eight-slot dynamic case rotation with physical "
         "scene, witness, and records interactions, persistent contact "
-        "attitudes, bounded cross-case relationship memory, and three "
-        "two-stage physical organization response branches"
+        "attitudes, six relationship nodes, twelve weekly directives, "
+        "organization stances, bounded cross-case relationship memory, and "
+        "three two-stage physical organization response branches"
     )
 
 

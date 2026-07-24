@@ -2,7 +2,7 @@
   "id": "lord_of_mysteries:hunter",
   "display_name": "猎人途径",
   "color": "#B64935",
-  "sequences": [9, 8],
+  "sequences": [9, 8, 7, 6, 5],
   "spirituality_base": 100,
   "description": "以追踪、准备、陷阱和正面吸引敌意见长"
 }

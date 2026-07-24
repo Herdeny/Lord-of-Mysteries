@@ -7,6 +7,18 @@ import org.junit.jupiter.api.Test;
 class RitualResolutionLogicTest {
 
     @Test
+    void ritualResonanceBonusIsVisibleAndCapped() {
+        float base = RitualResolutionLogic.completionScore(
+                true, true, 0.4f, false);
+        assertEquals(base + 0.10f,
+                RitualResolutionLogic.completionScore(
+                        true, true, 0.4f, false, 0.10f));
+        assertEquals(base + 0.10f,
+                RitualResolutionLogic.completionScore(
+                        true, true, 0.4f, false, 99f));
+    }
+
+    @Test
     void completeRitualWithQualifiedLeaderReachesPerfectScore() {
         assertEquals(1f, RitualResolutionLogic.completionScore(
                 true, true, 1f, true), 0.0001f);

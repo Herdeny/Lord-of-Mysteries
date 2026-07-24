@@ -348,6 +348,8 @@ final class DynamicCaseManifestationService {
             case DOCK_ACCOUNTANT -> VillagerProfession.LIBRARIAN;
             case HERBALIST_ASSISTANT -> VillagerProfession.FARMER;
             case RETIRED_CONSTABLE -> VillagerProfession.WEAPONSMITH;
+            case ARCHIVE_CLERK -> VillagerProfession.LIBRARIAN;
+            case NIGHT_PHARMACIST -> VillagerProfession.CLERIC;
         };
     }
 

@@ -23,6 +23,7 @@ import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.acting.IdentityKitService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 import top.aurora.lordofmysteries.player.MysteryCapability;
+import top.aurora.lordofmysteries.player.PlayerFeedback;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 
 public final class SpectatorPotionItem extends Item {
@@ -34,9 +35,9 @@ public final class SpectatorPotionItem extends Item {
 
     public SpectatorPotionItem(Properties properties, int targetSequence) {
         super(properties.stacksTo(1));
-        if (targetSequence < 7 || targetSequence > 9) {
+        if (targetSequence < 5 || targetSequence > 9) {
             throw new IllegalArgumentException(
-                    "Spectator potion only supports sequences 9 through 7");
+                    "Spectator potion only supports sequences 9 through 5");
         }
         this.targetSequence = targetSequence;
     }
@@ -53,7 +54,8 @@ public final class SpectatorPotionItem extends Item {
                         && data.digestion < 100f
                         ? "message.lord_of_mysteries.potion.digestion_incomplete"
                         : "message.lord_of_mysteries.potion.incompatible";
-                player.sendSystemMessage(Component.translatable(key, targetSequence));
+                PlayerFeedback.send(player,
+                        Component.translatable(key, targetSequence));
                 return InteractionResultHolder.fail(stack);
             }
         }
@@ -75,13 +77,18 @@ public final class SpectatorPotionItem extends Item {
         data.spiritualityMax = switch (targetSequence) {
             case 9 -> 112f;
             case 8 -> 138f;
-            default -> 168f;
+            case 7 -> 168f;
+            case 6 -> 205f;
+            case 5 -> 258f;
+            default -> throw new IllegalArgumentException("Unsupported Spectator sequence");
         };
         data.spirituality = data.spiritualityMax;
         data.digestion = 0f;
         float sequencePressure = switch (targetSequence) {
             case 8 -> 18f;
             case 7 -> 24f;
+            case 6 -> 24f;
+            case 5 -> 28f;
             default -> 0f;
         };
         data.insanityPressure = Math.min(100f,
@@ -98,7 +105,7 @@ public final class SpectatorPotionItem extends Item {
         player.level().playSound(null, player.blockPosition(),
                 SoundEvents.BREWING_STAND_BREW, SoundSource.PLAYERS, 1f,
                 targetSequence == 9 ? 0.9f : 1.1f);
-        player.sendSystemMessage(Component.translatable(
+        PlayerFeedback.send(player, Component.translatable(
                 "message.lord_of_mysteries.potion.spectator_advanced",
                 targetSequence,
                 Component.translatable("sequence.lord_of_mysteries.spectator_" + targetSequence),
@@ -131,6 +138,14 @@ public final class SpectatorPotionItem extends Item {
             data.knownKnowledge.add(id("knowledge/psychological_pacification"));
             data.knownKnowledge.add(id("knowledge/mind_shock"));
             data.knownKnowledge.add(id("knowledge/psychological_cloak"));
+        }
+        if (targetSequence <= 6) {
+            data.knownKnowledge.add(id("knowledge/hypnotic_command"));
+            data.knownKnowledge.add(id("knowledge/mind_barrier"));
+        }
+        if (targetSequence <= 5) {
+            data.knownKnowledge.add(id("knowledge/lucid_rehearsal"));
+            data.knownKnowledge.add(id("knowledge/dream_lull"));
         }
     }
 

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "capability_schema": 22,
+  "capability_schema": 23,
   "data_counts": {
     "commissions": 4,
     "quest_chains": 4
@@ -105,7 +105,9 @@
         "EDITORIAL_SUPERVISOR",
         "DEPENDENT_RELATIVE",
         "SHOP_MENTOR",
-        "FORMER_PATROL_PARTNER"
+        "FORMER_PATROL_PARTNER",
+        "SENIOR_CATALOGUER",
+        "DISTRICT_PHYSICIAN"
       ],
       "stable_relation_ids": [
         "schedule_to_scene",
@@ -122,10 +124,16 @@
       "directives": [
         "PATTERN_AUDIT",
         "CLIENT_REINTERVIEW",
+        "WITNESS_TIMELINE",
+        "CLIENT_SAFETY_REVIEW",
         "SOURCE_VERIFICATION",
         "PUBLIC_REASSURANCE",
+        "EDITORIAL_CORROBORATION",
+        "RUMOR_CONTAINMENT",
         "CHAIN_OF_CUSTODY",
-        "DISTRICT_PATROL"
+        "DISTRICT_PATROL",
+        "WATCH_HANDOVER",
+        "CIVILIAN_SAFETY_CHECK"
       ]
     },
     "continuity": {
@@ -194,6 +202,14 @@
           "TRUSTING",
           "ALLIED"
         ],
+        "organization_stances": [
+          "HOSTILE",
+          "WARY",
+          "NEUTRAL",
+          "COOPERATIVE",
+          "TRUSTED"
+        ],
+        "organization_stance_adjusts_response": true,
         "case_grade_standing": {
           "S": 3,
           "A": 2,
@@ -211,7 +227,10 @@
             "directives": [
               "PATTERN_AUDIT",
               "SOURCE_VERIFICATION",
-              "CHAIN_OF_CUSTODY"
+              "CHAIN_OF_CUSTODY",
+              "WITNESS_TIMELINE",
+              "EDITORIAL_CORROBORATION",
+              "WATCH_HANDOVER"
             ],
             "money_pence": 8,
             "reputation": 1,
@@ -221,7 +240,10 @@
             "directives": [
               "CLIENT_REINTERVIEW",
               "PUBLIC_REASSURANCE",
-              "DISTRICT_PATROL"
+              "DISTRICT_PATROL",
+              "CLIENT_SAFETY_REVIEW",
+              "RUMOR_CONTAINMENT",
+              "CIVILIAN_SAFETY_CHECK"
             ],
             "money_pence": 6,
             "reputation": 1,
@@ -327,15 +349,19 @@
     "headline_count": 6,
     "case_bulletins": 4,
     "granted_by_press_shift": true,
+    "shows_world_event": true,
+    "shows_exposure": true,
     "knowledge": "lord_of_mysteries:knowledge/m2/newspaper_rumors"
   },
   "city_service_desks": {
-    "world_service_version": 1,
+    "world_service_version": 2,
     "desks": ["press", "detective", "constabulary"],
     "field_kit_cost": 18,
     "safe_room_cost": 28,
     "command": "city",
-    "upgrades_existing_outposts": true
+    "upgrades_existing_outposts": true,
+    "formal_districts": true,
+    "migrates_existing_npcs": true
   },
   "command_tokens": [
     "board",

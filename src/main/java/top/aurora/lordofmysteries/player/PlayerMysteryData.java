@@ -34,7 +34,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseResponseTask;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 22;
+    public static final int CURRENT_SCHEMA_VERSION = 23;
     private static final int MAX_MIGRATION_BACKUPS = 3;
     private static final int MAX_MIGRATION_HISTORY = 64;
 
@@ -142,6 +142,10 @@ public class PlayerMysteryData {
     public long moneyPence = 0L;
     public long lastCityWorkDay = Long.MIN_VALUE;
     public int cityWorkShifts = 0;
+    public int pressWorkShifts = 0;
+    public int agencyWorkShifts = 0;
+    public int patrolWorkShifts = 0;
+    public float mysticalExposure = 0f;
     public String activeCommissionId = "";
     public String activeQuestChainId = "";
     public int activeQuestStep = -1;
@@ -303,6 +307,10 @@ public class PlayerMysteryData {
         this.moneyPence = src.moneyPence;
         this.lastCityWorkDay = src.lastCityWorkDay;
         this.cityWorkShifts = src.cityWorkShifts;
+        this.pressWorkShifts = src.pressWorkShifts;
+        this.agencyWorkShifts = src.agencyWorkShifts;
+        this.patrolWorkShifts = src.patrolWorkShifts;
+        this.mysticalExposure = src.mysticalExposure;
         this.activeCommissionId = src.activeCommissionId;
         this.activeQuestChainId = src.activeQuestChainId;
         this.activeQuestStep = src.activeQuestStep;
@@ -440,6 +448,10 @@ public class PlayerMysteryData {
         tag.putLong("money_pence", moneyPence);
         tag.putLong("last_city_work_day", lastCityWorkDay);
         tag.putInt("city_work_shifts", cityWorkShifts);
+        tag.putInt("press_work_shifts", pressWorkShifts);
+        tag.putInt("agency_work_shifts", agencyWorkShifts);
+        tag.putInt("patrol_work_shifts", patrolWorkShifts);
+        tag.putFloat("mystical_exposure", mysticalExposure);
         tag.putString("active_commission", activeCommissionId);
         tag.putString("active_quest_chain", activeQuestChainId);
         tag.putInt("active_quest_step", activeQuestStep);
@@ -649,6 +661,10 @@ public class PlayerMysteryData {
         lastCityWorkDay = tag.contains("last_city_work_day")
                 ? tag.getLong("last_city_work_day") : Long.MIN_VALUE;
         cityWorkShifts = tag.getInt("city_work_shifts");
+        pressWorkShifts = tag.getInt("press_work_shifts");
+        agencyWorkShifts = tag.getInt("agency_work_shifts");
+        patrolWorkShifts = tag.getInt("patrol_work_shifts");
+        mysticalExposure = tag.getFloat("mystical_exposure");
         activeCommissionId = tag.contains("active_commission")
                 ? tag.getString("active_commission") : "";
         activeQuestChainId = tag.contains("active_quest_chain")
@@ -955,6 +971,7 @@ public class PlayerMysteryData {
         hash = mix(hash, digestion);
         hash = mix(hash, pollution);
         hash = mix(hash, insanityPressure);
+        hash = mix(hash, mysticalExposure);
         hash = mix(hash, potionQuality);
         hash = mix(hash, characteristicBundles);
         hash = mix(hash, orphanedEntries);
@@ -1032,6 +1049,9 @@ public class PlayerMysteryData {
         hash = mix(hash, moneyPence);
         hash = mix(hash, lastCityWorkDay);
         hash = mix(hash, cityWorkShifts);
+        hash = mix(hash, pressWorkShifts);
+        hash = mix(hash, agencyWorkShifts);
+        hash = mix(hash, patrolWorkShifts);
         hash = mix(hash, activeCommissionId);
         hash = mix(hash, activeQuestChainId);
         hash = mix(hash, activeQuestStep);

@@ -1,0 +1,15 @@
+{
+  "id": "lord_of_mysteries:hunter_potion_6",
+  "target_pathway": "lord_of_mysteries:hunter",
+  "target_sequence": 6,
+  "requires": { "pathway": "lord_of_mysteries:hunter", "sequence": 7, "digestion": 100.0 },
+  "ingredients": [
+    { "item": "lord_of_mysteries:ember_salamander_gland", "order": 1, "required": true },
+    { "item": "lord_of_mysteries:spirit_alcohol", "order": 2, "required": true },
+    { "item": "minecraft:bone", "order": 3, "required": false, "quality_bonus": 0.2 }
+  ],
+  "temperature_range": [60, 90],
+  "brewing_time_ticks": 1200,
+  "failure_result": "lord_of_mysteries:contaminated_mixture",
+  "adaptation_notes": "v0.9 proxy recipe until the two-headed serpent token enters the runtime registry"
+}

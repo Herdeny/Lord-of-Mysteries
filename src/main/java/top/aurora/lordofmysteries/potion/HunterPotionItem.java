@@ -23,6 +23,7 @@ import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.acting.IdentityKitService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 import top.aurora.lordofmysteries.player.MysteryCapability;
+import top.aurora.lordofmysteries.player.PlayerFeedback;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 
 public final class HunterPotionItem extends Item {
@@ -34,9 +35,9 @@ public final class HunterPotionItem extends Item {
 
     public HunterPotionItem(Properties properties, int targetSequence) {
         super(properties.stacksTo(1));
-        if (targetSequence < 7 || targetSequence > 9) {
+        if (targetSequence < 5 || targetSequence > 9) {
             throw new IllegalArgumentException(
-                    "Hunter potion only supports sequences 9 through 7");
+                    "Hunter potion only supports sequences 9 through 5");
         }
         this.targetSequence = targetSequence;
     }
@@ -53,7 +54,8 @@ public final class HunterPotionItem extends Item {
                         && data.digestion < 100f
                         ? "message.lord_of_mysteries.potion.digestion_incomplete"
                         : "message.lord_of_mysteries.potion.incompatible";
-                player.sendSystemMessage(Component.translatable(key, targetSequence));
+                PlayerFeedback.send(player,
+                        Component.translatable(key, targetSequence));
                 return InteractionResultHolder.fail(stack);
             }
         }
@@ -75,13 +77,18 @@ public final class HunterPotionItem extends Item {
         data.spiritualityMax = switch (targetSequence) {
             case 9 -> 118f;
             case 8 -> 142f;
-            default -> 175f;
+            case 7 -> 175f;
+            case 6 -> 218f;
+            case 5 -> 272f;
+            default -> throw new IllegalArgumentException("Unsupported Hunter sequence");
         };
         data.spirituality = data.spiritualityMax;
         data.digestion = 0f;
         float sequencePressure = switch (targetSequence) {
             case 8 -> 12f;
             case 7 -> 20f;
+            case 6 -> 20f;
+            case 5 -> 26f;
             default -> 0f;
         };
         data.insanityPressure = Math.min(100f,
@@ -100,7 +107,7 @@ public final class HunterPotionItem extends Item {
         player.level().playSound(null, player.blockPosition(),
                 SoundEvents.BREWING_STAND_BREW, SoundSource.PLAYERS, 1f,
                 targetSequence == 9 ? 0.8f : 0.7f);
-        player.sendSystemMessage(Component.translatable(
+        PlayerFeedback.send(player, Component.translatable(
                 "message.lord_of_mysteries.potion.hunter_advanced",
                 targetSequence,
                 Component.translatable("sequence.lord_of_mysteries.hunter_" + targetSequence),
@@ -134,6 +141,14 @@ public final class HunterPotionItem extends Item {
             data.knownKnowledge.add(id("knowledge/flame_spear"));
             data.knownKnowledge.add(id("knowledge/fire_ring"));
             data.knownKnowledge.add(id("knowledge/fire_affinity"));
+        }
+        if (targetSequence <= 6) {
+            data.knownKnowledge.add(id("knowledge/battlefield_layout"));
+            data.knownKnowledge.add(id("knowledge/instigate_conflict"));
+        }
+        if (targetSequence <= 5) {
+            data.knownKnowledge.add(id("knowledge/flame_scythe"));
+            data.knownKnowledge.add(id("knowledge/harvest_mark"));
         }
     }
 

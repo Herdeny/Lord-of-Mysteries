@@ -17,6 +17,12 @@ class QuestPartySnapshotTest {
             "00000000-0000-0000-0000-000000000001");
     private static final UUID SECOND = UUID.fromString(
             "00000000-0000-0000-0000-000000000002");
+    private static final UUID THIRD = UUID.fromString(
+            "00000000-0000-0000-0000-000000000003");
+    private static final UUID FOURTH = UUID.fromString(
+            "00000000-0000-0000-0000-000000000004");
+    private static final UUID FIFTH = UUID.fromString(
+            "00000000-0000-0000-0000-000000000005");
 
     @Test
     void nbtRoundTripRestoresOfflineMemberProgress() {
@@ -127,6 +133,44 @@ class QuestPartySnapshotTest {
         assertFalse(snapshot.addMember(UUID.randomUUID(), 2));
         assertTrue(snapshot.removeMember(SECOND));
         assertTrue(snapshot.addMember(UUID.randomUUID(), 2));
+    }
+
+    @Test
+    void fourPlayerRestartMatrixKeepsProgressAndPartyIsolation() {
+        PlayerMysteryData leader = activeData(4, 2);
+        leader.questResolutionRoute = "divination";
+        QuestPartySnapshot party = QuestPartySnapshot.create(
+                leader, FIRST, 800L);
+        int maximumParty =
+                QuestPartyPolicy.MAXIMUM_PERSISTENT_PARTY_SIZE;
+        assertTrue(party.addMember(SECOND, maximumParty));
+        assertTrue(party.addMember(THIRD, maximumParty));
+        assertTrue(party.addMember(FOURTH, maximumParty));
+        assertFalse(party.addMember(FIFTH, maximumParty));
+
+        QuestPartySavedData storage = new QuestPartySavedData();
+        storage.put("team:detectives", party);
+        QuestPartySnapshot isolated = QuestPartySnapshot.create(
+                activeData(1, 0), FIFTH, 810L);
+        storage.put("team:constables", isolated);
+        QuestPartySavedData restored = QuestPartySavedData.load(
+                storage.save(new net.minecraft.nbt.CompoundTag()));
+
+        QuestPartySnapshot restoredParty = restored.snapshot(
+                "team:detectives").orElseThrow();
+        assertEquals(4, restoredParty.members().size());
+        for (UUID member : List.of(FIRST, SECOND, THIRD, FOURTH)) {
+            PlayerMysteryData returning = new PlayerMysteryData();
+            assertTrue(restoredParty.applyTo(returning, member));
+            assertEquals(4, returning.activeQuestStep);
+            assertEquals(2, returning.questObjectiveProgress);
+            assertEquals("divination", returning.questResolutionRoute);
+        }
+        QuestPartySnapshot restoredIsolated = restored.snapshot(
+                "team:constables").orElseThrow();
+        assertEquals(1, restoredIsolated.questStep());
+        assertFalse(restoredIsolated.hasMember(FIRST));
+        assertFalse(restoredParty.hasMember(FIFTH));
     }
 
     @Test

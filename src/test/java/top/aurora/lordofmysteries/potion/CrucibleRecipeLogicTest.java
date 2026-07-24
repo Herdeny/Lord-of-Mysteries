@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 
 class CrucibleRecipeLogicTest {
 
+    private record RecipeCase(CrucibleRecipeLogic.BrewedPotion potion,
+                              List<String> ingredients, float temperature) {}
+
     @Test
     void perfectRequiresOptionalIngredientCorrectOrderAndIdealHeat() {
         assertEquals(PotionQuality.PERFECT, CrucibleRecipeLogic.evaluate(List.of(
@@ -201,5 +204,70 @@ class CrucibleRecipeLogicTest {
                 CrucibleRecipeLogic.COMPASS), 62f);
         assertEquals(CrucibleRecipeLogic.BrewedPotion.APPRENTICE_7, result.potion());
         assertEquals(PotionQuality.PERFECT, result.quality());
+    }
+
+    @Test
+    void allFivePathwaysHaveDistinctSequenceSixAndFiveRecipes() {
+        List<RecipeCase> cases = List.of(
+                new RecipeCase(CrucibleRecipeLogic.BrewedPotion.SEER_6,
+                        List.of(CrucibleRecipeLogic.SHAPESHIFTER_SERPENT_GLAND,
+                                CrucibleRecipeLogic.SILVER_FILINGS,
+                                CrucibleRecipeLogic.ASHEN_THREAD), 75f),
+                new RecipeCase(CrucibleRecipeLogic.BrewedPotion.SEER_5,
+                        List.of(CrucibleRecipeLogic.ASHEN_THREAD,
+                                CrucibleRecipeLogic.SPIRIT_SALT,
+                                CrucibleRecipeLogic.WHITE_CANDLE), 65f),
+                new RecipeCase(CrucibleRecipeLogic.BrewedPotion.SPECTATOR_6,
+                        List.of(CrucibleRecipeLogic.DREAM_SCALE_FRAGMENT,
+                                CrucibleRecipeLogic.HEATHER,
+                                CrucibleRecipeLogic.HONEY_BOTTLE), 70f),
+                new RecipeCase(CrucibleRecipeLogic.BrewedPotion.SPECTATOR_5,
+                        List.of(CrucibleRecipeLogic.DREAM_SCALE_FRAGMENT,
+                                CrucibleRecipeLogic.MOONWATER,
+                                CrucibleRecipeLogic.SILVER_FILINGS), 65f),
+                new RecipeCase(CrucibleRecipeLogic.BrewedPotion.HUNTER_6,
+                        List.of(CrucibleRecipeLogic.EMBER_SALAMANDER_GLAND,
+                                CrucibleRecipeLogic.SPIRIT_ALCOHOL,
+                                CrucibleRecipeLogic.BONE), 75f),
+                new RecipeCase(CrucibleRecipeLogic.BrewedPotion.HUNTER_5,
+                        List.of(CrucibleRecipeLogic.ASH_POWDER,
+                                CrucibleRecipeLogic.BLAZE_POWDER,
+                                CrucibleRecipeLogic.SPIRIT_SALT), 82f),
+                new RecipeCase(CrucibleRecipeLogic.BrewedPotion.THIEF_6,
+                        List.of(CrucibleRecipeLogic.SHADOW_MARTEN_CLAW,
+                                CrucibleRecipeLogic.ASH_POWDER,
+                                CrucibleRecipeLogic.SPIRIT_ALCOHOL), 70f),
+                new RecipeCase(CrucibleRecipeLogic.BrewedPotion.THIEF_5,
+                        List.of(CrucibleRecipeLogic.DREAM_SCALE_FRAGMENT,
+                                CrucibleRecipeLogic.MYSTIC_INK,
+                                CrucibleRecipeLogic.MOONWATER), 65f),
+                new RecipeCase(CrucibleRecipeLogic.BrewedPotion.APPRENTICE_6,
+                        List.of(CrucibleRecipeLogic.BLANK_MANUSCRIPT,
+                                CrucibleRecipeLogic.SPIRIT_SALT,
+                                CrucibleRecipeLogic.MYSTIC_INK), 65f),
+                new RecipeCase(CrucibleRecipeLogic.BrewedPotion.APPRENTICE_5,
+                        List.of(CrucibleRecipeLogic.METEOR_DUST,
+                                CrucibleRecipeLogic.SILVER_FILINGS,
+                                CrucibleRecipeLogic.ENDER_PEARL), 75f));
+
+        for (RecipeCase recipe : cases) {
+            CrucibleRecipeLogic.BrewResult result =
+                    CrucibleRecipeLogic.evaluateRecipe(
+                            recipe.ingredients(), recipe.temperature());
+            assertEquals(recipe.potion(), result.potion(),
+                    () -> "wrong potion for " + recipe.ingredients());
+            assertEquals(PotionQuality.PERFECT, result.quality(),
+                    () -> "recipe not perfect at documented heat: " + recipe.potion());
+        }
+    }
+
+    @Test
+    void m3CrossPathwayIngredientMixIsRejected() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.DREAM_SCALE_FRAGMENT,
+                CrucibleRecipeLogic.SPIRIT_SALT,
+                CrucibleRecipeLogic.ENDER_PEARL), 70f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.CONTAMINATED, result.potion());
+        assertEquals(PotionQuality.CONTAMINATED, result.quality());
     }
 }

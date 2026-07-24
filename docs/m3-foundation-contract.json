@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "capability_schema": 23,
+  "economy": {
+    "jobs": {
+      "PRESS": {
+        "reward_pence": 24,
+        "paper_cost": 3,
+        "pressure_increase": 0,
+        "exposure_reduction": 4
+      },
+      "AGENCY": {
+        "reward_pence": 22,
+        "paper_cost": 0,
+        "pressure_increase": 1,
+        "exposure_reduction": 2
+      },
+      "PATROL": {
+        "reward_pence": 28,
+        "paper_cost": 0,
+        "pressure_increase": 2,
+        "exposure_reduction": 3
+      }
+    },
+    "shared_daily_limit": true,
+    "requires_matching_district": true,
+    "event_sensitive_rewards": true,
+    "persistent_counters": [
+      "press_work_shifts",
+      "agency_work_shifts",
+      "patrol_work_shifts"
+    ],
+    "command": ["life", "work", "press", "agency", "patrol"]
+  },
+  "exposure": {
+    "nbt_key": "mystical_exposure",
+    "migration_fix": "city_economy_and_exposure",
+    "minimum": 0,
+    "maximum": 100,
+    "grade_deltas": {
+      "S": -4,
+      "A": -2,
+      "B": 0,
+      "C": 2,
+      "D": 6
+    },
+    "bands": ["HIDDEN", "RUMORED", "NOTICED", "WATCHED", "EXPOSED"],
+    "shown_in_newspaper": true
+  },
+  "world_events": {
+    "data_name": "lord_of_mysteries_mist_city_world_event",
+    "cycle_days": 16,
+    "events": [
+      "DENSE_FOG",
+      "SPIRITUAL_SURGE",
+      "BLOOD_MOON",
+      "EVIL_GAZE",
+      "WITCH_HUNT_NIGHT",
+      "RITUAL_RESONANCE"
+    ],
+    "persistent": true,
+    "broadcasts_changes": true,
+    "shown_in_newspaper": true,
+    "shown_in_server_diagnostics": true,
+    "modifiers": {
+      "economy_all_events": true,
+      "spiritual_surge_regen_multiplier": 1.5,
+      "ritual_resonance_completion_bonus": 0.1,
+      "dense_fog_outdoor_darkness": true,
+      "evil_gaze_pressure_per_minute": 0.2,
+      "blood_moon_pressure_per_minute": 0.4,
+      "witch_hunt_pressure_per_minute": 0.3,
+      "witch_hunt_exposure_per_minute": 0.5,
+      "witch_hunt_commoner_exemption": true,
+      "witch_hunt_outpost_shelter": true
+    }
+  },
+  "launch_pathways": {
+    "sequences": [6, 5],
+    "potion_count": 10,
+    "acting_event_count": 20,
+    "server_authoritative_slots": ["PRIMARY", "SECONDARY"],
+    "player_control_forbidden": true,
+    "pathways": {
+      "seer": {
+        "spirituality": {"6": 212, "5": 265},
+        "pressure": {"6": 22, "5": 30},
+        "abilities": {
+          "6": ["faceless_veil", "faceless_restraint"],
+          "5": ["spirit_threads", "thread_restraint"]
+        }
+      },
+      "spectator": {
+        "spirituality": {"6": 205, "5": 258},
+        "pressure": {"6": 24, "5": 28},
+        "abilities": {
+          "6": ["hypnotic_command", "mind_barrier"],
+          "5": ["lucid_rehearsal", "dream_lull"]
+        }
+      },
+      "hunter": {
+        "spirituality": {"6": 218, "5": 272},
+        "pressure": {"6": 20, "5": 26},
+        "abilities": {
+          "6": ["battlefield_layout", "instigate_conflict"],
+          "5": ["flame_scythe", "harvest_mark"]
+        }
+      },
+      "thief": {
+        "spirituality": {"6": 198, "5": 246},
+        "pressure": {"6": 26, "5": 32},
+        "abilities": {
+          "6": ["beneficial_effect_theft", "unowned_retrieval"],
+          "5": ["dream_theft", "reality_dislocation"]
+        }
+      },
+      "apprentice": {
+        "spirituality": {"6": 200, "5": 250},
+        "pressure": {"6": 18, "5": 24},
+        "abilities": {
+          "6": ["perfect_copy", "archive_focus"],
+          "5": ["traveler_door", "outpost_return"]
+        }
+      }
+    }
+  },
+  "validation": {
+    "game_tests": 9,
+    "requires_restart_matrix": true,
+    "behavior_test_classes": [
+      "CityEconomyPolicyTest",
+      "CityEconomyPersistenceTest",
+      "MysticalExposurePolicyTest",
+      "MistCityWorldEventPolicyTest",
+      "MistCityWorldEventModifiersTest",
+      "MistCityWorldEventPlayerEffectsTest",
+      "M3LaunchAbilityLogicTest",
+      "CrucibleRecipeLogicTest"
+    ]
+  },
+  "translation_keys": [
+    "city_job.lord_of_mysteries.press",
+    "city_job.lord_of_mysteries.agency",
+    "city_job.lord_of_mysteries.patrol",
+    "world_event.lord_of_mysteries.clear",
+    "world_event.lord_of_mysteries.dense_fog",
+    "world_event.lord_of_mysteries.spiritual_surge",
+    "world_event.lord_of_mysteries.blood_moon",
+    "world_event.lord_of_mysteries.evil_gaze",
+    "world_event.lord_of_mysteries.witch_hunt_night",
+    "world_event.lord_of_mysteries.ritual_resonance",
+    "message.lord_of_mysteries.world_event.changed",
+    "message.lord_of_mysteries.world_event.minute_effect",
+    "exposure.lord_of_mysteries.band.hidden",
+    "exposure.lord_of_mysteries.band.rumored",
+    "exposure.lord_of_mysteries.band.noticed",
+    "exposure.lord_of_mysteries.band.watched",
+    "exposure.lord_of_mysteries.band.exposed",
+    "message.lord_of_mysteries.newspaper.world_event",
+    "message.lord_of_mysteries.newspaper.exposure"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "lord_of_mysteries:apprentice_6",
+  "type": "sequence",
+  "schema_version": 4,
+  "canon_status": "adaptation",
+  "source_tier": "B-tech",
+  "source_refs": ["GDD:v0.9/7.7/sequence-6", "REPO:M3LaunchAbilityHandler"],
+  "spoiler_level": 2,
+  "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+  "links": {"requires": ["lord_of_mysteries:apprentice", "lord_of_mysteries:apprentice_potion_6"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "code_ready",
+  "pathway": "lord_of_mysteries:apprentice",
+  "sequence": 6,
+  "spirituality_max": 200,
+  "initial_pressure": 18,
+  "abilities": ["lord_of_mysteries:perfect_copy", "lord_of_mysteries:archive_focus"],
+  "acting_events": ["lord_of_mysteries:scribe6_copy_knowledge", "lord_of_mysteries:scribe6_archive_focus"],
+  "potion_id": "lord_of_mysteries:apprentice_potion_6",
+  "digestion_target": 100.0,
+  "adaptation_scope": "Vanilla-generation-safe signed-book/map copying and archive focus; scroll economy and persistent spatial marks remain planned."
+}

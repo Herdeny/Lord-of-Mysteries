@@ -71,7 +71,9 @@ public record DynamicCaseProfile(
         APPRENTICE_REPORTER,
         DOCK_ACCOUNTANT,
         HERBALIST_ASSISTANT,
-        RETIRED_CONSTABLE;
+        RETIRED_CONSTABLE,
+        ARCHIVE_CLERK,
+        NIGHT_PHARMACIST;
 
         @Override
         public String id() {
@@ -112,7 +114,9 @@ public record DynamicCaseProfile(
         EDITORIAL_SUPERVISOR(Subject.APPRENTICE_REPORTER),
         DEPENDENT_RELATIVE(Subject.DOCK_ACCOUNTANT),
         SHOP_MENTOR(Subject.HERBALIST_ASSISTANT),
-        FORMER_PATROL_PARTNER(Subject.RETIRED_CONSTABLE);
+        FORMER_PATROL_PARTNER(Subject.RETIRED_CONSTABLE),
+        SENIOR_CATALOGUER(Subject.ARCHIVE_CLERK),
+        DISTRICT_PHYSICIAN(Subject.NIGHT_PHARMACIST);
 
         private final Subject subject;
 
@@ -161,7 +165,9 @@ public record DynamicCaseProfile(
         PRESS_MORNING(Subject.APPRENTICE_REPORTER, DayPeriod.MORNING),
         DOCK_AFTERNOON(Subject.DOCK_ACCOUNTANT, DayPeriod.AFTERNOON),
         APOTHECARY_EVENING(Subject.HERBALIST_ASSISTANT, DayPeriod.EVENING),
-        CONSTABLE_NIGHT(Subject.RETIRED_CONSTABLE, DayPeriod.NIGHT);
+        CONSTABLE_NIGHT(Subject.RETIRED_CONSTABLE, DayPeriod.NIGHT),
+        ARCHIVE_AFTERNOON(Subject.ARCHIVE_CLERK, DayPeriod.AFTERNOON),
+        CLINIC_NIGHT(Subject.NIGHT_PHARMACIST, DayPeriod.NIGHT);
 
         private final Subject subject;
         private final DayPeriod observationPeriod;

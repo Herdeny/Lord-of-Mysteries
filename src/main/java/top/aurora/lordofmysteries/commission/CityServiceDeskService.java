@@ -14,6 +14,10 @@ public final class CityServiceDeskService {
     private CityServiceDeskService() {}
 
     public static int interactDetectiveClerk(ServerPlayer player) {
+        if (player.isShiftKeyDown() && player.isSprinting()) {
+            return CityLifeService.workFromServiceNpc(
+                    player, CityEconomyPolicy.Job.AGENCY);
+        }
         if (player.isShiftKeyDown()) return buyFieldKit(player);
         player.sendSystemMessage(Component.translatable(
                         "message.lord_of_mysteries.city_service.detective")
@@ -22,6 +26,10 @@ public final class CityServiceDeskService {
     }
 
     public static int interactConstable(ServerPlayer player) {
+        if (player.isShiftKeyDown() && player.isSprinting()) {
+            return CityLifeService.workFromServiceNpc(
+                    player, CityEconomyPolicy.Job.PATROL);
+        }
         if (player.isShiftKeyDown()) return requestSafeRoom(player);
         PlayerMysteryData data = MysteryCapability.get(player);
         player.sendSystemMessage(Component.translatable(

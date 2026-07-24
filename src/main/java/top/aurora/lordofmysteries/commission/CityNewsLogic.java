@@ -1,5 +1,7 @@
 package top.aurora.lordofmysteries.commission;
 
+import top.aurora.lordofmysteries.world.MistCityWorldEvent;
+
 public final class CityNewsLogic {
 
     public static final int HEADLINE_COUNT = 6;
@@ -17,7 +19,26 @@ public final class CityNewsLogic {
                 caseBulletin(activeCommissionId),
                 shiftCompleted
                         ? "message.lord_of_mysteries.newspaper.shift.done"
-                        : "message.lord_of_mysteries.newspaper.shift.available");
+                        : "message.lord_of_mysteries.newspaper.shift.available",
+                MistCityWorldEvent.CLEAR.translationKey(),
+                MysticalExposurePolicy.Band.HIDDEN.translationKey());
+    }
+
+    public static Issue issue(
+            long worldSeed,
+            long day,
+            String activeCommissionId,
+            boolean shiftCompleted,
+            MistCityWorldEvent worldEvent,
+            float exposure) {
+        Issue base = issue(
+                worldSeed, day, activeCommissionId, shiftCompleted);
+        return new Issue(
+                base.headlineKey(),
+                base.caseBulletinKey(),
+                base.shiftBulletinKey(),
+                worldEvent.translationKey(),
+                MysticalExposurePolicy.band(exposure).translationKey());
     }
 
     private static String caseBulletin(String activeCommissionId) {
@@ -37,5 +58,7 @@ public final class CityNewsLogic {
     public record Issue(
             String headlineKey,
             String caseBulletinKey,
-            String shiftBulletinKey) {}
+            String shiftBulletinKey,
+            String worldEventKey,
+            String exposureBandKey) {}
 }

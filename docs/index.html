@@ -12,7 +12,7 @@
   <meta property="og:image" content="assets/logo.png">
   <link rel="icon" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="assets/wiki.css?v=0.9.17">
+  <link rel="stylesheet" href="assets/wiki.css?v=0.9.18">
 </head>
 <body>
   <!-- 灵界粒子背景 -->
@@ -86,10 +86,10 @@
           <a class="button primary" href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/GETTING_STARTED.md" target="_blank" rel="noopener">打开入门指南 ↗</a>
         </div>
         <div class="about-card">
-          <h3>继续 M2 调查</h3>
+          <h3>M2 调查与城市生活</h3>
           <ol class="tech-list">
             <li>完成占卜家序列 9–7 纵切</li>
-            <li>输入 <code>/pm city</code> 查看三类服务台</li>
+            <li>输入 <code>/pm city</code> 查看三座正式街区；用 <code>/pm life</code> 查看工作、事件和暴露</li>
             <li>在调查板切换案件、证据与关联推理</li>
             <li>使用 <code>/pm case analyze</code> 获取明确下一步</li>
             <li>使用 <code>/pm case hypothesis</code> 提出、检验并纠正玩家假说</li>
@@ -97,18 +97,18 @@
             <li>完成真假配方后接取轮换案件，用 <code>/pm case rotation</code> 查看八槽位卷宗</li>
             <li>在现场辨认案件相关人、受影响者与可视物证；用证物袋封存差异化样本，再右键指定证人和当日报纸</li>
             <li><code>investigate field|desk</code> 保留为兼容/恢复入口；误判后回调查板复议</li>
-            <li>结案后领取组织响应，与对应 NPC 简报，再回调查板提交；<code>rotation contacts</code> 可查看联系人态度</li>
+            <li>结案后领取组织响应，与对应 NPC 简报，再回调查板提交；<code>rotation contacts</code> 可查看联系人和组织立场</li>
           </ol>
           <a class="button" href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Dynamic-Case-Rotation" target="_blank" rel="noopener">打开动态案件手册 ↗</a>
         </div>
         <div class="about-card">
-          <h3>服务器与贡献</h3>
+          <h3>M3 序列 6–5</h3>
           <ol class="tech-list">
-            <li>服主先执行 <code>/pm doctor</code></li>
-            <li>开发者先阅读设计基线</li>
-            <li>提交前运行完整构建门禁</li>
+            <li>五条首发途径均可从序列 7 继续炼制 6、5 魔药</li>
+            <li><code>Y</code> / <code>U</code> 使用每序列主、副能力</li>
+            <li>当前状态为 <code>code_ready</code>：专属仪式与完整原典系统仍在建设</li>
           </ol>
-          <a class="button" href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">参与贡献 ↗</a>
+          <a class="button" href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M3-Launch-Pathways" target="_blank" rel="noopener">查看 M3 能力与配方 ↗</a>
         </div>
       </div>
     </section>
@@ -138,7 +138,7 @@
       <div class="section-heading">
         <p class="eyebrow">Sequences</p>
         <h2>可玩序列阶梯</h2>
-        <p class="sub">序列数字越小越强大。占卜家 9 → 7 已通过 M1 纵切门禁；其余四条途径 9 → 7 可玩，并按 M3 差异化门禁继续扩展。</p>
+        <p class="sub">序列数字越小越强大。五条途径 9 → 7 可玩；6 → 5 已具备魔药、代理配方、服务端能力与扮演代码，保持 code_ready 直至专属仪式和真人平衡完成。</p>
       </div>
       <div class="seq-ladder" id="seq-ladder"></div>
     </section>
@@ -148,7 +148,8 @@
       <div class="section-heading full">
         <p class="eyebrow">Catalog</p>
         <h2>图鉴索引</h2>
-        <p class="sub">能力 · 机制 · 魔药 · 方块 · 物品 · 封印物 · 仪式 · 组织 · 世界 · 状态</p>
+        <p class="sub">自动覆盖实际注册的物品、方块与实体，并保留能力、机制、仪式、组织和世界内容的详细说明。</p>
+        <p class="catalog-coverage" id="catalog-coverage"></p>
       </div>
       <div class="catalog-body">
         <aside class="filters" aria-label="筛选">
@@ -168,7 +169,7 @@
       <div class="section-heading">
         <p class="eyebrow">Roadmap</p>
         <h2>开发路线图</h2>
-        <p class="sub">了解当前 M2 调查与生活阶段，以及后续途径、组织、灵界、半神和世界赛季计划。</p>
+        <p class="sub">M2 自动化实施范围已经闭环，保留四人八小时真人门禁；M3 五途径序列 6–5 已开始代码实施。</p>
       </div>
       <div class="roadmap" id="roadmap-track"></div>
     </section>
@@ -182,7 +183,7 @@
       <div class="about-grid">
         <div class="about-card">
           <h3>项目简介</h3>
-          <p>Project Mystery 是一个把《诡秘之主》非凡者体系带入 Minecraft 的生存冒险 Mod。当前版本为 <b>0.9.17-1.20.1</b>，路线处于 <b>M2 调查与生活</b>：M0/M1 已完成机器验收，服务端权威调查板现有四种委托、四条任务链、三案固定档案和每日轮换的三类八槽位动态案件。轮换案会发放绑定实例的证物袋，在真实站点生成具备关系和四段日程的案件相关人、受影响者及可直接采样的可视物证；每七日由侦探事务所、雾都报社或巡警系统协调，并确定六项职责之一作为本周组织指令。最近八案历史会保留 S–D 评级与一次性后续；记者、账房、草药铺学徒和退休巡警还会分别保存最多 24 条共同结案、履约、放弃或逾期记忆。领取后续时，服务端根据关系值与履约历史冻结优先协作、常规跟进或关系修复分支；玩家仍须先与正确组织 NPC 简报，再回真实调查板提交。过期和主动放弃都会写入关系账本并安全释放任务槽，错误组织、远程提交与重复奖励由服务端拒绝。玩家仍可使用 field/desk 无软锁入口，并在七条关系、植入式误导、三种结论、玩家假说、误判压力与复议恢复之间形成完整推理闭环。当前基线包含 Capability schema 22、网络协议 12、308 项 JUnit、6 项 Forge GameTest、116 节点/168 关系内容图、精确回滚与双启动专服矩阵；下一阶段将扩展更多联系人与组织立场、正式城市街区、周级案件池和长期多人经济。</p>
+          <p>Project Mystery 是受《诡秘之主》启发的 Minecraft 生存冒险 Mod。当前版本为 <b>0.9.18-1.20.1</b>，正式里程碑仍是 <b>M2 调查与生活</b>：三座 7×7 正式街区、4 种委托、4 条任务链、三类八槽位动态案件、6 类主体关系、12 项周指令、五档组织立场、跨案件联系人记忆、三职业经济、神秘暴露和 16 日六事件周期已经连接为服务端权威闭环。M2 只保留四人八小时真人专服与经济平衡证据，不能由自动化替代。M3 已预实现五条首发途径序列 6–5：10 瓶魔药、10 份 schema v4 序列定义、20 项服务端能力和 20 项扮演事件；玩家控制默认禁止，PvP、Boss、物品归属、书本代数、每日窃梦和安全传送均有边界。当前基线为 Capability schema 23、网络协议 12、340 项 JUnit、9 项 Forge GameTest、126 节点/188 关系内容图、精确回滚和双启动专服矩阵。图鉴注册内容由脚本从 Java 注册表和双语文件生成，不再依赖手工补条目。</p>
         </div>
         <div class="about-card">
           <h3>技术基线</h3>
@@ -217,6 +218,7 @@
         <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Player-Hypotheses-and-Reasoning-Strain" target="_blank" rel="noopener">玩家假说与误判恢复</a>
         <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Dynamic-Case-Rotation" target="_blank" rel="noopener">动态案件轮换</a>
         <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-City-Service-Desks" target="_blank" rel="noopener">城市服务台与功能区</a>
+        <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M3-Launch-Pathways" target="_blank" rel="noopener">M3 五途径序列 6–5</a>
         <a href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/DEDICATED_SERVER_TEST_MATRIX.md" target="_blank" rel="noopener">专服与多人验证矩阵</a>
         <a href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/ROADMAP.md" target="_blank" rel="noopener">完整路线</a>
         <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki" target="_blank" rel="noopener">GitHub Wiki</a>
@@ -248,9 +250,10 @@
     </article>
   </div>
 
-  <script src="assets/project-meta.js?v=0.9.17"></script>
-  <script src="assets/roadmap-data.js?v=0.9.17"></script>
-  <script src="assets/wiki-data.js?v=0.9.17"></script>
-  <script src="assets/wiki.js?v=0.9.17"></script>
+  <script src="assets/project-meta.js?v=0.9.18"></script>
+  <script src="assets/roadmap-data.js?v=0.9.18"></script>
+  <script src="assets/wiki-data.js?v=0.9.18"></script>
+  <script src="assets/catalog-data.js?v=0.9.18"></script>
+  <script src="assets/wiki.js?v=0.9.18"></script>
 </body>
 </html>

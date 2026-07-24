@@ -57,9 +57,13 @@ public final class DynamicCaseResponsePolicy {
                     "organization response branch is required");
         }
         Reward base = switch (directive) {
-            case PATTERN_AUDIT, SOURCE_VERIFICATION, CHAIN_OF_CUSTODY ->
+            case PATTERN_AUDIT, WITNESS_TIMELINE,
+                    SOURCE_VERIFICATION, EDITORIAL_CORROBORATION,
+                    CHAIN_OF_CUSTODY, WATCH_HANDOVER ->
                     new Reward(8L, 1, 1);
-            case CLIENT_REINTERVIEW, PUBLIC_REASSURANCE, DISTRICT_PATROL ->
+            case CLIENT_REINTERVIEW, CLIENT_SAFETY_REVIEW,
+                    PUBLIC_REASSURANCE, RUMOR_CONTAINMENT,
+                    DISTRICT_PATROL, CIVILIAN_SAFETY_CHECK ->
                     new Reward(6L, 1, 2);
         };
         return switch (branch) {

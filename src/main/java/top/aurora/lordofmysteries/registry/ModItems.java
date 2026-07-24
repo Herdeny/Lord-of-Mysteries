@@ -243,6 +243,10 @@ public final class ModItems {
             () -> new SeerPotionItem(new Item.Properties(), 8));
     public static final RegistryObject<Item> SEER_POTION_7 = ITEMS.register("seer_potion_7",
             () -> new SeerPotionItem(new Item.Properties(), 7));
+    public static final RegistryObject<Item> SEER_POTION_6 = ITEMS.register("seer_potion_6",
+            () -> new SeerPotionItem(new Item.Properties(), 6));
+    public static final RegistryObject<Item> SEER_POTION_5 = ITEMS.register("seer_potion_5",
+            () -> new SeerPotionItem(new Item.Properties(), 5));
     public static final RegistryObject<Item> SPECTATOR_POTION_9 = ITEMS.register(
             "spectator_potion_9",
             () -> new SpectatorPotionItem(new Item.Properties(), 9));
@@ -252,6 +256,12 @@ public final class ModItems {
     public static final RegistryObject<Item> SPECTATOR_POTION_7 = ITEMS.register(
             "spectator_potion_7",
             () -> new SpectatorPotionItem(new Item.Properties(), 7));
+    public static final RegistryObject<Item> SPECTATOR_POTION_6 = ITEMS.register(
+            "spectator_potion_6",
+            () -> new SpectatorPotionItem(new Item.Properties(), 6));
+    public static final RegistryObject<Item> SPECTATOR_POTION_5 = ITEMS.register(
+            "spectator_potion_5",
+            () -> new SpectatorPotionItem(new Item.Properties(), 5));
     public static final RegistryObject<Item> HUNTER_POTION_9 = ITEMS.register(
             "hunter_potion_9",
             () -> new HunterPotionItem(new Item.Properties(), 9));
@@ -261,6 +271,12 @@ public final class ModItems {
     public static final RegistryObject<Item> HUNTER_POTION_7 = ITEMS.register(
             "hunter_potion_7",
             () -> new HunterPotionItem(new Item.Properties(), 7));
+    public static final RegistryObject<Item> HUNTER_POTION_6 = ITEMS.register(
+            "hunter_potion_6",
+            () -> new HunterPotionItem(new Item.Properties(), 6));
+    public static final RegistryObject<Item> HUNTER_POTION_5 = ITEMS.register(
+            "hunter_potion_5",
+            () -> new HunterPotionItem(new Item.Properties(), 5));
     public static final RegistryObject<Item> THIEF_POTION_9 = ITEMS.register(
             "thief_potion_9",
             () -> new M2PathwayPotionItem(
@@ -273,6 +289,14 @@ public final class ModItems {
             "thief_potion_7",
             () -> new M2PathwayPotionItem(
                     new Item.Properties(), M2PathwayPotionItem.Pathway.THIEF, 7));
+    public static final RegistryObject<Item> THIEF_POTION_6 = ITEMS.register(
+            "thief_potion_6",
+            () -> new M2PathwayPotionItem(
+                    new Item.Properties(), M2PathwayPotionItem.Pathway.THIEF, 6));
+    public static final RegistryObject<Item> THIEF_POTION_5 = ITEMS.register(
+            "thief_potion_5",
+            () -> new M2PathwayPotionItem(
+                    new Item.Properties(), M2PathwayPotionItem.Pathway.THIEF, 5));
     public static final RegistryObject<Item> APPRENTICE_POTION_9 = ITEMS.register(
             "apprentice_potion_9",
             () -> new M2PathwayPotionItem(
@@ -285,6 +309,14 @@ public final class ModItems {
             "apprentice_potion_7",
             () -> new M2PathwayPotionItem(
                     new Item.Properties(), M2PathwayPotionItem.Pathway.APPRENTICE, 7));
+    public static final RegistryObject<Item> APPRENTICE_POTION_6 = ITEMS.register(
+            "apprentice_potion_6",
+            () -> new M2PathwayPotionItem(
+                    new Item.Properties(), M2PathwayPotionItem.Pathway.APPRENTICE, 6));
+    public static final RegistryObject<Item> APPRENTICE_POTION_5 = ITEMS.register(
+            "apprentice_potion_5",
+            () -> new M2PathwayPotionItem(
+                    new Item.Properties(), M2PathwayPotionItem.Pathway.APPRENTICE, 5));
 
     // —— 封印物（当前实现永燃火柴盒）——
     public static final RegistryObject<Item> ETERNAL_MATCHBOX = ITEMS.register("eternal_matchbox",
