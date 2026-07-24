@@ -53,7 +53,7 @@ public final class DynamicCaseService {
         if (overworld == null) return 0;
         boolean active = isActive(data);
         long tick = active ? data.commissionAcceptedTick
-                : player.level().getGameTime();
+                : overworld.getGameTime();
         DynamicCaseProfile profile = DynamicCaseGenerator.generate(
                 overworld.getSeed(), tick);
         player.sendSystemMessage(Component.translatable(
@@ -151,6 +151,15 @@ public final class DynamicCaseService {
 
     public static int collectSceneEvidence(
             ServerPlayer player, BlockPos clickedPosition, ItemStack portfolio) {
+        return collectSceneEvidence(
+                player, clickedPosition, portfolio, null);
+    }
+
+    static int collectSceneEvidence(
+            ServerPlayer player,
+            BlockPos clickedPosition,
+            ItemStack portfolio,
+            String evidenceInstanceId) {
         PlayerMysteryData data = MysteryCapability.get(player);
         DynamicCaseProfile profile = profileFor(player, data);
         if (profile == null) return noActive(player);
@@ -163,6 +172,13 @@ public final class DynamicCaseService {
         if (!DynamicEvidencePortfolioItem.matches(portfolio, profile)) {
             player.sendSystemMessage(Component.translatable(
                             "command.lord_of_mysteries.dynamic_case.portfolio.outdated")
+                    .withStyle(ChatFormatting.RED));
+            return 0;
+        }
+        if (evidenceInstanceId != null
+                && !profile.instanceId().equals(evidenceInstanceId)) {
+            player.sendSystemMessage(Component.translatable(
+                            "message.lord_of_mysteries.dynamic_case.evidence.outdated")
                     .withStyle(ChatFormatting.RED));
             return 0;
         }
@@ -214,15 +230,18 @@ public final class DynamicCaseService {
                         data.activeQuestStep,
                         hasPortfolio(player, profile),
                         hasEvidenceSample(player, profile));
+        boolean issued = false;
         if (plan.restorePortfolio()) {
-            givePortfolio(player, profile, data.activeQuestStep,
+            issued |= givePortfolio(
+                    player, profile, data.activeQuestStep,
                     "command.lord_of_mysteries.dynamic_case.portfolio.issued");
         }
         if (plan.restoreEvidenceSample()) {
-            giveEvidenceSample(player, profile,
+            issued |= giveEvidenceSample(
+                    player, profile,
                     "command.lord_of_mysteries.dynamic_case.sample.issued");
         }
-        return plan.artifactCount() > 0;
+        return issued;
     }
 
     public static int recoverPortfolio(ServerPlayer player) {
@@ -234,15 +253,18 @@ public final class DynamicCaseService {
                         data.activeQuestStep,
                         hasPortfolio(player, profile),
                         hasEvidenceSample(player, profile));
-        if (plan.restorePortfolio()) {
-            givePortfolio(player, profile, data.activeQuestStep,
-                    "command.lord_of_mysteries.dynamic_case.portfolio.recovered");
+        int restored = 0;
+        if (plan.restorePortfolio() && givePortfolio(
+                player, profile, data.activeQuestStep,
+                "command.lord_of_mysteries.dynamic_case.portfolio.recovered")) {
+            restored++;
         }
-        if (plan.restoreEvidenceSample()) {
-            giveEvidenceSample(player, profile,
-                    "command.lord_of_mysteries.dynamic_case.sample.recovered");
+        if (plan.restoreEvidenceSample() && giveEvidenceSample(
+                player, profile,
+                "command.lord_of_mysteries.dynamic_case.sample.recovered")) {
+            restored++;
         }
-        return plan.artifactCount();
+        return restored;
     }
 
     public static void returnPortfolio(ServerPlayer player) {
@@ -535,7 +557,7 @@ public final class DynamicCaseService {
         return false;
     }
 
-    private static void givePortfolio(
+    private static boolean givePortfolio(
             ServerPlayer player,
             DynamicCaseProfile profile,
             int collectedStage,
@@ -544,28 +566,26 @@ public final class DynamicCaseService {
                 ModItems.DYNAMIC_EVIDENCE_PORTFOLIO.get());
         DynamicEvidencePortfolioItem.bind(
                 portfolio, profile, collectedStage);
-        if (!player.getInventory().add(portfolio)) {
-            player.drop(portfolio, false);
-        }
+        if (!QuestItemDelivery.give(player, portfolio)) return false;
         player.sendSystemMessage(Component.translatable(
                         messageKey, profile.instanceId())
                 .withStyle(ChatFormatting.AQUA));
+        return true;
     }
 
-    private static void giveEvidenceSample(
+    private static boolean giveEvidenceSample(
             ServerPlayer player,
             DynamicCaseProfile profile,
             String messageKey) {
         ItemStack sample = DynamicCaseEvidenceItem.create(profile);
-        if (!player.getInventory().add(sample)) {
-            player.drop(sample, false);
-        }
+        if (!QuestItemDelivery.give(player, sample)) return false;
         player.sendSystemMessage(Component.translatable(
                         messageKey,
                         Component.translatable(profile.evidenceTheme()
                                 .translationKey("evidence_theme")),
                         profile.instanceId())
                 .withStyle(ChatFormatting.AQUA));
+        return true;
     }
 
     private static void sendSlot(
@@ -609,9 +629,13 @@ public final class DynamicCaseService {
 
     private static void sendScheduleState(
             ServerPlayer player, DynamicCaseProfile profile) {
+        ServerLevel overworld =
+                player.getServer().getLevel(Level.OVERWORLD);
         DynamicCaseSchedulePolicy.State state =
                 DynamicCaseSchedulePolicy.state(
-                        profile, player.level().getGameTime());
+                        profile, overworld == null
+                                ? player.level().getDayTime()
+                                : overworld.getDayTime());
         String key = state.observationOpen()
                 ? "command.lord_of_mysteries.dynamic_case.time.open"
                 : "command.lord_of_mysteries.dynamic_case.time.wait";

@@ -13,6 +13,7 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
@@ -34,6 +35,8 @@ public final class InvestigationNpcHandler {
     public static final String DETECTIVE_CLERK_TAG = "lom_detective_clerk";
     public static final String CONSTABLE_TAG = "lom_constable";
     public static final String ESCORT_OWNER_TAG = "lom_escort_owner";
+    public static final String ESCORT_REPORTER_TAG = "lom_escort_reporter";
+    public static final String ESCORT_PARTY_DATA = "lom_escort_party";
 
     private InvestigationNpcHandler() {}
 
@@ -41,19 +44,25 @@ public final class InvestigationNpcHandler {
     public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
         if (event.getTarget() instanceof ArmorStand armorStand
                 && DynamicCaseManifestationService.isEvidenceDisplay(armorStand)) {
-            boolean portfolioHeld = event.getEntity()
-                    .getItemInHand(event.getHand()).getItem()
-                    instanceof DynamicEvidencePortfolioItem;
+            ItemStack portfolio = event.getEntity().getMainHandItem();
+            if (!(portfolio.getItem() instanceof DynamicEvidencePortfolioItem)) {
+                portfolio = event.getEntity().getOffhandItem();
+            }
+            boolean portfolioHeld =
+                    portfolio.getItem() instanceof DynamicEvidencePortfolioItem;
             event.setCanceled(true);
             event.setCancellationResult(portfolioHeld
                     ? InteractionResult.sidedSuccess(
                             event.getEntity().level().isClientSide())
                     : InteractionResult.PASS);
-            if (portfolioHeld
+            if (event.getHand() == InteractionHand.MAIN_HAND
+                    && portfolioHeld
                     && event.getEntity() instanceof ServerPlayer player) {
                 DynamicCaseService.collectSceneEvidence(
                         player, armorStand.blockPosition(),
-                        player.getItemInHand(event.getHand()));
+                        portfolio,
+                        DynamicCaseManifestationService.evidenceInstanceId(
+                                armorStand));
             }
             return;
         }
@@ -79,6 +88,10 @@ public final class InvestigationNpcHandler {
             CityServiceDeskService.interactDetectiveClerk(player);
         } else if (villager.getTags().contains(CONSTABLE_TAG)) {
             CityServiceDeskService.interactConstable(player);
+        } else if (villager.getTags().contains(ESCORT_REPORTER_TAG)) {
+            player.sendSystemMessage(Component.translatable(
+                    "message.lord_of_mysteries.npc.reporter_escorting")
+                    .withStyle(net.minecraft.ChatFormatting.GRAY));
         }
     }
 
@@ -99,18 +112,57 @@ public final class InvestigationNpcHandler {
         DynamicCaseManifestationService.tick(level);
     }
 
-    public static void beginEscort(Villager reporter, ServerPlayer owner) {
+    public static Villager createEscortReporter(
+            Villager template, ServerPlayer owner, String partyKey) {
+        if (!(template.level() instanceof ServerLevel level)
+                || partyKey == null || partyKey.isBlank()) {
+            return null;
+        }
+        Villager reporter = EntityType.VILLAGER.create(level);
+        if (reporter == null) return null;
+        reporter.setVillagerData(template.getVillagerData());
+        reporter.moveTo(template.getX(), template.getY(), template.getZ(),
+                template.getYRot(), template.getXRot());
+        reporter.setCustomName(template.getCustomName());
+        reporter.setCustomNameVisible(true);
         reporter.setNoAi(false);
         reporter.setInvulnerable(true);
         reporter.setPersistenceRequired();
+        reporter.addTag(ESCORT_REPORTER_TAG);
         reporter.getPersistentData().putUUID(ESCORT_OWNER_TAG, owner.getUUID());
+        reporter.getPersistentData().putString(ESCORT_PARTY_DATA, partyKey);
+        if (!level.addFreshEntity(reporter)) return null;
+        return reporter;
     }
 
     public static void finishEscort(Villager reporter, BlockPos outpost) {
         reporter.getNavigation().stop();
+        if (reporter.getTags().contains(ESCORT_REPORTER_TAG)) {
+            reporter.discard();
+        } else {
+            reporter.setNoAi(true);
+            reporter.moveTo(outpost.getX() + 0.5d, outpost.getY() + 1d,
+                    outpost.getZ() + 2.5d,
+                    reporter.getYRot(), reporter.getXRot());
+        }
+    }
+
+    public static boolean escortBelongsTo(
+            Villager reporter, String partyKey) {
+        return reporter.getTags().contains(ESCORT_REPORTER_TAG)
+                && partyKey != null
+                && partyKey.equals(reporter.getPersistentData()
+                        .getString(ESCORT_PARTY_DATA));
+    }
+
+    public static void restoreBaseReporter(
+            Villager reporter, BlockPos camp) {
+        reporter.getNavigation().stop();
         reporter.setNoAi(true);
-        reporter.moveTo(outpost.getX() + 0.5d, outpost.getY() + 1d,
-                outpost.getZ() + 2.5d, reporter.getYRot(), reporter.getXRot());
+        reporter.getPersistentData().remove(ESCORT_OWNER_TAG);
+        reporter.moveTo(camp.getX() - 1.5d, camp.getY(),
+                camp.getZ() + 0.5d,
+                reporter.getYRot(), reporter.getXRot());
     }
 
     private static boolean isInvestigationNpc(Villager villager) {
@@ -120,6 +172,7 @@ public final class InvestigationNpcHandler {
                 || villager.getTags().contains(OCCULT_APPRAISER_TAG)
                 || villager.getTags().contains(DETECTIVE_CLERK_TAG)
                 || villager.getTags().contains(CONSTABLE_TAG)
+                || villager.getTags().contains(ESCORT_REPORTER_TAG)
                 || DynamicCaseManifestationService.isManifestationNpc(villager);
     }
 

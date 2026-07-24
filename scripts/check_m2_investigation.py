@@ -60,8 +60,11 @@ DYNAMIC_PORTFOLIO_MODEL = ROOT / "src" / "main" / "resources" / "assets" / "lord
 DYNAMIC_EVIDENCE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseEvidenceItem.java"
 DYNAMIC_EVIDENCE_DATA = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseEvidenceData.java"
 DYNAMIC_MANIFESTATION = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseManifestationService.java"
+DYNAMIC_SITE_LAYOUT = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseSiteLayoutPolicy.java"
 DYNAMIC_SCHEDULE = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseSchedulePolicy.java"
 DYNAMIC_FEEDBACK = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "DynamicCaseFeedbackPolicy.java"
+PARTY_POLICY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestPartyPolicy.java"
+QUEST_ITEM_DELIVERY = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "commission" / "QuestItemDelivery.java"
 
 
 def load(path):
@@ -100,6 +103,17 @@ def main():
     prefix = contract["legacy_missing_squad"]["prefix"]
     require(missing_steps[:len(prefix)] == prefix,
             "legacy missing squad prefix changed")
+    npc_source = NPC_HANDLER.read_text(encoding="utf-8")
+    commission_source = COMMISSION_SERVICE.read_text(encoding="utf-8")
+    require(not contract["legacy_missing_squad"]["party_bound_escort_reporter"]
+            or ("createEscortReporter" in npc_source
+                and "ESCORT_PARTY_DATA" in npc_source
+                and "escortBelongsTo" in commission_source),
+            "missing-squad escort reporter is not party isolated")
+    require(not contract["legacy_missing_squad"]["migrates_legacy_global_escort"]
+            or ("restoreBaseReporter" in npc_source
+                and "restoreBaseReporter" in commission_source),
+            "legacy global escort cannot migrate to a party instance")
 
     formula = contract["counterfeit_formula"]
     formula_commission = commissions[formula["commission"]]
@@ -110,6 +124,17 @@ def main():
     formula_steps = [step["id"] for step in quests[formula["quest"]]["steps"]]
     require(formula_steps == formula["steps"],
             "counterfeit formula step order drifted")
+    formula_source = FORMULA_SERVICE.read_text(encoding="utf-8")
+    require(not formula["dossier_bound_to_player_case"]
+            or ("matchesCurrentDossier" in formula_source
+                and "matchesSeed" in formula_source
+                and "commissionAcceptedTick" in formula_source),
+            "formula dossier is not bound to the player's active case")
+    require(not formula["party_artifact_sync"]
+            or ("QuestPartyService.participants" in commission_source
+                and "createDossier(participant)" in commission_source
+                and "restorePartyArtifacts" in commission_source),
+            "formula dossier is not synchronized for party recovery")
 
     dynamic = contract["dynamic_case_rotation"]
     dynamic_commission = commissions[dynamic["commission"]]
@@ -129,7 +154,6 @@ def main():
     dynamic_profile = DYNAMIC_CASE_PROFILE.read_text(encoding="utf-8")
     dynamic_generator = DYNAMIC_CASE_GENERATOR.read_text(encoding="utf-8")
     dynamic_service = DYNAMIC_CASE_SERVICE.read_text(encoding="utf-8")
-    commission_source = COMMISSION_SERVICE.read_text(encoding="utf-8")
     for archetype in dynamic["archetypes"]:
         require(archetype in dynamic_profile,
                 f"dynamic case archetype {archetype} is missing")
@@ -198,7 +222,9 @@ def main():
     require(not interactions["party_sync"]
             or ("synchronizePortfolios" in dynamic_service
                 and "QuestPartyService.participants" in dynamic_service
-                and party_source.count("DynamicCaseService.issuePortfolio") >= 2),
+                and party_source.count(
+                    "CommissionService.restorePartyArtifacts") >= 2
+                and "DynamicCaseService.issuePortfolio" in commission_source),
             "dynamic portfolio progress is not synchronized to the party")
     require(not interactions["returned_on_settle_or_abandon"]
             or commission_source.count("DynamicCaseService.returnPortfolio") >= 2,
@@ -224,6 +250,22 @@ def main():
                 and "scheduleState.observationOpen()" in manifestation_source
                 and "plan.routine()" in manifestation_source),
             "dynamic subject does not move with its schedule")
+    require(not manifestations["display_requires_matching_instance"]
+            or ("evidenceInstanceId" in manifestation_source
+                and "evidenceInstanceId" in npc_source
+                and "evidence.outdated" in dynamic_service),
+            "dynamic evidence display can advance another case instance")
+    require(not manifestations["schedule_uses_overworld_day_time"]
+            or ("getDayTime()" in manifestation_source
+                and "overworld.getDayTime()" in dynamic_service),
+            "dynamic schedules do not follow visible overworld time")
+    site_layout_source = DYNAMIC_SITE_LAYOUT.read_text(encoding="utf-8")
+    require(
+            f"MAX_VISIBLE_INSTANCES = "
+            f"{manifestations['maximum_visible_site_instances']}"
+            in site_layout_source
+            and "DynamicCaseSiteLayoutPolicy.assign" in manifestation_source,
+            "dynamic same-site manifestation lanes drifted")
     weekly = dynamic["weekly_rotation"]
     require(f"Math.floorDiv(safeDay, {weekly['days_per_week']}L)"
             in dynamic_generator,
@@ -348,6 +390,22 @@ def main():
             "party membership lifecycle guards are missing")
     require(party["maximum_party"] == 4,
             "party recovery contract maximum changed")
+    party_policy = PARTY_POLICY.read_text(encoding="utf-8")
+    require(not party["registered_members_survive_roster_expansion"]
+            or ("continuationAllowed" in party_policy
+                and "registeredSnapshot" in party_service),
+            "registered party members cannot continue after roster expansion")
+    delivery_source = QUEST_ITEM_DELIVERY.read_text(encoding="utf-8")
+    require(not party["critical_items_never_drop_when_full"]
+            or ("getInventory().add" in delivery_source
+                and "player.drop" not in delivery_source
+                and commission_service.count("QuestItemDelivery.give") >= 3
+                and "QuestItemDelivery.give" in dynamic_service),
+            "full inventories can duplicate recoverable quest items")
+    require(not party["commission_paper_instance_bound"]
+            or ('getLong("accepted_tick")' in commission_service
+                and "returnCommissionPaper" in commission_service),
+            "commission papers are not bound and reclaimed per acceptance")
 
     board = contract["investigation_board"]
     board_block = BOARD_BLOCK.read_text(encoding="utf-8")

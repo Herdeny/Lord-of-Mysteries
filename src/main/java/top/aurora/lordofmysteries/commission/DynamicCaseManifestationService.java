@@ -1,7 +1,10 @@
 package top.aurora.lordofmysteries.commission;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -34,7 +37,7 @@ final class DynamicCaseManifestationService {
     private static final String INSTANCE_DATA = "lom_dynamic_case_instance";
     private static final String ROLE_DATA = "lom_dynamic_case_role";
     private static final String SCHEDULE_DATA = "lom_dynamic_case_schedule_state";
-    private static final double SEARCH_RANGE = 18d;
+    private static final double SEARCH_RANGE = 24d;
 
     private DynamicCaseManifestationService() {
     }
@@ -56,15 +59,40 @@ final class DynamicCaseManifestationService {
                     .filter(level::hasChunkAt)
                     .ifPresent(loadedAnchors::add);
         }
+        Map<DynamicCaseProfile.CaseLocation, List<DynamicCaseProfile>>
+                profilesByLocation =
+                new EnumMap<>(DynamicCaseProfile.CaseLocation.class);
         for (DynamicCaseProfile profile : activeProfiles.values()) {
+            profilesByLocation.computeIfAbsent(
+                    profile.location(), ignored -> new ArrayList<>()).add(profile);
+        }
+        Set<String> manifestedInstances = new LinkedHashSet<>();
+        for (Map.Entry<DynamicCaseProfile.CaseLocation,
+                List<DynamicCaseProfile>> entry : profilesByLocation.entrySet()) {
             Optional<BlockPos> target = manifestationTarget(
-                    level, profile.location());
+                    level, entry.getKey());
             if (target.isEmpty() || !level.hasChunkAt(target.get())) continue;
             BlockPos anchor = target.get();
             loadedAnchors.add(anchor);
-            ensureManifestation(level, anchor, profile);
+            Map<String, DynamicCaseSiteLayoutPolicy.Offset> assignments =
+                    DynamicCaseSiteLayoutPolicy.assign(entry.getValue());
+            Set<BlockPos> reserved = new LinkedHashSet<>();
+            for (DynamicCaseProfile profile : entry.getValue().stream()
+                    .sorted(java.util.Comparator.comparing(
+                            DynamicCaseProfile::instanceId))
+                    .toList()) {
+                DynamicCaseSiteLayoutPolicy.Offset lane =
+                        assignments.get(profile.instanceId());
+                if (lane == null) continue;
+                BlockPos laneAnchor =
+                        anchor.offset(lane.x(), 0, lane.z());
+                if (!level.hasChunkAt(laneAnchor)) continue;
+                ensureManifestation(level, laneAnchor,
+                        profile, reserved);
+                manifestedInstances.add(profile.instanceId());
+            }
         }
-        cleanupInactive(level, loadedAnchors, activeProfiles.keySet());
+        cleanupInactive(level, loadedAnchors, manifestedInstances);
     }
 
     static boolean isManifestationNpc(Villager villager) {
@@ -74,6 +102,11 @@ final class DynamicCaseManifestationService {
 
     static boolean isEvidenceDisplay(ArmorStand armorStand) {
         return armorStand.getTags().contains(EVIDENCE_TAG);
+    }
+
+    static String evidenceInstanceId(ArmorStand armorStand) {
+        return isEvidenceDisplay(armorStand)
+                ? armorStand.getPersistentData().getString(INSTANCE_DATA) : "";
     }
 
     static boolean tryInteract(ServerPlayer player, Villager villager) {
@@ -115,11 +148,14 @@ final class DynamicCaseManifestationService {
     }
 
     private static void ensureManifestation(
-            ServerLevel level, BlockPos anchor, DynamicCaseProfile profile) {
+            ServerLevel level,
+            BlockPos anchor,
+            DynamicCaseProfile profile,
+            Set<BlockPos> reserved) {
         DynamicCaseManifestationPlan plan =
                 DynamicCaseManifestationPlan.forProfile(profile);
         DynamicCaseSchedulePolicy.State scheduleState =
-                DynamicCaseSchedulePolicy.state(profile, level.getGameTime());
+                DynamicCaseSchedulePolicy.state(profile, level.getDayTime());
         int verticalOffset = verticalOffset(profile.location());
         BlockPos subjectPosition = findOpenPosition(level,
                 anchor.offset(
@@ -128,14 +164,17 @@ final class DynamicCaseManifestationService {
                         verticalOffset,
                         (scheduleState.observationOpen()
                                 ? plan.subject() : plan.routine()).z()),
-                Set.of());
+                reserved);
+        reserved.add(subjectPosition);
         BlockPos affectedPosition = findOpenPosition(level,
                 anchor.offset(plan.affected().x(), verticalOffset,
-                        plan.affected().z()), Set.of(subjectPosition));
+                        plan.affected().z()), reserved);
+        reserved.add(affectedPosition);
         BlockPos evidencePosition = findOpenPosition(level,
                 anchor.offset(plan.evidence().x(), verticalOffset,
                         plan.evidence().z()),
-                Set.of(subjectPosition, affectedPosition));
+                reserved);
+        reserved.add(evidencePosition);
         ensureVillager(level, subjectPosition,
                 SUBJECT_TAG, profile, subjectName(profile),
                 subjectProfession(profile.subject()), "subject",
@@ -158,15 +197,16 @@ final class DynamicCaseManifestationService {
             VillagerProfession profession,
             String role,
             String scheduleState) {
-        Villager existing = level.getEntitiesOfClass(
+        List<Villager> existingVillagers = level.getEntitiesOfClass(
                         Villager.class, new AABB(position).inflate(SEARCH_RANGE),
                         villager -> villager.isAlive()
                                 && villager.getTags().contains(tag)
                                 && profile.instanceId().equals(villager
                                         .getPersistentData()
-                                        .getString(INSTANCE_DATA)))
-                .stream().findFirst().orElse(null);
+                                        .getString(INSTANCE_DATA)));
+        Villager existing = existingVillagers.stream().findFirst().orElse(null);
         if (existing != null) {
+            existingVillagers.stream().skip(1).forEach(Villager::discard);
             if (!existing.blockPosition().equals(position)) {
                 existing.getNavigation().stop();
                 existing.moveTo(position.getX() + 0.5d, position.getY(),
@@ -204,15 +244,24 @@ final class DynamicCaseManifestationService {
 
     private static void ensureEvidenceDisplay(
             ServerLevel level, BlockPos position, DynamicCaseProfile profile) {
-        ArmorStand existing = level.getEntitiesOfClass(
+        List<ArmorStand> existingDisplays = level.getEntitiesOfClass(
                         ArmorStand.class,
                         new AABB(position).inflate(SEARCH_RANGE),
                         display -> display.getTags().contains(EVIDENCE_TAG)
                                 && profile.instanceId().equals(display
                                         .getPersistentData()
-                                        .getString(INSTANCE_DATA)))
-                .stream().findFirst().orElse(null);
-        if (existing != null) return;
+                                        .getString(INSTANCE_DATA)));
+        ArmorStand existing = existingDisplays.stream().findFirst().orElse(null);
+        if (existing != null) {
+            existingDisplays.stream().skip(1).forEach(ArmorStand::discard);
+            if (!existing.blockPosition().equals(position)) {
+                existing.moveTo(position.getX() + 0.5d,
+                        position.getY() + 0.35d,
+                        position.getZ() + 0.5d,
+                        existing.getYRot(), existing.getXRot());
+            }
+            return;
+        }
         ArmorStand display = EntityType.ARMOR_STAND.create(level);
         if (display == null) return;
         display.moveTo(position.getX() + 0.5d, position.getY() + 0.35d,
@@ -271,7 +320,7 @@ final class DynamicCaseManifestationService {
             ServerPlayer player, DynamicCaseProfile profile) {
         DynamicCaseSchedulePolicy.State state =
                 DynamicCaseSchedulePolicy.state(
-                        profile, player.level().getGameTime());
+                        profile, player.level().getDayTime());
         if (state.observationOpen()) {
             player.sendSystemMessage(Component.translatable(
                             "message.lord_of_mysteries.dynamic_case.schedule.open",
@@ -331,7 +380,7 @@ final class DynamicCaseManifestationService {
                     BlockPos candidate = preferred.offset(deltaX, 0, deltaZ);
                     boolean separated = reserved.stream().allMatch(position ->
                             position.distSqr(candidate) > 2d);
-                    if (separated
+                    if (separated && level.hasChunkAt(candidate)
                             && level.getBlockState(candidate).isAir()
                             && level.getBlockState(candidate.above()).isAir()
                             && !level.getBlockState(candidate.below()).isAir()) {

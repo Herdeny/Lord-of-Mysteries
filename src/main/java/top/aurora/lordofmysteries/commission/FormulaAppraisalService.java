@@ -2,6 +2,7 @@ package top.aurora.lordofmysteries.commission;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -54,6 +55,12 @@ public final class FormulaAppraisalService {
 
     public static int inspect(ServerPlayer player, ItemStack dossier) {
         if (!dossier.is(ModItems.SEALED_FORMULA_DOSSIER.get())) return 0;
+        if (!matchesCurrentDossier(player, dossier)) {
+            player.sendSystemMessage(Component.translatable(
+                            "message.lord_of_mysteries.formula.outdated")
+                    .withStyle(ChatFormatting.RED));
+            return 0;
+        }
         if (!CommissionService.isCurrentObjective(
                 player, "custom_callback", "formula_appraised")
                 && !dossier.getOrCreateTag().getBoolean(APPRAISED)) {
@@ -172,12 +179,29 @@ public final class FormulaAppraisalService {
     }
 
     public static void takeDossier(ServerPlayer player) {
-        ItemStack dossier = findDossier(player);
-        if (!dossier.isEmpty() && !player.getAbilities().instabuild) dossier.shrink(1);
+        if (player.getAbilities().instabuild) return;
+        player.getInventory().items.stream()
+                .filter(stack -> matchesCurrentDossier(player, stack))
+                .forEach(stack -> stack.shrink(stack.getCount()));
+        player.getInventory().offhand.stream()
+                .filter(stack -> matchesCurrentDossier(player, stack))
+                .forEach(stack -> stack.shrink(stack.getCount()));
+        for (int slot = 0;
+                slot < player.getEnderChestInventory().getContainerSize(); slot++) {
+            ItemStack stack = player.getEnderChestInventory().getItem(slot);
+            if (matchesCurrentDossier(player, stack)) {
+                stack.shrink(stack.getCount());
+            }
+        }
     }
 
     public static boolean isAppraised(ItemStack dossier) {
         return dossier.getOrCreateTag().getBoolean(APPRAISED);
+    }
+
+    static boolean matchesSeed(CompoundTag tag, long expectedSeed) {
+        return tag != null && tag.contains(SEED, Tag.TAG_LONG)
+                && tag.getLong(SEED) == expectedSeed;
     }
 
     private static void showClues(ServerPlayer player, ItemStack dossier) {
@@ -204,16 +228,30 @@ public final class FormulaAppraisalService {
 
     private static ItemStack findDossier(ServerPlayer player) {
         for (ItemStack stack : player.getInventory().items) {
-            if (stack.is(ModItems.SEALED_FORMULA_DOSSIER.get())) return stack;
+            if (matchesCurrentDossier(player, stack)) return stack;
         }
         for (ItemStack stack : player.getInventory().offhand) {
-            if (stack.is(ModItems.SEALED_FORMULA_DOSSIER.get())) return stack;
+            if (matchesCurrentDossier(player, stack)) return stack;
         }
         for (int slot = 0; slot < player.getEnderChestInventory().getContainerSize(); slot++) {
             ItemStack stack = player.getEnderChestInventory().getItem(slot);
-            if (stack.is(ModItems.SEALED_FORMULA_DOSSIER.get())) return stack;
+            if (matchesCurrentDossier(player, stack)) return stack;
         }
         return ItemStack.EMPTY;
+    }
+
+    private static boolean matchesCurrentDossier(
+            ServerPlayer player, ItemStack dossier) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (!CommissionService.COUNTERFEIT_FORMULA.toString().equals(
+                data.activeCommissionId)
+                || !dossier.is(ModItems.SEALED_FORMULA_DOSSIER.get())) {
+            return false;
+        }
+        long expectedSeed = FormulaAppraisalLogic.dossierSeed(
+                player.serverLevel().getSeed(), player.getUUID(),
+                data.commissionAcceptedTick);
+        return matchesSeed(dossier.getTag(), expectedSeed);
     }
 
     private static boolean hasItem(ServerPlayer player, Item item) {

@@ -73,6 +73,7 @@
 - 已完成：绑定案件实例的实体证物袋、现场方块采样、指定 NPC 证词、报纸档案核验、队伍进度同步及调查板补领/结案回收
 - 已完成：案件相关人、受影响者、可直接采样的可视物证、四类差异化封存样本、旧现场清理与跨日队伍实例对齐
 - 已完成：七日组织轮值、四段主体日程与观察窗口、关系证据节点、S–D 评级组织声望反馈
+- 已完成：单人/多人稳定性加固、跨队实例隔离、每队独立护送、任务物防复制与中途队伍变更续玩
 - 下一步：把前哨功能区扩展为正式报社、事务所与警局街区
 - 下一步：扩展多角色关系演化、组织任务反应与周级案件池内容
 - 下一步：生活物价、职业扩展和八小时多人连续性矩阵
@@ -206,7 +207,7 @@
 | structure_specs | 32 |
 | weather_anomaly_specs | 18 |
 
-### repository_evidence_at_0.9.13
+### repository_evidence_at_0.9.14
 
 | 指标 | 数量 |
 |---|---:|
@@ -216,7 +217,7 @@
 | generated_recipes | 13 |
 | playable_commissions | 4 |
 | playable_quest_chains | 4 |
-| junit_tests | 268 |
+| junit_tests | 272 |
 | forge_gametests | 6 |
 | save_rollback_checks | 1 |
 | dedicated_server_starts | 2 |

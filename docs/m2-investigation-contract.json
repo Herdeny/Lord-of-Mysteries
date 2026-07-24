@@ -7,6 +7,8 @@
   },
   "legacy_missing_squad": {
     "step_count": 13,
+    "party_bound_escort_reporter": true,
+    "migrates_legacy_global_escort": true,
     "prefix": [
       "s1_accept",
       "s2_press_desk",
@@ -22,6 +24,8 @@
     "commission": "lord_of_mysteries:commission/counterfeit_formula",
     "quest": "lord_of_mysteries:quest/counterfeit_formula_case",
     "prerequisite": "lord_of_mysteries:commission/missing_investigation_squad",
+    "dossier_bound_to_player_case": true,
+    "party_artifact_sync": true,
     "steps": [
       "s1_find_hut",
       "s2_consult_appraiser",
@@ -77,7 +81,10 @@
       "spawn_only_at_generated_site": true,
       "cleanup_inactive_loaded_scenes": true,
       "old_instance_cannot_progress": true,
-      "subject_moves_with_schedule": true
+      "subject_moves_with_schedule": true,
+      "display_requires_matching_instance": true,
+      "schedule_uses_overworld_day_time": true,
+      "maximum_visible_site_instances": 25
     },
     "weekly_rotation": {
       "days_per_week": 7,
@@ -134,6 +141,9 @@
   "party_recovery": {
     "saved_data": "lord_of_mysteries_quest_parties",
     "maximum_party": 4,
+    "registered_members_survive_roster_expansion": true,
+    "critical_items_never_drop_when_full": true,
+    "commission_paper_instance_bound": true,
     "commands": ["party", "sync"],
     "required_state": [
       "commission_id",
@@ -254,6 +264,9 @@
     "quest.lord_of_mysteries.counterfeit_formula.title",
     "message.lord_of_mysteries.case.occultist_hut",
     "message.lord_of_mysteries.formula.verdict_correct",
+    "message.lord_of_mysteries.formula.outdated",
+    "message.lord_of_mysteries.npc.reporter_escorting",
+    "message.lord_of_mysteries.quest_item.inventory_full",
     "message.lord_of_mysteries.quest.approach.required",
     "knowledge.lord_of_mysteries.m2.formula_authenticity",
     "command.lord_of_mysteries.party.catchup",
@@ -339,6 +352,7 @@
     "command.lord_of_mysteries.dynamic_case.weekly_rotation",
     "command.lord_of_mysteries.dynamic_case.time.open",
     "command.lord_of_mysteries.dynamic_case.feedback.positive",
+    "message.lord_of_mysteries.dynamic_case.evidence.outdated",
     "dynamic_case.lord_of_mysteries.archetype.missing_person",
     "dynamic_case.lord_of_mysteries.archetype.anomalous_item",
     "dynamic_case.lord_of_mysteries.archetype.occult_crime",

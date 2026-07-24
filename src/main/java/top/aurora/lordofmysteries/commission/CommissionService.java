@@ -103,14 +103,23 @@ public final class CommissionService {
         }
         recordObjective(player, "talk_npc", "occult_appraiser", 1);
         data = MysteryCapability.get(player);
-        if (data.activeQuestStep >= 2 && data.activeQuestStep <= 4
-                && !FormulaAppraisalService.hasDossier(player)) {
-            giveItem(player, FormulaAppraisalService.createDossier(player));
-            player.sendSystemMessage(Component.translatable(
-                    "message.lord_of_mysteries.formula.dossier_received")
-                    .withStyle(ChatFormatting.GOLD));
+        QuestChainDefinition chain = activeChain(data);
+        if (data.activeQuestStep >= 2 && data.activeQuestStep <= 4) {
+            List<ServerPlayer> participants = chain == null
+                    ? List.of(player)
+                    : QuestPartyService.participants(player, chain);
+            for (ServerPlayer participant : participants) {
+                if (FormulaAppraisalService.hasDossier(participant)) continue;
+                if (QuestItemDelivery.give(participant,
+                        FormulaAppraisalService.createDossier(participant))) {
+                    participant.sendSystemMessage(Component.translatable(
+                                    "message.lord_of_mysteries.formula.dossier_received")
+                            .withStyle(ChatFormatting.GOLD));
+                }
+            }
         }
-        if (isCurrentObjective(player, "pickup",
+        if (FormulaAppraisalService.hasDossier(player)
+                && isCurrentObjective(player, "pickup",
                 "lord_of_mysteries:sealed_formula_dossier")) {
             recordObjective(player, "pickup",
                     "lord_of_mysteries:sealed_formula_dossier", 1);
@@ -224,15 +233,22 @@ public final class CommissionService {
                     player, chain, data.questResolutionRoute, true);
         }
         if (!MysteryCapability.get(player).questResolutionReady) return 0;
-        if (!recordObjective(player, "rescue", "missing_reporter", 1)) return 0;
+        String partyKey = QuestPartyService.partyKey(player, chain);
+        Villager escortReporter =
+                InvestigationNpcHandler.createEscortReporter(
+                        reporter, player, partyKey);
+        if (escortReporter == null) return 0;
+        if (!recordObjective(player, "rescue", "missing_reporter", 1)) {
+            escortReporter.discard();
+            return 0;
+        }
         data = MysteryCapability.get(player);
-        data.escortedReporterUuid = reporter.getUUID().toString();
+        data.escortedReporterUuid = escortReporter.getUUID().toString();
         chain = activeChain(data);
         if (chain != null) {
             QuestPartyService.assignReporter(
-                    player, chain, reporter.getUUID().toString());
+                    player, chain, escortReporter.getUUID().toString());
         }
-        InvestigationNpcHandler.beginEscort(reporter, player);
         if (!hasItem(player, ModItems.PRESS_CARD.get())) {
             giveItem(player, new ItemStack(ModItems.PRESS_CARD.get()));
         }
@@ -400,9 +416,14 @@ public final class CommissionService {
     public static int abandon(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         if (data.activeCommissionId.isBlank()) return 0;
+        returnCommissionPaper(
+                player, data.activeCommissionId, data.commissionAcceptedTick);
         if (DYNAMIC_CASE.equals(ResourceLocation.tryParse(
                 data.activeCommissionId))) {
             DynamicCaseService.returnPortfolio(player);
+        } else if (COUNTERFEIT_FORMULA.equals(ResourceLocation.tryParse(
+                data.activeCommissionId))) {
+            FormulaAppraisalService.takeDossier(player);
         }
         QuestPartyService.leave(player);
         clearActive(data);
@@ -544,6 +565,8 @@ public final class CommissionService {
             data.knownKnowledge.add(id("knowledge/m2/dynamic_case_rotation"));
             DynamicCaseService.returnPortfolio(player);
         }
+        returnCommissionPaper(
+                player, data.activeCommissionId, data.commissionAcceptedTick);
         player.sendSystemMessage(Component.translatable(
                 "command.lord_of_mysteries.commission.settled",
                 Component.translatable(definition.titleKey()),
@@ -558,15 +581,40 @@ public final class CommissionService {
     public static boolean restoreCommissionPaper(ServerPlayer player) {
         PlayerMysteryData data = MysteryCapability.get(player);
         if (data.activeCommissionId.isBlank()
-                || hasCommissionPaper(player, data.activeCommissionId)) return false;
+                || hasCommissionPaper(player, data.activeCommissionId,
+                        data.commissionAcceptedTick)) {
+            return false;
+        }
         ResourceLocation commissionId = ResourceLocation.tryParse(data.activeCommissionId);
         CommissionDefinition definition = commissionId == null
                 ? null : CommissionDefinitionManager.get(commissionId);
         if (definition != null) {
-            giveCommissionPaper(player, definition, data.commissionAcceptedTick);
-            return true;
+            return giveCommissionPaper(
+                    player, definition, data.commissionAcceptedTick);
         }
         return false;
+    }
+
+    public static void restorePartyArtifacts(ServerPlayer player) {
+        restoreCommissionPaper(player);
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (COUNTERFEIT_FORMULA.toString().equals(data.activeCommissionId)) {
+            CaseRecoveryPolicy.RecoveryPlan plan = CaseRecoveryPolicy.plan(
+                    data.activeCommissionId,
+                    data.activeQuestStep,
+                    true,
+                    FormulaAppraisalService.hasDossier(player));
+            if (plan.restoreFormulaDossier()
+                    && QuestItemDelivery.give(player,
+                    FormulaAppraisalService.createRecoveryDossier(
+                            player, plan.recoveredDossierAppraised()))) {
+                player.sendSystemMessage(Component.translatable(
+                                "message.lord_of_mysteries.formula.dossier_received")
+                        .withStyle(ChatFormatting.GOLD));
+            }
+        } else if (DYNAMIC_CASE.toString().equals(data.activeCommissionId)) {
+            DynamicCaseService.issuePortfolio(player);
+        }
     }
 
     public static int recoverCaseItems(ServerPlayer player) {
@@ -594,16 +642,19 @@ public final class CommissionService {
         CaseRecoveryPolicy.RecoveryPlan plan = CaseRecoveryPolicy.plan(
                 data.activeCommissionId,
                 data.activeQuestStep,
-                hasCommissionPaper(player, data.activeCommissionId),
+                hasCommissionPaper(player, data.activeCommissionId,
+                        data.commissionAcceptedTick),
                 FormulaAppraisalService.hasDossier(player));
         int restored = 0;
         if (plan.restoreCommissionPaper() && restoreCommissionPaper(player)) {
             restored++;
         }
         if (plan.restoreFormulaDossier()) {
-            giveItem(player, FormulaAppraisalService.createRecoveryDossier(
-                    player, plan.recoveredDossierAppraised()));
-            restored++;
+            if (QuestItemDelivery.give(player,
+                    FormulaAppraisalService.createRecoveryDossier(
+                            player, plan.recoveredDossierAppraised()))) {
+                restored++;
+            }
         }
         if (restored == 0) {
             player.sendSystemMessage(Component.translatable(
@@ -617,24 +668,48 @@ public final class CommissionService {
         return restored;
     }
 
-    private static boolean hasCommissionPaper(ServerPlayer player,
-                                              String commissionId) {
+    private static boolean hasCommissionPaper(
+            ServerPlayer player, String commissionId, long acceptedTick) {
         for (ItemStack stack : player.getInventory().items) {
-            if (isCommissionPaper(stack, commissionId)) return true;
+            if (isCommissionPaper(
+                    stack, commissionId, acceptedTick)) return true;
         }
         for (ItemStack stack : player.getInventory().offhand) {
-            if (isCommissionPaper(stack, commissionId)) return true;
+            if (isCommissionPaper(
+                    stack, commissionId, acceptedTick)) return true;
         }
         for (int slot = 0; slot < player.getEnderChestInventory().getContainerSize(); slot++) {
-            if (isCommissionPaper(player.getEnderChestInventory().getItem(slot),
-                    commissionId)) return true;
+            if (isCommissionPaper(
+                    player.getEnderChestInventory().getItem(slot),
+                    commissionId, acceptedTick)) return true;
         }
         return false;
     }
 
-    private static boolean isCommissionPaper(ItemStack stack, String commissionId) {
+    private static boolean isCommissionPaper(
+            ItemStack stack, String commissionId, long acceptedTick) {
         return stack.is(ModItems.COMMISSION_PAPER.get()) && stack.hasTag()
-                && commissionId.equals(stack.getTag().getString("commission_id"));
+                && commissionId.equals(stack.getTag().getString("commission_id"))
+                && acceptedTick == stack.getTag().getLong("accepted_tick");
+    }
+
+    private static void returnCommissionPaper(
+            ServerPlayer player, String commissionId, long acceptedTick) {
+        player.getInventory().items.stream()
+                .filter(stack -> isCommissionPaper(
+                        stack, commissionId, acceptedTick))
+                .forEach(stack -> stack.shrink(stack.getCount()));
+        player.getInventory().offhand.stream()
+                .filter(stack -> isCommissionPaper(
+                        stack, commissionId, acceptedTick))
+                .forEach(stack -> stack.shrink(stack.getCount()));
+        for (int slot = 0;
+                slot < player.getEnderChestInventory().getContainerSize(); slot++) {
+            ItemStack stack = player.getEnderChestInventory().getItem(slot);
+            if (isCommissionPaper(stack, commissionId, acceptedTick)) {
+                stack.shrink(stack.getCount());
+            }
+        }
     }
 
     private static void trackLostCat(ServerPlayer player, ServerLevel level,
@@ -685,7 +760,39 @@ public final class CommissionService {
         UUID reporterId = parseUuid(data.escortedReporterUuid);
         if (reporterId == null) return;
         Entity entity = level.getEntity(reporterId);
-        if (!(entity instanceof Villager reporter) || !reporter.isAlive()) return;
+        if (!(entity instanceof Villager loadedReporter)
+                || !loadedReporter.isAlive()) return;
+        QuestChainDefinition chain = activeChain(data);
+        if (chain == null) return;
+        String partyKey = QuestPartyService.partyKey(player, chain);
+        Villager resolvedReporter = loadedReporter;
+        if (!loadedReporter.getTags().contains(
+                InvestigationNpcHandler.ESCORT_REPORTER_TAG)) {
+            Villager migrated =
+                    InvestigationNpcHandler.createEscortReporter(
+                            loadedReporter, player, partyKey);
+            if (migrated == null) return;
+            InvestigationSiteSavedData.get(level).cultistCamp()
+                    .ifPresent(camp ->
+                            InvestigationNpcHandler.restoreBaseReporter(
+                                    loadedReporter, camp));
+            data.escortedReporterUuid = migrated.getUUID().toString();
+            QuestPartyService.assignReporter(
+                    player, chain, migrated.getUUID().toString());
+            resolvedReporter = migrated;
+        }
+        if (!InvestigationNpcHandler.escortBelongsTo(
+                resolvedReporter, partyKey)) {
+            Villager forked =
+                    InvestigationNpcHandler.createEscortReporter(
+                            resolvedReporter, player, partyKey);
+            if (forked == null) return;
+            data.escortedReporterUuid = forked.getUUID().toString();
+            QuestPartyService.assignReporter(
+                    player, chain, forked.getUUID().toString());
+            resolvedReporter = forked;
+        }
+        Villager reporter = resolvedReporter;
         double distance = player.distanceToSqr(reporter);
         if (distance > 32d * 32d) {
             reporter.teleportTo(player.getX() + 1d, player.getY(), player.getZ() + 1d);
@@ -892,13 +999,15 @@ public final class CommissionService {
         return player.getInventory().items.stream().anyMatch(stack -> stack.is(item));
     }
 
-    private static void giveCommissionPaper(ServerPlayer player,
-                                            CommissionDefinition definition, long acceptedTick) {
+    private static boolean giveCommissionPaper(
+            ServerPlayer player,
+            CommissionDefinition definition,
+            long acceptedTick) {
         ItemStack paper = new ItemStack(ModItems.COMMISSION_PAPER.get());
         paper.getOrCreateTag().putString("commission_id", definition.id().toString());
         paper.getOrCreateTag().putLong("accepted_tick", acceptedTick);
         paper.setHoverName(Component.translatable(definition.titleKey()));
-        giveItem(player, paper);
+        return QuestItemDelivery.give(player, paper);
     }
 
     private static void giveItem(ServerPlayer player, ItemStack stack) {

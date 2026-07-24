@@ -24,13 +24,20 @@ public final class QuestPartyService {
     public static List<ServerPlayer> participants(ServerPlayer player,
                                                   QuestChainDefinition chain) {
         Team team = player.getTeam();
-        if (team == null || !QuestPartyPolicy.teamEligible(
-                chain.sharedProgress(), chain.maximumPartySize(),
-                team.getPlayers().size())) return List.of(player);
+        QuestPartySnapshot registered =
+                registeredSnapshot(player, chain).orElse(null);
+        if (team == null || !QuestPartyPolicy.continuationAllowed(
+                        chain.sharedProgress(), chain.maximumPartySize(),
+                        team.getPlayers().size(), registered != null)) {
+            return List.of(player);
+        }
         String commissionId = MysteryCapability.get(player).activeCommissionId;
         List<ServerPlayer> eligible = player.getServer().getPlayerList().getPlayers().stream()
                 .filter(candidate -> Objects.equals(team, candidate.getTeam()))
                 .filter(candidate -> sameCase(candidate, chain, commissionId))
+                .filter(candidate -> registered == null
+                        || registered.hasMember(candidate.getUUID())
+                        && !registered.hasSettled(candidate.getUUID()))
                 .sorted(Comparator.comparing(candidate -> candidate.getUUID().toString()))
                 .toList();
         return eligible.isEmpty() ? List.of(player) : eligible;
@@ -131,9 +138,6 @@ public final class QuestPartyService {
             savedData.remove(key);
             return false;
         }
-        if (chain == null || !QuestPartyPolicy.teamEligible(
-                chain.sharedProgress(), chain.maximumPartySize(),
-                team.getPlayers().size())) return false;
         PlayerMysteryData data = MysteryCapability.get(player);
         if (!definition.repeatable()
                 && data.completedCommissions.contains(definition.id())) {
@@ -147,8 +151,7 @@ public final class QuestPartyService {
                 data, player.getUUID(), level.getGameTime());
         if (caughtUp || advancedLedger) savedData.put(key, snapshot);
         if (caughtUp) {
-            CommissionService.restoreCommissionPaper(player);
-            DynamicCaseService.issuePortfolio(player);
+            CommissionService.restorePartyArtifacts(player);
             player.sendSystemMessage(Component.translatable(
                     "command.lord_of_mysteries.party.catchup")
                     .withStyle(ChatFormatting.AQUA));
@@ -174,8 +177,10 @@ public final class QuestPartyService {
             savedData.remove(key);
             return message(player, "command.lord_of_mysteries.party.data_unavailable");
         }
-        if (!QuestPartyPolicy.teamEligible(chain.sharedProgress(),
-                chain.maximumPartySize(), team.getPlayers().size())) {
+        if (!QuestPartyPolicy.continuationAllowed(
+                chain.sharedProgress(), chain.maximumPartySize(),
+                team.getPlayers().size(),
+                snapshot.hasMember(player.getUUID()))) {
             return message(player, "command.lord_of_mysteries.party.invalid_size",
                     team.getPlayers().size(), chain.maximumPartySize());
         }
@@ -209,10 +214,7 @@ public final class QuestPartyService {
         boolean caughtUp = snapshot.applyTo(data, player.getUUID());
         snapshot.mergeProgress(data, player.getUUID(), level.getGameTime());
         savedData.put(key, snapshot);
-        CommissionService.restoreCommissionPaper(player);
-        if (!alreadyMember || caughtUp) {
-            DynamicCaseService.issuePortfolio(player);
-        }
+        CommissionService.restorePartyArtifacts(player);
         if (alreadyMember && !caughtUp) {
             return message(player, "command.lord_of_mysteries.party.already_synced");
         }
@@ -240,8 +242,10 @@ public final class QuestPartyService {
             QuestPartySavedData.get(level).remove(teamKey(team));
             return message(player, "command.lord_of_mysteries.party.data_unavailable");
         }
-        if (!QuestPartyPolicy.teamEligible(chain.sharedProgress(),
-                chain.maximumPartySize(), team.getPlayers().size())) {
+        if (!QuestPartyPolicy.continuationAllowed(
+                chain.sharedProgress(), chain.maximumPartySize(),
+                team.getPlayers().size(),
+                snapshot.hasMember(player.getUUID()))) {
             return message(player, "command.lord_of_mysteries.party.invalid_size",
                     team.getPlayers().size(), chain.maximumPartySize());
         }
@@ -341,10 +345,31 @@ public final class QuestPartyService {
     private static Optional<String> sharedPartyKey(ServerPlayer player,
                                                    QuestChainDefinition chain) {
         Team team = player.getTeam();
-        if (team == null || !QuestPartyPolicy.teamEligible(
+        if (team == null) return Optional.empty();
+        if (registeredSnapshot(player, chain).isPresent()) {
+            return Optional.of(teamKey(team));
+        }
+        if (!QuestPartyPolicy.teamEligible(
                 chain.sharedProgress(), chain.maximumPartySize(),
                 team.getPlayers().size())) return Optional.empty();
         return Optional.of(teamKey(team));
+    }
+
+    private static Optional<QuestPartySnapshot> registeredSnapshot(
+            ServerPlayer player, QuestChainDefinition chain) {
+        Team team = player.getTeam();
+        ServerLevel level = overworld(player);
+        if (team == null || level == null) return Optional.empty();
+        QuestPartySnapshot snapshot = QuestPartySavedData.get(level)
+                .snapshot(teamKey(team)).orElse(null);
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (snapshot == null || !snapshot.hasMember(player.getUUID())
+                || snapshot.hasSettled(player.getUUID())
+                || !snapshot.matches(data)
+                || !snapshot.validFor(chain)) {
+            return Optional.empty();
+        }
+        return Optional.of(snapshot);
     }
 
     private static String teamKey(Team team) {

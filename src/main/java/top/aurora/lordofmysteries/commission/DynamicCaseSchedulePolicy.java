@@ -8,10 +8,10 @@ final class DynamicCaseSchedulePolicy {
     private DynamicCaseSchedulePolicy() {
     }
 
-    static State state(DynamicCaseProfile profile, long gameTime) {
+    static State state(DynamicCaseProfile profile, long dayTime) {
         DynamicCaseProfile.DayPeriod current =
-                DynamicCaseProfile.DayPeriod.at(gameTime);
-        int dayTick = Math.floorMod(gameTime, (int) TICKS_PER_DAY);
+                DynamicCaseProfile.DayPeriod.at(dayTime);
+        int dayTick = Math.floorMod(dayTime, (int) TICKS_PER_DAY);
         int targetTick = profile.schedule().observationPeriod().startTick();
         boolean observationOpen =
                 current == profile.schedule().observationPeriod();

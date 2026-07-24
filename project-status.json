@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "version": "0.9.13-1.20.1",
-  "stage": "v0.9 M2 周轮值、角色日程、关系节点与组织反馈",
+  "version": "0.9.14-1.20.1",
+  "stage": "v0.9 M2 单人/多人稳定性、实例隔离与任务物恢复",
   "milestone": "M2",
   "minecraft_version": "1.20.1",
   "forge_version": "47.4.20",
   "java_version": "17",
-  "last_updated": "2026-07-24T03:24:54+01:00",
-  "last_updated_utc": "2026-07-24T02:24:54Z"
+  "last_updated": "2026-07-24T04:58:04+01:00",
+  "last_updated_utc": "2026-07-24T03:58:04Z"
 }

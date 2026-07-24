@@ -143,8 +143,8 @@ public record DynamicCaseProfile(
             return startTick;
         }
 
-        public static DayPeriod at(long gameTime) {
-            int dayTick = Math.floorMod(gameTime, 24_000);
+        public static DayPeriod at(long dayTime) {
+            int dayTick = Math.floorMod(dayTime, 24_000);
             return values()[dayTick / 6_000];
         }
     }

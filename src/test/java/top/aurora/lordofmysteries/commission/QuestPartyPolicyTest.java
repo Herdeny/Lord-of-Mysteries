@@ -30,6 +30,18 @@ class QuestPartyPolicyTest {
     }
 
     @Test
+    void registeredMembersCanFinishAfterRosterExpansion() {
+        assertTrue(QuestPartyPolicy.continuationAllowed(
+                true, 4, 5, true));
+        assertFalse(QuestPartyPolicy.continuationAllowed(
+                true, 4, 5, false));
+        assertFalse(QuestPartyPolicy.continuationAllowed(
+                false, 4, 2, false));
+        assertFalse(QuestPartyPolicy.continuationAllowed(
+                false, 4, 5, true));
+    }
+
+    @Test
     void coordinatorSelectionIsDeterministic() {
         UUID first = UUID.fromString("00000000-0000-0000-0000-000000000001");
         UUID second = UUID.fromString("00000000-0000-0000-0000-000000000002");
