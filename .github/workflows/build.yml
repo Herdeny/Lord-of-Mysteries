@@ -78,6 +78,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Build Forge mod
@@ -140,8 +144,8 @@ jobs:
         run: |
           set -o pipefail
           ./gradlew -Dnet.minecraftforge.gradle.check.certs=false --stacktrace runGameTestServer | tee build/gametest-server.log
-          grep -F "10 tests are now running!" build/gametest-server.log
-          grep -F "All 10 required tests passed" build/gametest-server.log
+          grep -F "11 tests are now running!" build/gametest-server.log
+          grep -F "All 11 required tests passed" build/gametest-server.log
 
       - name: Dedicated server restart matrix
         run: python3 scripts/run_server_restart_matrix.py --timeout 180

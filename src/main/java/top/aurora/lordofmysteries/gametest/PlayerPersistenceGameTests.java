@@ -1,5 +1,6 @@
 package top.aurora.lordofmysteries.gametest;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
@@ -26,6 +27,7 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.ability.M2FoundationAbilityHandler;
 import top.aurora.lordofmysteries.ability.M3LaunchAbilityHandler;
+import top.aurora.lordofmysteries.ability.TravelMarkerService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicConservationService;
 import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
@@ -446,6 +448,127 @@ public final class PlayerPersistenceGameTests {
                         && apprenticeData.apprenticeRelocateCooldownEndTick > now,
                 "copying must consume spirit, preserve the original and start cooldown");
         helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void travelerMarkerRelayRequiresConsentAndPreservesResources(
+            GameTestHelper helper) {
+        BlockPos marker = helper.absolutePos(new BlockPos(10, 4, 10));
+        for (int x = -2; x <= 2; x++) {
+            for (int z = -2; z <= 2; z++) {
+                helper.getLevel().setBlockAndUpdate(
+                        marker.offset(x, 0, z),
+                        Blocks.STONE.defaultBlockState());
+                for (int y = 1; y <= 4; y++) {
+                    helper.getLevel().setBlockAndUpdate(
+                            marker.offset(x, y, z),
+                            Blocks.AIR.defaultBlockState());
+                }
+            }
+        }
+
+        ServerPlayer leader = travelerTestPlayer(helper, "relay-leader");
+        ServerPlayer passenger = travelerTestPlayer(
+                helper, "relay-passenger");
+        ServerPlayer bystander = travelerTestPlayer(
+                helper, "relay-bystander");
+        PlayerMysteryData data = MysteryCapability.get(leader);
+        data.pathway = ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID, "apprentice");
+        data.sequence = 5;
+        data.spiritualityMax = 250f;
+        data.spirituality = 100f;
+        BlockPos source = helper.absolutePos(new BlockPos(2, 4, 2));
+        leader.setPos(source.getX() + 0.5d, source.getY(),
+                source.getZ() + 0.5d);
+        passenger.setPos(source.getX() + 1.5d, source.getY(),
+                source.getZ() + 0.5d);
+        bystander.setPos(source.getX() + 0.5d, source.getY(),
+                source.getZ() + 1.5d);
+        ItemStack compass = lodestoneCompass(helper, marker);
+        leader.setItemInHand(InteractionHand.MAIN_HAND, compass.copy());
+        passenger.setItemInHand(InteractionHand.MAIN_HAND, compass.copy());
+        bystander.setItemInHand(InteractionHand.MAIN_HAND, compass.copy());
+        passenger.setShiftKeyDown(true);
+
+        helper.assertTrue(!TravelMarkerService.relayToHeldMarker(
+                        leader, data, List.of(leader, passenger, bystander)),
+                "relay must reject a compass whose physical lodestone is gone");
+        helper.assertTrue(data.spirituality == 100f
+                        && data.apprenticeWardCooldownEndTick == 0L
+                        && leader.distanceToSqr(
+                        source.getX() + 0.5d, source.getY(),
+                        source.getZ() + 0.5d) < 0.01d,
+                "failed relay must preserve spirit, cooldown and position");
+
+        helper.getLevel().setBlockAndUpdate(
+                marker, Blocks.LODESTONE.defaultBlockState());
+        helper.assertTrue(TravelMarkerService.relayToHeldMarker(
+                        leader, data, List.of(leader, passenger, bystander)),
+                "active lodestone relay must execute on the server");
+        helper.assertTrue(data.spirituality == 10f
+                        && data.apprenticeWardCooldownEndTick
+                        > helper.getLevel().getGameTime(),
+                "one consenting passenger must cost 90 spirit and start cooldown");
+        helper.assertTrue(leader.distanceToSqr(
+                        marker.getX() + 0.5d,
+                        marker.getY() + 1d,
+                        marker.getZ() + 0.5d) < 25d,
+                "leader must arrive at a collision-safe marker position");
+        helper.assertTrue(passenger.distanceToSqr(
+                        marker.getX() + 0.5d,
+                        marker.getY() + 1d,
+                        marker.getZ() + 0.5d) < 25d
+                        && passenger.hasEffect(MobEffects.DAMAGE_RESISTANCE),
+                "consenting passenger must arrive with temporary protection");
+        helper.assertTrue(bystander.distanceToSqr(
+                        source.getX() + 0.5d,
+                        source.getY(),
+                        source.getZ() + 1.5d) < 0.01d,
+                "non-sneaking bystander must never be moved");
+        helper.assertTrue(leader.getMainHandItem().is(Items.COMPASS)
+                        && passenger.getMainHandItem().is(Items.COMPASS),
+                "successful relay must preserve every bound compass");
+        float spiritAfterSuccess = data.spirituality;
+        helper.assertTrue(!TravelMarkerService.relayToHeldMarker(
+                        leader, data, List.of(leader, passenger, bystander))
+                        && data.spirituality == spiritAfterSuccess,
+                "cooldown retry must fail without charging spirit");
+        helper.succeed();
+    }
+
+    private static ServerPlayer travelerTestPlayer(
+            GameTestHelper helper, String name) {
+        return new ServerPlayer(
+                helper.getLevel().getServer(),
+                helper.getLevel(),
+                new GameProfile(UUID.randomUUID(), "gametest-" + name)) {
+            @Override
+            public void teleportTo(double x, double y, double z) {
+                setPos(x, y, z);
+            }
+
+            @Override
+            protected void onEffectAdded(
+                    net.minecraft.world.effect.MobEffectInstance effect,
+                    net.minecraft.world.entity.Entity source) {
+            }
+        };
+    }
+
+    private static ItemStack lodestoneCompass(
+            GameTestHelper helper, BlockPos marker) {
+        ItemStack compass = new ItemStack(Items.COMPASS);
+        CompoundTag position = new CompoundTag();
+        position.putInt("X", marker.getX());
+        position.putInt("Y", marker.getY());
+        position.putInt("Z", marker.getZ());
+        CompoundTag tag = compass.getOrCreateTag();
+        tag.put("LodestonePos", position);
+        tag.putString("LodestoneDimension",
+                helper.getLevel().dimension().location().toString());
+        tag.putBoolean("LodestoneTracked", true);
+        return compass;
     }
 
     private static ServerPlayer m3Player(

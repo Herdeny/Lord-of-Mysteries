@@ -124,6 +124,21 @@
       }
     }
   },
+  "traveler_spatial_relay": {
+    "command": "travel",
+    "marker_item": "minecraft:compass",
+    "marker_block": "minecraft:lodestone",
+    "leader_cost": 80,
+    "passenger_cost": 10,
+    "max_passengers": 3,
+    "consent_radius": 4,
+    "leader_cooldown_ticks": 36000,
+    "passenger_cooldown_ticks": 1200,
+    "requires_sneaking": true,
+    "same_source_dimension": true,
+    "matching_marker": true,
+    "failure_preserves_resources": true
+  },
   "sequence_five_rituals": {
     "target_sequence": 5,
     "altar": "ritual_altar",
@@ -164,7 +179,7 @@
     }
   },
   "validation": {
-    "game_tests": 10,
+    "game_tests": 11,
     "requires_restart_matrix": true,
     "behavior_test_classes": [
       "CityEconomyPolicyTest",
@@ -174,6 +189,8 @@
       "MistCityWorldEventModifiersTest",
       "MistCityWorldEventPlayerEffectsTest",
       "M3LaunchAbilityLogicTest",
+      "M3TravelNetworkLogicTest",
+      "TravelMarkerServiceTest",
       "CrucibleRecipeLogicTest",
       "SequenceFiveRitualLogicTest",
       "PotionAdvancementRulesTest"
@@ -207,6 +224,19 @@
     "message.lord_of_mysteries.sequence_five_ritual.guide.controls",
     "message.lord_of_mysteries.sequence_five_ritual.success",
     "message.lord_of_mysteries.sequence_five_ritual.failure",
+    "message.lord_of_mysteries.travel.guide.empty",
+    "message.lord_of_mysteries.travel.guide.marker",
+    "message.lord_of_mysteries.travel.guide.active",
+    "message.lord_of_mysteries.travel.guide.inactive",
+    "message.lord_of_mysteries.travel.guide.consent",
+    "message.lord_of_mysteries.travel.cooldown",
+    "message.lord_of_mysteries.travel.marker_required",
+    "message.lord_of_mysteries.travel.dimension_unavailable",
+    "message.lord_of_mysteries.travel.marker_inactive",
+    "message.lord_of_mysteries.travel.destination_unsafe",
+    "message.lord_of_mysteries.travel.teleport_failed",
+    "message.lord_of_mysteries.travel.passenger_arrival",
+    "message.lord_of_mysteries.travel.success",
     "advancement.lord_of_mysteries.sequence_five_ritual.title",
     "advancement.lord_of_mysteries.sequence_five_ritual.description"
   ]

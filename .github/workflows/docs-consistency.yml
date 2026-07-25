@@ -54,15 +54,15 @@ on:
       - "src/main/resources/assets/lord_of_mysteries/lang/*.json"
       - "build.gradle"
       - ".github/workflows/docs-consistency.yml"
-  issues:
-    types: [opened, edited]
-  issue_comment:
-    types: [created, edited]
   workflow_dispatch:
 
 permissions:
   contents: read
   issues: read
+
+concurrency:
+  group: docs-consistency-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   verify:

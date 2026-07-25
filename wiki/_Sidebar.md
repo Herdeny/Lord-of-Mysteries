@@ -30,6 +30,7 @@
 - [心理医生与纵火家序列 7](M2-Sequence-7-Psychiatrist-and-Pyromaniac)
 - [M3 首发五途径序列 6–5](M3-Launch-Pathways)
 - [M3 序列 5 专属晋升仪式](M3-Sequence-5-Advancement-Rituals)
+- [M3 旅行家空间标记与同行远门](M3-Traveler-Spatial-Relay)
 
 ### 开发与发布
 

@@ -222,6 +222,68 @@ def main():
     require(acting_count == launch["acting_event_count"],
             "M3 acting event count drifted")
 
+    relay = contract["traveler_spatial_relay"]
+    travel_logic = source(
+        JAVA / "ability" / "M3TravelNetworkLogic.java")
+    travel_service = source(
+        JAVA / "ability" / "TravelMarkerService.java")
+    require(f'literal("{relay["command"]}")' in commands
+            and "TravelMarkerService.sendGuide" in commands,
+            "traveler spatial relay guide command is missing")
+    require(
+        f"BASE_SPIRITUALITY_COST = {relay['leader_cost']}f"
+        in travel_logic
+        and f"PASSENGER_SPIRITUALITY_COST = "
+        f"{relay['passenger_cost']}f" in travel_logic
+        and f"MAX_PASSENGERS = {relay['max_passengers']}" in travel_logic,
+        "traveler spatial relay cost or passenger cap drifted")
+    require(
+        f"CONSENT_RADIUS = {relay['consent_radius']}d" in travel_logic,
+        "traveler relay consent radius drifted")
+    leader_cooldown = re.search(
+        r"LEADER_COOLDOWN_TICKS\s*=\s*([\d_]+)L", travel_service)
+    passenger_cooldown = re.search(
+        r"PASSENGER_COOLDOWN_TICKS\s*=\s*([\d_]+)L", travel_service)
+    require(
+        leader_cooldown
+        and int(leader_cooldown.group(1).replace("_", ""))
+        == relay["leader_cooldown_ticks"]
+        and passenger_cooldown
+        and int(passenger_cooldown.group(1).replace("_", ""))
+        == relay["passenger_cooldown_ticks"],
+        "traveler relay cooldowns drifted")
+    require(
+        relay["marker_item"] == "minecraft:compass"
+        and "Items.COMPASS" in travel_service
+        and relay["marker_block"] == "minecraft:lodestone"
+        and "Blocks.LODESTONE" in travel_service
+        and "level.isInWorldBounds(position)" in travel_service
+        and travel_service.index("level.isInWorldBounds(position)")
+        < travel_service.index("level.getChunkAt(position)"),
+        "traveler relay no longer uses physical vanilla markers")
+    require(
+        not relay["requires_sneaking"] or "candidate.isShiftKeyDown()"
+        in travel_service,
+        "traveler relay passenger consent is missing")
+    require(
+        not relay["same_source_dimension"]
+        or "candidate.serverLevel() == leader.serverLevel()"
+        in travel_service,
+        "traveler relay can pull passengers from another source dimension")
+    require(
+        not relay["matching_marker"] or "hasMatchingMarker"
+        in travel_service,
+        "traveler relay no longer requires a matching marker")
+    require(
+        not relay["failure_preserves_resources"]
+        or ("findDestinations" in travel_service
+            and "SpiritualityCost.tryConsume" in travel_service
+            and travel_service.index("findDestinations")
+            < travel_service.index("SpiritualityCost.tryConsume")
+            and "SpiritualityCost.refund(data, cost)" in travel_service
+            and "rollback(moved, origins)" in travel_service),
+        "traveler relay failure no longer preserves resources")
+
     rituals = contract["sequence_five_rituals"]
     ritual_service = source(
         JAVA / "ritual" / "SequenceFiveAdvancementRitual.java")
@@ -303,7 +365,8 @@ def main():
         "economy, newspaper and diagnostics visibility, spirituality and "
         "ritual modifiers, five launch pathways at sequences 6-5, five "
         "dedicated sequence-5 rituals with solo and supporter paths, "
-        "ten GameTests, and dedicated restart validation"
+        "a consent-gated traveler spatial relay, eleven GameTests, and "
+        "dedicated restart validation"
     )
 
 

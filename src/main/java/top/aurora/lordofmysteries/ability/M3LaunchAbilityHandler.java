@@ -114,7 +114,8 @@ public final class M3LaunchAbilityHandler {
         }
         if (M2PathwayPotionItem.Pathway.APPRENTICE.id().equals(data.pathway)) {
             return slot == M2FoundationAbilityHandler.AbilitySlot.PRIMARY
-                    ? travelerDoor(player, data) : returnToOutpost(player, data);
+                    ? travelerDoor(player, data)
+                    : travelerRelayOrOutpost(player, data);
         }
         return false;
     }
@@ -684,6 +685,20 @@ public final class M3LaunchAbilityHandler {
         ActingEventHandler.trigger(
                 player, ActingEvent.TRAVELER5_RETURN_OUTPOST, null);
         return true;
+    }
+
+    private static boolean travelerRelayOrOutpost(
+            ServerPlayer player, PlayerMysteryData data) {
+        if (!TravelMarkerService.hasCompassInHands(player)) {
+            return returnToOutpost(player, data);
+        }
+        boolean relayed = TravelMarkerService.relayToHeldMarker(
+                player, data, player.serverLevel().players());
+        if (relayed) {
+            ActingEventHandler.trigger(
+                    player, ActingEvent.TRAVELER5_CROSS_DISTANCE, null);
+        }
+        return relayed;
     }
 
     @SubscribeEvent

@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.acting.ActingIdentityService;
+import top.aurora.lordofmysteries.ability.TravelMarkerService;
 import top.aurora.lordofmysteries.knowledge.InvestigatorCompassItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
 import top.aurora.lordofmysteries.knowledge.GuideJournalProgress;
@@ -105,6 +106,9 @@ public final class ProjectMysteryCommands {
                         showStatus(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("ritual").executes(context ->
                         SequenceFiveAdvancementRitual.showGuide(
+                                context.getSource().getPlayerOrException())))
+                .then(Commands.literal("travel").executes(context ->
+                        TravelMarkerService.sendGuide(
                                 context.getSource().getPlayerOrException())))
                 .then(Commands.literal("reflect").executes(context ->
                         reflect(context.getSource().getPlayerOrException())))
