@@ -27,6 +27,7 @@
 - [ ] 已同步更新 `README.md`、`docs/`、`wiki/` 与 `CHANGELOG.md`，或确认本变更不影响这些内容
 - [ ] 若版本/阶段发生变化，已更新 `project-status.json` 并运行 `python scripts/sync_project_metadata.py`
 - [ ] 若路线发生变化，已更新 `roadmap.json`
+- [ ] 若注册内容或 Pages 发生变化，`python scripts/gen_pages_catalog.py --check` 与 `python scripts/check_pages_layout.py` 通过
 - [ ] `python scripts/sync_project_metadata.py --check` 通过
 
 验证环境与步骤：

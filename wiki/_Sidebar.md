@@ -3,6 +3,7 @@
 ### 开始游玩
 
 - [首页](Home)
+- [在线资料站与可搜索图鉴](Online-Encyclopedia)
 - [安装与构建](Installation-and-Build)
 - [入门与占卜家 9–7](Getting-Started)
 - [精神风险与调查日志](Risk-and-Investigation)

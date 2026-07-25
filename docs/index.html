@@ -3,240 +3,308 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project Mystery · 非官方 Minecraft Mod 资料站</title>
-  <meta name="description" content="受《诡秘之主》启发的非官方 Minecraft Forge 1.20.1 同人模组资料站：途径、序列、能力、魔药、仪式、封印物与失控机制。">
-  <meta name="theme-color" content="#11100d">
-  <meta property="og:title" content="Project Mystery · 非官方 Minecraft Mod">
-  <meta property="og:description" content="在未知中承担风险、通过扮演消化力量、逐步成为非凡者的 Minecraft 生存冒险 Mod 资料站。">
+  <meta name="color-scheme" content="dark light">
+  <title>Project Mystery · 玩家资料站</title>
+  <meta name="description" content="Project Mystery 玩家资料站：Forge 1.20.1 安装指引、核心玩法、五条途径、序列能力、自动同步图鉴与开发路线。">
+  <meta name="theme-color" content="#100f0c">
+  <meta property="og:title" content="Project Mystery · 玩家资料站">
+  <meta property="og:description" content="从普通人到非凡者：快速开始、玩法循环、途径序列、物品图鉴与真实开发进度。">
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/logo.png">
   <link rel="icon" href="assets/logo.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="assets/wiki.css?v=0.9.18">
+  <link rel="stylesheet" href="assets/wiki.css?v=0.9.19">
 </head>
-<body>
-  <!-- 灵界粒子背景 -->
+<body id="top">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
   <canvas id="fog-canvas" aria-hidden="true"></canvas>
 
   <header class="topbar">
-    <a class="brand" href="#top" aria-label="Lord of Mysteries 资料站首页">
-      <img src="assets/logo.png" alt="" class="brand-logo">
-      <span class="brand-text">
-        <strong>Lord of Mysteries</strong>
-        <small>诡秘之主 · Minecraft Forge 1.20.1</small>
-      </span>
-    </a>
-    <nav id="topnav" class="topnav" aria-label="主要导航">
-      <a href="#overview">概述</a>
-      <a href="#start">开始游玩</a>
-      <a href="#mechanics">核心玩法</a>
-      <a href="#pathways">途径</a>
-      <a href="#catalog">图鉴</a>
-      <a href="#roadmap">路线图</a>
-      <a href="#about">关于</a>
-    </nav>
-    <div class="top-actions">
-      <button id="theme-toggle" class="icon-btn" title="切换明暗主题" aria-label="切换主题">◐</button>
-      <a class="icon-btn gh" href="https://github.com/Herdeny/Lord-of-Mysteries" title="GitHub 仓库" target="_blank" rel="noopener">★</a>
-      <button id="nav-toggle" class="icon-btn nav-burger" aria-label="展开导航菜单" aria-expanded="false" aria-controls="topnav">☰</button>
+    <div class="topbar-inner">
+      <a class="brand" href="#top" aria-label="Project Mystery 资料站首页">
+        <img src="assets/logo.png" alt="Lord of Mysteries" class="brand-logo">
+        <span class="brand-edition">Forge 1.20.1</span>
+      </a>
+      <nav id="topnav" class="topnav" aria-label="主要导航">
+        <a href="#start">开始</a>
+        <a href="#mechanics">玩法</a>
+        <a href="#pathways">途径</a>
+        <a href="#catalog">图鉴</a>
+        <a href="#roadmap">路线</a>
+        <a href="#resources">资源</a>
+      </nav>
+      <div class="top-actions">
+        <button id="theme-toggle" class="icon-btn" type="button" aria-label="切换明暗主题" aria-pressed="false">◐</button>
+        <a class="icon-btn desktop-only" href="https://github.com/Herdeny/Lord-of-Mysteries" aria-label="打开 GitHub 仓库" target="_blank" rel="noopener">↗</a>
+        <button id="nav-toggle" class="icon-btn nav-burger" type="button" aria-label="展开导航菜单" aria-expanded="false" aria-controls="topnav">☰</button>
+      </div>
     </div>
   </header>
 
-  <span id="top"></span>
-  <main>
-    <!-- HERO -->
-    <section id="overview" class="hero reveal">
+  <main id="main-content">
+    <section id="overview" class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">✦ 非凡者的冒险 · 资料站</p>
-        <h1 class="glow-title">在未知中<br>成为<span class="accent">非凡者</span></h1>
-        <p class="lead">把《诡秘之主》的核心体验搬进 Minecraft：从普通人出发，在坩埚中调配<b>魔药</b>晋升序列，靠<b>扮演</b>对应角色消化力量，同时对抗灵性枯竭与失控污染，一步步揭开非凡世界的帷幕。</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#start">▶ 开始游玩</a>
-          <a class="button" href="#mechanics">🜁 了解玩法</a>
-          <a class="button ghost" href="https://github.com/Herdeny/Lord-of-Mysteries/wiki" target="_blank" rel="noopener">Wiki ↗</a>
-          <a class="button ghost" href="https://github.com/Herdeny/Lord-of-Mysteries" target="_blank" rel="noopener">GitHub ↗</a>
+        <p class="eyebrow">Project Mystery · 玩家资料站</p>
+        <div class="release-chip">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>当前里程碑 <b id="hero-milestone">M2</b></span>
+          <span class="release-chip-separator" aria-hidden="true"></span>
+          <span id="hero-version">载入版本中</span>
         </div>
-        <div class="hero-tags" id="hero-tags"></div>
+        <h1>从普通人开始，<br><span class="accent">成为非凡者。</span></h1>
+        <p class="lead">炼制魔药、扮演消化、调查案件并管理失控风险。这里把安装、玩法、图鉴与真实开发进度整理成一条可直接使用的路线。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#start">开始游玩</a>
+          <a class="button" href="#catalog">打开图鉴</a>
+          <a class="button ghost" href="https://github.com/Herdeny/Lord-of-Mysteries/wiki" target="_blank" rel="noopener">阅读 Wiki ↗</a>
+        </div>
+        <div class="hero-tags" id="hero-tags" aria-label="核心特色"></div>
       </div>
-      <aside class="hero-panel" aria-label="版本信息">
-        <div class="panel-glow"></div>
-        <h3 class="panel-title">当前版本</h3>
-        <dl id="meta-dl"></dl>
+
+      <aside class="release-panel" aria-label="当前发布状态">
+        <div class="release-panel-head">
+          <p class="eyebrow">Current Build</p>
+          <span class="state-badge active">开发中</span>
+        </div>
+        <h2 id="release-version">—</h2>
+        <p id="release-stage" class="release-stage">正在读取项目状态</p>
+        <dl id="meta-dl" class="release-meta"></dl>
+        <div class="release-gates">
+          <div>
+            <span>M2 自动化范围</span>
+            <strong>已闭环</strong>
+          </div>
+          <div>
+            <span>M2 真人门禁</span>
+            <strong class="pending">待验收</strong>
+          </div>
+          <div>
+            <span>M3 序列 6–5</span>
+            <strong class="code-ready">code_ready</strong>
+          </div>
+        </div>
       </aside>
     </section>
 
-    <!-- STATS -->
-    <section class="stats reveal" aria-label="资料统计" id="stats"></section>
+    <section class="stats" aria-label="资料统计" id="stats"></section>
 
-    <!-- START HERE -->
-    <section id="start" class="block-section reveal">
+    <section id="start" class="content-section">
       <div class="section-heading">
-        <p class="eyebrow">Start Here</p>
-        <h2>从你的目标开始</h2>
-        <p class="sub">不用先读完设计文档。选择身份，按最短路径进入游戏、调查或开发。</p>
+        <div>
+          <p class="eyebrow">Start Here</p>
+          <h2>按你的目标进入</h2>
+        </div>
+        <p>不需要先读完整设计文档。选择一个入口，几分钟内进入对应流程。</p>
       </div>
-      <div class="about-grid">
-        <div class="about-card">
-          <h3>第一次游玩</h3>
-          <ol class="tech-list">
-            <li>安装 Forge 1.20.1 与本 Mod</li>
-            <li>进入世界后输入 <code>/pm next</code></li>
-            <li>跟随罗盘抵达调查员营地</li>
-          </ol>
-          <a class="button primary" href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/GETTING_STARTED.md" target="_blank" rel="noopener">打开入门指南 ↗</a>
-        </div>
-        <div class="about-card">
-          <h3>M2 调查与城市生活</h3>
-          <ol class="tech-list">
-            <li>完成占卜家序列 9–7 纵切</li>
-            <li>输入 <code>/pm city</code> 查看三座正式街区；用 <code>/pm life</code> 查看工作、事件和暴露</li>
-            <li>在调查板切换案件、证据与关联推理</li>
-            <li>使用 <code>/pm case analyze</code> 获取明确下一步</li>
-            <li>使用 <code>/pm case hypothesis</code> 提出、检验并纠正玩家假说</li>
-            <li>丢失关键案件物品时在调查板附近执行 <code>/pm case recover</code></li>
-            <li>完成真假配方后接取轮换案件，用 <code>/pm case rotation</code> 查看八槽位卷宗</li>
-            <li>在现场辨认案件相关人、受影响者与可视物证；用证物袋封存差异化样本，再右键指定证人和当日报纸</li>
-            <li><code>investigate field|desk</code> 保留为兼容/恢复入口；误判后回调查板复议</li>
-            <li>结案后领取组织响应，与对应 NPC 简报，再回调查板提交；<code>rotation contacts</code> 可查看联系人和组织立场</li>
-          </ol>
-          <a class="button" href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Dynamic-Case-Rotation" target="_blank" rel="noopener">打开动态案件手册 ↗</a>
-        </div>
-        <div class="about-card">
-          <h3>M3 序列 6–5</h3>
-          <ol class="tech-list">
-            <li>五条首发途径均可从序列 7 继续炼制 6、5 魔药</li>
-            <li><code>Y</code> / <code>U</code> 使用每序列主、副能力</li>
-            <li>当前状态为 <code>code_ready</code>：专属仪式与完整原典系统仍在建设</li>
-          </ol>
-          <a class="button" href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M3-Launch-Pathways" target="_blank" rel="noopener">查看 M3 能力与配方 ↗</a>
-        </div>
+      <div class="entry-grid">
+        <article class="entry-card primary-card">
+          <span class="entry-index">01</span>
+          <p class="entry-kicker">新玩家</p>
+          <h3>第一次进入世界</h3>
+          <p>安装 Forge 1.20.1 与 Mod，进入世界后输入 <code>/pm next</code>，跟随罗盘抵达调查员营地。</p>
+          <a href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/GETTING_STARTED.md" target="_blank" rel="noopener">打开完整入门指南 ↗</a>
+        </article>
+        <article class="entry-card">
+          <span class="entry-index">02</span>
+          <p class="entry-kicker">M2 玩家</p>
+          <h3>调查与城市生活</h3>
+          <p>通过调查板管理案件、证据、假说与复议；使用 <code>/pm city</code> 和 <code>/pm life</code> 进入工作与城市事件。</p>
+          <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Dynamic-Case-Rotation" target="_blank" rel="noopener">阅读调查手册 ↗</a>
+        </article>
+        <article class="entry-card">
+          <span class="entry-index">03</span>
+          <p class="entry-kicker">M3 测试者</p>
+          <h3>五途径序列 6–5</h3>
+          <p>从同途径序列 7 满消化继续晋升，使用 <code>Y</code> / <code>U</code> 触发服务端校验的主、副能力。</p>
+          <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M3-Launch-Pathways" target="_blank" rel="noopener">查看能力与配方 ↗</a>
+        </article>
+        <article class="entry-card">
+          <span class="entry-index">04</span>
+          <p class="entry-kicker">服主 / 开发者</p>
+          <h3>部署、诊断与贡献</h3>
+          <p>用 <code>/pm doctor</code> 与 <code>/pm servercheck</code> 检查专服；开发前先阅读设计基线与贡献门禁。</p>
+          <a href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">参与贡献 ↗</a>
+        </article>
       </div>
     </section>
 
-    <!-- MECHANICS highlight -->
-    <section id="mechanics" class="block-section reveal">
+    <section id="mechanics" class="content-section">
       <div class="section-heading">
-        <p class="eyebrow">Core Loop</p>
-        <h2>核心循环：晋升之路</h2>
-        <p class="sub">调查线索、收集材料、炼制魔药、扮演消化、管理风险，再进入更深的城市案件。</p>
+        <div>
+          <p class="eyebrow">Core Loop</p>
+          <h2>一局游戏如何推进</h2>
+        </div>
+        <p>六个步骤形成完整循环；每一步都影响下一次晋升的收益与风险。</p>
       </div>
       <ol class="loop" id="loop"></ol>
     </section>
 
-    <!-- PATHWAYS -->
-    <section id="pathways" class="block-section reveal">
+    <section class="progress-section" aria-labelledby="progress-title">
       <div class="section-heading">
-        <p class="eyebrow">Pathways</p>
-        <h2>五条途径</h2>
-        <p class="sub">每条途径是一条通往非凡的道路，拥有独特的能力体系与扮演方式。</p>
+        <div>
+          <p class="eyebrow">Progress</p>
+          <h2 id="progress-title">现在真正做到哪里</h2>
+        </div>
+        <p>严格区分可玩、代码就绪与需要真人验证的内容，不用测试数量替代实际体验。</p>
+      </div>
+      <div class="progress-grid">
+        <article class="progress-card active-progress">
+          <div class="progress-card-head">
+            <span class="milestone-mark">M2</span>
+            <span class="state-badge active">当前里程碑</span>
+          </div>
+          <h3>调查与生活</h3>
+          <p>正式街区、动态案件、证据推理、组织响应、职业经济、神秘暴露与世界事件已经形成服务端权威闭环。</p>
+          <ul>
+            <li>单人 / 多人状态隔离与恢复路径已覆盖</li>
+            <li>保留四人连续八小时与经济平衡真人门禁</li>
+          </ul>
+        </article>
+        <article class="progress-card">
+          <div class="progress-card-head">
+            <span class="milestone-mark violet">M3</span>
+            <span class="state-badge planned">首批预实现</span>
+          </div>
+          <h3>五条首发途径</h3>
+          <p>占卜家、观众、猎人、偷盗者与学徒均已接入序列 6–5 魔药、服务端能力和扮演事件。</p>
+          <ul>
+            <li>玩家控制默认禁止，PvP、Boss、归属与传送有边界</li>
+            <li>专属仪式、持久秘偶与完整梦境仍未标为完成</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="pathways" class="content-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Pathways</p>
+          <h2>五条首发途径</h2>
+        </div>
+        <p>先看定位，再进入序列浏览器比较能力、灵性与当前状态。</p>
       </div>
       <div class="pathway-grid" id="pathway-grid"></div>
     </section>
 
-    <!-- SEQUENCES -->
-    <section id="sequences" class="block-section reveal">
+    <section id="sequences" class="content-section sequence-section">
       <div class="section-heading">
-        <p class="eyebrow">Sequences</p>
-        <h2>可玩序列阶梯</h2>
-        <p class="sub">序列数字越小越强大。五条途径 9 → 7 可玩；6 → 5 已具备魔药、代理配方、服务端能力与扮演代码，保持 code_ready 直至专属仪式和真人平衡完成。</p>
-      </div>
-      <div class="seq-ladder" id="seq-ladder"></div>
-    </section>
-
-    <!-- CATALOG -->
-    <section id="catalog" class="catalog reveal">
-      <div class="section-heading full">
-        <p class="eyebrow">Catalog</p>
-        <h2>图鉴索引</h2>
-        <p class="sub">自动覆盖实际注册的物品、方块与实体，并保留能力、机制、仪式、组织和世界内容的详细说明。</p>
-        <p class="catalog-coverage" id="catalog-coverage"></p>
-      </div>
-      <div class="catalog-body">
-        <aside class="filters" aria-label="筛选">
-          <label class="search-label" for="search">搜索</label>
-          <input id="search" type="search" placeholder="名称 / ID / 关键词…" autocomplete="off">
-          <div class="filter-group" id="filter-group" role="list" aria-label="分类"></div>
-        </aside>
-        <div class="results">
-          <div id="result-count" class="result-count"></div>
-          <div id="cards" class="cards"></div>
+        <div>
+          <p class="eyebrow">Sequence Explorer</p>
+          <h2>序列 9–5 浏览器</h2>
         </div>
+        <p>一次只显示一条途径，避免在移动端连续滚动 30 张序列卡。</p>
+      </div>
+      <div id="sequence-tabs" class="sequence-tabs" role="tablist" aria-label="选择途径"></div>
+      <div class="sequence-summary" id="sequence-summary" aria-live="polite"></div>
+      <div class="seq-ladder" id="seq-ladder" role="tabpanel"></div>
+    </section>
+
+    <section id="catalog" class="content-section catalog-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Encyclopedia</p>
+          <h2>可搜索图鉴</h2>
+        </div>
+        <p>注册内容来自 Forge 注册表与中英语言资源；能力、机制和世界条目来自仓库维护数据。</p>
+      </div>
+      <div class="catalog-coverage" id="catalog-coverage"></div>
+      <div class="catalog-toolbar" aria-label="图鉴筛选工具">
+        <div class="search-wrap">
+          <label for="search">搜索图鉴</label>
+          <div class="search-control">
+            <span aria-hidden="true">⌕</span>
+            <input id="search" type="search" placeholder="名称、英文、ID 或关键词" autocomplete="off">
+            <button id="clear-search" type="button" aria-label="清空搜索" hidden>×</button>
+          </div>
+        </div>
+        <div class="catalog-status">
+          <strong id="result-count" aria-live="polite">正在载入</strong>
+          <span id="visible-count"></span>
+        </div>
+        <div class="filter-group" id="filter-group" role="group" aria-label="图鉴分类"></div>
+      </div>
+      <div id="cards" class="cards" aria-live="polite"></div>
+      <div class="load-more-wrap">
+        <button id="load-more" class="button" type="button" hidden>加载更多</button>
       </div>
     </section>
 
-    <!-- ROADMAP -->
-    <section id="roadmap" class="block-section reveal">
+    <section id="roadmap" class="content-section">
       <div class="section-heading">
-        <p class="eyebrow">Roadmap</p>
-        <h2>开发路线图</h2>
-        <p class="sub">M2 自动化实施范围已经闭环，保留四人八小时真人门禁；M3 五途径序列 6–5 已开始代码实施。</p>
+        <div>
+          <p class="eyebrow">Roadmap</p>
+          <h2>从 M0 到发布愿景</h2>
+        </div>
+        <p>首页只展开当前相关阶段；完整验收条件和远期范围仍由仓库路线文件统一管理。</p>
+      </div>
+      <div class="roadmap-overview">
+        <div class="roadmap-progress" aria-label="当前路线位置">
+          <span style="--progress: 19%"></span>
+        </div>
+        <p><b>M0–M1</b> 已完成机器门禁 · <b>M2</b> 等待真人专服门禁 · <b>M3</b> 已开始首批代码实现</p>
       </div>
       <div class="roadmap" id="roadmap-track"></div>
+      <details class="future-roadmap">
+        <summary>查看 M4–M12 远期路线</summary>
+        <div id="future-roadmap-track"></div>
+      </details>
+      <a class="button roadmap-link" href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/ROADMAP.md" target="_blank" rel="noopener">打开完整路线与验收条件 ↗</a>
     </section>
 
-    <!-- ABOUT -->
-    <section id="about" class="block-section reveal">
+    <section id="resources" class="content-section">
       <div class="section-heading">
-        <p class="eyebrow">About</p>
-        <h2>关于本项目</h2>
+        <div>
+          <p class="eyebrow">Resources</p>
+          <h2>文档与项目说明</h2>
+        </div>
+        <p>玩家、服主、贡献者与版权说明各自有明确入口。</p>
       </div>
-      <div class="about-grid">
-        <div class="about-card">
-          <h3>项目简介</h3>
-          <p>Project Mystery 是受《诡秘之主》启发的 Minecraft 生存冒险 Mod。当前版本为 <b>0.9.18-1.20.1</b>，正式里程碑仍是 <b>M2 调查与生活</b>：三座 7×7 正式街区、4 种委托、4 条任务链、三类八槽位动态案件、6 类主体关系、12 项周指令、五档组织立场、跨案件联系人记忆、三职业经济、神秘暴露和 16 日六事件周期已经连接为服务端权威闭环。M2 只保留四人八小时真人专服与经济平衡证据，不能由自动化替代。M3 已预实现五条首发途径序列 6–5：10 瓶魔药、10 份 schema v4 序列定义、20 项服务端能力和 20 项扮演事件；玩家控制默认禁止，PvP、Boss、物品归属、书本代数、每日窃梦和安全传送均有边界。当前基线为 Capability schema 23、网络协议 12、340 项 JUnit、9 项 Forge GameTest、126 节点/188 关系内容图、精确回滚和双启动专服矩阵。图鉴注册内容由脚本从 Java 注册表和双语文件生成，不再依赖手工补条目。</p>
+      <div class="resource-grid">
+        <a class="resource-card" href="https://github.com/Herdeny/Lord-of-Mysteries/wiki" target="_blank" rel="noopener">
+          <span>玩家知识库</span><strong>GitHub Wiki</strong><small>玩法手册、案件说明、M3 途径</small>
+        </a>
+        <a class="resource-card" href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/DEDICATED_SERVER_TEST_MATRIX.md" target="_blank" rel="noopener">
+          <span>服务器运维</span><strong>专服验证矩阵</strong><small>启动、重启、多人、回滚与诊断</small>
+        </a>
+        <a class="resource-card" href="https://github.com/Herdeny/Lord-of-Mysteries/issues" target="_blank" rel="noopener">
+          <span>问题与建议</span><strong>GitHub Issues</strong><small>报告问题、提交复现、跟踪里程碑</small>
+        </a>
+        <a class="resource-card" href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/NOTICE.md" target="_blank" rel="noopener">
+          <span>许可与边界</span><strong>版权声明</strong><small>非官方同人定位与原创内容许可</small>
+        </a>
+      </div>
+      <div class="notice">
+        <div>
+          <p class="eyebrow">Unofficial Fan Project</p>
+          <h3>非官方、非商业同人项目</h3>
         </div>
-        <div class="about-card">
-          <h3>技术基线</h3>
-          <ul class="tech-list" id="tech-list"></ul>
-        </div>
-        <div class="about-card">
-          <h3>协作团队</h3>
-          <ul class="team-list" id="team-list"></ul>
-        </div>
-        <div class="about-card warn">
-          <h3>⚠️ IP 与许可声明</h3>
-          <p>本项目是受《诡秘之主》启发的非官方、非商业同人项目，未获得原作权利人、Mojang 或 Microsoft 的授权、认可或赞助。原创代码采用 GPL-3.0-or-later；原创文档和美术采用 CC BY-NC-SA 4.0；第三方名称、设定、素材与商标不在项目许可范围内。</p>
-        </div>
+        <p>本项目未获得原作权利人、Mojang 或 Microsoft 的授权、认可或赞助。原创代码采用 GPL-3.0-or-later；原创文档和美术采用 CC BY-NC-SA 4.0；第三方名称、设定、素材与商标不在项目许可范围内。</p>
       </div>
     </section>
   </main>
 
   <footer class="footer">
     <div class="footer-inner">
-      <div>
-        <img src="assets/logo.png" alt="" class="foot-logo">
-        <p>Project Mystery — 非官方 Minecraft Mod 资料站</p>
-        <p>NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
-        <p class="muted small">数据与项目 data/*.json、CSV 主表、schema v4 内容图和当前设计基线 v0.9 同源整理。</p>
-        <p class="muted small" id="last-updated"></p>
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="Lord of Mysteries">
+        <p>Project Mystery · 非官方 Minecraft Forge 1.20.1 同人模组</p>
+        <p class="muted">NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
       </div>
-      <nav class="foot-links">
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/GETTING_STARTED.md" target="_blank" rel="noopener">入门指南</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Investigation-Board" target="_blank" rel="noopener">调查板玩家手册</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Evidence-and-Newspaper" target="_blank" rel="noopener">证据档案与城市报纸</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Evidence-Reasoning-and-Recovery" target="_blank" rel="noopener">证据关联与案件恢复</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Player-Hypotheses-and-Reasoning-Strain" target="_blank" rel="noopener">玩家假说与误判恢复</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-Dynamic-Case-Rotation" target="_blank" rel="noopener">动态案件轮换</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M2-City-Service-Desks" target="_blank" rel="noopener">城市服务台与功能区</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M3-Launch-Pathways" target="_blank" rel="noopener">M3 五途径序列 6–5</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/DEDICATED_SERVER_TEST_MATRIX.md" target="_blank" rel="noopener">专服与多人验证矩阵</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/ROADMAP.md" target="_blank" rel="noopener">完整路线</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki" target="_blank" rel="noopener">GitHub Wiki</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries" target="_blank" rel="noopener">GitHub 仓库</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/issues" target="_blank" rel="noopener">反馈问题</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">参与贡献</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/CHANGELOG.md" target="_blank" rel="noopener">版本记录</a>
-        <a href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/NOTICE.md" target="_blank" rel="noopener">许可与版权</a>
-        <a href="#top">回到顶部 ↑</a>
-      </nav>
+      <div class="footer-meta">
+        <p id="last-updated"></p>
+        <div>
+          <a href="https://github.com/Herdeny/Lord-of-Mysteries" target="_blank" rel="noopener">仓库</a>
+          <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki" target="_blank" rel="noopener">Wiki</a>
+          <a href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/CHANGELOG.md" target="_blank" rel="noopener">版本记录</a>
+          <a href="#top">回到顶部 ↑</a>
+        </div>
+      </div>
     </div>
   </footer>
 
-  <!-- 详情弹窗 -->
   <div id="modal" class="modal" hidden>
     <div class="modal-backdrop" data-close></div>
-    <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <button class="modal-close" data-close aria-label="关闭">×</button>
+    <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+      <button class="modal-close" type="button" data-close aria-label="关闭详情">×</button>
       <div class="modal-head">
         <div id="modal-icon" class="icon lg"></div>
         <div>
@@ -250,10 +318,10 @@
     </article>
   </div>
 
-  <script src="assets/project-meta.js?v=0.9.18"></script>
-  <script src="assets/roadmap-data.js?v=0.9.18"></script>
-  <script src="assets/wiki-data.js?v=0.9.18"></script>
-  <script src="assets/catalog-data.js?v=0.9.18"></script>
-  <script src="assets/wiki.js?v=0.9.18"></script>
+  <script src="assets/project-meta.js?v=0.9.19"></script>
+  <script src="assets/roadmap-data.js?v=0.9.19"></script>
+  <script src="assets/wiki-data.js?v=0.9.19"></script>
+  <script src="assets/catalog-data.js?v=0.9.19"></script>
+  <script src="assets/wiki.js?v=0.9.19"></script>
 </body>
 </html>

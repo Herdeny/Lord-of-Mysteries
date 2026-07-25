@@ -1,10 +1,10 @@
 # 开发状态
 
 <!-- project-status:start -->
-- 当前版本：**`0.9.18-1.20.1`**
-- 开发阶段：**v0.9 M2 自动化收尾与 M3 五途径序列 6–5 首批实现**（M2）
+- 当前版本：**`0.9.19-1.20.1`**
+- 开发阶段：**v0.9 M2 真人验收准备与 M3 五途径序列 6–5 扩展**（M2）
 - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-- 最后更新：**2026-07-24 18:11:16 UTC+01:00**（`2026-07-24T17:11:16Z`）
+- 最后更新：**2026-07-25 08:39:35 UTC+01:00**（`2026-07-25T07:39:35Z`）
 <!-- project-status:end -->
 
 ## 里程碑
@@ -78,6 +78,7 @@ python scripts/check_m1_playability.py
 python scripts/check_m2_investigation.py
 python scripts/check_m3_foundation.py
 python scripts/gen_pages_catalog.py --check
+python scripts/check_pages_layout.py
 python scripts/check_resource_integrity.py
 python scripts/check_save_rollback.py
 python scripts/sync_project_metadata.py --check

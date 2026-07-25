@@ -38,10 +38,12 @@ Windows 可使用对应的 `gradlew.bat`。
 6. 路线变化只修改 `roadmap.json`，不要手工维护 README、Pages 或 Wiki 的路线表。
 7. 运行 `python scripts/sync_project_metadata.py`，并确保
    `python scripts/sync_project_metadata.py --check` 通过。
-8. 确保 `./gradlew clean build` 通过。
-9. 使用清晰的提交信息，推荐 Conventional Commits，例如
+8. 修改注册内容或 Pages 时运行 `python scripts/gen_pages_catalog.py --check` 和
+   `python scripts/check_pages_layout.py`。
+9. 确保 `./gradlew clean build` 通过。
+10. 使用清晰的提交信息，推荐 Conventional Commits，例如
    `feat(ritual): add failure feedback`。
-10. 填写 Pull Request 模板，关联 Issue，并说明游戏内验证结果。
+11. 填写 Pull Request 模板，关联 Issue，并说明游戏内验证结果。
 
 `main` 只通过 Pull Request 更新。合并前需要 CI 通过、讨论已解决，并由维护者
 审核。维护者通常使用 squash merge。

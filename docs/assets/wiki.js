@@ -1,261 +1,547 @@
-/* Lord of Mysteries Wiki — 交互逻辑（纯前端，GitHub Pages 直接运行） */
+/* Project Mystery Pages — progressive, accessible, dependency-free UI. */
 (function () {
   "use strict";
-  var D = window.LOM || {};
-  var meta = D.meta || {}, entries = D.entries || [], labels = D.labels || {};
-  var $ = function (s, r) { return (r || document).querySelector(s); };
-  var el = function (t, c, h) { var e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
 
-  /* ── 主题切换 ── */
+  var data = window.LOM || {};
+  var meta = data.meta || {};
+  var entries = data.entries || [];
+  var labels = data.labels || {};
+  var PAGE_SIZE = 24;
+  var $ = function (selector, root) { return (root || document).querySelector(selector); };
+  var create = function (tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text != null) node.textContent = text;
+    return node;
+  };
+
+  function setText(selector, value) {
+    var node = $(selector);
+    if (node) node.textContent = value || "—";
+  }
+
+  /* Theme */
   var themeToggle = $("#theme-toggle");
-  var saved = null;
-  try { saved = localStorage.getItem("lom-theme"); } catch (e) {}
-  if (saved) document.documentElement.setAttribute("data-theme", saved);
-  if (themeToggle) themeToggle.addEventListener("click", function () {
-    var cur = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", cur);
-    try { localStorage.setItem("lom-theme", cur); } catch (e) {}
-  });
+  var savedTheme = null;
+  try { savedTheme = localStorage.getItem("lom-theme"); } catch (error) {}
+  if (savedTheme === "dark" || savedTheme === "light") {
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  }
+  function syncThemeControl() {
+    if (!themeToggle) return;
+    var isLight = document.documentElement.getAttribute("data-theme") === "light";
+    themeToggle.setAttribute("aria-pressed", isLight ? "true" : "false");
+    themeToggle.title = isLight ? "切换到深色主题" : "切换到浅色主题";
+  }
+  syncThemeControl();
+  if (themeToggle) {
+    themeToggle.addEventListener("click", function () {
+      var next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      try { localStorage.setItem("lom-theme", next); } catch (error) {}
+      syncThemeControl();
+    });
+  }
 
-  /* ── 移动端汉堡菜单 ── */
-  var navToggle = $("#nav-toggle"), topnav = $("#topnav");
+  /* Mobile navigation */
+  var navToggle = $("#nav-toggle");
+  var topnav = $("#topnav");
   function setNav(open) {
     if (!topnav || !navToggle) return;
     topnav.classList.toggle("open", open);
     navToggle.setAttribute("aria-expanded", open ? "true" : "false");
-    navToggle.textContent = open ? "✕" : "☰";
+    navToggle.setAttribute("aria-label", open ? "收起导航菜单" : "展开导航菜单");
+    navToggle.textContent = open ? "×" : "☰";
   }
   if (navToggle && topnav) {
-    navToggle.addEventListener("click", function (ev) {
-      ev.stopPropagation();
+    navToggle.addEventListener("click", function (event) {
+      event.stopPropagation();
       setNav(!topnav.classList.contains("open"));
     });
-    // 点击导航项后收起
-    topnav.addEventListener("click", function (ev) { if (ev.target.tagName === "A") setNav(false); });
-    // 点击外部收起
-    document.addEventListener("click", function (ev) {
-      if (topnav.classList.contains("open") && !topnav.contains(ev.target) && ev.target !== navToggle) setNav(false);
+    topnav.addEventListener("click", function (event) {
+      if (event.target.closest("a")) setNav(false);
     });
-    // Esc 收起
-    document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") setNav(false); });
-    // 视口放大回桌面时清理状态
-    addEventListener("resize", function () { if (innerWidth > 960) setNav(false); });
+    document.addEventListener("click", function (event) {
+      if (topnav.classList.contains("open") && !topnav.contains(event.target) && event.target !== navToggle) {
+        setNav(false);
+      }
+    });
+    addEventListener("resize", function () {
+      if (innerWidth > 820) setNav(false);
+    });
   }
 
-  /* ── Hero meta ── */
+  /* Release metadata */
+  setText("#hero-version", meta.version);
+  setText("#hero-milestone", (window.LOM_PROJECT_META || {}).milestone || "M2");
+  setText("#release-version", meta.version);
+  setText("#release-stage", meta.stage);
   var metaDl = $("#meta-dl");
   if (metaDl) {
-    [["Mod ID", meta.modId], ["版本", meta.version], ["Minecraft", meta.mc],
-     ["加载器", meta.loader], ["Java", meta.java], ["阶段", meta.stage],
-     ["最后更新", meta.lastUpdatedDisplay]]
-      .forEach(function (p) { var d = el("div"); d.appendChild(el("dt", null, p[0])); d.appendChild(el("dd", null, p[1] || "—")); metaDl.appendChild(d); });
+    [
+      ["Minecraft", meta.mc],
+      ["加载器", meta.loader],
+      ["Java", meta.java],
+      ["更新时间", meta.lastUpdatedDisplay]
+    ].forEach(function (pair) {
+      var item = create("div");
+      item.appendChild(create("dt", null, pair[0]));
+      item.appendChild(create("dd", null, pair[1] || "—"));
+      metaDl.appendChild(item);
+    });
   }
   var heroTags = $("#hero-tags");
-  if (heroTags) ["🜁 五条途径", "🜂 序列晋升", "🜃 魔药炼制", "🜄 扮演消化", "☾ 失控风险"].forEach(function (t) { heroTags.appendChild(el("span", "pill type", t)); });
-
-  /* ── Stats ── */
-  var statsEl = $("#stats");
-  if (statsEl) {
-    var catalogMeta = D.catalogMeta || {};
-    var registeredContent = (catalogMeta.registeredItems || 0) +
-      (catalogMeta.registeredBlocks || 0) + (catalogMeta.registeredEntities || 0);
-    var stats = [
-      [entries.length, "图鉴条目"],
-      [registeredContent, "注册内容"],
-      [(D.pathwaysOverview || []).length, "途径"],
-      [(D.seerSequences || []).length + (D.spectatorSequences || []).length + (D.hunterSequences || []).length + (D.foundationSequences || []).length, "序列条目"],
-      [entries.filter(function (e) { return e.type === "ability"; }).length, "能力"],
-      [(D.roadmap || []).length, "开发里程碑"]
-    ];
-    stats.forEach(function (s) {
-      var d = el("div", "stat");
-      d.appendChild(el("strong", null, String(s[0])));
-      d.appendChild(el("span", null, s[1]));
-      statsEl.appendChild(d);
+  if (heroTags) {
+    ["五条途径", "序列晋升", "魔药炼制", "调查推理", "失控风险"].forEach(function (label) {
+      heroTags.appendChild(create("span", "pill type", label));
     });
   }
-
-  /* ── Roadmap ── */
-  var rmTrack = $("#roadmap-track");
-  if (rmTrack) (D.roadmap || []).forEach(function (m) {
-    var c = el("div", "rm-card " + m.state);
-    var stateTxt = { done: "已完成", active: "进行中", planned: "规划", future: "远期" }[m.state] || m.state;
-    var badge = el("span", "rm-badge", m.id + '<span class="rm-state state-' + m.state + '">' + stateTxt + "</span>");
-    c.appendChild(badge);
-    c.appendChild(el("b", "rm-title", m.title));
-    var ul = el("ul", "rm-points");
-    (m.points || []).forEach(function (p) { ul.appendChild(el("li", null, p)); });
-    c.appendChild(ul);
-    rmTrack.appendChild(c);
-  });
-
-  /* ── Pathways ── */
-  var pwGrid = $("#pathway-grid");
-  if (pwGrid) (D.pathwaysOverview || []).forEach(function (p) {
-    var c = el("div", "pw-card");
-    c.style.setProperty("--accent", p.accent);
-    c.innerHTML =
-      '<div class="pw-head"><h3>' + p.name + '</h3><span class="en">' + p.en + '</span></div>' +
-      '<span class="pw-status">' + p.status + '</span>' +
-      '<p class="pw-desc">' + p.desc + '</p>' +
-      '<div class="pw-traits">' + (p.traits || []).map(function (t) { return '<span class="pill">' + t + '</span>'; }).join("") + '</div>' +
-      '<p class="pw-spirit">' + (p.spirit
-        ? '灵性上限 <b>' + p.spirit + '</b>'
-        : '基础灵性 <b>' + p.baseSpirit + '</b> · 每序列成长 <b>+' + p.growth + '</b>') + '</p>';
-    pwGrid.appendChild(c);
-  });
-
-  /* ── Sequence ladder ── */
-  var ladder = $("#seq-ladder");
-  var playableSequences = (D.seerSequences || []).map(function (s) {
-    return Object.assign({ pathway: "占卜家" }, s);
-  }).concat(D.spectatorSequences || [], D.hunterSequences || [], D.foundationSequences || []);
-  if (ladder) playableSequences.forEach(function (s) {
-    var row = el("div", "seq-row " + (s.state === "active" ? "active" : (s.state === "future" ? "future" : "")));
-    row.innerHTML =
-      '<div class="seq-num">' + s.seq + '</div>' +
-      '<div class="seq-info"><h4>' + s.pathway + ' · 序列 ' + s.seq + '：' + s.name + '</h4>' +
-      '<span class="abil">' + (s.abilities || []).join(" · ") + '</span></div>' +
-      '<div class="seq-spirit"><b>' + s.spiritMax + '</b>灵性上限</div>';
-    row.title = s.desc || "";
-    ladder.appendChild(row);
-  });
-
-  /* ── Core loop ── */
-  var loop = $("#loop");
-  if (loop) [
-    ["炼制魔药", "在坩埚中按途径配方精确控温投料，材料顺序与温度共同决定成品品质。"],
-    ["服用晋升", "选择占卜家、观众或猎人途径，获得对应序列能力；高阶魔药由服务端校验晋升资格。"],
-    ["扮演消化", "按当前序列身份行动，通过占卜、观察、追踪、陷阱或战斗控制把消化度推向 100%。"],
-    ["管理风险", "监控灵性、污染与失控压力，避免污染满值触发失控与失控体。"],
-    ["主持仪式", "布置物理阵列、准备材料并满足环境条件；结构破坏会取消，失败可能带来污染或失控体。"],
-    ["晋升下一序列", "消化满额后炼制更高阶魔药，向序列 8 及更高迈进。"]
-  ].forEach(function (p) {
-    var li = el("li"); li.appendChild(el("h4", null, p[0])); li.appendChild(el("p", null, p[1])); loop.appendChild(li);
-  });
-
-  /* ── About ── */
-  var techList = $("#tech-list");
-  if (techList) [["Minecraft", meta.mc], ["加载器", meta.loader], ["Java", meta.java],
-    ["映射", "official（Mojang）"], ["构建", "Gradle 8.14.5 + ForgeGradle 6"], ["数据", "Forge Capability + NBT"]]
-    .forEach(function (p) { techList.appendChild(el("li", null, "<span>" + p[0] + "</span><b>" + (p[1] || "—") + "</b>")); });
-  var teamList = $("#team-list");
-  if (teamList) (meta.authors || []).forEach(function (a) {
-    teamList.appendChild(el("li", null, '<span>' + a.role + '</span><b><a href="' + a.link + '" target="_blank" rel="noopener">' + a.name + '</a></b>'));
-  });
   var lastUpdated = $("#last-updated");
   if (lastUpdated) {
-    lastUpdated.textContent = "版本 " + meta.version + " · 最后更新 " + meta.lastUpdatedDisplay +
-      " · UTC " + meta.lastUpdatedUtc;
+    lastUpdated.textContent = "版本 " + (meta.version || "—") + " · 最后更新 " +
+      (meta.lastUpdatedDisplay || "—") + " · UTC " + (meta.lastUpdatedUtc || "—");
   }
 
-  /* ── Catalog: filters + search + cards ── */
-  var filterGroup = $("#filter-group"), cardsEl = $("#cards"), searchEl = $("#search"), countEl = $("#result-count");
-  var coverageEl = $("#catalog-coverage"), catalogMeta = D.catalogMeta || {};
-  if (coverageEl) {
-    coverageEl.textContent = "注册表同步：物品 " + (catalogMeta.registeredItems || 0) +
-      " · 方块 " + (catalogMeta.registeredBlocks || 0) +
-      " · 实体 " + (catalogMeta.registeredEntities || 0) +
-      " · 数据源 " + (catalogMeta.source || "未知");
-  }
-  var activeFilter = "all";
-
-  var types = ["all"].concat(Object.keys(labels).filter(function (k) { return entries.some(function (e) { return e.type === k; }); }));
-  if (filterGroup) types.forEach(function (t) {
-    var n = t === "all" ? entries.length : entries.filter(function (e) { return e.type === t; }).length;
-    var b = el("button", "filter" + (t === "all" ? " active" : ""),
-      "<span>" + (t === "all" ? "全部" : (labels[t] || t)) + '</span><span class="cnt">' + n + "</span>");
-    b.dataset.filter = t;
-    b.addEventListener("click", function () {
-      activeFilter = t;
-      [].forEach.call(filterGroup.children, function (c) { c.classList.toggle("active", c === b); });
-      render();
+  /* Summary statistics */
+  var catalogMeta = data.catalogMeta || {};
+  var registeredContent = (catalogMeta.registeredItems || 0) +
+    (catalogMeta.registeredBlocks || 0) + (catalogMeta.registeredEntities || 0);
+  var stats = [
+    [entries.length, "图鉴条目"],
+    [registeredContent, "注册内容"],
+    [(data.pathwaysOverview || []).length, "首发途径"],
+    [entries.filter(function (entry) { return entry.type === "ability"; }).length, "能力说明"]
+  ];
+  var statsRoot = $("#stats");
+  if (statsRoot) {
+    stats.forEach(function (item) {
+      var stat = create("div", "stat");
+      stat.appendChild(create("strong", null, String(item[0])));
+      stat.appendChild(create("span", null, item[1]));
+      statsRoot.appendChild(stat);
     });
-    filterGroup.appendChild(b);
+  }
+
+  /* Core loop */
+  var loopRoot = $("#loop");
+  if (loopRoot) {
+    [
+      ["发现线索", "从营地、城市委托和动态案件中确定目标，先理解风险再行动。"],
+      ["收集材料", "调查、狩猎、工作与交易提供魔药、仪式和恢复所需资源。"],
+      ["炼制魔药", "在坩埚中按途径配方控温投料，顺序与温度共同决定结果。"],
+      ["服用晋升", "服务端检查同途径、消化度、序列顺序与特性守恒后完成晋升。"],
+      ["扮演消化", "按当前身份原则行动，用能力、调查与生活行为推进消化。"],
+      ["管理风险", "持续监控灵性、压力、污染与暴露，恢复后再进入更深案件。"]
+    ].forEach(function (item) {
+      var row = create("li");
+      row.appendChild(create("h4", null, item[0]));
+      row.appendChild(create("p", null, item[1]));
+      loopRoot.appendChild(row);
+    });
+  }
+
+  /* Pathway cards */
+  var pathwayGrid = $("#pathway-grid");
+  if (pathwayGrid) {
+    (data.pathwaysOverview || []).forEach(function (pathway) {
+      var card = create("article", "pw-card");
+      card.style.setProperty("--accent", pathway.accent);
+      var head = create("div", "pw-head");
+      head.appendChild(create("h3", null, pathway.name));
+      head.appendChild(create("span", "en", pathway.en));
+      card.appendChild(head);
+      card.appendChild(create("span", "pw-status", pathway.status));
+      card.appendChild(create("p", "pw-desc", pathway.desc));
+      var traits = create("div", "pw-traits");
+      (pathway.traits || []).forEach(function (trait) {
+        traits.appendChild(create("span", "pill", trait));
+      });
+      card.appendChild(traits);
+      var spirit = create("p", "pw-spirit");
+      spirit.textContent = pathway.spirit
+        ? "灵性上限 " + pathway.spirit
+        : "基础灵性 " + pathway.baseSpirit + " · 每序列成长 +" + pathway.growth;
+      card.appendChild(spirit);
+      pathwayGrid.appendChild(card);
+    });
+  }
+
+  /* Sequence explorer */
+  var sequenceSets = [
+    { id: "seer", name: "占卜家", accent: "#7c5cff", entries: (data.seerSequences || []).map(function (entry) { return Object.assign({ pathway: "占卜家" }, entry); }) },
+    { id: "spectator", name: "观众", accent: "#6bcad0", entries: data.spectatorSequences || [] },
+    { id: "hunter", name: "猎人", accent: "#cc5b4d", entries: data.hunterSequences || [] },
+    { id: "thief", name: "偷盗者", accent: "#74b86f", entries: (data.foundationSequences || []).filter(function (entry) { return entry.pathway === "偷盗者"; }) },
+    { id: "apprentice", name: "学徒", accent: "#d4af37", entries: (data.foundationSequences || []).filter(function (entry) { return entry.pathway === "学徒"; }) }
+  ];
+  var sequenceTabs = $("#sequence-tabs");
+  var sequenceLadder = $("#seq-ladder");
+  var sequenceSummary = $("#sequence-summary");
+  var activePathway = "seer";
+
+  function renderSequences(pathwayId, focusPanel) {
+    var group = sequenceSets.filter(function (set) { return set.id === pathwayId; })[0] || sequenceSets[0];
+    activePathway = group.id;
+    if (sequenceTabs) {
+      [].forEach.call(sequenceTabs.children, function (tab) {
+        var selected = tab.dataset.pathway === group.id;
+        tab.setAttribute("aria-selected", selected ? "true" : "false");
+        tab.tabIndex = selected ? 0 : -1;
+      });
+    }
+    if (!sequenceLadder) return;
+    sequenceLadder.innerHTML = "";
+    var currentEntries = group.entries.filter(function (entry) { return entry.seq >= 5; });
+    currentEntries.forEach(function (entry) {
+      var row = create("article", "seq-row");
+      row.style.setProperty("--pathway-accent", group.accent);
+      row.appendChild(create("div", "seq-num", String(entry.seq)));
+      var info = create("div", "seq-info");
+      var heading = create("h3", null, entry.name);
+      if (entry.seq <= 6) heading.appendChild(create("span", "sequence-state", " · code_ready"));
+      info.appendChild(heading);
+      info.appendChild(create("p", null, (entry.abilities || []).join(" · ")));
+      row.appendChild(info);
+      var spirit = create("div", "seq-spirit");
+      spirit.appendChild(create("strong", null, String(entry.spiritMax)));
+      spirit.appendChild(document.createTextNode("灵性上限"));
+      row.appendChild(spirit);
+      sequenceLadder.appendChild(row);
+    });
+    if (sequenceSummary) {
+      sequenceSummary.textContent = group.name + " · 当前展示序列 9–5 · 序列 9–7 playable，序列 6–5 code_ready";
+    }
+    if (focusPanel) sequenceLadder.focus({ preventScroll: true });
+  }
+
+  if (sequenceTabs) {
+    sequenceSets.forEach(function (group) {
+      var tab = create("button", "sequence-tab", group.name);
+      tab.type = "button";
+      tab.role = "tab";
+      tab.dataset.pathway = group.id;
+      tab.setAttribute("aria-controls", "seq-ladder");
+      tab.addEventListener("click", function () { renderSequences(group.id, false); });
+      tab.addEventListener("keydown", function (event) {
+        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+        event.preventDefault();
+        var currentIndex = sequenceSets.findIndex(function (set) { return set.id === activePathway; });
+        var delta = event.key === "ArrowRight" ? 1 : -1;
+        var nextIndex = (currentIndex + delta + sequenceSets.length) % sequenceSets.length;
+        renderSequences(sequenceSets[nextIndex].id, false);
+        var nextTab = sequenceTabs.querySelector('[data-pathway="' + sequenceSets[nextIndex].id + '"]');
+        if (nextTab) nextTab.focus();
+      });
+      sequenceTabs.appendChild(tab);
+    });
+    renderSequences(activePathway, false);
+  }
+
+  /* Roadmap with progressive disclosure */
+  var roadmapRoot = $("#roadmap-track");
+  var futureRoadmapRoot = $("#future-roadmap-track");
+  var roadmap = data.roadmap || [];
+  var stateText = { done: "已完成", active: "进行中", planned: "规划", future: "远期" };
+  roadmap.forEach(function (milestone, index) {
+    if (index < 4 && roadmapRoot) {
+      var card = create("article", "rm-card " + milestone.state);
+      var head = create("div", "rm-card-head");
+      head.appendChild(create("span", "rm-badge", milestone.id));
+      head.appendChild(create("span", "rm-state", stateText[milestone.state] || milestone.state));
+      card.appendChild(head);
+      card.appendChild(create("h3", null, milestone.title));
+      card.appendChild(create("p", null, milestone.summary));
+      var details = create("details");
+      details.appendChild(create("summary", null, "查看关键范围"));
+      var list = create("ul");
+      (milestone.points || []).slice(0, 5).forEach(function (point) {
+        list.appendChild(create("li", null, point));
+      });
+      details.appendChild(list);
+      card.appendChild(details);
+      roadmapRoot.appendChild(card);
+    } else if (futureRoadmapRoot) {
+      var row = create("div", "future-row");
+      row.appendChild(create("b", null, milestone.id));
+      row.appendChild(create("strong", null, milestone.title));
+      row.appendChild(create("span", null, milestone.summary));
+      futureRoadmapRoot.appendChild(row);
+    }
   });
 
-  function iconChar(e) { return (e.name || "?").slice(0, 1); }
+  /* Catalog */
+  var filterGroup = $("#filter-group");
+  var cardsRoot = $("#cards");
+  var searchInput = $("#search");
+  var clearSearch = $("#clear-search");
+  var resultCount = $("#result-count");
+  var visibleCount = $("#visible-count");
+  var loadMore = $("#load-more");
+  var coverageRoot = $("#catalog-coverage");
+  var activeFilter = "all";
+  var visibleLimit = PAGE_SIZE;
+  var filteredEntries = [];
 
-  function render() {
-    if (!cardsEl) return;
-    var kw = (searchEl && searchEl.value.trim().toLowerCase()) || "";
-    var list = entries.filter(function (e) {
-      var okType = activeFilter === "all" || e.type === activeFilter;
-      var hay = [e.id, e.name, e.en, e.summary, (e.tags || []).join(" ")].join(" ").toLowerCase();
-      return okType && (!kw || hay.indexOf(kw) >= 0);
-    });
-    cardsEl.innerHTML = "";
-    if (countEl) countEl.textContent = "共 " + list.length + " 条" + (kw ? "（搜索：" + kw + "）" : "");
-    if (!list.length) { cardsEl.appendChild(el("div", "empty", "没有找到匹配条目。")); return; }
-    list.forEach(function (e, i) {
-      var card = el("article", "card");
-      card.style.animationDelay = Math.min(i * 30, 300) + "ms";
-      card.innerHTML =
-        '<div class="card-head"><div class="icon ' + e.type + '">' + iconChar(e) + '</div>' +
-        '<div><h3>' + e.name + '</h3><p class="tagline">' + (e.en ? e.en + " · " : "") + e.id + '</p></div></div>' +
-        '<p>' + (e.summary || "") + '</p>' +
-        '<div class="meta"><span class="pill type">' + (labels[e.type] || e.type) + '</span>' +
-        (e.tags || []).slice(0, 3).map(function (t) { return '<span class="pill">' + t + '</span>'; }).join("") + '</div>';
-      card.addEventListener("click", function () { openModal(e); });
-      cardsEl.appendChild(card);
+  if (coverageRoot) {
+    [
+      "自动同步",
+      "物品 " + (catalogMeta.registeredItems || 0),
+      "方块 " + (catalogMeta.registeredBlocks || 0),
+      "实体 " + (catalogMeta.registeredEntities || 0),
+      "数据源：" + (catalogMeta.source || "仓库数据")
+    ].forEach(function (label) {
+      coverageRoot.appendChild(create("span", "coverage-chip", label));
     });
   }
-  if (searchEl) searchEl.addEventListener("input", render);
-  render();
 
-  /* ── Modal ── */
+  function entryIcon(entry) {
+    return (entry.name || "?").slice(0, 1);
+  }
+
+  function normalizedSearchText(entry) {
+    return [
+      entry.id,
+      entry.name,
+      entry.en,
+      entry.summary,
+      (entry.tags || []).join(" ")
+    ].join(" ").toLowerCase();
+  }
+
+  function renderCatalog() {
+    if (!cardsRoot) return;
+    var keyword = (searchInput && searchInput.value.trim().toLowerCase()) || "";
+    filteredEntries = entries.filter(function (entry) {
+      var matchesType = activeFilter === "all" || entry.type === activeFilter;
+      return matchesType && (!keyword || normalizedSearchText(entry).indexOf(keyword) >= 0);
+    });
+    cardsRoot.innerHTML = "";
+    var shown = filteredEntries.slice(0, visibleLimit);
+    shown.forEach(function (entry) {
+      var card = create("button", "card");
+      card.type = "button";
+      card.setAttribute("aria-label", "查看 " + entry.name + " 详情");
+      var head = create("div", "card-head");
+      head.appendChild(create("div", "icon " + entry.type, entryIcon(entry)));
+      var title = create("div");
+      title.appendChild(create("h3", null, entry.name));
+      title.appendChild(create("p", "tagline", (entry.en ? entry.en + " · " : "") + entry.id));
+      head.appendChild(title);
+      card.appendChild(head);
+      card.appendChild(create("p", null, entry.summary || ""));
+      var tags = create("div", "meta");
+      tags.appendChild(create("span", "pill type", labels[entry.type] || entry.type));
+      (entry.tags || []).slice(0, 3).forEach(function (tag) {
+        tags.appendChild(create("span", "pill", tag));
+      });
+      card.appendChild(tags);
+      card.addEventListener("click", function () { openModal(entry, card); });
+      cardsRoot.appendChild(card);
+    });
+    if (!shown.length) {
+      cardsRoot.appendChild(create("div", "empty", "没有找到匹配条目。请尝试更短的关键词或切换分类。"));
+    }
+    if (resultCount) {
+      resultCount.textContent = "共 " + filteredEntries.length + " 条结果";
+    }
+    if (visibleCount) {
+      visibleCount.textContent = filteredEntries.length
+        ? "已显示 " + shown.length + " / " + filteredEntries.length
+        : "调整搜索条件后重试";
+    }
+    if (loadMore) {
+      loadMore.hidden = shown.length >= filteredEntries.length;
+      loadMore.textContent = "再加载 " + Math.min(PAGE_SIZE, filteredEntries.length - shown.length) + " 条";
+    }
+    if (clearSearch) clearSearch.hidden = !keyword;
+  }
+
+  var types = ["all"].concat(Object.keys(labels).filter(function (type) {
+    return entries.some(function (entry) { return entry.type === type; });
+  }));
+  if (filterGroup) {
+    types.forEach(function (type) {
+      var count = type === "all"
+        ? entries.length
+        : entries.filter(function (entry) { return entry.type === type; }).length;
+      var button = create("button", "filter");
+      button.type = "button";
+      button.dataset.filter = type;
+      button.setAttribute("aria-pressed", type === "all" ? "true" : "false");
+      button.appendChild(create("span", null, type === "all" ? "全部" : (labels[type] || type)));
+      button.appendChild(create("span", "cnt", String(count)));
+      button.addEventListener("click", function () {
+        activeFilter = type;
+        visibleLimit = PAGE_SIZE;
+        [].forEach.call(filterGroup.children, function (child) {
+          child.setAttribute("aria-pressed", child === button ? "true" : "false");
+        });
+        renderCatalog();
+      });
+      filterGroup.appendChild(button);
+    });
+  }
+  if (searchInput) {
+    searchInput.addEventListener("input", function () {
+      visibleLimit = PAGE_SIZE;
+      renderCatalog();
+    });
+  }
+  if (clearSearch && searchInput) {
+    clearSearch.addEventListener("click", function () {
+      searchInput.value = "";
+      visibleLimit = PAGE_SIZE;
+      renderCatalog();
+      searchInput.focus();
+    });
+  }
+  if (loadMore) {
+    loadMore.addEventListener("click", function () {
+      visibleLimit += PAGE_SIZE;
+      renderCatalog();
+    });
+  }
+  renderCatalog();
+
+  /* Accessible details dialog */
   var modal = $("#modal");
-  function openModal(e) {
-    if (!modal) return;
-    $("#modal-icon").className = "icon lg " + e.type;
-    $("#modal-icon").textContent = iconChar(e);
-    $("#modal-title").textContent = e.name + (e.en ? "  ·  " + e.en : "");
-    $("#modal-id").textContent = e.id;
-    $("#modal-tags").innerHTML = '<span class="pill type">' + (labels[e.type] || e.type) + '</span>' +
-      (e.tags || []).map(function (t) { return '<span class="pill">' + t + '</span>'; }).join("");
-    $("#modal-long").innerHTML = e.long || e.summary || "";
-    var ul = $("#modal-details"); ul.innerHTML = "";
-    (e.details || []).forEach(function (d) { ul.appendChild(el("li", null, "<strong>" + d[0] + "</strong><span>" + d[1] + "</span>")); });
+  var modalCard = modal ? $(".modal-card", modal) : null;
+  var modalTrigger = null;
+  function openModal(entry, trigger) {
+    if (!modal || !modalCard) return;
+    modalTrigger = trigger;
+    var icon = $("#modal-icon");
+    icon.className = "icon lg " + entry.type;
+    icon.textContent = entryIcon(entry);
+    setText("#modal-title", entry.name + (entry.en ? " · " + entry.en : ""));
+    setText("#modal-id", entry.id);
+    var tags = $("#modal-tags");
+    tags.innerHTML = "";
+    tags.appendChild(create("span", "pill type", labels[entry.type] || entry.type));
+    (entry.tags || []).forEach(function (tag) {
+      tags.appendChild(create("span", "pill", tag));
+    });
+    var modalLong = $("#modal-long");
+    if (entry.long) {
+      modalLong.innerHTML = entry.long;
+    } else {
+      modalLong.textContent = entry.summary || "";
+    }
+    var details = $("#modal-details");
+    details.innerHTML = "";
+    (entry.details || []).forEach(function (detail) {
+      var item = create("li");
+      item.appendChild(create("strong", null, detail[0]));
+      item.appendChild(create("span", null, detail[1]));
+      details.appendChild(item);
+    });
     modal.hidden = false;
-    document.body.style.overflow = "hidden";
+    document.body.classList.add("modal-open");
+    modalCard.focus();
   }
-  function closeModal() { if (modal) { modal.hidden = true; document.body.style.overflow = ""; } }
-  if (modal) modal.addEventListener("click", function (ev) { if (ev.target.hasAttribute("data-close")) closeModal(); });
-  document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") closeModal(); });
+  function closeModal() {
+    if (!modal || modal.hidden) return;
+    modal.hidden = true;
+    document.body.classList.remove("modal-open");
+    if (modalTrigger) modalTrigger.focus();
+    modalTrigger = null;
+  }
+  if (modal) {
+    modal.addEventListener("click", function (event) {
+      if (event.target.hasAttribute("data-close")) closeModal();
+    });
+  }
 
-  /* ── Reveal on scroll ── */
-  var reveals = [].slice.call(document.querySelectorAll(".reveal"));
-  if ("IntersectionObserver" in window) {
-    var io = new IntersectionObserver(function (ents) {
-      ents.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
-    }, { threshold: 0.08 });
-    reveals.forEach(function (r) { io.observe(r); });
-  } else reveals.forEach(function (r) { r.classList.add("in"); });
-
-  /* ── 灵界粒子背景 ── */
-  var canvas = $("#fog-canvas");
-  if (canvas && innerWidth > 620 && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    var ctx = canvas.getContext("2d"), W, H, pts = [];
-    function resize() {
-      W = canvas.width = innerWidth; H = canvas.height = innerHeight;
-      var n = Math.min(70, Math.floor(W * H / 22000));
-      pts = []; for (var i = 0; i < n; i++) pts.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .25, vy: (Math.random() - .5) * .25, r: Math.random() * 1.6 + .4 });
+  /* Global keyboard and current-section navigation */
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeModal();
+      setNav(false);
     }
-    function tick() {
-      ctx.clearRect(0, 0, W, H);
-      for (var i = 0; i < pts.length; i++) {
-        var p = pts[i]; p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > W) p.vx *= -1; if (p.y < 0 || p.y > H) p.vy *= -1;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283);
-        ctx.fillStyle = "rgba(212,175,55,.5)"; ctx.fill();
-        for (var j = i + 1; j < pts.length; j++) {
-          var q = pts[j], dx = p.x - q.x, dy = p.y - q.y, d = dx * dx + dy * dy;
-          if (d < 13000) { ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
-            ctx.strokeStyle = "rgba(139,92,246," + (0.10 * (1 - d / 13000)) + ")"; ctx.stroke(); }
-        }
+    if (modal && !modal.hidden && event.key === "Tab") {
+      var focusable = modal.querySelectorAll("button, [href], [tabindex]:not([tabindex='-1'])");
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
-      requestAnimationFrame(tick);
     }
-    addEventListener("resize", resize); resize(); tick();
+  });
+
+  var navLinks = topnav ? [].slice.call(topnav.querySelectorAll("a[href^='#']")) : [];
+  if ("IntersectionObserver" in window && navLinks.length) {
+    var sections = navLinks.map(function (link) {
+      return document.querySelector(link.getAttribute("href"));
+    }).filter(Boolean);
+    var sectionObserver = new IntersectionObserver(function (observations) {
+      observations.forEach(function (observation) {
+        if (!observation.isIntersecting) return;
+        navLinks.forEach(function (link) {
+          link.setAttribute("aria-current", link.getAttribute("href") === "#" + observation.target.id ? "true" : "false");
+        });
+      });
+    }, { rootMargin: "-28% 0px -64% 0px", threshold: 0 });
+    sections.forEach(function (section) { sectionObserver.observe(section); });
+  }
+
+  function restoreHashTarget() {
+    if (!location.hash) return;
+    var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (!target) return;
+    document.documentElement.style.scrollBehavior = "auto";
+    target.scrollIntoView({ block: "start" });
+    requestAnimationFrame(function () {
+      document.documentElement.style.removeProperty("scroll-behavior");
+    });
+  }
+  addEventListener("hashchange", restoreHashTarget);
+  requestAnimationFrame(function () {
+    requestAnimationFrame(restoreHashTarget);
+  });
+
+  /* Lightweight atmosphere; never controls content visibility */
+  var canvas = $("#fog-canvas");
+  if (canvas && innerWidth > 820 && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var context = canvas.getContext("2d");
+    var width;
+    var height;
+    var points = [];
+    function resizeCanvas() {
+      width = canvas.width = innerWidth;
+      height = canvas.height = innerHeight;
+      var count = Math.min(38, Math.floor(width * height / 42000));
+      points = [];
+      for (var index = 0; index < count; index += 1) {
+        points.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - .5) * .18,
+          vy: (Math.random() - .5) * .18,
+          radius: Math.random() * 1.3 + .3
+        });
+      }
+    }
+    function drawFog() {
+      context.clearRect(0, 0, width, height);
+      points.forEach(function (point) {
+        point.x += point.vx;
+        point.y += point.vy;
+        if (point.x < 0 || point.x > width) point.vx *= -1;
+        if (point.y < 0 || point.y > height) point.vy *= -1;
+        context.beginPath();
+        context.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
+        context.fillStyle = "rgba(223,186,67,.48)";
+        context.fill();
+      });
+      requestAnimationFrame(drawFog);
+    }
+    addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+    drawFog();
   }
 })();

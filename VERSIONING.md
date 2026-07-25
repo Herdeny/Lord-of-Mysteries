@@ -34,6 +34,8 @@ Gradle 构建、README、GitHub Pages 和 GitHub Wiki 必须与两者一致。
    python scripts/import_v09_design.py --check
    python scripts/gen_datapack.py --check
    python scripts/build_content_graph.py
+   python scripts/gen_pages_catalog.py --check
+   python scripts/check_pages_layout.py
    python scripts/check_resource_integrity.py
    python scripts/sync_project_metadata.py
    python scripts/sync_project_metadata.py --check
@@ -43,7 +45,7 @@ Gradle 构建、README、GitHub Pages 和 GitHub Wiki 必须与两者一致。
 
 6. 确认 Documentation Consistency、Build、CodeQL、Pages 和 Wiki Sync 均通过。
 
-CI 会校验 v0.9 设计源、元数据、生成资源、内容图、资源完整性、合同、测试和专用服务器冒烟；任一门禁失败时禁止合并。
+CI 会校验 v0.9 设计源、元数据、生成资源、内容图、Pages 注册图鉴/布局契约、资源完整性、合同、测试和专用服务器冒烟；任一门禁失败时禁止合并。
 
 ## 发布时间
 

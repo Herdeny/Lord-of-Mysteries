@@ -1,6 +1,6 @@
 # 专用服务器与多人一致性验证
 
-> 当前版本：0.9.18-1.20.1 · Capability schema 23 · 内容 schema v4 · 网络协议 12
+> 当前版本：0.9.19-1.20.1 · Capability schema 23 · 内容 schema v4 · 网络协议 12
 
 ## 自动冒烟
 

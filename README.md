@@ -10,10 +10,10 @@
 > 在未知中承担风险，通过扮演消化力量，逐步成为非凡者。
 
 <!-- project-status:start -->
-> - 当前版本：**`0.9.18-1.20.1`**
-> - 开发阶段：**v0.9 M2 自动化收尾与 M3 五途径序列 6–5 首批实现**（M2）
+> - 当前版本：**`0.9.19-1.20.1`**
+> - 开发阶段：**v0.9 M2 真人验收准备与 M3 五途径序列 6–5 扩展**（M2）
 > - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-> - 最后更新：**2026-07-24 18:11:16 UTC+01:00**（`2026-07-24T17:11:16Z`）
+> - 最后更新：**2026-07-25 08:39:35 UTC+01:00**（`2026-07-25T07:39:35Z`）
 <!-- project-status:end -->
 
 Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 Minecraft 生存冒险 Mod。
@@ -31,6 +31,7 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 
 🎮 [开始游玩](docs/GETTING_STARTED.md) ·
 📖 [在线资料站](https://herdeny.github.io/Lord-of-Mysteries/) ·
+🔎 [可搜索图鉴](https://herdeny.github.io/Lord-of-Mysteries/#catalog) ·
 🧭 [GitHub Wiki](https://github.com/Herdeny/Lord-of-Mysteries/wiki) ·
 🗺️ [开发路线](ROADMAP.md) ·
 🤝 [参与贡献](CONTRIBUTING.md) ·
@@ -49,10 +50,11 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 
 ## 当前可玩内容
 
-当前五条途径的序列 9–7 保持完整可玩纵向路径；0.9.18 进一步接入序列 6–5 的
+当前五条途径的序列 9–7 保持完整可玩纵向路径；0.9.18 接入序列 6–5 的
 **10 瓶可炼制魔药、20 项服务端主副能力、20 项扮演事件和特性守恒进阶**。序列 6–5
 目前标记为 `code_ready` 首批适配，而非完整原典实现：专属晋升仪式、形体记录、永久秘偶、
-共享梦境、空间标记及完整能力组仍在 M3 后续门禁中。
+共享梦境、空间标记及完整能力组仍在 M3 后续门禁中。0.9.19 不虚增玩法完成度，集中修复并重构
+在线资料站的信息架构、移动端排版、锚点直达、图鉴分批加载与键盘可访问性。
 
 按 v0.9 路线，M0/M1 的机器可验证实施门禁已经关闭，当前正式里程碑仍是 **M2 调查与生活**：
 自动化实施范围已包含正式三街区、三职业经济、神秘暴露、12 项周指令、五档组织立场与
@@ -61,7 +63,7 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 当前已经建立 schema v4 元数据、126 节点/188 关系内容图、Capability schema 23、
 分层非凡特性和扮演 v2 身份区分；0.9.1 补齐正式 DataFix、迁移前世界快照、
 原始 NBT 备份和未知/非法 ID 孤儿保留，0.9.2 完成四区 dirty mask 与生命周期摘要同步，
-0.9.3 完成受限回滚、双启动专服矩阵与 M1 两小时玩法闭环；0.9.4–0.9.17 逐步完成服务端调查板、证据/推理/假说/复盘、动态案件、实体取证、组织轮值、多人隔离与跨案件联系人记忆；0.9.18 把旧前哨升级为三座正式街区，扩充案件池和组织立场，加入三职业经济、神秘暴露与六类世界事件，并启动五途径序列 6–5 首批实现。网络协议保持 12，当前正式里程碑为 M2。
+0.9.3 完成受限回滚、双启动专服矩阵与 M1 两小时玩法闭环；0.9.4–0.9.17 逐步完成服务端调查板、证据/推理/假说/复盘、动态案件、实体取证、组织轮值、多人隔离与跨案件联系人记忆；0.9.18 把旧前哨升级为三座正式街区，扩充案件池和组织立场，加入三职业经济、神秘暴露与六类世界事件，并启动五途径序列 6–5 首批实现；0.9.19 重构 Pages 为面向玩家的渐进式资料站。网络协议保持 12，当前正式里程碑为 M2。
 
 1. 首次登录取得调查手稿与罗盘；使用 `/pm next` 查看当前主线，遗失时用 `/pm recover` 自助补回。
 2. 右键罗盘或输入 `/pm camp` 前往世界种子确定的新手营地，取得专用补给桶和随机线索箱。
@@ -86,6 +88,16 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 21. 用 `/pm case rotation response` 查看任务，前往匹配组织 NPC 完成简报，再返回真实调查板执行 `/pm case rotation response submit`；`contacts` 显示四名联系人态度与记忆摘要，`contacts history` 可查看最近八条关系事件，无法继续时可在调查板 `response abandon` 释放任务槽。
 22. 在正式报社、事务所或警局服务位使用 `/pm life work press|agency|patrol` 完成每日一班工作；三职业共享日限，工资、压力和神秘暴露受当前世界事件修正。
 23. 完成任一途径序列 7 的 100% 消化后，可按 [`docs/M3_LAUNCH_PATHWAYS.md`](docs/M3_LAUNCH_PATHWAYS.md) 炼制序列 6、再炼制序列 5；`Y` 与 `U` 始终只向服务端发送主/副意图。
+
+### v0.9.19 Pages 资料站体验重构
+
+- 重排首页为“开始游玩 → 核心循环 → 真实进度 → 五途径 → 序列浏览器 → 图鉴 → 路线 → 资源”，首屏不再堆叠全部说明。
+- 修复从 Wiki、README 或外部链接直达 `#catalog` 时整个图鉴保持透明，以及动态渲染后锚点位置漂移的问题。
+- 序列由 30 行连续长列表改为五途径 Tab 浏览器，每次只展示一条途径的序列 9–5，并支持左右方向键切换。
+- 图鉴保留 173 条完整数据，但首批只渲染 24 条；搜索、分类和“加载更多”均显示真实结果数，不再一次创建全部卡片。
+- 手机端采用可收起导航、横向分类筛选、单列图鉴和底部详情面板；390px 宽度验证无横向页面溢出。
+- 新增 `scripts/check_pages_layout.py`，CI 固定检查唯一 ID、本地静态资源、版本缓存、响应式断点、锚点恢复、`hidden` 语义、分批加载与弹窗焦点恢复。
+- 玩法、注册内容、测试数量和 M2/M3 完成度保持 0.9.18 的真实实现基线；本版不把网站重构计为玩法完成。
 
 ### v0.9.18 M2 自动化收尾与 M3 五途径序列 6–5 首批实现
 
@@ -562,6 +574,7 @@ python scripts/check_m2_investigation.py
 python scripts/check_m3_foundation.py
 python scripts/check_resource_integrity.py
 python scripts/gen_pages_catalog.py --check
+python scripts/check_pages_layout.py
 python scripts/check_release_timestamp.py
 python scripts/check_github_text_encoding.py --repository Herdeny/Lord-of-Mysteries
 ```
@@ -579,11 +592,13 @@ python scripts/import_v09_design.py --check
 python scripts/gen_datapack.py --check
 python scripts/build_content_graph.py
 python scripts/check_resource_integrity.py
+python scripts/gen_pages_catalog.py --check
+python scripts/check_pages_layout.py
 python scripts/check_github_text_encoding.py --repository Herdeny/Lord-of-Mysteries
 python scripts/sync_project_metadata.py --check
 ```
 
-CI 会检查 v0.9 设计源、元数据同步、126 节点/188 关系内容图、M1/M2/M3 合同、调查/推理/假说/动态案件、12 项周指令、组织立场、跨队隔离、正式街区 v2、三职业经济、神秘暴露、六种世界事件、Pages 注册图鉴、统一资源完整性、GitHub Issue/评论编码和存档回滚，运行 340 项 JUnit、9 项 Forge GameTest，并连续两次启动 Forge 专用服务器验证同一世界重启；`wiki/` 内容变化后自动发布 GitHub Wiki。完整规则见
+CI 会检查 v0.9 设计源、元数据同步、126 节点/188 关系内容图、M1/M2/M3 合同、调查/推理/假说/动态案件、12 项周指令、组织立场、跨队隔离、正式街区 v2、三职业经济、神秘暴露、六种世界事件、Pages 注册图鉴与布局契约、统一资源完整性、GitHub Issue/评论编码和存档回滚，运行 340 项 JUnit、9 项 Forge GameTest，并连续两次启动 Forge 专用服务器验证同一世界重启；`wiki/` 内容变化后自动发布 GitHub Wiki。完整规则见
 [`VERSIONING.md`](VERSIONING.md)。
 
 ## 项目结构

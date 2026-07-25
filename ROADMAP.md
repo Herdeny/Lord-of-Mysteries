@@ -215,7 +215,7 @@
 | structure_specs | 32 |
 | weather_anomaly_specs | 18 |
 
-### repository_evidence_at_0.9.18
+### repository_evidence_at_0.9.19
 
 | 指标 | 数量 |
 |---|---:|
@@ -235,6 +235,8 @@
 | registered_items | 85 |
 | registered_blocks | 5 |
 | registered_entities | 8 |
+| pages_initial_catalog_batch | 24 |
+| pages_layout_contract_checks | 1 |
 
 
 路线数据的唯一来源是 `roadmap.json`。修改后运行：

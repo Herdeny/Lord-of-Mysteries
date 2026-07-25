@@ -121,6 +121,9 @@ jobs:
       - name: Verify generated Pages catalog
         run: python3 scripts/gen_pages_catalog.py --check
 
+      - name: Verify Pages layout contract
+        run: python3 scripts/check_pages_layout.py
+
       - name: Verify resource integrity
         run: python3 scripts/check_resource_integrity.py
 

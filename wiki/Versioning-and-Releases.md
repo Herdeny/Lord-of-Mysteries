@@ -1,10 +1,10 @@
 # 版本与发布
 
 <!-- project-status:start -->
-- 当前版本：**`0.9.18-1.20.1`**
-- 开发阶段：**v0.9 M2 自动化收尾与 M3 五途径序列 6–5 首批实现**（M2）
+- 当前版本：**`0.9.19-1.20.1`**
+- 开发阶段：**v0.9 M2 真人验收准备与 M3 五途径序列 6–5 扩展**（M2）
 - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-- 最后更新：**2026-07-24 18:11:16 UTC+01:00**（`2026-07-24T17:11:16Z`）
+- 最后更新：**2026-07-25 08:39:35 UTC+01:00**（`2026-07-25T07:39:35Z`）
 <!-- project-status:end -->
 
 ## 版本格式
@@ -33,6 +33,7 @@ python scripts/import_v09_design.py --check
 python scripts/gen_datapack.py --check
 python scripts/build_content_graph.py
 python scripts/gen_pages_catalog.py --check
+python scripts/check_pages_layout.py
 python scripts/check_resource_integrity.py
 python scripts/sync_project_metadata.py --check
 ```
@@ -60,5 +61,6 @@ python scripts/check_release_timestamp.py --require-head
 - `ROADMAP.md`、README 路线表、Wiki 里程碑和 Pages 路线卡由 `roadmap.json` 自动生成。
 - Pages 工作流发布 `docs/`。
 - Pages 图鉴由注册表和双语文件生成；手工条目只能补充能力/系统说明，不能替代 85 物品、5 方块、8 实体覆盖检查。
+- Pages 布局契约固定检查锚点恢复、24 条分批渲染、响应式断点、`hidden` 语义、ARIA 状态与弹窗焦点恢复。
 - Wiki Sync 工作流把主仓库 `wiki/` 同步到 GitHub Wiki 独立仓库。
 - Build 从 `project-status.json` 读取 Mod 版本。
