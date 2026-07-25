@@ -222,6 +222,57 @@ def main():
     require(acting_count == launch["acting_event_count"],
             "M3 acting event count drifted")
 
+    rituals = contract["sequence_five_rituals"]
+    ritual_service = source(
+        JAVA / "ritual" / "SequenceFiveAdvancementRitual.java")
+    ritual_logic = source(
+        JAVA / "ritual" / "SequenceFiveRitualLogic.java")
+    altar = source(JAVA / "ritual" / "RitualAltarBlock.java")
+    potion_rules = source(JAVA / "potion" / "PotionAdvancementRules.java")
+    require(rituals["target_sequence"] == 5
+            and "targetSequence == 5" in potion_rules
+            and "RITUAL_REQUIRED" in potion_rules,
+            "sequence 5 no longer requires a completed ritual")
+    require(f'ModItems.{rituals["altar"].upper()}.get()'
+            in source(JAVA / "registry" / "ModItems.java")
+            or "RITUAL_ALTAR_ITEM" in source(
+                    JAVA / "registry" / "ModItems.java"),
+            "ritual altar item is missing")
+    require("SequenceFiveAdvancementRitual.interact" in altar
+            and "player.isShiftKeyDown()" in altar,
+            "ritual altar no longer exposes inspect/commit interaction")
+    require(f'literal("{rituals["guide_command"]}")' in commands
+            and "SequenceFiveAdvancementRitual.showGuide" in commands,
+            "sequence-5 ritual guide command is missing")
+    require(not rituals["solo_supported"]
+            or "supporters" in ritual_logic
+            and "supporters" in ritual_service,
+            "solo ritual stability no longer supports optional helpers")
+    require(f"Math.min({rituals['supporter_cap']}"
+            in ritual_service,
+            "ritual supporter cap drifted")
+    require(
+        f"clamp(worldEventBonus, 0f, "
+        f"{rituals['world_event_bonus']:.2f}f)" in ritual_logic,
+        "ritual-resonance bonus cap drifted")
+    require(not rituals["failure_consumes_materials"]
+            or "consumeCosts(player, costs(type))" in ritual_service,
+            "failed committed rituals no longer consume prepared materials")
+    require(not rituals["failure_adds_pressure_and_pollution"]
+            or ("insanityPressure + 12f" in ritual_service
+                and "pollution + 6f" in ritual_service
+                and "insanityPressure + 20f" in ritual_service
+                and "pollution + 15f" in ritual_service),
+            "ritual failure consequences drifted")
+    for pathway, terms in rituals["pathways"].items():
+        require(f'{terms["type"]}("{pathway}")' in ritual_service,
+                f"{pathway} ritual type is missing")
+        require(f'"{rituals["knowledge_prefix"]}"' in ritual_service
+                or rituals["knowledge_prefix"] in ritual_service,
+                "ritual completion proof prefix drifted")
+        require(terms["support_focus"].upper() in ritual_service,
+                f"{pathway} ritual support focus is missing")
+
     validation = contract["validation"]
     game_tests = source(
         JAVA / "gametest" / "PlayerPersistenceGameTests.java")
@@ -250,8 +301,9 @@ def main():
         "shared daily limits, schema-23 exposure persistence and repair, "
         "six deterministic restart-persistent world events, event-sensitive "
         "economy, newspaper and diagnostics visibility, spirituality and "
-        "ritual modifiers, five launch pathways at sequences 6-5, "
-        "nine GameTests, and dedicated restart validation"
+        "ritual modifiers, five launch pathways at sequences 6-5, five "
+        "dedicated sequence-5 rituals with solo and supporter paths, "
+        "ten GameTests, and dedicated restart validation"
     )
 
 

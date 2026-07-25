@@ -3,6 +3,7 @@ package top.aurora.lordofmysteries.ritual;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -35,6 +36,13 @@ public final class RitualAltarBlock extends BaseEntityBlock {
         if (level.isClientSide()) return InteractionResult.SUCCESS;
 
         ItemStack held = player.getItemInHand(hand);
+        if (level instanceof ServerLevel serverLevel
+                && player instanceof ServerPlayer serverPlayer
+                && SequenceFiveAdvancementRitual.isSequenceFivePotion(held)) {
+            return SequenceFiveAdvancementRitual.interact(
+                    serverLevel, pos, serverPlayer, held,
+                    player.isShiftKeyDown());
+        }
         if (!held.isEmpty() && altar.insert(held, player)) {
             player.sendSystemMessage(Component.translatable(
                     "message.lord_of_mysteries.ritual.material_added"));

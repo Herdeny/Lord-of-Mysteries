@@ -37,6 +37,7 @@ import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.registry.ModItems;
+import top.aurora.lordofmysteries.ritual.SequenceFiveAdvancementRitual;
 import top.aurora.lordofmysteries.commission.CaseAnalysisService;
 import top.aurora.lordofmysteries.commission.CaseHypothesisService;
 import top.aurora.lordofmysteries.commission.CaseHypothesisStance;
@@ -102,6 +103,9 @@ public final class ProjectMysteryCommands {
                                         IntegerArgumentType.getInteger(context, "chapter")))))
                 .then(Commands.literal("status").executes(context ->
                         showStatus(context.getSource().getPlayerOrException())))
+                .then(Commands.literal("ritual").executes(context ->
+                        SequenceFiveAdvancementRitual.showGuide(
+                                context.getSource().getPlayerOrException())))
                 .then(Commands.literal("reflect").executes(context ->
                         reflect(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("camp").executes(context -> {

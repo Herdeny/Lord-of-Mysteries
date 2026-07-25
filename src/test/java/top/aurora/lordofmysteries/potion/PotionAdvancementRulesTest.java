@@ -1,6 +1,7 @@
 package top.aurora.lordofmysteries.potion;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,22 @@ class PotionAdvancementRulesTest {
         assertFalse(PotionAdvancementRules.canAdvance(SEER, 8, 99.9f, SEER, 7));
         assertTrue(PotionAdvancementRules.canAdvance(SEER, 8, 100f, SEER, 7));
         assertFalse(PotionAdvancementRules.canAdvance(SEER, 9, 100f, SEER, 7));
+    }
+
+    @Test
+    void sequenceFiveRequiresMatchingCompletedRitual() {
+        assertEquals(PotionAdvancementRules.Eligibility.DIGESTION_INCOMPLETE,
+                PotionAdvancementRules.evaluate(
+                        SEER, 6, 99.9f, SEER, 5, true));
+        assertEquals(PotionAdvancementRules.Eligibility.RITUAL_REQUIRED,
+                PotionAdvancementRules.evaluate(
+                        SEER, 6, 100f, SEER, 5, false));
+        assertEquals(PotionAdvancementRules.Eligibility.ALLOWED,
+                PotionAdvancementRules.evaluate(
+                        SEER, 6, 100f, SEER, 5, true));
+        assertEquals(PotionAdvancementRules.Eligibility.INCOMPATIBLE,
+                PotionAdvancementRules.evaluate(
+                        SPECTATOR, 6, 100f, SEER, 5, true));
     }
 }
 

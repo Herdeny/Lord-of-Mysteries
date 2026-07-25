@@ -9,6 +9,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.RegisterGameTestsEvent;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
@@ -39,6 +41,8 @@ import top.aurora.lordofmysteries.commission.InvestigationBoardService;
 import top.aurora.lordofmysteries.registry.ModBlocks;
 import top.aurora.lordofmysteries.registry.ModEntities;
 import top.aurora.lordofmysteries.registry.ModItems;
+import top.aurora.lordofmysteries.ritual.RitualStructureLogic;
+import top.aurora.lordofmysteries.ritual.SequenceFiveAdvancementRitual;
 
 @PrefixGameTestTemplate(false)
 public final class PlayerPersistenceGameTests {
@@ -307,6 +311,70 @@ public final class PlayerPersistenceGameTests {
     }
 
     @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void sequenceFiveRitualRequiresPhysicalCommitAndPersists(
+            GameTestHelper helper) {
+        BlockPos altar = helper.absolutePos(new BlockPos(4, 8, 4));
+        helper.getLevel().setBlockAndUpdate(
+                altar, ModBlocks.RITUAL_ALTAR.get().defaultBlockState());
+        for (RitualStructureLogic.Offset offset
+                : RitualStructureLogic.circleOffsets(3)) {
+            helper.getLevel().setBlockAndUpdate(
+                    altar.offset(offset.x(), 0, offset.z()),
+                    ModBlocks.RITUAL_CHALK_MARK.get().defaultBlockState());
+        }
+        helper.getLevel().setBlockAndUpdate(
+                altar.offset(0, 0, 2), Blocks.WHITE_BED.defaultBlockState());
+        helper.assertTrue(helper.getLevel().getBlockState(
+                        altar.offset(0, 0, 2)).is(BlockTags.BEDS),
+                "spectator ritual altar must have a physical bed nearby");
+
+        ServerPlayer player = createPlayer(helper, "sequence-five-ritual");
+        player.setPos(altar.getX() + 0.5d, altar.getY() + 1d,
+                altar.getZ() + 0.5d);
+        player.getInventory().add(new ItemStack(
+                ModItems.WHITE_CANDLE.get(), 2));
+        player.getInventory().add(new ItemStack(
+                ModItems.DREAM_SCALE_FRAGMENT.get()));
+        PlayerMysteryData data = MysteryCapability.get(player);
+        data.pathway = ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID, "spectator");
+        data.sequence = 6;
+        data.digestion = 100f;
+        ItemStack potion = SeerPotionItem.create(
+                ModItems.SPECTATOR_POTION_5.get(), PotionQuality.COMPLETE);
+        ResourceLocation proof = ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID,
+                "knowledge/sequence_five_ritual/spectator");
+
+        SequenceFiveAdvancementRitual.interact(
+                helper.getLevel(), altar, player, potion, false);
+        helper.assertTrue(!data.knownKnowledge.contains(proof),
+                "inspection must never grant ritual proof");
+        helper.assertTrue(player.getInventory().countItem(
+                        ModItems.WHITE_CANDLE.get()) == 2
+                        && player.getInventory().countItem(
+                        ModItems.DREAM_SCALE_FRAGMENT.get()) == 1,
+                "inspection must preserve every prepared ritual material");
+
+        SequenceFiveAdvancementRitual.interact(
+                helper.getLevel(), altar, player, potion, true);
+        helper.assertTrue(data.knownKnowledge.contains(proof),
+                "sneak commit on the physical altar must grant ritual proof");
+        helper.assertTrue(player.getInventory().countItem(
+                        ModItems.WHITE_CANDLE.get()) == 0
+                        && player.getInventory().countItem(
+                        ModItems.DREAM_SCALE_FRAGMENT.get()) == 0,
+                "committed ritual must consume its exact prepared materials");
+
+        MysteryCapability.Provider restored =
+                new MysteryCapability.Provider();
+        restored.deserializeNBT(data.save());
+        helper.assertTrue(restored.getData().knownKnowledge.contains(proof),
+                "physical ritual proof must survive provider restart");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
     public static void fiveM3PathwaysExecuteServerAuthoritativeAbilities(
             GameTestHelper helper) {
         long now = helper.getLevel().getGameTime();
@@ -436,6 +504,13 @@ public final class PlayerPersistenceGameTests {
                 sequenceFivePotion, PotionQuality.COMPLETE);
         sequenceFivePotion.finishUsingItem(
                 sequenceFive, helper.getLevel(), player);
+        helper.assertTrue(data.sequence == 6,
+                pathway + " must reject sequence 5 without its ritual");
+        data.knownKnowledge.add(ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID,
+                "knowledge/sequence_five_ritual/" + pathway));
+        sequenceFivePotion.finishUsingItem(
+                sequenceFive, helper.getLevel(), player);
         helper.assertTrue(data.sequence == 5,
                 pathway + " must advance from sequence 6 to 5");
         helper.assertTrue(data.spiritualityMax == sequenceFiveSpirituality,
@@ -455,5 +530,10 @@ public final class PlayerPersistenceGameTests {
         helper.assertTrue(restoredData.characteristicBundles.equals(
                         data.characteristicBundles),
                 pathway + " characteristic ledger must survive provider restart");
+        helper.assertTrue(restoredData.knownKnowledge.contains(
+                        ResourceLocation.fromNamespaceAndPath(
+                                ProjectMystery.MOD_ID,
+                                "knowledge/sequence_five_ritual/" + pathway)),
+                pathway + " ritual proof must survive provider restart");
     }
 }

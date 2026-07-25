@@ -65,7 +65,7 @@ LOM.seerSequences = [
   { seq: 6, name: "无面人 Faceless", state: "active", spiritMax: 212,
     abilities: ["无面帷幕", "灵性发丝"], desc: "code_ready：服务端伪装窗口与低抗性非玩家束缚；完整外观、姓名和声线同步仍待实现。" },
   { seq: 5, name: "秘偶大师 Marionettist", state: "active", spiritMax: 265,
-    abilities: ["灵体之线", "提线束缚"], desc: "code_ready：显形附近非玩家生灵，并仅束缚低生命非 Boss；永久秘偶系统尚未实现。" },
+    abilities: ["灵体之线", "提线束缚"], desc: "code_ready：需完成夜晚提线仪式；显形附近非玩家生灵，并仅束缚低生命非 Boss。永久秘偶系统尚未实现。" },
   { seq: 4, name: "预言家 Scryer", state: "future", spiritMax: 300,
     abilities: ["强化预言", "命运窥探"], desc: "更高维度的预知。规划中。" },
   { seq: 3, name: "占卜之王 (待定)", state: "future", spiritMax: 380, abilities: ["—"], desc: "高序列，暂未设计。" },
@@ -89,7 +89,7 @@ LOM.spectatorSequences = [
     desc: "code_ready：只催眠低抗性非玩家目标；屏障保护附近玩家并清除混乱与黑暗。" },
   { pathway: "观众", seq: 5, name: "梦境行者 Dreamwalker", state: "active", spiritMax: 258,
     abilities: ["清醒梦演练", "梦境安抚"],
-    desc: "code_ready：恢复自身精神风险并安抚非玩家目标；共享梦境与玩家同意式入梦尚未实现。" }
+    desc: "code_ready：需在床边完成入梦仪式；恢复自身精神风险并安抚非玩家目标。共享梦境与玩家同意式入梦尚未实现。" }
 ];
 
 LOM.hunterSequences = [
@@ -107,7 +107,7 @@ LOM.hunterSequences = [
     desc: "code_ready：标记威胁并让两个非 Boss 怪物互相仇恨；不会控制玩家。" },
   { pathway: "猎人", seq: 5, name: "收割者 Reaper", state: "active", spiritMax: 272,
     abilities: ["焚天之镰", "收割印记"],
-    desc: "code_ready：服务端火焰扇击遵守 PvP 权限，合规目标死亡返还灵性并刷新主能力。" }
+    desc: "code_ready：需在点燃营火旁完成战火仪式；服务端火焰扇击遵守 PvP 权限，合规目标死亡返还灵性并刷新主能力。" }
 ];
 
 LOM.foundationSequences = [
@@ -125,7 +125,7 @@ LOM.foundationSequences = [
     desc: "code_ready：从非玩家目标零和转移一项有益效果，并只回收无主或属于自己的掉落。" },
   { pathway: "偷盗者", seq: 5, name: "窃梦家 Dream Thief", state: "active", spiritMax: 246,
     abilities: ["窃梦", "现实错位"],
-    desc: "code_ready：每名沉睡村民每日无伤提取一次梦鳞碎片，并执行碰撞安全的短距离错位。" },
+    desc: "code_ready：需在沉睡者或夜间床边完成窃梦仪式；每名沉睡村民每日无伤提取一次梦鳞碎片，并执行碰撞安全的短距离错位。" },
   { pathway: "学徒", seq: 9, name: "学徒 Apprentice", state: "active", spiritMax: 115,
     abilities: ["灵性视野", "小空间戏法", "稳定灵墨"],
     desc: "移动短距离掉落物，并把已知稳定知识制作成可交易、可学习的灵墨副本。" },
@@ -140,7 +140,7 @@ LOM.foundationSequences = [
     desc: "code_ready：仅复制受原版代数约束的签名书或已填地图，并提供短时档案工作增益。" },
   { pathway: "学徒", seq: 5, name: "旅行家 Traveler", state: "active", spiritMax: 250,
     abilities: ["旅行家之门", "远门适配"],
-    desc: "code_ready：使用碰撞安全落点短传送，或从主世界返回已生成的雾都前哨。" }
+    desc: "code_ready：需用两个不同磁石罗盘完成启门仪式；使用碰撞安全落点短传送，或从主世界返回已生成的雾都前哨。" }
 ];
 
 /* ── 详细条目（卡片 + 详情弹窗） ── */
@@ -258,10 +258,10 @@ LOM.entries = [
     details: [["周期", "16 个游戏日"], ["事件", "6 种 + 晴朗"], ["保存", "世界 SavedData"], ["连接", "报纸 · /pm servercheck · 工作 · 灵性 · 仪式"], ["庇护", "雾都前哨范围"], ["普通人", "猎巫夜豁免"]],
     long: "事件由世界种子无关的固定日序决定，当前事件和起始日写入 SavedData。浓雾影响户外视野，灵潮提高恢复，仪式共鸣提高仪式评分；血月、注视和猎巫夜对合规非凡者增加压力或暴露，创造/旁观模式及前哨庇护不会被滥罚。" },
   { type: "system", id: "lord_of_mysteries:m3_launch_pathways", name: "M3 五途径序列 6–5", en: "M3 Launch Pathways Sequences 6–5",
-    summary: "新增 10 瓶魔药、10 份序列定义、20 项服务端能力和 20 项扮演事件，形成五途径 7→6→5 代码纵切。",
-    tags: ["系统", "途径", "魔药", "能力", "扮演", "M3", "code_ready"],
-    details: [["途径", "占卜家 · 观众 · 猎人 · 偷盗者 · 学徒"], ["魔药", "10 瓶 · 坩埚代理配方"], ["能力", "20 项 · Y/U"], ["扮演", "20 项"], ["GameTest", "五途径 7→6→5 + 重启"], ["状态", "code_ready · 非完整验收"]],
-    long: "能力拒绝玩家催眠/束缚/窃取，伤害遵循 PvP 权限，Boss 与高抗性目标不受控制；传送检查碰撞，掉落检查 owner，签名书遵循原版代数，窃梦按村民每日限次。序列 5 专属晋升仪式、完整原典能力组、专属生物/材料和四人互补矩阵仍未完成。" },
+    summary: "10 瓶魔药、20 项服务端能力、20 项扮演事件和五种专属仪式形成五途径 7→6→5 代码纵切。",
+    tags: ["系统", "途径", "魔药", "能力", "扮演", "仪式", "M3", "code_ready"],
+    details: [["途径", "占卜家 · 观众 · 猎人 · 偷盗者 · 学徒"], ["魔药", "10 瓶 · 坩埚代理配方"], ["能力", "20 项 · Y/U"], ["扮演", "20 项"], ["仪式", "5 种 · 单人/多人"], ["GameTest", "无证明拒绝 · 7→6→5 · 重启"], ["状态", "code_ready · 非完整验收"]],
+    long: "序列 5 现在要求专属仪式证明，证明绑定玩家和途径并跨重启保存。能力拒绝玩家催眠/束缚/窃取，伤害遵循 PvP 权限，Boss 与高抗性目标不受控制；传送检查碰撞，掉落检查 owner。完整原典能力组、专属生物/最终材料和四人互补矩阵仍未完成。" },
   { type: "system", id: "lord_of_mysteries:tutorial_advancements", name: "教程与晋升成就链", en: "Tutorial and Advancement Chain",
     summary: "二十一段成就覆盖营地抵达、M1 主线、四条预研途径晋升、雾都委托与记者救援。",
     tags: ["系统", "成就", "引导", "M1"],
@@ -280,12 +280,12 @@ LOM.entries = [
   { type: "system", id: "lord_of_mysteries:server_validation", name: "专用服务器与运行诊断", en: "Dedicated Server Validation",
     summary: "用 v0.9 设计源、内容图、玩家自检、合同、完整测试、资源门禁和 CI 专服运行诊断保护现有纵切。",
     tags: ["系统", "专用服务器", "CI", "诊断", "M1"],
-    details: [["诊断", "/pm doctor · /pm servercheck"], ["测试", "340 JUnit · 9 GameTest"], ["协议", "12 · 14 固定消息 ID"], ["资源", "303 JSON · 1343 双语键"], ["内容图", "126 节点 · 188 关系"], ["迁移", "schema 23 快照 · 精确回滚 · 孤儿保留"], ["专服", "连续启动2次 · 种子/marker幂等 · 保存停服"]],
-    long: "Build 工作流在 clean build 后执行 9 项 Forge GameTest、隔离恢复演练和两次 Forge 专用服务器启动。除 M1/M2 生命周期与调查恢复外，后两项分别验证五途径 7→6→5 的精确灵性、两层特性账本、Provider 重启，以及五途径真实能力的状态效果、冷却、精神恢复和无主物归属。" },
+    details: [["诊断", "/pm doctor · /pm servercheck"], ["测试", "345 JUnit · 10 GameTest"], ["协议", "12 · 14 固定消息 ID"], ["资源", "304 JSON · 1374 双语键"], ["内容图", "126 节点 · 188 关系"], ["迁移", "schema 23 快照 · 精确回滚 · 孤儿保留"], ["专服", "连续启动2次 · 种子/marker幂等 · 保存停服"]],
+    long: "Build 工作流在 clean build 后执行 10 项 Forge GameTest、隔离恢复演练和两次 Forge 专用服务器启动。除 M1/M2 生命周期与调查恢复外，M3 场景验证五途径 7→6→5 的精确灵性、两层特性账本、Provider 重启、真实祭坛检查/确认/证明持久化，以及五途径能力的状态效果、冷却、精神恢复和无主物归属。" },
   { type: "system", id: "lord_of_mysteries:resource_integrity", name: "统一资源完整性门禁", en: "Unified Resource Integrity Gate",
     summary: "在 Gradle 与 GitHub Actions 中统一阻止 JSON、双语、模型、纹理和注册资源漂移。",
     tags: ["系统", "资源", "CI", "双语", "稳定性"],
-    details: [["JSON", "303"], ["双语键", "1343 对"], ["静态引用", "514"], ["模型", "90"], ["注册", "85 物品 · 5 方块 · 8 实体"]],
+    details: [["JSON", "304"], ["双语键", "1374 对"], ["静态引用", "523"], ["模型", "90"], ["注册", "85 物品 · 5 方块 · 8 实体"]],
     long: "scripts/check_resource_integrity.py 解析主资源和生成资源，比较 en_us/zh_cn，追踪 Java/JSON 静态翻译引用，验证本命名空间模型/纹理链，并核对注册物的名称、模型与 blockstate。" },
   { type: "system", id: "lord_of_mysteries:occult_handbook", name: "九章神秘学手账", en: "Nine-Chapter Occult Handbook",
     summary: "主动查询式引导系统，按普通人、途径、传闻和未来邀请逐步解锁九章。",
@@ -614,9 +614,9 @@ LOM.entries = [
     long: "以祭坛为中心，在 (±3,0)、(0,±3) 和 (±2,±2) 八个水平偏移位置各放置一个阵纹。祭坛启动时校验全部标记，并在施术期间每 20 tick 复检；任一阵纹断裂都会取消仪式且保留尚未结算的材料。" },
   { type: "block", id: "lord_of_mysteries:ritual_altar", name: "仪式祭坛", en: "Ritual Altar",
     summary: "可交互仪式核心方块，保存材料、主持者、阶段、进度与结算结果。",
-    tags: ["方块", "仪式", "状态机", "M2"],
-    details: [["硬度", "3.0"], ["爆炸抗性", "6.0"], ["结构", "半径3八点阵列"], ["复检", "每20 tick"]],
-    long: "右键投入永燃火柴盒、纯净水×3、青兰花×5和白蜡烛×8，在夜晚晴天空手启动。状态机依次经过 ASSEMBLED、PRIMED、INVOKING 与 RESOLVING；结算综合材料、环境、阵列完整度和主持者资格。结构中途断裂进入 CANCELLED 并保留材料，正常结算后消耗纯净水和青兰花。" },
+    tags: ["方块", "仪式", "状态机", "晋升", "M2", "M3"],
+    details: [["硬度", "3.0"], ["爆炸抗性", "6.0"], ["结构", "半径3八点阵列"], ["净化封印", "空手启动"], ["序列5晋升", "手持魔药检查 · 潜行执行"]],
+    long: "空手交互继续执行永燃火柴盒净化封印；手持五条途径的序列 5 魔药时切换为专属晋升仪式。普通右键只检查环境、材料、消化、协助者和稳定度，潜行右键才消耗材料并结算。两种玩法均由服务端验证，互不串用材料或状态。" },
 
   /* 物品 */
   { type: "item", id: "lord_of_mysteries:spirit_herb", name: "灵性草药", en: "Spirit Herb",
@@ -805,6 +805,31 @@ LOM.entries = [
     details: [["环境", "夜晚 + 晴天"], ["材料", "纯净水×3 · 青色兰花×5 · 白蜡烛×8"],
       ["布局", "祭坛半径3八点粉笔阵列"], ["结果", "完美 / 成功 / 失败 / 严重失败 / 灾变"]],
     long: "完整仪式持续 160 tick。结算分数由材料 40%、环境 20%、阵列 25%、主持者资格 10% 和基础 5% 组成，再叠加服务端小幅扰动。成功为永燃火柴盒写入 sealed 与 seal_quality NBT；失败会增加失控压力或污染，严重结果生成失控体，灾变附带非破坏性爆炸。" },
+  { type: "ritual", id: "lord_of_mysteries:sequence_five_seer", name: "提线晋升仪式", en: "Marionette Thread Advancement",
+    summary: "占卜家途径晋升秘偶大师的夜间露天仪式。",
+    tags: ["仪式", "占卜家", "序列5", "M3"],
+    details: [["环境", "夜晚 · 露天"], ["材料", "白蜡烛×5 · 线×1"], ["协助焦点", "线"], ["证明", "绑定占卜家途径"]],
+    long: "序列 6 无面人满消化后，手持秘偶大师魔药在完整祭坛检查并潜行执行。低风险单人可稳定成功，最多三名潜行手持线的协助者可提高稳定度。" },
+  { type: "ritual", id: "lord_of_mysteries:sequence_five_spectator", name: "入梦晋升仪式", en: "Shared Dream Advancement",
+    summary: "观众途径晋升梦境行者的床边仪式。",
+    tags: ["仪式", "观众", "序列5", "M3"],
+    details: [["环境", "四格内有床"], ["材料", "白蜡烛×2 · 梦鳞碎片×1"], ["协助焦点", "羽毛"], ["证明", "绑定观众途径"]],
+    long: "床作为梦境锚点，梦鳞碎片为单人世界提供可控媒介。协助者自愿潜行手持羽毛参与，不会获得主持者的晋升证明。" },
+  { type: "ritual", id: "lord_of_mysteries:sequence_five_hunter", name: "战火晋升仪式", en: "War-Fire Advancement",
+    summary: "猎人途径晋升收割者的燃烧战利品仪式。",
+    tags: ["仪式", "猎人", "序列5", "M3"],
+    details: [["环境", "四格内点燃营火"], ["材料", "骨头×5 · 烬火蝾螈腺体×1"], ["协助焦点", "盾牌"], ["证明", "绑定猎人途径"]],
+    long: "五份骨质战利品和火焰腺体构成当前可获取的战火献礼。严重失败会让失控灵体突破阵纹，但不会消耗序列 5 魔药。" },
+  { type: "ritual", id: "lord_of_mysteries:sequence_five_thief", name: "窃梦晋升仪式", en: "Dream Theft Advancement",
+    summary: "偷盗者途径晋升窃梦家的沉睡目标仪式。",
+    tags: ["仪式", "偷盗者", "序列5", "M3"],
+    details: [["环境", "沉睡生物或夜晚床铺"], ["材料", "梦鳞碎片×1 · 紫水晶碎片×1"], ["协助焦点", "紫水晶碎片"], ["证明", "绑定偷盗者途径"]],
+    long: "优先使用六格内真实沉睡生物；单人无村民时可在夜晚使用四格内床铺留下的梦境回声，避免世界生成差异造成永久软锁。" },
+  { type: "ritual", id: "lord_of_mysteries:sequence_five_apprentice", name: "启门晋升仪式", en: "Gate-Opening Advancement",
+    summary: "学徒途径晋升旅行家的双空间标记仪式。",
+    tags: ["仪式", "学徒", "序列5", "M3"],
+    details: [["环境", "两个不同磁石罗盘"], ["材料", "星光苔藓×2 · 镜蟹壳×1"], ["协助焦点", "罗盘"], ["证明", "绑定学徒途径"]],
+    long: "服务器比较磁石罗盘的维度和坐标，同一磁石的两个罗盘不能冒充两处空间标记。罗盘只参与校验，不在结算时消耗。" },
 
   { type: "world", id: "abandoned_investigator_camp", name: "废弃调查员营地", en: "Abandoned Investigator Camp",
     summary: "包含确定性新手目标与低概率随机分布的小型营地，是普通人的首小时入口。",

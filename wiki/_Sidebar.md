@@ -29,6 +29,7 @@
 - [偷盗者与学徒序列 8–7](M2-Sequence-8-7-Thief-and-Apprentice)
 - [心理医生与纵火家序列 7](M2-Sequence-7-Psychiatrist-and-Pyromaniac)
 - [M3 首发五途径序列 6–5](M3-Launch-Pathways)
+- [M3 序列 5 专属晋升仪式](M3-Sequence-5-Advancement-Rituals)
 
 ### 开发与发布
 

@@ -1,0 +1,23 @@
+{
+  "parent": "lord_of_mysteries:root",
+  "display": {
+    "icon": { "item": "lord_of_mysteries:ritual_altar" },
+    "title": {
+      "translate": "advancement.lord_of_mysteries.sequence_five_ritual.title"
+    },
+    "description": {
+      "translate": "advancement.lord_of_mysteries.sequence_five_ritual.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "ritual": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 500
+  }
+}

@@ -25,6 +25,7 @@ import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerFeedback;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
+import top.aurora.lordofmysteries.ritual.SequenceFiveAdvancementRitual;
 
 public final class M2PathwayPotionItem extends Item {
 
@@ -111,15 +112,13 @@ public final class M2PathwayPotionItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide()) {
             PlayerMysteryData data = MysteryCapability.get(player);
-            if (!canAdvance(data)) {
-                String key = targetSequence < 9
-                        && pathway.id().equals(data.pathway)
-                        && data.sequence == targetSequence + 1
-                        && data.digestion < 100f
-                        ? "message.lord_of_mysteries.potion.digestion_incomplete"
-                        : "message.lord_of_mysteries.potion.incompatible";
+            PotionAdvancementRules.Eligibility eligibility =
+                    eligibility(data);
+            if (eligibility != PotionAdvancementRules.Eligibility.ALLOWED) {
                 PlayerFeedback.send(player,
-                        Component.translatable(key, targetSequence));
+                        Component.translatable(
+                                PotionAdvancementRules.messageKey(eligibility),
+                                targetSequence));
                 return InteractionResultHolder.fail(stack);
             }
         }
@@ -133,7 +132,8 @@ public final class M2PathwayPotionItem extends Item {
         if (!(livingEntity instanceof ServerPlayer player)) return stack;
 
         PlayerMysteryData data = MysteryCapability.get(player);
-        if (!canAdvance(data)) return stack;
+        if (eligibility(data)
+                != PotionAdvancementRules.Eligibility.ALLOWED) return stack;
 
         boolean firstPotion = data.pathway == null;
         PotionQuality quality = SeerPotionItem.getQuality(stack);
@@ -223,13 +223,16 @@ public final class M2PathwayPotionItem extends Item {
         }
     }
 
-    private boolean canAdvance(PlayerMysteryData data) {
-        return PotionAdvancementRules.canAdvance(
+    private PotionAdvancementRules.Eligibility eligibility(
+            PlayerMysteryData data) {
+        return PotionAdvancementRules.evaluate(
                 data.pathway == null ? null : data.pathway.toString(),
                 data.sequence,
                 data.digestion,
                 pathway.id().toString(),
-                targetSequence);
+                targetSequence,
+                SequenceFiveAdvancementRitual.hasCompleted(
+                        data, pathway.id()));
     }
 
     private static ResourceLocation id(String path) {
@@ -270,5 +273,7 @@ public final class M2PathwayPotionItem extends Item {
         tooltip.add(Component.translatable(
                 "tooltip.lord_of_mysteries.potion.warning")
                 .withStyle(ChatFormatting.DARK_RED));
+        SequenceFiveAdvancementRitual.appendPotionTooltip(
+                targetSequence, tooltip);
     }
 }

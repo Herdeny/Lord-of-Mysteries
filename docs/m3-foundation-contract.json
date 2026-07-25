@@ -124,8 +124,47 @@
       }
     }
   },
+  "sequence_five_rituals": {
+    "target_sequence": 5,
+    "altar": "ritual_altar",
+    "interaction": "hold_potion_then_sneak_use",
+    "guide_command": "ritual",
+    "knowledge_prefix": "knowledge/sequence_five_ritual/",
+    "solo_supported": true,
+    "supporter_cap": 3,
+    "world_event_bonus": 0.1,
+    "failure_consumes_materials": true,
+    "failure_adds_pressure_and_pollution": true,
+    "pathways": {
+      "seer": {
+        "type": "MARIONETTE",
+        "environment": "open_night_sky",
+        "support_focus": "string"
+      },
+      "spectator": {
+        "type": "DREAMWALKER",
+        "environment": "near_bed",
+        "support_focus": "feather"
+      },
+      "hunter": {
+        "type": "REAPER",
+        "environment": "near_lit_campfire",
+        "support_focus": "shield"
+      },
+      "thief": {
+        "type": "DREAM_THIEF",
+        "environment": "sleeping_witness_or_night_bed",
+        "support_focus": "amethyst_shard"
+      },
+      "apprentice": {
+        "type": "TRAVELER",
+        "environment": "two_distinct_lodestone_compasses",
+        "support_focus": "compass"
+      }
+    }
+  },
   "validation": {
-    "game_tests": 9,
+    "game_tests": 10,
     "requires_restart_matrix": true,
     "behavior_test_classes": [
       "CityEconomyPolicyTest",
@@ -135,7 +174,9 @@
       "MistCityWorldEventModifiersTest",
       "MistCityWorldEventPlayerEffectsTest",
       "M3LaunchAbilityLogicTest",
-      "CrucibleRecipeLogicTest"
+      "CrucibleRecipeLogicTest",
+      "SequenceFiveRitualLogicTest",
+      "PotionAdvancementRulesTest"
     ]
   },
   "translation_keys": [
@@ -157,6 +198,16 @@
     "exposure.lord_of_mysteries.band.watched",
     "exposure.lord_of_mysteries.band.exposed",
     "message.lord_of_mysteries.newspaper.world_event",
-    "message.lord_of_mysteries.newspaper.exposure"
+    "message.lord_of_mysteries.newspaper.exposure",
+    "message.lord_of_mysteries.potion.sequence_five_ritual_required",
+    "tooltip.lord_of_mysteries.potion.sequence_five_ritual",
+    "message.lord_of_mysteries.sequence_five_ritual.ready",
+    "message.lord_of_mysteries.sequence_five_ritual.commit",
+    "message.lord_of_mysteries.sequence_five_ritual.guide.status",
+    "message.lord_of_mysteries.sequence_five_ritual.guide.controls",
+    "message.lord_of_mysteries.sequence_five_ritual.success",
+    "message.lord_of_mysteries.sequence_five_ritual.failure",
+    "advancement.lord_of_mysteries.sequence_five_ritual.title",
+    "advancement.lord_of_mysteries.sequence_five_ritual.description"
   ]
 }

@@ -1,10 +1,10 @@
 # 开发状态
 
 <!-- project-status:start -->
-- 当前版本：**`0.9.19-1.20.1`**
-- 开发阶段：**v0.9 M2 真人验收准备与 M3 五途径序列 6–5 扩展**（M2）
+- 当前版本：**`0.9.20-1.20.1`**
+- 开发阶段：**v0.9 M2 真人验收准备与 M3 序列 5 专属晋升仪式**（M2）
 - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-- 最后更新：**2026-07-25 08:41:31 UTC+01:00**（`2026-07-25T07:41:31Z`）
+- 最后更新：**2026-07-25 13:27:22 UTC+01:00**（`2026-07-25T12:27:22Z`）
 <!-- project-status:end -->
 
 ## 里程碑
@@ -40,7 +40,7 @@
 | 内容图 | 126 节点、188 关系、6 类报告 | verified |
 | 玩家迁移 | schema 0/15–22→23 DataFix、世界快照、精确恢复、原始 NBT 备份与孤儿保留 | verified |
 | 状态同步 | 四区 dirty mask、生命周期核心摘要、5 秒校正、协议 12 与调查/证据/推理/假说快照 | code_ready |
-| 生命周期回归 | 340 JUnit、9 Forge GameTest、隔离回滚与两次专服启动矩阵 | verified automation |
+| 生命周期回归 | 345 JUnit、10 Forge GameTest、隔离回滚与两次专服启动矩阵 | verified automation |
 | M2 调查板 | 分页案件、四案证据档案、19 条稳定关系、三阶段推理、下一步、关键物品恢复与服务端邻近校验 | code_ready |
 | M2 动态案件 | 三类日轮换、七日组织轮值、12 项周指令、八案历史、三类后续、五档组织立场、24 条事件账本、实体响应、八槽位、6 类主体关系/四段日程、案件角色/物证、替代入口、误判复议与持久队伍共享 | code_ready |
 | M2 玩家假说 | 160 字有界说明、三种立场、误判压力/负担、纠正/复议恢复与 schema 23 持久化 | code_ready |
@@ -50,7 +50,7 @@
 | 非凡特性 | 分层序列、纯度、印记、污染、来源哈希与永久失控精确掉落 | playable |
 | 扮演 v2 | 身份卡、反思日志、原则理解、过度认同、每日反思与 UI | verified |
 | 既有玩法 | 五途径 9–7、4 委托、4 任务链、持久队伍 | playable migration assets |
-| M3 首批 | 五途径序列 6–5、10 瓶魔药、20 项服务端能力、20 项扮演事件、7→6→5 GameTest | code_ready |
+| M3 首批 | 五途径序列 6–5、10 瓶魔药、20 项服务端能力、20 项扮演事件、五种专属仪式与无证明拒绝/重启 GameTest | code_ready |
 | 构建门禁 | 设计源、生成器、内容图、合同、资源、Gradle、回滚与双启动专服 | verified automation |
 
 ## M0/M1 完成结论
@@ -64,7 +64,7 @@
 
 - M1：进入回归维护，不再新增阻塞 M2 的基础门禁。
 - M2：自动化实施范围已完成正式街区、调查闭环、动态案件扩展、组织立场、三职业经济、神秘暴露和六种世界事件；继续进行四人八小时真人无锁死、跨日经济与事件切换验收。
-- M3：五途径 9–7 已可玩，序列 6–5 已达 `code_ready`；专属晋升仪式、完整能力系统、专属资源和多人互补矩阵未完成。
+- M3：五途径 9–7 已可玩，序列 6–5 与五种专属晋升仪式已达 `code_ready`；完整能力系统、最终专属资源和多人互补矩阵未完成。
 - M7：JEI、EMI 和 Jade 目前仅为只读计划，没有运行时集成。
 - M12：实验终局保持默认关闭，不进入当前版本承诺。
 
@@ -92,6 +92,7 @@ python scripts/run_server_restart_matrix.py --timeout 180
 - [v0.9 实施基线](V0.9-Implementation-Baseline)
 - [M0 内容图与迁移](V0.9-M0-Content-Graph-and-Migration)
 - [M3 五途径序列 6–5](M3-Launch-Pathways)
+- [M3 序列 5 专属晋升仪式](M3-Sequence-5-Advancement-Rituals)
 - [v0.9 差异报告](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/V0.9_DIFFERENCE_REPORT.md)
 - [代码审计表](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/code_audit.csv)
 - [完整路线](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/ROADMAP.md)
