@@ -36,7 +36,9 @@ public final class PlayerMysteryDataFixer {
             new DataFix("contact_memory_and_response_branches", 22,
                     PlayerMysteryDataFixer::initializeContactMemoryState),
             new DataFix("city_economy_and_exposure", 23,
-                    PlayerMysteryDataFixer::initializeCityEconomyState));
+                    PlayerMysteryDataFixer::initializeCityEconomyState),
+            new DataFix("characteristic_provenance_nonce", 24,
+                    PlayerMysteryDataFixer::initializeCharacteristicProvenance));
 
     private PlayerMysteryDataFixer() {}
 
@@ -261,6 +263,13 @@ public final class PlayerMysteryDataFixer {
         putIntDefault(tag, "patrol_work_shifts", 0);
         if (!tag.contains("mystical_exposure", Tag.TAG_FLOAT)) {
             tag.putFloat("mystical_exposure", 0f);
+        }
+    }
+
+    private static void initializeCharacteristicProvenance(
+            CompoundTag tag, List<CompoundTag> orphanedEntries) {
+        if (!tag.contains("characteristic_provenance_nonce", Tag.TAG_STRING)) {
+            tag.putString("characteristic_provenance_nonce", "");
         }
     }
 

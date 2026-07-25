@@ -45,14 +45,29 @@ public record CharacteristicBundle(
                                                    int sequence,
                                                    float purity,
                                                    String qualityId) {
+        return fromPotion(pathway, sequence, purity, qualityId, "legacy");
+    }
+
+    public static CharacteristicBundle fromPotion(ResourceLocation pathway,
+                                                   int sequence,
+                                                   float purity,
+                                                   String qualityId,
+                                                   String provenanceSeed) {
         Layer layer = new Layer(sequence, 1, purity);
         return new CharacteristicBundle(pathway, sequence, List.of(layer),
                 Imprint.fresh(), 0f,
-                hash(pathway + "|" + sequence + "|" + qualityId + "|potion"));
+                hash(pathway + "|" + sequence + "|" + qualityId
+                        + "|potion|" + provenanceSeed));
     }
 
     public CharacteristicBundle advance(int sequence, float purity,
                                         String qualityId) {
+        return advance(sequence, purity, qualityId, "legacy");
+    }
+
+    public CharacteristicBundle advance(int sequence, float purity,
+                                        String qualityId,
+                                        String provenanceSeed) {
         if (sequence >= highestSequence) {
             throw new IllegalArgumentException(
                     "advancement sequence must be lower than current sequence");
@@ -62,7 +77,18 @@ public record CharacteristicBundle(
         advancedLayers.sort(Comparator.comparingInt(Layer::sequence).reversed());
         return new CharacteristicBundle(pathway, sequence, advancedLayers,
                 imprint, corruption,
-                hash(sourceHash + "|" + sequence + "|" + qualityId));
+                hash(sourceHash + "|" + sequence + "|" + qualityId
+                        + "|" + provenanceSeed));
+    }
+
+    public CharacteristicBundle rekey(String provenanceSeed) {
+        return new CharacteristicBundle(
+                pathway,
+                highestSequence,
+                layers,
+                imprint,
+                corruption,
+                hash("rekey|" + sourceHash + "|" + provenanceSeed));
     }
 
     public CompoundTag save() {

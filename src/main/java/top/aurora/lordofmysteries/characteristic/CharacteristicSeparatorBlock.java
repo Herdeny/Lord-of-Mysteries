@@ -79,7 +79,8 @@ public final class CharacteristicSeparatorBlock extends Block {
             ItemStack primary,
             ItemStack secondary) {
         CharacteristicProcessingService.StackResult result =
-                CharacteristicProcessingService.merge(primary, secondary);
+                CharacteristicProcessingService.merge(
+                        player, primary, secondary);
         if (!result.success()) {
             player.sendSystemMessage(
                     CharacteristicProcessingService.statusMessage(
@@ -97,7 +98,7 @@ public final class CharacteristicSeparatorBlock extends Block {
             ItemStack primary,
             ItemStack probe) {
         CharacteristicProcessingService.StackResult result =
-                CharacteristicProcessingService.split(primary);
+                CharacteristicProcessingService.split(player, primary);
         if (!result.success()) {
             player.sendSystemMessage(
                     CharacteristicProcessingService.statusMessage(

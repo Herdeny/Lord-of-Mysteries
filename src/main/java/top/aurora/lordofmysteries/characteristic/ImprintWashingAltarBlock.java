@@ -2,6 +2,7 @@ package top.aurora.lordofmysteries.characteristic;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -29,6 +30,9 @@ public final class ImprintWashingAltarBlock extends Block {
             BlockHitResult hit) {
         if (hand != InteractionHand.MAIN_HAND) return InteractionResult.CONSUME;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return InteractionResult.CONSUME;
+        }
         ItemStack characteristic = player.getMainHandItem();
         ItemStack incense = player.getOffhandItem();
         if (CharacteristicConservationService.readStack(
@@ -39,7 +43,8 @@ public final class ImprintWashingAltarBlock extends Block {
             return InteractionResult.CONSUME;
         }
         CharacteristicProcessingService.StackResult result =
-                CharacteristicProcessingService.cleanse(characteristic);
+                CharacteristicProcessingService.cleanse(
+                        serverPlayer, characteristic);
         if (!result.success()) {
             player.sendSystemMessage(
                     CharacteristicProcessingService.statusMessage(

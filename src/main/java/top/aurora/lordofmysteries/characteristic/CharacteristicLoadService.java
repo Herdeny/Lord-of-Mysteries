@@ -44,6 +44,7 @@ public final class CharacteristicLoadService {
             return false;
         }
         PlayerMysteryData data = MysteryCapability.get(player);
+        CharacteristicLedger.ensurePlayerProvenance(data);
         if (!data.isExtraordinary()) {
             sendAbsorptionStatus(player, "commoner");
             return false;
@@ -53,14 +54,23 @@ public final class CharacteristicLoadService {
             sendAbsorptionStatus(player, "missing_current");
             return false;
         }
+        CharacteristicBundle current =
+                data.characteristicBundles.get(currentIndex);
         CharacteristicLoadLogic.AbsorptionResult result =
                 CharacteristicLoadLogic.absorb(
-                        data.characteristicBundles.get(currentIndex),
+                        current,
                         incoming.get(),
                         data.sequence);
         if (!result.success()) {
             sendAbsorptionStatus(
                     player, result.status().name().toLowerCase());
+            return false;
+        }
+        if (!audit(
+                player,
+                "player_absorb",
+                List.of(current.sourceHash(), incoming.get().sourceHash()),
+                List.of(result.merged().sourceHash()))) {
             return false;
         }
 
@@ -113,17 +123,32 @@ public final class CharacteristicLoadService {
             return InteractionResult.CONSUME;
         }
 
-        consumeMaterials(player);
         PlayerMysteryData data = MysteryCapability.get(player);
+        CharacteristicLedger.ensurePlayerProvenance(data);
         int currentIndex = currentBundleIndex(data);
         if (currentIndex < 0) return InteractionResult.CONSUME;
+        CharacteristicBundle current =
+                data.characteristicBundles.get(currentIndex);
         CharacteristicLoadLogic.Outcome outcome =
                 CharacteristicLoadLogic.resolve(inspection.stability());
         CharacteristicLoadLogic.ExtractionResult result =
                 CharacteristicLoadLogic.extract(
-                        data.characteristicBundles.get(currentIndex),
+                        current,
                         data.sequence,
                         outcome);
+        List<String> outputs = result.extracted() == null
+                ? List.of(result.retained().sourceHash())
+                : List.of(
+                        result.retained().sourceHash(),
+                        result.extracted().sourceHash());
+        if (!audit(
+                player,
+                "player_extract",
+                List.of(current.sourceHash()),
+                outputs)) {
+            return InteractionResult.CONSUME;
+        }
+        consumeMaterials(player);
         data.characteristicBundles.set(currentIndex, result.retained());
         applyConsequences(level, separatorPos, player, data, result);
         return InteractionResult.CONSUME;
@@ -326,6 +351,30 @@ public final class CharacteristicLoadService {
         PlayerFeedback.send(player, Component.translatable(
                 "message.lord_of_mysteries.characteristic.load.absorb."
                         + suffix).withStyle(ChatFormatting.YELLOW));
+    }
+
+    private static boolean audit(
+            ServerPlayer player,
+            String operation,
+            List<String> inputs,
+            List<String> outputs) {
+        CharacteristicProvenanceSavedData.ConsumptionResult result =
+                CharacteristicProvenanceSavedData.get(player.serverLevel())
+                        .consume(
+                                operation,
+                                player.getUUID(),
+                                player.serverLevel().getGameTime(),
+                                inputs,
+                                outputs);
+        if (result == CharacteristicProvenanceSavedData.ConsumptionResult
+                .ACCEPTED) {
+            return true;
+        }
+        sendAbsorptionStatus(
+                player,
+                result == CharacteristicProvenanceSavedData.ConsumptionResult
+                        .REPLAY ? "provenance_replay" : "invalid");
+        return false;
     }
 
     private static String oneDecimal(float value) {

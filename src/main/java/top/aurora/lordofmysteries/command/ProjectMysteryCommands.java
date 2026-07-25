@@ -111,9 +111,18 @@ public final class ProjectMysteryCommands {
                 .then(Commands.literal("travel").executes(context ->
                         TravelMarkerService.sendGuide(
                                 context.getSource().getPlayerOrException())))
-                .then(Commands.literal("characteristic").executes(context ->
-                        CharacteristicProcessingService.sendGuide(
-                                context.getSource().getPlayerOrException())))
+                .then(Commands.literal("characteristic")
+                        .executes(context ->
+                                CharacteristicProcessingService.sendGuide(
+                                        context.getSource()
+                                                .getPlayerOrException()))
+                        .then(Commands.literal("audit")
+                                .requires(source -> source.hasPermission(2))
+                                .executes(context ->
+                                        CharacteristicProcessingService
+                                                .sendAudit(
+                                                        context.getSource()
+                                                                .getPlayerOrException()))))
                 .then(Commands.literal("reflect").executes(context ->
                         reflect(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("camp").executes(context -> {

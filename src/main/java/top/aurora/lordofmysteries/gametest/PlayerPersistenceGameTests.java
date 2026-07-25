@@ -33,6 +33,7 @@ import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicConservationService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicProcessingLogic;
 import top.aurora.lordofmysteries.characteristic.CharacteristicProcessingService;
+import top.aurora.lordofmysteries.characteristic.CharacteristicProvenanceSavedData;
 import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
 import top.aurora.lordofmysteries.knowledge.M1TrialProgress;
 import top.aurora.lordofmysteries.player.MysteryCapability;
@@ -558,6 +559,8 @@ public final class PlayerPersistenceGameTests {
                         && helper.getLevel().getBlockState(washingAltar)
                         .is(ModBlocks.IMPRINT_WASHING_ALTAR.get()),
                 "both characteristic workstations must exist in the real world");
+        ServerPlayer processor = createPlayer(
+                helper, "characteristic-processor");
 
         ResourceLocation seer = ResourceLocation.fromNamespaceAndPath(
                 ProjectMystery.MOD_ID, "seer");
@@ -576,6 +579,7 @@ public final class PlayerPersistenceGameTests {
                 base.sourceHash());
         ItemStack source = CharacteristicConservationService.createStack(
                 polluted);
+        ItemStack replayedSource = source.copy();
 
         CharacteristicProcessingService.StackResult sealed =
                 CharacteristicProcessingService.seal(source);
@@ -593,9 +597,18 @@ public final class PlayerPersistenceGameTests {
         CharacteristicProcessingService.StackResult unsealed =
                 CharacteristicProcessingService.unseal(sealed.primary());
         CharacteristicProcessingService.StackResult split =
-                CharacteristicProcessingService.split(unsealed.primary());
+                CharacteristicProcessingService.split(
+                        processor, unsealed.primary());
         helper.assertTrue(split.success(),
                 "unsealed layered characteristic must split");
+        CharacteristicProcessingService.StackResult replayedSplit =
+                CharacteristicProcessingService.split(
+                        processor, replayedSource);
+        helper.assertTrue(!replayedSplit.success()
+                        && replayedSplit.status()
+                        == CharacteristicProcessingService.Status
+                        .PROVENANCE_REPLAY,
+                "a consumed parent copy must be rejected by the world ledger");
         CharacteristicBundle extracted =
                 CharacteristicConservationService.readStack(
                         split.primary()).orElseThrow();
@@ -617,7 +630,7 @@ public final class PlayerPersistenceGameTests {
                 "same-source copies must be rejected before any item is consumed");
         CharacteristicProcessingService.StackResult merged =
                 CharacteristicProcessingService.merge(
-                        split.primary(), split.secondary());
+                        processor, split.primary(), split.secondary());
         helper.assertTrue(merged.success(),
                 "two distinct child bundles must recompose");
         CharacteristicBundle mergedBundle =
@@ -632,7 +645,8 @@ public final class PlayerPersistenceGameTests {
         float purityBefore = CharacteristicProcessingLogic.averagePurity(
                 mergedBundle);
         CharacteristicProcessingService.StackResult cleansed =
-                CharacteristicProcessingService.cleanse(merged.primary());
+                CharacteristicProcessingService.cleanse(
+                        processor, merged.primary());
         CharacteristicBundle cleansedBundle =
                 CharacteristicConservationService.readStack(
                         cleansed.primary()).orElseThrow();
@@ -654,6 +668,56 @@ public final class PlayerPersistenceGameTests {
                         && CharacteristicProcessingService.operationCount(
                         restored) == 5,
                 "processed payload and audit counter must survive item NBT");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void characteristicProvenanceRejectsCrossPlayerReplay(
+            GameTestHelper helper) {
+        ServerPlayer first = createPlayer(helper, "provenance-first");
+        ServerPlayer second = createPlayer(helper, "provenance-second");
+        ResourceLocation seer = ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID, "seer");
+        CharacteristicBundle sourceBundle =
+                CharacteristicBundle.fromPotion(
+                                seer, 9, 0.95f, "complete",
+                                "gametest-global-provenance")
+                        .advance(
+                                8, 0.9f, "complete",
+                                "gametest-global-provenance-advance");
+        ItemStack source =
+                CharacteristicConservationService.createStack(sourceBundle);
+        ItemStack copiedBeforeConsumption = source.copy();
+
+        CharacteristicProcessingService.StackResult firstResult =
+                CharacteristicProcessingService.split(first, source);
+        helper.assertTrue(firstResult.success(),
+                "the first player must consume a fresh source");
+        CharacteristicProcessingService.StackResult replayResult =
+                CharacteristicProcessingService.split(
+                        second, copiedBeforeConsumption);
+        helper.assertTrue(!replayResult.success()
+                        && replayResult.status()
+                        == CharacteristicProcessingService.Status
+                        .PROVENANCE_REPLAY,
+                "a second player must not consume the copied parent source");
+
+        CharacteristicProvenanceSavedData ledger =
+                CharacteristicProvenanceSavedData.get(helper.getLevel());
+        helper.assertTrue(
+                ledger.isConsumed(sourceBundle.sourceHash())
+                        && ledger.operationCount("item_split") >= 1,
+                "the overworld ledger must record the consumed source");
+        CompoundTag saved = ledger.save(new CompoundTag());
+        CharacteristicProvenanceSavedData restored =
+                CharacteristicProvenanceSavedData.load(saved);
+        helper.assertTrue(
+                restored.isConsumed(sourceBundle.sourceHash())
+                        && !saved.toString().contains(
+                        first.getUUID().toString())
+                        && !saved.toString().contains(
+                        second.getUUID().toString()),
+                "provenance must survive NBT without storing real player UUIDs");
         helper.succeed();
     }
 

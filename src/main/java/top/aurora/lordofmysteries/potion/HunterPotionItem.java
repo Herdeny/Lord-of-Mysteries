@@ -96,7 +96,8 @@ public final class HunterPotionItem extends Item {
         data.pollution = Math.min(100f, data.pollution + quality.initialPollution());
         data.potionQuality = quality.id();
         CharacteristicLedger.recordPotionAdvancement(
-                data, HUNTER_PATHWAY, targetSequence, quality);
+                data, HUNTER_PATHWAY, targetSequence, quality,
+                player.serverLevel().getGameTime());
         IdentityKitService.onPotionAdvancement(
                 player, data, firstPotion);
         data.hunterTrackedTarget = "";

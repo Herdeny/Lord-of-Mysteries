@@ -92,7 +92,8 @@ public final class SeerPotionItem extends Item {
         data.pollution = Math.min(100f, data.pollution + quality.initialPollution());
         data.potionQuality = quality.id();
         CharacteristicLedger.recordPotionAdvancement(
-                data, SEER_PATHWAY, targetSequence, quality);
+                data, SEER_PATHWAY, targetSequence, quality,
+                player.serverLevel().getGameTime());
         IdentityKitService.onPotionAdvancement(
                 player, data, firstPotion);
         data.paperSubstituteArmedEndTick = 0L;

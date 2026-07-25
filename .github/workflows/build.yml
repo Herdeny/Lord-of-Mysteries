@@ -144,8 +144,8 @@ jobs:
         run: |
           set -o pipefail
           ./gradlew -Dnet.minecraftforge.gradle.check.certs=false --stacktrace runGameTestServer | tee build/gametest-server.log
-          grep -F "13 tests are now running!" build/gametest-server.log
-          grep -F "All 13 required tests passed" build/gametest-server.log
+          grep -F "14 tests are now running!" build/gametest-server.log
+          grep -F "All 14 required tests passed" build/gametest-server.log
 
       - name: Dedicated server restart matrix
         run: python3 scripts/run_server_restart_matrix.py --timeout 180

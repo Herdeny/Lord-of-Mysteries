@@ -1,10 +1,10 @@
 # 版本与发布
 
 <!-- project-status:start -->
-- 当前版本：**`0.9.23-1.20.1`**
-- 开发阶段：**v0.9 M2 真人验收准备与 M3 额外特性负载闭环**（M2）
+- 当前版本：**`0.9.24-1.20.1`**
+- 开发阶段：**v0.9 M2 真人验收准备与 M3 全服特性来源审计闭环**（M2）
 - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-- 最后更新：**2026-07-25 19:08:06 UTC+01:00**（`2026-07-25T18:08:06Z`）
+- 最后更新：**2026-07-25 23:22:43 UTC+01:00**（`2026-07-25T22:22:43Z`）
 <!-- project-status:end -->
 
 ## 版本格式
@@ -64,6 +64,12 @@ python scripts/check_release_timestamp.py --require-head
 - Pages 布局契约固定检查锚点恢复、24 条分批渲染、响应式断点、`hidden` 语义、ARIA 状态与弹窗焦点恢复。
 - Wiki Sync 工作流把主仓库 `wiki/` 同步到 GitHub Wiki 独立仓库。
 - Build 从 `project-status.json` 读取 Mod 版本。
+
+## 0.9.24 发布证据
+
+- 网络协议 13、Capability schema 24，377 项 JUnit 与 14 项真实 Forge GameTest。
+- 新增主世界统一特性来源 SavedData、五类原子消费审计、旧玩家来源 nonce 迁移和匿名管理员统计。
+- Pages 图鉴为 188 条唯一记录，新增全服特性来源账本机制页。
 
 ## 0.9.23 发布证据
 

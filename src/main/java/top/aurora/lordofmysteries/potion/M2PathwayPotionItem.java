@@ -150,7 +150,8 @@ public final class M2PathwayPotionItem extends Item {
                 data.pollution + quality.initialPollution());
         data.potionQuality = quality.id();
         CharacteristicLedger.recordPotionAdvancement(
-                data, pathway.id(), targetSequence, quality);
+                data, pathway.id(), targetSequence, quality,
+                player.serverLevel().getGameTime());
         IdentityKitService.onPotionAdvancement(
                 player, data, firstPotion);
         data.spiritVisionActive = false;

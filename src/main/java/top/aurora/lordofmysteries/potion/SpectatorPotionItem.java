@@ -96,7 +96,8 @@ public final class SpectatorPotionItem extends Item {
         data.pollution = Math.min(100f, data.pollution + quality.initialPollution());
         data.potionQuality = quality.id();
         CharacteristicLedger.recordPotionAdvancement(
-                data, SPECTATOR_PATHWAY, targetSequence, quality);
+                data, SPECTATOR_PATHWAY, targetSequence, quality,
+                player.serverLevel().getGameTime());
         IdentityKitService.onPotionAdvancement(
                 player, data, firstPotion);
         data.emotionReadActive = false;

@@ -1,5 +1,7 @@
 package top.aurora.lordofmysteries.characteristic;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.ChatFormatting;
@@ -34,6 +36,11 @@ public final class CharacteristicProcessingService {
         return StackResult.success(extracted, remainder);
     }
 
+    public static StackResult split(
+            ServerPlayer player, ItemStack source) {
+        return audit(player, "item_split", split(source), source);
+    }
+
     public static StackResult merge(ItemStack first, ItemStack second) {
         Optional<CharacteristicBundle> firstBundle =
                 CharacteristicConservationService.readStack(first);
@@ -55,6 +62,12 @@ public final class CharacteristicProcessingService {
                 first, result.merged(), "merge", false), ItemStack.EMPTY);
     }
 
+    public static StackResult merge(
+            ServerPlayer player, ItemStack first, ItemStack second) {
+        return audit(
+                player, "item_merge", merge(first, second), first, second);
+    }
+
     public static StackResult cleanse(ItemStack source) {
         Optional<CharacteristicBundle> bundle =
                 CharacteristicConservationService.readStack(source);
@@ -67,6 +80,11 @@ public final class CharacteristicProcessingService {
         }
         return StackResult.success(processedStack(
                 source, result.cleansed(), "cleanse", false), ItemStack.EMPTY);
+    }
+
+    public static StackResult cleanse(
+            ServerPlayer player, ItemStack source) {
+        return audit(player, "item_cleanse", cleanse(source), source);
     }
 
     public static StackResult seal(ItemStack source) {
@@ -148,10 +166,63 @@ public final class CharacteristicProcessingService {
         return 1;
     }
 
+    public static int sendAudit(ServerPlayer player) {
+        CharacteristicProvenanceSavedData ledger =
+                CharacteristicProvenanceSavedData.get(player.serverLevel());
+        player.sendSystemMessage(Component.translatable(
+                "message.lord_of_mysteries.characteristic.audit",
+                ledger.consumedSourceCount(),
+                ledger.operationCount("item_split"),
+                ledger.operationCount("item_merge"),
+                ledger.operationCount("item_cleanse"),
+                ledger.operationCount("player_absorb"),
+                ledger.operationCount("player_extract"))
+                .withStyle(ChatFormatting.DARK_AQUA));
+        return Math.max(1, ledger.consumedSourceCount());
+    }
+
     public static Component statusMessage(Status status) {
         return Component.translatable(
                 "message.lord_of_mysteries.characteristic.status."
                         + status.translationSuffix());
+    }
+
+    private static StackResult audit(
+            ServerPlayer player,
+            String operation,
+            StackResult result,
+            ItemStack... inputs) {
+        if (!result.success()) return result;
+        List<String> inputSources = new ArrayList<>(inputs.length);
+        for (ItemStack input : inputs) {
+            Optional<CharacteristicBundle> bundle =
+                    CharacteristicConservationService.readStack(input);
+            if (bundle.isEmpty()) return StackResult.failure(Status.INVALID);
+            inputSources.add(bundle.get().sourceHash());
+        }
+        List<String> outputSources = new ArrayList<>(2);
+        addOutputSource(outputSources, result.primary());
+        addOutputSource(outputSources, result.secondary());
+        CharacteristicProvenanceSavedData.ConsumptionResult audit =
+                CharacteristicProvenanceSavedData.get(player.serverLevel())
+                        .consume(
+                                operation,
+                                player.getUUID(),
+                                player.serverLevel().getGameTime(),
+                                inputSources,
+                                outputSources);
+        return switch (audit) {
+            case ACCEPTED -> result;
+            case REPLAY -> StackResult.failure(Status.PROVENANCE_REPLAY);
+            case INVALID -> StackResult.failure(Status.INVALID);
+        };
+    }
+
+    private static void addOutputSource(
+            List<String> outputSources, ItemStack stack) {
+        CharacteristicConservationService.readStack(stack)
+                .map(CharacteristicBundle::sourceHash)
+                .ifPresent(outputSources::add);
     }
 
     private static ItemStack processedStack(
@@ -192,6 +263,7 @@ public final class CharacteristicProcessingService {
         SINGLE_UNIT("single_unit"),
         PATHWAY_MISMATCH("pathway_mismatch"),
         DUPLICATE_SOURCE("duplicate_source"),
+        PROVENANCE_REPLAY("provenance_replay"),
         LAYER_CAPACITY("layer_capacity"),
         ALREADY_CLEAN("already_clean");
 

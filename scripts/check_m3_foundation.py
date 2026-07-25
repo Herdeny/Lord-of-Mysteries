@@ -297,6 +297,10 @@ def main():
         JAVA / "characteristic" / "BrokenCharacteristicItem.java")
     separator_block = source(
         JAVA / "characteristic" / "CharacteristicSeparatorBlock.java")
+    provenance_saved = source(
+        JAVA / "characteristic" / "CharacteristicProvenanceSavedData.java")
+    provenance_events = source(
+        JAVA / "characteristic" / "CharacteristicProvenanceEvents.java")
     acting_handler = source(JAVA / "acting" / "ActingEventHandler.java")
     status_packet = source(
         JAVA / "network" / "PlayerMysteryStatusS2CPacket.java")
@@ -393,6 +397,41 @@ def main():
             and "return new ExtractionResult(outcome, agitated, null)"
             in load_logic),
         "failed extraction no longer preserves the extra layer")
+    provenance = processing["server_global_provenance"]
+    require(
+        f'"{provenance["data_name"]}"' in provenance_saved
+        and f"DATA_VERSION = {provenance['data_version']}"
+        in provenance_saved
+        and (not provenance["overworld_storage"]
+             or "getServer().overworld()" in provenance_saved)
+        and (not provenance["hashed_actor_only"]
+             or ('fingerprint(actor.toString())' in provenance_saved
+                 and 'putString("actor_hash"' in provenance_saved
+                 and 'putString("actor_uuid"' not in provenance_saved)),
+        "server-global characteristic provenance storage drifted")
+    operation_sources = processing_service + load_service
+    for operation in provenance["operations"]:
+        require(f'"{operation}"' in operation_sources,
+                f"provenance operation {operation} is not audited")
+    require(
+        not provenance["replay_preserves_items_and_materials"]
+        or ("PROVENANCE_REPLAY" in processing_service
+            and processing_service.index(".consume(")
+            < processing_service.index("case ACCEPTED -> result")
+            and load_service.index("if (!audit(")
+            < load_service.index("stack.shrink(1)")
+            and load_service.index('if (!audit(\n                player,\n'
+                                   '                "player_extract"')
+            < load_service.index("consumeMaterials(player)")),
+        "provenance replay can consume player resources")
+    for command_token in provenance["operator_command"].split():
+        require(f'literal("{command_token}")' in commands,
+                f"provenance operator command {command_token} is missing")
+    require(
+        '"characteristic_provenance_nonce"' in player
+        and "characteristic_provenance_nonce" in fixer
+        and "CharacteristicLedger.ensurePlayerProvenance" in provenance_events,
+        "legacy player characteristic sources are not rekeyed on login")
 
     rituals = contract["sequence_five_rituals"]
     ritual_service = source(
@@ -470,14 +509,16 @@ def main():
 
     print(
         "M3 foundation contract checked: three physical city jobs with "
-        "shared daily limits, schema-23 exposure persistence and repair, "
+        f"shared daily limits, schema-{contract['capability_schema']} "
+        "exposure persistence and repair, "
         "six deterministic restart-persistent world events, event-sensitive "
         "economy, newspaper and diagnostics visibility, spirituality and "
         "ritual modifiers, five launch pathways at sequences 6-5, five "
         "dedicated sequence-5 rituals with solo and supporter paths, "
         "a consent-gated traveler spatial relay, conserved characteristic "
         "splitting, sealing and washing, visible extra-load absorption and "
-        "safe extraction, thirteen GameTests, and "
+        "safe extraction, server-global provenance replay protection, "
+        f"{validation['game_tests']} GameTests, and "
         "dedicated restart validation"
     )
 

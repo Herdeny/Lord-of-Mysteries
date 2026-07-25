@@ -45,6 +45,11 @@ public final class PlayerMysteryDataSanitizer {
         int originalCharacteristics = data.characteristicBundles.size();
         data.characteristicBundles.removeIf(bundle -> bundle == null);
         repairs += originalCharacteristics - data.characteristicBundles.size();
+        if (data.characteristicProvenanceNonce == null
+                || data.characteristicProvenanceNonce.length() > 128) {
+            data.characteristicProvenanceNonce = "";
+            repairs++;
+        }
 
         repairs += repairTrialValues(data);
         repairs += repairCommissionValues(data);

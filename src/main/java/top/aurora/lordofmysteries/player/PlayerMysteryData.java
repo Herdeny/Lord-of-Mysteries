@@ -34,7 +34,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseResponseTask;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 23;
+    public static final int CURRENT_SCHEMA_VERSION = 24;
     private static final int MAX_MIGRATION_BACKUPS = 3;
     private static final int MAX_MIGRATION_HISTORY = 64;
 
@@ -52,6 +52,7 @@ public class PlayerMysteryData {
     public float insanityPressure = 0f;     // 失控压力，范围约定为 0-100，用于短期精神状态
     public String potionQuality = "complete"; // 当前序列魔药品质，影响扮演消化倍率
     public List<CharacteristicBundle> characteristicBundles = new ArrayList<>();
+    public String characteristicProvenanceNonce = "";
     public List<CompoundTag> orphanedEntries = new ArrayList<>();
     public List<CompoundTag> migrationBackups = new ArrayList<>();
     public List<CompoundTag> migrationHistory = new ArrayList<>();
@@ -223,6 +224,8 @@ public class PlayerMysteryData {
         this.potionQuality = src.potionQuality;
         this.characteristicBundles = CharacteristicLedger.copy(
                 src.characteristicBundles);
+        this.characteristicProvenanceNonce =
+                src.characteristicProvenanceNonce;
         this.orphanedEntries = copyCompoundTags(src.orphanedEntries);
         this.migrationBackups = copyCompoundTags(src.migrationBackups);
         this.migrationHistory = copyCompoundTags(src.migrationHistory);
@@ -368,6 +371,9 @@ public class PlayerMysteryData {
             characteristics.add(bundle.save());
         }
         tag.put("characteristic_bundles", characteristics);
+        tag.putString(
+                "characteristic_provenance_nonce",
+                characteristicProvenanceNonce);
         tag.putBoolean("spirit_vision_active", spiritVisionActive);
         tag.putLong("divination_cd_end", divinationCooldownEndTick);
         tag.putLong("danger_intuition_cd_end", dangerIntuitionCooldownEndTick);
@@ -570,6 +576,9 @@ public class PlayerMysteryData {
         pollution = tag.getFloat("pollution");
         insanityPressure = tag.getFloat("insanity_pressure");
         potionQuality = tag.contains("potion_quality") ? tag.getString("potion_quality") : "complete";
+        characteristicProvenanceNonce =
+                tag.contains("characteristic_provenance_nonce")
+                        ? tag.getString("characteristic_provenance_nonce") : "";
         spiritVisionActive = tag.getBoolean("spirit_vision_active");
         divinationCooldownEndTick = tag.getLong("divination_cd_end");
         dangerIntuitionCooldownEndTick = tag.getLong("danger_intuition_cd_end");
@@ -974,6 +983,7 @@ public class PlayerMysteryData {
         hash = mix(hash, mysticalExposure);
         hash = mix(hash, potionQuality);
         hash = mix(hash, characteristicBundles);
+        hash = mix(hash, characteristicProvenanceNonce);
         hash = mix(hash, orphanedEntries);
         hash = mix(hash, migrationBackups);
         hash = mix(hash, migrationHistory);

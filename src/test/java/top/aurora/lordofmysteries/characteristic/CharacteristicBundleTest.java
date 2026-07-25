@@ -1,7 +1,9 @@
 package top.aurora.lordofmysteries.characteristic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -58,5 +60,27 @@ class CharacteristicBundleTest {
         assertEquals(8, restored.characteristicBundles.get(0).highestSequence());
         assertEquals(0.75f,
                 restored.characteristicBundles.get(0).layers().get(0).purity());
+    }
+
+    @Test
+    void playerProvenanceRekeysLegacyBundlesAndSeparatesEqualPotions() {
+        PlayerMysteryData first = new PlayerMysteryData();
+        PlayerMysteryData second = new PlayerMysteryData();
+        first.characteristicBundles.add(CharacteristicBundle.fromPotion(
+                SEER, 9, 0.95f, "complete"));
+        second.characteristicBundles.add(CharacteristicBundle.fromPotion(
+                SEER, 9, 0.95f, "complete"));
+
+        assertTrue(CharacteristicLedger.ensurePlayerProvenance(first));
+        assertTrue(CharacteristicLedger.ensurePlayerProvenance(second));
+        assertNotEquals(
+                first.characteristicProvenanceNonce,
+                second.characteristicProvenanceNonce);
+        assertNotEquals(
+                first.characteristicBundles.get(0).sourceHash(),
+                second.characteristicBundles.get(0).sourceHash());
+        assertEquals(
+                first.characteristicProvenanceNonce,
+                first.save().getString("characteristic_provenance_nonce"));
     }
 }

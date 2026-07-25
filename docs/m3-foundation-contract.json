@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "capability_schema": 23,
+  "capability_schema": 24,
   "economy": {
     "jobs": {
       "PRESS": {
@@ -161,6 +161,21 @@
     "extraction_preserves_pathway_and_sequence": true,
     "failure_preserves_extra_load": true,
     "rejects_duplicate_source": true,
+    "server_global_provenance": {
+      "data_name": "lord_of_mysteries_characteristic_provenance",
+      "data_version": 1,
+      "overworld_storage": true,
+      "hashed_actor_only": true,
+      "operations": [
+        "item_split",
+        "item_merge",
+        "item_cleanse",
+        "player_absorb",
+        "player_extract"
+      ],
+      "replay_preserves_items_and_materials": true,
+      "operator_command": "characteristic audit"
+    },
     "sealed_blocks_processing": true,
     "failure_preserves_resources": true
   },
@@ -204,7 +219,7 @@
     }
   },
   "validation": {
-    "game_tests": 13,
+    "game_tests": 14,
     "requires_restart_matrix": true,
     "behavior_test_classes": [
       "CityEconomyPolicyTest",
@@ -217,6 +232,7 @@
       "M3TravelNetworkLogicTest",
       "TravelMarkerServiceTest",
       "CharacteristicLoadLogicTest",
+      "CharacteristicProvenanceSavedDataTest",
       "CharacteristicProcessingLogicTest",
       "CrucibleRecipeLogicTest",
       "SequenceFiveRitualLogicTest",
@@ -256,6 +272,9 @@
     "message.lord_of_mysteries.characteristic.load.stable_success",
     "message.lord_of_mysteries.characteristic.load.strained_success",
     "message.lord_of_mysteries.characteristic.load.failure",
+    "message.lord_of_mysteries.characteristic.load.absorb.provenance_replay",
+    "message.lord_of_mysteries.characteristic.status.provenance_replay",
+    "message.lord_of_mysteries.characteristic.audit",
     "message.lord_of_mysteries.sequence_five_ritual.success",
     "message.lord_of_mysteries.sequence_five_ritual.failure",
     "message.lord_of_mysteries.travel.guide.empty",
