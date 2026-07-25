@@ -139,6 +139,21 @@
     "matching_marker": true,
     "failure_preserves_resources": true
   },
+  "characteristic_processing": {
+    "command": "characteristic",
+    "separator": "characteristic_separator",
+    "washing_altar": "imprint_washing_altar",
+    "probe": "imprint_probe",
+    "seal_wax": "memory_seal_wax",
+    "washing_incense": "imprint_washing_incense",
+    "merge_corruption": 5,
+    "cleanse_corruption_reduction": 25,
+    "cleanse_dominance_reduction": 0.2,
+    "cleanse_purity_loss": 0.03,
+    "rejects_duplicate_source": true,
+    "sealed_blocks_processing": true,
+    "failure_preserves_resources": true
+  },
   "sequence_five_rituals": {
     "target_sequence": 5,
     "altar": "ritual_altar",
@@ -179,7 +194,7 @@
     }
   },
   "validation": {
-    "game_tests": 11,
+    "game_tests": 12,
     "requires_restart_matrix": true,
     "behavior_test_classes": [
       "CityEconomyPolicyTest",
@@ -191,6 +206,7 @@
       "M3LaunchAbilityLogicTest",
       "M3TravelNetworkLogicTest",
       "TravelMarkerServiceTest",
+      "CharacteristicProcessingLogicTest",
       "CrucibleRecipeLogicTest",
       "SequenceFiveRitualLogicTest",
       "PotionAdvancementRulesTest"

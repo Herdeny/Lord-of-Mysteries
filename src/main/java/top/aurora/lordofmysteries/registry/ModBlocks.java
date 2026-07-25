@@ -10,6 +10,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import top.aurora.lordofmysteries.ProjectMystery;
+import top.aurora.lordofmysteries.characteristic.CharacteristicSeparatorBlock;
+import top.aurora.lordofmysteries.characteristic.ImprintWashingAltarBlock;
 import top.aurora.lordofmysteries.potion.CrucibleBlock;
 import top.aurora.lordofmysteries.ritual.RitualAltarBlock;
 import top.aurora.lordofmysteries.ritual.RitualChalkMarkBlock;
@@ -70,4 +72,22 @@ public final class ModBlocks {
                     .mapColor(MapColor.WOOD)
                     .sound(SoundType.WOOD)
                     .strength(2.0f)));
+
+    public static final RegistryObject<Block> CHARACTERISTIC_SEPARATOR =
+            BLOCKS.register("characteristic_separator",
+                    () -> new CharacteristicSeparatorBlock(
+                            BlockBehaviour.Properties.of()
+                                    .mapColor(MapColor.METAL)
+                                    .sound(SoundType.METAL)
+                                    .strength(4.0f, 8.0f)
+                                    .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> IMPRINT_WASHING_ALTAR =
+            BLOCKS.register("imprint_washing_altar",
+                    () -> new ImprintWashingAltarBlock(
+                            BlockBehaviour.Properties.of()
+                                    .mapColor(MapColor.COLOR_PURPLE)
+                                    .sound(SoundType.AMETHYST)
+                                    .strength(3.5f, 8.0f)
+                                    .requiresCorrectToolForDrops()));
 }

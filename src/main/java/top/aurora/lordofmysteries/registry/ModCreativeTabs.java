@@ -84,6 +84,9 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.PYROMANIAC_BREAKDOWN_SPAWN_EGG.get());
                         output.accept(ModItems.CONTAMINATED_MIXTURE.get());
                         output.accept(ModItems.BROKEN_CHARACTERISTIC.get());
+                        output.accept(ModItems.IMPRINT_PROBE.get());
+                        output.accept(ModItems.MEMORY_SEAL_WAX.get());
+                        output.accept(ModItems.IMPRINT_WASHING_INCENSE.get());
                         output.accept(ModItems.ACTING_IDENTITY_CARD.get());
                         output.accept(ModItems.ACTING_REFLECTION_JOURNAL.get());
                         output.accept(ModItems.INVESTIGATOR_NOTES.get());
@@ -122,6 +125,8 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.RITUAL_ALTAR_ITEM.get());
                         output.accept(ModItems.RITUAL_CHALK_MARK_ITEM.get());
                         output.accept(ModItems.CRUCIBLE_ITEM.get());
+                        output.accept(ModItems.CHARACTERISTIC_SEPARATOR_ITEM.get());
+                        output.accept(ModItems.IMPRINT_WASHING_ALTAR_ITEM.get());
                     })
                     .build());
 }

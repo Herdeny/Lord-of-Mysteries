@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "lord_of_mysteries:calming_incense"
+    },
+    {
+      "item": "lord_of_mysteries:spirit_salt"
+    },
+    {
+      "item": "lord_of_mysteries:ash_powder"
+    },
+    {
+      "item": "lord_of_mysteries:moonwater"
+    }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:imprint_washing_incense"
+  }
+}

@@ -32,6 +32,7 @@ import top.aurora.lordofmysteries.commission.SealedFormulaDossierItem;
 import top.aurora.lordofmysteries.acting.ActingIdentityCardItem;
 import top.aurora.lordofmysteries.acting.ActingReflectionJournalItem;
 import top.aurora.lordofmysteries.characteristic.BrokenCharacteristicItem;
+import top.aurora.lordofmysteries.characteristic.ImprintProbeItem;
 
 /**
  * 物品注册（Forge 1.20.1）。包含材料、魔药、封印物和方块物品。
@@ -210,6 +211,18 @@ public final class ModItems {
             "broken_characteristic",
             () -> new BrokenCharacteristicItem(
                     new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> IMPRINT_PROBE = ITEMS.register(
+            "imprint_probe",
+            () -> new ImprintProbeItem(
+                    new Item.Properties().durability(64).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> MEMORY_SEAL_WAX = ITEMS.register(
+            "memory_seal_wax",
+            () -> new Item(new Item.Properties()
+                    .stacksTo(16).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> IMPRINT_WASHING_INCENSE =
+            ITEMS.register("imprint_washing_incense",
+                    () -> new Item(new Item.Properties()
+                            .stacksTo(16).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> ACTING_IDENTITY_CARD = ITEMS.register(
             "acting_identity_card",
             () -> new ActingIdentityCardItem(
@@ -341,4 +354,14 @@ public final class ModItems {
     public static final RegistryObject<Item> COMMISSION_BOARD_ITEM = ITEMS.register(
             "commission_board",
             () -> new BlockItem(ModBlocks.COMMISSION_BOARD.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CHARACTERISTIC_SEPARATOR_ITEM =
+            ITEMS.register("characteristic_separator",
+                    () -> new BlockItem(
+                            ModBlocks.CHARACTERISTIC_SEPARATOR.get(),
+                            new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> IMPRINT_WASHING_ALTAR_ITEM =
+            ITEMS.register("imprint_washing_altar",
+                    () -> new BlockItem(
+                            ModBlocks.IMPRINT_WASHING_ALTAR.get(),
+                            new Item.Properties().rarity(Rarity.RARE)));
 }

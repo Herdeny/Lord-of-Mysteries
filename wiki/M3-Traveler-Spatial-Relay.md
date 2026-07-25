@@ -1,6 +1,6 @@
 # 旅行家空间标记与同行远门
 
-> 适用版本：`0.9.21-1.20.1` · 状态：`code_ready`
+> 适用版本：`0.9.22-1.20.1` · 状态：`code_ready`
 
 ## 快速使用
 
@@ -47,6 +47,6 @@
 - 越界坐标会在区块加载前拒绝。
 - 玩家列表、同意状态、碰撞、费用和冷却全部由服务端计算。
 - 当前是一次性远门，不是持续存在的双向门实体。
-- 机器验证包含 352 项 JUnit 和 11 项 Forge GameTest；真人领地兼容与多人平衡仍待验收。
+- 当前机器验证包含 360 项 JUnit 和 12 项 Forge GameTest；旅行家远门本身仍由第 11 项场景覆盖，真人领地兼容与多人平衡仍待验收。
 
 完整规则、失败矩阵和自动化证据见仓库文档 [`docs/M3_TRAVELER_SPATIAL_RELAY.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M3_TRAVELER_SPATIAL_RELAY.md)。

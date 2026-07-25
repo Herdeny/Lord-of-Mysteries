@@ -4,6 +4,37 @@ window.LOM = window.LOM || {};
   var generatedEntries = [
   {
     "type": "block",
+    "id": "lord_of_mysteries:characteristic_separator",
+    "name": "特性分离台",
+    "en": "Characteristic Separator",
+    "summary": "已在 Forge 方块注册表中实现并纳入资源完整性校验的可放置方块。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge block registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:characteristic_separator"
+      ],
+      [
+        "代码来源",
+        "ModBlocks.java"
+      ],
+      [
+        "资源状态",
+        "block 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "block",
     "id": "lord_of_mysteries:commission_board",
     "name": "雾都委托板",
     "en": "Mist City Commission Board",
@@ -83,6 +114,37 @@ window.LOM = window.LOM || {};
       [
         "注册 ID",
         "lord_of_mysteries:hunter_snare"
+      ],
+      [
+        "代码来源",
+        "ModBlocks.java"
+      ],
+      [
+        "资源状态",
+        "block 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "block",
+    "id": "lord_of_mysteries:imprint_washing_altar",
+    "name": "烙印洗涤台",
+    "en": "Imprint Washing Altar",
+    "summary": "已在 Forge 方块注册表中实现并纳入资源完整性校验的可放置方块。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge block registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:imprint_washing_altar"
       ],
       [
         "代码来源",
@@ -1213,6 +1275,68 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "id": "lord_of_mysteries:imprint_probe",
+    "name": "烙印探针",
+    "en": "Imprint Probe",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:imprint_probe"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:imprint_washing_incense",
+    "name": "烙印洗涤香",
+    "en": "Imprint Washing Incense",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:imprint_washing_incense"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
     "id": "lord_of_mysteries:investigator_compass",
     "name": "调查员罗盘",
     "en": "Investigator's Compass",
@@ -1323,6 +1447,37 @@ window.LOM = window.LOM || {};
       [
         "注册 ID",
         "lord_of_mysteries:knowledge_copy"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:memory_seal_wax",
+    "name": "记忆封蜡",
+    "en": "Memory Seal Wax",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:memory_seal_wax"
       ],
       [
         "代码来源",
@@ -2893,10 +3048,10 @@ window.LOM = window.LOM || {};
     return !manualIds[entry.id];
   }));
   D.catalogMeta = {
-  "registeredItems": 85,
-  "registeredBlocks": 5,
+  "registeredItems": 90,
+  "registeredBlocks": 7,
   "registeredEntities": 8,
-  "uniqueRegistryEntries": 93,
+  "uniqueRegistryEntries": 98,
   "source": "Forge registries + zh_cn/en_us language resources"
 };
 })(window.LOM);

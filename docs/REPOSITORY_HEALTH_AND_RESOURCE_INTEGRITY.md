@@ -1,6 +1,6 @@
 # 仓库健康审计与资源完整性门禁
 
-> 适用版本：0.9.21-1.20.1
+> 适用版本：0.9.22-1.20.1
 >
 > 技术基线：Minecraft 1.20.1 · Forge 47.4.20 · Java 17 · Gradle 8.14.5
 
@@ -38,12 +38,12 @@ python scripts/check_resource_integrity.py
 
 | 范围 | 当前基线 |
 |---|---:|
-| 可解析 JSON | 304 |
-| 中英成对翻译键 | 1387 |
-| Java/JSON 静态引用翻译键 | 523 |
-| 模型 JSON | 90 |
-| 注册物品 | 85 |
-| 注册方块 | 5 |
+| 可解析 JSON | 320 |
+| 中英成对翻译键 | 1421 |
+| Java/JSON 静态引用翻译键 | 553 |
+| 模型 JSON | 97 |
+| 注册物品 | 90 |
+| 注册方块 | 7 |
 | 注册实体 | 8 |
 
 检查器会拒绝：
@@ -59,8 +59,8 @@ python scripts/check_resource_integrity.py
 
 ## 自动验证基线
 
-- 352 项 JUnit 单元/契约测试，要求失败、错误与跳过均为 0。
-- 11 项 Forge GameTest 必须真实执行，验证 Capability Clone、schema 23 Provider 往返、future schema 隔离、精确特性载荷、M1 状态、调查板邻近门禁、队伍 SavedData、五途径 7→6→5 晋升重启、真实祭坛检查/确认/证明持久化、能力世界行为与旅行家多人远门。
+- 360 项 JUnit 单元/契约测试，要求失败、错误与跳过均为 0。
+- 12 项 Forge GameTest 必须真实执行，验证 Capability Clone、schema 23 Provider 往返、future schema 隔离、精确特性载荷、M1 状态、调查板邻近门禁、队伍 SavedData、五途径 7→6→5 晋升重启、真实祭坛检查/确认/证明持久化、能力世界行为、旅行家多人远门与特性处理工作台。
 - M1/M2/M3 三份合同、正式街区 v2、12 项周指令、组织立场、三职业经济、暴露、世界事件、Pages 注册图鉴与布局契约、资源完整性和 GitHub Issue/评论编码审计。
 - `processResources` 固定使用 UTF-8；发布 JAR 内 `mods.toml` 的中文简介与当前 M2 描述不再受 Windows 系统代码页影响。
 - Forge `clean build`、隔离回滚演练与两次真实专用服务器启动、`/pm servercheck`、命令循环、强制保存、干净停服。

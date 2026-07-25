@@ -70,6 +70,15 @@ public final class CharacteristicConservationService {
         return load(stack.getTag().getCompound(STACK_PAYLOAD));
     }
 
+    public static void writeStack(
+            ItemStack stack, CharacteristicBundle bundle) {
+        if (!stack.is(ModItems.BROKEN_CHARACTERISTIC.get())) {
+            throw new IllegalArgumentException(
+                    "characteristic payload requires a characteristic item");
+        }
+        stack.getOrCreateTag().put(STACK_PAYLOAD, bundle.save());
+    }
+
     @SubscribeEvent
     public static void onLivingDrops(LivingDropsEvent event) {
         Optional<CharacteristicBundle> bundle = readCarrier(event.getEntity());

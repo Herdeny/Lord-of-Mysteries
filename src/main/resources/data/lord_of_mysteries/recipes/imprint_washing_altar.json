@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AMA",
+    "PSP",
+    "DDD"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "M": {
+      "item": "lord_of_mysteries:moonwater"
+    },
+    "P": {
+      "item": "minecraft:polished_deepslate"
+    },
+    "S": {
+      "item": "lord_of_mysteries:spirit_salt"
+    },
+    "D": {
+      "item": "minecraft:deepslate"
+    }
+  },
+  "result": {
+    "item": "lord_of_mysteries:imprint_washing_altar"
+  }
+}

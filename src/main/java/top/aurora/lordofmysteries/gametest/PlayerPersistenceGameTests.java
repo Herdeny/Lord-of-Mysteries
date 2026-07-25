@@ -30,6 +30,8 @@ import top.aurora.lordofmysteries.ability.M3LaunchAbilityHandler;
 import top.aurora.lordofmysteries.ability.TravelMarkerService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicConservationService;
+import top.aurora.lordofmysteries.characteristic.CharacteristicProcessingLogic;
+import top.aurora.lordofmysteries.characteristic.CharacteristicProcessingService;
 import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
 import top.aurora.lordofmysteries.knowledge.M1TrialProgress;
 import top.aurora.lordofmysteries.player.MysteryCapability;
@@ -534,6 +536,121 @@ public final class PlayerPersistenceGameTests {
                         leader, data, List.of(leader, passenger, bystander))
                         && data.spirituality == spiritAfterSuccess,
                 "cooldown retry must fail without charging spirit");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void characteristicProcessingConservesAndRecoversItemState(
+            GameTestHelper helper) {
+        BlockPos separator = helper.absolutePos(new BlockPos(2, 4, 2));
+        BlockPos washingAltar = helper.absolutePos(new BlockPos(4, 4, 2));
+        helper.getLevel().setBlockAndUpdate(
+                separator,
+                ModBlocks.CHARACTERISTIC_SEPARATOR.get().defaultBlockState());
+        helper.getLevel().setBlockAndUpdate(
+                washingAltar,
+                ModBlocks.IMPRINT_WASHING_ALTAR.get().defaultBlockState());
+        helper.assertTrue(helper.getLevel().getBlockState(separator)
+                        .is(ModBlocks.CHARACTERISTIC_SEPARATOR.get())
+                        && helper.getLevel().getBlockState(washingAltar)
+                        .is(ModBlocks.IMPRINT_WASHING_ALTAR.get()),
+                "both characteristic workstations must exist in the real world");
+
+        ResourceLocation seer = ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID, "seer");
+        CharacteristicBundle base = CharacteristicBundle.fromPotion(
+                seer, 9, 0.95f, "complete")
+                .advance(8, 0.9f, "rough")
+                .advance(7, 0.85f, "flawed");
+        CharacteristicBundle polluted = new CharacteristicBundle(
+                base.pathway(),
+                base.highestSequence(),
+                base.layers(),
+                new CharacteristicBundle.Imprint(
+                        7, "despair", 84000L, 0, 0.6f,
+                        List.of("gametest.whisper")),
+                60f,
+                base.sourceHash());
+        ItemStack source = CharacteristicConservationService.createStack(
+                polluted);
+
+        CharacteristicProcessingService.StackResult sealed =
+                CharacteristicProcessingService.seal(source);
+        helper.assertTrue(sealed.success()
+                        && CharacteristicProcessingService.isSealed(
+                        sealed.primary()),
+                "seal wax operation must preserve and lock the payload");
+        CharacteristicProcessingService.StackResult lockedCleanse =
+                CharacteristicProcessingService.cleanse(sealed.primary());
+        helper.assertTrue(!lockedCleanse.success()
+                        && lockedCleanse.status()
+                        == CharacteristicProcessingService.Status.SEALED,
+                "sealed characteristics must reject washing without mutation");
+
+        CharacteristicProcessingService.StackResult unsealed =
+                CharacteristicProcessingService.unseal(sealed.primary());
+        CharacteristicProcessingService.StackResult split =
+                CharacteristicProcessingService.split(unsealed.primary());
+        helper.assertTrue(split.success(),
+                "unsealed layered characteristic must split");
+        CharacteristicBundle extracted =
+                CharacteristicConservationService.readStack(
+                        split.primary()).orElseThrow();
+        CharacteristicBundle remainder =
+                CharacteristicConservationService.readStack(
+                        split.secondary()).orElseThrow();
+        helper.assertTrue(
+                CharacteristicProcessingLogic.totalUnits(polluted)
+                        == CharacteristicProcessingLogic.totalUnits(extracted)
+                        + CharacteristicProcessingLogic.totalUnits(remainder),
+                "separator must conserve every characteristic unit");
+
+        CharacteristicProcessingService.StackResult duplicate =
+                CharacteristicProcessingService.merge(
+                        split.primary(), split.primary().copy());
+        helper.assertTrue(!duplicate.success()
+                        && duplicate.status()
+                        == CharacteristicProcessingService.Status.DUPLICATE_SOURCE,
+                "same-source copies must be rejected before any item is consumed");
+        CharacteristicProcessingService.StackResult merged =
+                CharacteristicProcessingService.merge(
+                        split.primary(), split.secondary());
+        helper.assertTrue(merged.success(),
+                "two distinct child bundles must recompose");
+        CharacteristicBundle mergedBundle =
+                CharacteristicConservationService.readStack(
+                        merged.primary()).orElseThrow();
+        helper.assertTrue(
+                CharacteristicProcessingLogic.totalUnits(mergedBundle)
+                        == CharacteristicProcessingLogic.totalUnits(polluted)
+                        && mergedBundle.corruption() > polluted.corruption(),
+                "recomposition must conserve units and add contamination risk");
+
+        float purityBefore = CharacteristicProcessingLogic.averagePurity(
+                mergedBundle);
+        CharacteristicProcessingService.StackResult cleansed =
+                CharacteristicProcessingService.cleanse(merged.primary());
+        CharacteristicBundle cleansedBundle =
+                CharacteristicConservationService.readStack(
+                        cleansed.primary()).orElseThrow();
+        helper.assertTrue(cleansed.success()
+                        && cleansedBundle.corruption()
+                        == mergedBundle.corruption() - 25f
+                        && cleansedBundle.imprint().dominance()
+                        < mergedBundle.imprint().dominance()
+                        && CharacteristicProcessingLogic.averagePurity(
+                        cleansedBundle) < purityBefore,
+                "washing must reduce danger by permanently sacrificing purity");
+
+        CompoundTag saved = cleansed.primary().save(new CompoundTag());
+        ItemStack restored = ItemStack.of(saved);
+        CharacteristicBundle restoredBundle =
+                CharacteristicConservationService.readStack(
+                        restored).orElseThrow();
+        helper.assertTrue(restoredBundle.equals(cleansedBundle)
+                        && CharacteristicProcessingService.operationCount(
+                        restored) == 5,
+                "processed payload and audit counter must survive item NBT");
         helper.succeed();
     }
 

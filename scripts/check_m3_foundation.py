@@ -284,6 +284,54 @@ def main():
             and "rollback(moved, origins)" in travel_service),
         "traveler relay failure no longer preserves resources")
 
+    processing = contract["characteristic_processing"]
+    processing_logic = source(
+        JAVA / "characteristic" / "CharacteristicProcessingLogic.java")
+    processing_service = source(
+        JAVA / "characteristic" / "CharacteristicProcessingService.java")
+    block_registry = source(JAVA / "registry" / "ModBlocks.java")
+    item_registry = source(JAVA / "registry" / "ModItems.java")
+    require(f'literal("{processing["command"]}")' in commands
+            and "CharacteristicProcessingService.sendGuide" in commands,
+            "characteristic processing guide command is missing")
+    require(
+        f'BLOCKS.register("{processing["separator"]}"' in block_registry
+        and f'BLOCKS.register("{processing["washing_altar"]}"'
+        in block_registry,
+        "characteristic processing workstations are missing")
+    require(
+        f'"{processing["probe"]}"' in item_registry
+        and f'"{processing["seal_wax"]}"' in item_registry
+        and f'"{processing["washing_incense"]}"' in item_registry,
+        "characteristic processing tools are missing")
+    require(
+        f"MERGE_CORRUPTION = {processing['merge_corruption']}f"
+        in processing_logic
+        and f"CLEANSE_CORRUPTION_REDUCTION = "
+        f"{processing['cleanse_corruption_reduction']}f"
+        in processing_logic
+        and f"CLEANSE_DOMINANCE_REDUCTION = "
+        f"{processing['cleanse_dominance_reduction']}f"
+        in processing_logic
+        and f"CLEANSE_PURITY_LOSS = "
+        f"{processing['cleanse_purity_loss']}f"
+        in processing_logic,
+        "characteristic processing costs drifted")
+    require(
+        not processing["rejects_duplicate_source"]
+        or ("first.sourceHash().equals(second.sourceHash())"
+            in processing_logic and "DUPLICATE_SOURCE" in processing_logic),
+        "duplicate characteristic sources are no longer rejected")
+    require(
+        not processing["sealed_blocks_processing"]
+        or processing_service.count("isSealed(") >= 4,
+        "sealed characteristics no longer block processing")
+    require(
+        not processing["failure_preserves_resources"]
+        or ("StackResult.failure" in processing_service
+            and "ItemStack.EMPTY" in processing_service),
+        "failed characteristic operations no longer preserve resources")
+
     rituals = contract["sequence_five_rituals"]
     ritual_service = source(
         JAVA / "ritual" / "SequenceFiveAdvancementRitual.java")
@@ -365,7 +413,8 @@ def main():
         "economy, newspaper and diagnostics visibility, spirituality and "
         "ritual modifiers, five launch pathways at sequences 6-5, five "
         "dedicated sequence-5 rituals with solo and supporter paths, "
-        "a consent-gated traveler spatial relay, eleven GameTests, and "
+        "a consent-gated traveler spatial relay, conserved characteristic "
+        "splitting, sealing and washing, twelve GameTests, and "
         "dedicated restart validation"
     )
 

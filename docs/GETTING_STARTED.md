@@ -1,6 +1,6 @@
 # Project Mystery 入门指南
 
-> 适用版本：0.9.21-1.20.1 · v0.9 M2 真人验收准备与 M3 旅行家空间标记远门（M0/M1 已完成）
+> 适用版本：0.9.22-1.20.1 · v0.9 M2 真人验收准备与 M3 非凡特性处理闭环（M0/M1 已完成）
 >
 > 当前路线：v0.9 · M2 调查与生活
 
@@ -225,6 +225,7 @@
 - 五种仪式均可单人完成；附近主动潜行并手持途径焦点的协助者可提高稳定度，最多三人。
 - 旅行家可把原版指南针绑定到磁石，输入 `/pm travel` 检查标记，手持标记按 `U` 消耗 80 灵性开启远门；每名同行者额外消耗 10。
 - 同行者必须在四格内主动潜行，并手持指向同一磁石的指南针；最多三人，未同意者不会被传送。
-- 当前序列 6–5、五种晋升仪式和旅行家磁石远门是 `code_ready` 纵切；完整梦境、永久秘偶、形体记录和持续双向门仍未实现。
+- `/pm characteristic` 显示非凡特性加工规则。分离台以副手探针检查/潜行拆分，以第二份同途径特性重组，以记忆封蜡封存；洗涤台以每层永久损失 3% 纯度换取污染 -25 和烙印 -20%。
+- 当前序列 6–5、五种晋升仪式、旅行家磁石远门和非凡特性处理是 `code_ready` 纵切；完整梦境、永久秘偶、形体记录和持续双向门仍未实现。
 
-五种仪式的环境、材料、失败恢复和多人职责见 [`M3_SEQUENCE5_ADVANCEMENT_RITUALS.md`](M3_SEQUENCE5_ADVANCEMENT_RITUALS.md)；旅行家标记、费用、同意与安全规则见 [`M3_TRAVELER_SPATIAL_RELAY.md`](M3_TRAVELER_SPATIAL_RELAY.md)。
+五种仪式的环境、材料、失败恢复和多人职责见 [`M3_SEQUENCE5_ADVANCEMENT_RITUALS.md`](M3_SEQUENCE5_ADVANCEMENT_RITUALS.md)；旅行家标记、费用、同意与安全规则见 [`M3_TRAVELER_SPATIAL_RELAY.md`](M3_TRAVELER_SPATIAL_RELAY.md)；特性配方、公式和失败矩阵见 [`M3_CHARACTERISTIC_PROCESSING.md`](M3_CHARACTERISTIC_PROCESSING.md)。

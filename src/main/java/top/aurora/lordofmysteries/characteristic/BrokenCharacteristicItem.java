@@ -32,12 +32,28 @@ public final class BrokenCharacteristicItem extends Item {
                             .withStyle(ChatFormatting.LIGHT_PURPLE));
                     tooltip.add(Component.translatable(
                             "tooltip.lord_of_mysteries.characteristic.layers",
-                            bundle.highestSequence(), bundle.layers().size())
+                            bundle.highestSequence(),
+                            CharacteristicProcessingLogic.totalUnits(bundle))
                             .withStyle(ChatFormatting.GRAY));
+                    tooltip.add(Component.translatable(
+                            "tooltip.lord_of_mysteries.characteristic.purity",
+                            Math.round(CharacteristicProcessingLogic
+                                    .averagePurity(bundle) * 100f))
+                            .withStyle(ChatFormatting.AQUA));
                     tooltip.add(Component.translatable(
                             "tooltip.lord_of_mysteries.characteristic.corruption",
                             Math.round(bundle.corruption()))
                             .withStyle(ChatFormatting.DARK_RED));
+                    tooltip.add(Component.translatable(
+                            "tooltip.lord_of_mysteries.characteristic.imprint",
+                            Math.round(bundle.imprint().dominance() * 100f),
+                            bundle.imprint().cleansingCount())
+                            .withStyle(ChatFormatting.DARK_PURPLE));
+                    if (CharacteristicProcessingService.isSealed(stack)) {
+                        tooltip.add(Component.translatable(
+                                "tooltip.lord_of_mysteries.characteristic.sealed")
+                                .withStyle(ChatFormatting.GOLD));
+                    }
                 },
                 () -> tooltip.add(Component.translatable(
                         "tooltip.lord_of_mysteries.characteristic.fragment")

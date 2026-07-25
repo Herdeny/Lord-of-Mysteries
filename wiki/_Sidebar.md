@@ -31,6 +31,7 @@
 - [M3 首发五途径序列 6–5](M3-Launch-Pathways)
 - [M3 序列 5 专属晋升仪式](M3-Sequence-5-Advancement-Rituals)
 - [M3 旅行家空间标记与同行远门](M3-Traveler-Spatial-Relay)
+- [M3 非凡特性处理](M3-Characteristic-Processing)
 
 ### 开发与发布
 

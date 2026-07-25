@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:honeycomb"
+    },
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "lord_of_mysteries:spirit_salt"
+    }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:memory_seal_wax",
+    "count": 4
+  }
+}
