@@ -1,6 +1,7 @@
 package top.aurora.lordofmysteries.gametest;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
@@ -41,6 +42,8 @@ import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.PotionQuality;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
+import top.aurora.lordofmysteries.characteristic.CharacteristicLoadLogic;
+import top.aurora.lordofmysteries.characteristic.CharacteristicLoadService;
 import top.aurora.lordofmysteries.commission.InvestigationBoardService;
 import top.aurora.lordofmysteries.registry.ModBlocks;
 import top.aurora.lordofmysteries.registry.ModEntities;
@@ -651,6 +654,116 @@ public final class PlayerPersistenceGameTests {
                         && CharacteristicProcessingService.operationCount(
                         restored) == 5,
                 "processed payload and audit counter must survive item NBT");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void extraCharacteristicLoadCanBeSafelyExtracted(
+            GameTestHelper helper) {
+        BlockPos separator = helper.absolutePos(new BlockPos(2, 4, 2));
+        helper.getLevel().setBlockAndUpdate(
+                separator,
+                ModBlocks.CHARACTERISTIC_SEPARATOR.get().defaultBlockState());
+        ServerPlayer player = createPlayer(helper, "load-extraction");
+        player.setPos(
+                separator.getX() + 0.5d,
+                separator.getY() + 1d,
+                separator.getZ() + 0.5d);
+        PlayerMysteryData data = MysteryCapability.get(player);
+        ResourceLocation seer = ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID, "seer");
+        data.pathway = seer;
+        data.sequence = 7;
+        data.spiritualityMax = 180f;
+        data.spirituality = 120f;
+        data.identityAnchored = true;
+        CharacteristicLedger.recordPotionAdvancement(
+                data, seer, 9, PotionQuality.COMPLETE);
+        CharacteristicLedger.recordPotionAdvancement(
+                data, seer, 8, PotionQuality.COMPLETE);
+        CharacteristicLedger.recordPotionAdvancement(
+                data, seer, 7, PotionQuality.COMPLETE);
+
+        ItemStack incoming =
+                CharacteristicConservationService.createStack(
+                        CharacteristicBundle.fromPotion(
+                                seer, 7, 0.8f, "gametest-extra"));
+        helper.assertTrue(
+                CharacteristicLoadService.absorb(player, incoming),
+                "single same-path layer must be absorbable by an active Beyonder");
+        helper.assertTrue(incoming.isEmpty()
+                        && CharacteristicLoadLogic.extraLoad(data) == 1
+                        && data.pollution > 0f
+                        && data.insanityPressure > 0f,
+                "absorption must consume one item and create visible risky load");
+
+        player.setItemInHand(
+                InteractionHand.MAIN_HAND,
+                new ItemStack(ModItems.IDENTITY_SALT_CIRCLE.get(), 2));
+        player.setItemInHand(
+                InteractionHand.OFF_HAND,
+                new ItemStack(ModItems.IMPRINT_WASHING_INCENSE.get(), 2));
+        player.getInventory().add(
+                new ItemStack(ModItems.SPIRIT_SALT.get(), 8));
+        int unitsBefore = CharacteristicProcessingLogic.totalUnits(
+                data.characteristicBundles.get(0));
+        CharacteristicLoadService.interact(
+                helper.getLevel(), separator, player, false);
+        helper.assertTrue(
+                CharacteristicLoadLogic.extraLoad(data) == 1
+                        && player.getMainHandItem().getCount() == 2
+                        && player.getOffhandItem().getCount() == 2
+                        && player.getInventory().countItem(
+                        ModItems.SPIRIT_SALT.get()) == 8,
+                "inspection must not mutate the player or consume materials");
+
+        player.setShiftKeyDown(true);
+        CharacteristicLoadService.interact(
+                helper.getLevel(), separator, player, true);
+        helper.assertTrue(
+                CharacteristicLoadLogic.extraLoad(data) == 0
+                        && data.pathway.equals(seer)
+                        && data.sequence == 7,
+                "stable extraction must remove load without deleting identity");
+        helper.assertTrue(
+                player.getMainHandItem().getCount() == 1
+                        && player.getOffhandItem().getCount() == 1
+                        && player.getInventory().countItem(
+                        ModItems.SPIRIT_SALT.get()) == 4,
+                "committed extraction must consume its exact material cost");
+        helper.assertTrue(
+                player.getInventory().items.stream().anyMatch(stack ->
+                        CharacteristicConservationService.readStack(
+                                stack).isPresent()),
+                "successful extraction must return a physical characteristic");
+        CharacteristicBundle retained = data.characteristicBundles.get(0);
+        CharacteristicBundle extracted =
+                player.getInventory().items.stream()
+                        .map(CharacteristicConservationService::readStack)
+                        .flatMap(Optional::stream)
+                        .findFirst()
+                        .orElseThrow();
+        helper.assertTrue(
+                unitsBefore
+                        == CharacteristicProcessingLogic.totalUnits(retained)
+                        + CharacteristicProcessingLogic.totalUnits(extracted),
+                "player and output must conserve every characteristic unit");
+
+        MysteryCapability.Provider restored =
+                new MysteryCapability.Provider();
+        restored.deserializeNBT(data.save());
+        helper.assertTrue(
+                CharacteristicLoadLogic.extraLoad(restored.getData()) == 0
+                        && restored.getData().sequence == 7,
+                "extracted state must survive provider restart");
+        int saltBeforeRetry = player.getInventory().countItem(
+                ModItems.SPIRIT_SALT.get());
+        CharacteristicLoadService.interact(
+                helper.getLevel(), separator, player, true);
+        helper.assertTrue(
+                player.getInventory().countItem(
+                        ModItems.SPIRIT_SALT.get()) == saltBeforeRetry,
+                "retry without extra load must preserve all materials");
         helper.succeed();
     }
 

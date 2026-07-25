@@ -144,6 +144,32 @@ def check_assets(errors):
     return model_count
 
 
+def check_recipes(errors):
+    recipe_root = MAIN_RESOURCES / "data" / NAMESPACE / "recipes"
+    for path in sorted(recipe_root.glob("*.json")):
+        payload = load_json(path, errors)
+        if not isinstance(payload, dict):
+            continue
+        if payload.get("type") != "minecraft:crafting_shaped":
+            continue
+        pattern = payload.get("pattern")
+        if not isinstance(pattern, list) or not 1 <= len(pattern) <= 3:
+            errors.append(
+                f"{path.relative_to(ROOT)}: shaped pattern must have 1-3 rows"
+            )
+            continue
+        if not all(isinstance(row, str) for row in pattern):
+            errors.append(
+                f"{path.relative_to(ROOT)}: shaped pattern rows must be strings"
+            )
+            continue
+        widths = {len(row) for row in pattern}
+        if len(widths) != 1 or not 1 <= next(iter(widths)) <= 3:
+            errors.append(
+                f"{path.relative_to(ROOT)}: shaped pattern must use equal 1-3 column rows"
+            )
+
+
 def registrations(path, registry_name, helper=None):
     source = path.read_text(encoding="utf-8")
     names = set(re.findall(
@@ -186,6 +212,7 @@ def main():
     json_count = check_json(errors)
     translation_count, referenced_count = check_languages(errors)
     model_count = check_assets(errors)
+    check_recipes(errors)
     item_count, block_count, entity_count = check_registries(errors)
     if errors:
         print("resource integrity check failed:", file=sys.stderr)

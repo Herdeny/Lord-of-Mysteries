@@ -35,6 +35,13 @@ public final class CharacteristicSeparatorBlock extends Block {
         }
         ItemStack primary = player.getMainHandItem();
         ItemStack catalyst = player.getOffhandItem();
+        if (primary.is(ModItems.IDENTITY_SALT_CIRCLE.get())) {
+            return CharacteristicLoadService.interact(
+                    serverPlayer.serverLevel(),
+                    pos,
+                    serverPlayer,
+                    player.isShiftKeyDown());
+        }
         if (CharacteristicConservationService.readStack(primary).isEmpty()) {
             player.sendSystemMessage(Component.translatable(
                     "message.lord_of_mysteries.characteristic.separator.help"));

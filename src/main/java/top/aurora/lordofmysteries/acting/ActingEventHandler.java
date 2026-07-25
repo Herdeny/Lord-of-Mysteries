@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
 import top.aurora.lordofmysteries.core.config.ServerConfig;
+import top.aurora.lordofmysteries.characteristic.CharacteristicLoadLogic;
 import top.aurora.lordofmysteries.knowledge.M1TrialTracker;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerFeedback;
@@ -38,7 +39,18 @@ public final class ActingEventHandler {
                 ActingCalculator.risk(data.insanityPressure),
                 PotionQuality.fromId(data.potionQuality).digestionMultiplier(),
                 ServerConfig.DIGESTION_MULTIPLIER.get().floatValue());
+        int extraLoad = CharacteristicLoadLogic.extraLoad(data);
+        gain *= CharacteristicLoadLogic.digestionMultiplier(extraLoad);
         data.digestion = Math.max(0f, Math.min(100f, data.digestion + gain));
+        data.spirituality = Math.min(
+                data.spiritualityMax,
+                data.spirituality
+                        + CharacteristicLoadLogic.spiritualityReward(extraLoad));
+        data.insanityPressure = Math.min(
+                100f,
+                data.insanityPressure
+                        + CharacteristicLoadLogic.actingPressureGain(
+                        extraLoad, novelty));
         data.actingHistory.put(historyKey, now);
         ActingIdentityService.recordPractice(data, novelty, gain);
         if (gain > 0f) M1TrialTracker.recordActing(player);

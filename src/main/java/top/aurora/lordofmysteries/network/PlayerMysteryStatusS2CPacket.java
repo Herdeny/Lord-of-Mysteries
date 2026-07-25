@@ -10,6 +10,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
 import top.aurora.lordofmysteries.client.MysteryStatusScreen;
+import top.aurora.lordofmysteries.characteristic.CharacteristicLoadLogic;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 
 public record PlayerMysteryStatusS2CPacket(
@@ -23,6 +24,7 @@ public record PlayerMysteryStatusS2CPacket(
         String potionQuality,
         float principleInsight,
         float roleOveridentification,
+        int extraCharacteristicLoad,
         List<String> knownKnowledge) {
 
     public static PlayerMysteryStatusS2CPacket from(PlayerMysteryData data, boolean showExactDigestion) {
@@ -41,6 +43,7 @@ public record PlayerMysteryStatusS2CPacket(
                 data.potionQuality,
                 data.principleInsight,
                 data.roleOveridentification,
+                CharacteristicLoadLogic.extraLoad(data),
                 knowledge);
     }
 
@@ -55,6 +58,7 @@ public record PlayerMysteryStatusS2CPacket(
         buffer.writeUtf(packet.potionQuality);
         buffer.writeFloat(packet.principleInsight);
         buffer.writeFloat(packet.roleOveridentification);
+        buffer.writeVarInt(packet.extraCharacteristicLoad);
         buffer.writeVarInt(packet.knownKnowledge.size());
         for (String id : packet.knownKnowledge) buffer.writeUtf(id);
     }
@@ -70,12 +74,15 @@ public record PlayerMysteryStatusS2CPacket(
         String quality = buffer.readUtf();
         float principleInsight = buffer.readFloat();
         float roleOveridentification = buffer.readFloat();
+        int extraCharacteristicLoad = Math.min(
+                640, Math.max(0, buffer.readVarInt()));
         int size = Math.min(256, Math.max(0, buffer.readVarInt()));
         List<String> knowledge = new ArrayList<>(size);
         for (int i = 0; i < size; i++) knowledge.add(buffer.readUtf());
         return new PlayerMysteryStatusS2CPacket(pathway, sequence, spirituality,
                 spiritualityMax, digestion, pollution, pressure, quality,
-                principleInsight, roleOveridentification, knowledge);
+                principleInsight, roleOveridentification,
+                extraCharacteristicLoad, knowledge);
     }
 
     public static void handle(PlayerMysteryStatusS2CPacket packet,

@@ -289,7 +289,7 @@
   "investigation_board": {
     "block": "commission_board",
     "command": "board",
-    "network_protocol": 12,
+    "network_protocol": 13,
     "packet_count": 14,
     "requires_proximity": true,
     "states": ["AVAILABLE", "ACTIVE", "COMPLETED", "LOCKED", "COOLDOWN"]

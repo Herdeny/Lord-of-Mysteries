@@ -1,10 +1,10 @@
 # 版本与发布
 
 <!-- project-status:start -->
-- 当前版本：**`0.9.22-1.20.1`**
-- 开发阶段：**v0.9 M2 真人验收准备与 M3 非凡特性处理闭环**（M2）
+- 当前版本：**`0.9.23-1.20.1`**
+- 开发阶段：**v0.9 M2 真人验收准备与 M3 额外特性负载闭环**（M2）
 - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-- 最后更新：**2026-07-25 16:17:52 UTC+01:00**（`2026-07-25T15:17:52Z`）
+- 最后更新：**2026-07-25 19:08:06 UTC+01:00**（`2026-07-25T18:08:06Z`）
 <!-- project-status:end -->
 
 ## 版本格式
@@ -60,7 +60,13 @@ python scripts/check_release_timestamp.py --require-head
 - Build 与 Documentation Consistency 都校验 v0.9 精确设计源和内容关系图。
 - `ROADMAP.md`、README 路线表、Wiki 里程碑和 Pages 路线卡由 `roadmap.json` 自动生成。
 - Pages 工作流发布 `docs/`。
-- Pages 图鉴由注册表和双语文件生成；手工条目只能补充能力/系统说明，不能替代 85 物品、5 方块、8 实体覆盖检查。
+- Pages 图鉴由注册表和双语文件生成；手工条目只能补充能力/系统说明，不能替代当前 91 物品、7 方块、8 实体覆盖检查。
 - Pages 布局契约固定检查锚点恢复、24 条分批渲染、响应式断点、`hidden` 语义、ARIA 状态与弹窗焦点恢复。
 - Wiki Sync 工作流把主仓库 `wiki/` 同步到 GitHub Wiki 独立仓库。
 - Build 从 `project-status.json` 读取 Mod 版本。
+
+## 0.9.23 发布证据
+
+- 网络协议 13、Capability schema 23，371 项 JUnit 与 13 项真实 Forge GameTest。
+- Pages 图鉴为 187 条唯一记录，包含自动生成的身份盐环和人工维护的额外负载/活体析出机制条目。
+- 发布前必须刷新 `project-status.json` 时间、运行元数据同步、完整资源/Pages/回滚门禁、clean build 和专服双启动矩阵。

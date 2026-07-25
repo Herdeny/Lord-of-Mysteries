@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SAS",
+    "APA",
+    "SAS"
+  ],
+  "key": {
+    "S": {
+      "item": "lord_of_mysteries:spirit_salt"
+    },
+    "A": {
+      "item": "lord_of_mysteries:ash_powder"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    }
+  },
+  "result": {
+    "item": "lord_of_mysteries:identity_salt_circle",
+    "count": 2
+  }
+}

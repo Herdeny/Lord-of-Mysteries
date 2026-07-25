@@ -23,8 +23,8 @@ class NetworkProtocolTest {
 
     @Test
     void onlyExactProtocolVersionIsAccepted() {
-        assertTrue(NetworkProtocol.accepts("12"));
-        assertFalse(NetworkProtocol.accepts("11"));
-        assertFalse(NetworkProtocol.accepts("12.1"));
+        assertTrue(NetworkProtocol.accepts("13"));
+        assertFalse(NetworkProtocol.accepts("12"));
+        assertFalse(NetworkProtocol.accepts("13.1"));
     }
 }

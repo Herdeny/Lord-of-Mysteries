@@ -87,6 +87,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.IMPRINT_PROBE.get());
                         output.accept(ModItems.MEMORY_SEAL_WAX.get());
                         output.accept(ModItems.IMPRINT_WASHING_INCENSE.get());
+                        output.accept(ModItems.IDENTITY_SALT_CIRCLE.get());
                         output.accept(ModItems.ACTING_IDENTITY_CARD.get());
                         output.accept(ModItems.ACTING_REFLECTION_JOURNAL.get());
                         output.accept(ModItems.INVESTIGATOR_NOTES.get());

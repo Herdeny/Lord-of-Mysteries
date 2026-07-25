@@ -144,6 +144,7 @@ public final class CharacteristicProcessingService {
         player.sendSystemMessage(Component.translatable(
                 "message.lord_of_mysteries.characteristic.guide.safety")
                 .withStyle(ChatFormatting.GRAY));
+        CharacteristicLoadService.sendStatus(player);
         return 1;
     }
 

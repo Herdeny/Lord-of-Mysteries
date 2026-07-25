@@ -289,6 +289,17 @@ def main():
         JAVA / "characteristic" / "CharacteristicProcessingLogic.java")
     processing_service = source(
         JAVA / "characteristic" / "CharacteristicProcessingService.java")
+    load_logic = source(
+        JAVA / "characteristic" / "CharacteristicLoadLogic.java")
+    load_service = source(
+        JAVA / "characteristic" / "CharacteristicLoadService.java")
+    broken_characteristic = source(
+        JAVA / "characteristic" / "BrokenCharacteristicItem.java")
+    separator_block = source(
+        JAVA / "characteristic" / "CharacteristicSeparatorBlock.java")
+    acting_handler = source(JAVA / "acting" / "ActingEventHandler.java")
+    status_packet = source(
+        JAVA / "network" / "PlayerMysteryStatusS2CPacket.java")
     block_registry = source(JAVA / "registry" / "ModBlocks.java")
     item_registry = source(JAVA / "registry" / "ModItems.java")
     require(f'literal("{processing["command"]}")' in commands
@@ -331,6 +342,57 @@ def main():
         or ("StackResult.failure" in processing_service
             and "ItemStack.EMPTY" in processing_service),
         "failed characteristic operations no longer preserve resources")
+    require(
+        f'"{processing["identity_salt_circle"]}"' in item_registry,
+        "identity salt circle is missing")
+    require(
+        not processing["extra_load_visible"]
+        or ("extraCharacteristicLoad" in status_packet
+            and "CharacteristicLoadLogic.extraLoad(data)" in status_packet
+            and "CharacteristicLoadService.sendStatus(player)"
+            in processing_service),
+        "extra characteristic load is no longer visible")
+    require(
+        not processing["direct_absorption_single_unit"]
+        or ("CharacteristicProcessingLogic.totalUnits(incoming) != 1"
+            in load_logic
+            and "CharacteristicLoadService.absorb(player, stack)"
+            in broken_characteristic),
+        "direct absorption no longer requires one conserved unit")
+    require(
+        f"DIGESTION_PENALTY_PER_LAYER = "
+        f"{processing['digestion_penalty_per_layer']:.2f}f" in load_logic
+        and f"MINIMUM_DIGESTION_MULTIPLIER = "
+        f"{processing['minimum_digestion_multiplier']:.1f}f" in load_logic
+        and f"SPIRITUALITY_REWARD_PER_LAYER = "
+        f"{processing['spirituality_reward_per_layer']:.1f}f" in load_logic
+        and "CharacteristicLoadLogic.digestionMultiplier(extraLoad)"
+        in acting_handler
+        and "CharacteristicLoadLogic.spiritualityReward(extraLoad)"
+        in acting_handler,
+        "extra-load acting tradeoff drifted")
+    require(
+        f"SPIRIT_SALT_COST = "
+        f"{processing['extraction_spirit_salt_cost']}" in load_service
+        and f"Math.min({processing['extraction_supporter_cap']}, "
+        in load_service
+        and "player.isShiftKeyDown()" in separator_block
+        and "CharacteristicLoadService.interact(" in separator_block,
+        "extra-load extraction ritual requirements drifted")
+    require(
+        not processing["extraction_preserves_pathway_and_sequence"]
+        or ("data.characteristicBundles.set(currentIndex, result.retained())"
+            in load_service
+            and not re.search(r"data\.pathway\s*=(?!=)", load_service)
+            and not re.search(r"data\.sequence\s*=(?!=)", load_service)),
+        "extraction can overwrite pathway or sequence")
+    require(
+        not processing["failure_preserves_extra_load"]
+        or ("case FAILURE" in load_service
+            and "source.layers()" in load_logic
+            and "return new ExtractionResult(outcome, agitated, null)"
+            in load_logic),
+        "failed extraction no longer preserves the extra layer")
 
     rituals = contract["sequence_five_rituals"]
     ritual_service = source(
@@ -414,7 +476,8 @@ def main():
         "ritual modifiers, five launch pathways at sequences 6-5, five "
         "dedicated sequence-5 rituals with solo and supporter paths, "
         "a consent-gated traveler spatial relay, conserved characteristic "
-        "splitting, sealing and washing, twelve GameTests, and "
+        "splitting, sealing and washing, visible extra-load absorption and "
+        "safe extraction, thirteen GameTests, and "
         "dedicated restart validation"
     )
 

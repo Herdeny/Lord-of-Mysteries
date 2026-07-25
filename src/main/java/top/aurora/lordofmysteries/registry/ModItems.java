@@ -223,6 +223,10 @@ public final class ModItems {
             ITEMS.register("imprint_washing_incense",
                     () -> new Item(new Item.Properties()
                             .stacksTo(16).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> IDENTITY_SALT_CIRCLE =
+            ITEMS.register("identity_salt_circle",
+                    () -> new Item(new Item.Properties()
+                            .stacksTo(16).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> ACTING_IDENTITY_CARD = ITEMS.register(
             "acting_identity_card",
             () -> new ActingIdentityCardItem(

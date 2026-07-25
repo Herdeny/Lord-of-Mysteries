@@ -16,7 +16,7 @@ window.LOM_ROADMAP_META = {
         "126 节点、188 关系内容图通过 orphan、spoiler、compat、localization 与 asset 审计",
         "Capability schema 23 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema",
         "世界加载前原子快照、幂等 schema marker、受限路径恢复工具和恢复前安全备份",
-        "12 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒、M1 状态、调查板邻近、城市经济、五途径进阶、真实祭坛仪式、五途径能力世界行为、旅行家多人远门和特性处理工作台",
+        "13 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒、M1 状态、调查板邻近、城市经济、五途径进阶、真实祭坛仪式、五途径能力世界行为、旅行家多人远门、特性处理工作台和额外负载析出",
         "专服双启动矩阵验证世界种子、schema 快照、保存和干净停服保持稳定"
       ]
     },
@@ -84,6 +84,7 @@ window.LOM_ROADMAP_META = {
         "已预实现：提线、入梦、战火、窃梦和启门五种序列 5 仪式，包含真实祭坛、环境/材料、单人路线、多人协助、失败后果、持久证明与 /pm ritual 引导",
         "已预实现：旅行家可复用原版磁石指南针建立持久空间标记，远门支持跨维度安全落点、最多三名主动同意同行者、失败回滚与 /pm travel 引导",
         "已预实现：特性分离台与烙印洗涤台支持层级拆分、同途径重组、直接同源拒绝、记忆封存，以及以永久纯度损失换取污染与烙印净化，并提供 /pm characteristic 引导",
+        "已预实现：活体额外特性负载可见、单层同途径吸收、消化/灵性/压力权衡、身份锚定析出、单人路线、最多三名探针见证者、稳定/勉强/失败恢复与守恒产物",
         "待完成：完整原典能力组、形体/共享梦境/永久秘偶系统、双向门实体、最终专属素材生物和途径美术",
         "待验收：五途径经济定位、领地兼容、无唯一最优途径和多人组队互补矩阵"
       ]
@@ -230,7 +231,7 @@ window.LOM_ROADMAP_META = {
       "structure_specs": 32,
       "weather_anomaly_specs": 18
     },
-    "repository_evidence_at_0.9.22": {
+    "repository_evidence_at_0.9.23": {
       "content_graph_nodes": 126,
       "content_graph_edges": 188,
       "schema4_sequence_definitions": 25,
@@ -238,16 +239,17 @@ window.LOM_ROADMAP_META = {
       "generated_recipes": 13,
       "playable_commissions": 4,
       "playable_quest_chains": 4,
-      "junit_tests": 360,
-      "forge_gametests": 12,
+      "junit_tests": 371,
+      "forge_gametests": 13,
       "sequence_five_physical_ritual_gametests": 1,
       "traveler_spatial_relay_gametests": 1,
       "characteristic_processing_gametests": 1,
+      "extra_characteristic_load_gametests": 1,
       "save_rollback_checks": 1,
       "dedicated_server_starts": 2,
-      "network_protocol": 12,
+      "network_protocol": 13,
       "player_capability_schema": 23,
-      "registered_items": 90,
+      "registered_items": 91,
       "registered_blocks": 7,
       "registered_entities": 8,
       "sequence_five_rituals": 5,
@@ -256,11 +258,11 @@ window.LOM_ROADMAP_META = {
       "characteristic_processing_guide_commands": 1,
       "pages_initial_catalog_batch": 24,
       "pages_layout_contract_checks": 1,
-      "json_resources": 320,
-      "paired_translations": 1421,
-      "referenced_translation_keys": 553,
-      "item_and_block_models": 97,
-      "pages_catalog_entries": 186
+      "json_resources": 322,
+      "paired_translations": 1452,
+      "referenced_translation_keys": 560,
+      "item_and_block_models": 98,
+      "pages_catalog_entries": 187
     }
   }
 };

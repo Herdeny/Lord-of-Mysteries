@@ -26,8 +26,8 @@ public final class MysteryStatusScreen extends Screen {
         renderBackground(graphics);
         int panelWidth = Math.min(360, width - 32);
         int left = (width - panelWidth) / 2;
-        int top = Math.max(24, (height - 260) / 2);
-        graphics.fill(left, top, left + panelWidth, top + 278, 0xE6100D16);
+        int top = Math.max(16, (height - 300) / 2);
+        graphics.fill(left, top, left + panelWidth, top + 300, 0xE6100D16);
         graphics.fill(left, top, left + panelWidth, top + 2, 0xFF8B5CF6);
 
         graphics.drawCenteredString(font, title, width / 2, top + 14, 0xFFD9C7FF);
@@ -66,6 +66,10 @@ public final class MysteryStatusScreen extends Screen {
         line(graphics, x, y, "screen.lord_of_mysteries.status.acting_identity",
                 oneDecimal(status.principleInsight()) + " / "
                         + oneDecimal(status.roleOveridentification()));
+        y += 18;
+        line(graphics, x, y,
+                "screen.lord_of_mysteries.status.extra_characteristic_load",
+                Integer.toString(status.extraCharacteristicLoad()));
         y += 28;
 
         graphics.drawString(font, Component.translatable(
@@ -75,7 +79,7 @@ public final class MysteryStatusScreen extends Screen {
             graphics.drawString(font, Component.translatable(
                     "screen.lord_of_mysteries.status.no_knowledge"), x + 8, y, 0xFF8E8798, false);
         } else {
-            int limit = Math.min(5, status.knownKnowledge().size());
+            int limit = Math.min(4, status.knownKnowledge().size());
             for (int i = 0; i < limit; i++) {
                 graphics.drawString(font, Component.literal("• ").append(
                                 Component.translatable(KnowledgeText.translationKey(
@@ -85,7 +89,7 @@ public final class MysteryStatusScreen extends Screen {
         }
         graphics.drawCenteredString(font, Component.translatable(
                 "screen.lord_of_mysteries.status.guide_hint"),
-                width / 2, top + 258, 0xFF8E8798);
+                width / 2, top + 280, 0xFF8E8798);
         super.render(graphics, mouseX, mouseY, partialTick);
     }
 
