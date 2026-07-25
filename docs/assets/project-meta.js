@@ -6,7 +6,7 @@ window.LOM_PROJECT_META = {
   "mc": "Minecraft Java 1.20.1",
   "loader": "Forge 47.4.20",
   "java": "17",
-  "lastUpdated": "2026-07-25T13:27:22+01:00",
-  "lastUpdatedUtc": "2026-07-25T12:27:22Z",
-  "lastUpdatedDisplay": "2026-07-25 13:27:22 UTC+01:00"
+  "lastUpdated": "2026-07-25T13:45:53+01:00",
+  "lastUpdatedUtc": "2026-07-25T12:45:53Z",
+  "lastUpdatedDisplay": "2026-07-25 13:45:53 UTC+01:00"
 };
