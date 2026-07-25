@@ -11,6 +11,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseContactMemoryPolicy;
 import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
 import top.aurora.lordofmysteries.commission.DynamicCaseRelationshipPolicy;
 import top.aurora.lordofmysteries.commission.MysticalExposurePolicy;
+import top.aurora.lordofmysteries.ability.TravelerDoorAccessMode;
 import top.aurora.lordofmysteries.potion.PotionQuality;
 
 public final class PlayerMysteryDataSanitizer {
@@ -48,6 +49,12 @@ public final class PlayerMysteryDataSanitizer {
         if (data.characteristicProvenanceNonce == null
                 || data.characteristicProvenanceNonce.length() > 128) {
             data.characteristicProvenanceNonce = "";
+            repairs++;
+        }
+        String repairedDoorAccess = TravelerDoorAccessMode.fromId(
+                data.travelerDoorAccessMode).id();
+        if (!repairedDoorAccess.equals(data.travelerDoorAccessMode)) {
+            data.travelerDoorAccessMode = repairedDoorAccess;
             repairs++;
         }
 

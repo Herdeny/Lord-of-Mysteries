@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "capability_schema": 24,
+  "capability_schema": 25,
   "economy": {
     "jobs": {
       "PRESS": {
@@ -126,17 +126,37 @@
   },
   "traveler_spatial_relay": {
     "command": "travel",
+    "access_command": ["travel", "access"],
     "marker_item": "minecraft:compass",
     "marker_block": "minecraft:lodestone",
+    "entity": "traveler_door",
     "leader_cost": 80,
     "passenger_cost": 10,
     "max_passengers": 3,
     "consent_radius": 4,
+    "door_duration_ticks": 400,
+    "transit_cooldown_ticks": 40,
     "leader_cooldown_ticks": 36000,
     "passenger_cooldown_ticks": 1200,
-    "requires_sneaking": true,
+    "opening_support_requires_sneaking": true,
     "same_source_dimension": true,
     "matching_marker": true,
+    "crossing_is_final_consent": true,
+    "access_modes": ["private", "party", "public"],
+    "default_access_mode": "party",
+    "owner_always_allowed": true,
+    "one_pair_per_owner": true,
+    "persistent": true,
+    "cross_dimension": true,
+    "safe_arrival_required": true,
+    "nbt_fields": [
+      "owner",
+      "owner_team",
+      "access_mode",
+      "target_dimension",
+      "target_anchor",
+      "remaining_ticks"
+    ],
     "failure_preserves_resources": true
   },
   "characteristic_processing": {
@@ -219,7 +239,7 @@
     }
   },
   "validation": {
-    "game_tests": 14,
+    "game_tests": 15,
     "requires_restart_matrix": true,
     "behavior_test_classes": [
       "CityEconomyPolicyTest",
@@ -231,6 +251,7 @@
       "M3LaunchAbilityLogicTest",
       "M3TravelNetworkLogicTest",
       "TravelMarkerServiceTest",
+      "TravelerDoorAccessModeTest",
       "CharacteristicLoadLogicTest",
       "CharacteristicProvenanceSavedDataTest",
       "CharacteristicProcessingLogicTest",
@@ -282,14 +303,26 @@
     "message.lord_of_mysteries.travel.guide.active",
     "message.lord_of_mysteries.travel.guide.inactive",
     "message.lord_of_mysteries.travel.guide.consent",
+    "message.lord_of_mysteries.travel.guide.access",
+    "message.lord_of_mysteries.travel.access.private",
+    "message.lord_of_mysteries.travel.access.party",
+    "message.lord_of_mysteries.travel.access.public",
+    "message.lord_of_mysteries.travel.access.updated",
     "message.lord_of_mysteries.travel.cooldown",
     "message.lord_of_mysteries.travel.marker_required",
     "message.lord_of_mysteries.travel.dimension_unavailable",
     "message.lord_of_mysteries.travel.marker_inactive",
+    "message.lord_of_mysteries.travel.marker_too_close",
     "message.lord_of_mysteries.travel.destination_unsafe",
     "message.lord_of_mysteries.travel.teleport_failed",
+    "message.lord_of_mysteries.travel.door.opened",
+    "message.lord_of_mysteries.travel.door.invited",
+    "message.lord_of_mysteries.travel.door.transit",
+    "message.lord_of_mysteries.travel.door.denied",
+    "message.lord_of_mysteries.travel.door.destination_failed",
     "message.lord_of_mysteries.travel.passenger_arrival",
     "message.lord_of_mysteries.travel.success",
+    "entity.lord_of_mysteries.traveler_door",
     "advancement.lord_of_mysteries.sequence_five_ritual.title",
     "advancement.lord_of_mysteries.sequence_five_ritual.description"
   ]

@@ -2,11 +2,9 @@ package top.aurora.lordofmysteries.ability;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
+import java.util.UUID;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -19,9 +17,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.RelativeMovement;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -29,8 +24,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 import top.aurora.lordofmysteries.ProjectMystery;
+import top.aurora.lordofmysteries.entity.TravelerDoorEntity;
 import top.aurora.lordofmysteries.player.PlayerFeedback;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
+import top.aurora.lordofmysteries.registry.ModEntities;
 
 public final class TravelMarkerService {
 
@@ -39,9 +36,9 @@ public final class TravelMarkerService {
     private static final long LEADER_COOLDOWN_TICKS = 36_000L;
     private static final long PASSENGER_COOLDOWN_TICKS = 1_200L;
     private static final int[][] DESTINATION_OFFSETS = {
-            {0, 0}, {1, 0}, {-1, 0}, {0, 1}, {0, -1},
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1},
             {1, 1}, {1, -1}, {-1, 1}, {-1, -1},
-            {2, 0}, {-2, 0}, {0, 2}, {0, -2}
+            {2, 0}, {-2, 0}, {0, 2}, {0, -2}, {0, 0}
     };
 
     private TravelMarkerService() {}
@@ -49,9 +46,6 @@ public final class TravelMarkerService {
     public record Marker(ResourceKey<Level> dimension, BlockPos position) {}
 
     record MarkerData(ResourceLocation dimension, BlockPos position) {}
-
-    private record Origin(
-            ServerLevel level, Vec3 position, float yaw, float pitch) {}
 
     public static boolean hasCompassInHands(ServerPlayer player) {
         return player.getMainHandItem().is(Items.COMPASS)
@@ -129,7 +123,34 @@ public final class TravelMarkerService {
                 "message.lord_of_mysteries.travel.guide.consent",
                 M3TravelNetworkLogic.MAX_PASSENGERS)
                 .withStyle(ChatFormatting.GRAY));
+        PlayerMysteryData data =
+                top.aurora.lordofmysteries.player.MysteryCapability.get(
+                        player);
+        PlayerFeedback.send(player, Component.translatable(
+                "message.lord_of_mysteries.travel.guide.access",
+                Component.translatable(
+                        "message.lord_of_mysteries.travel.access."
+                                + accessMode(data).id()),
+                M3TravelNetworkLogic.DOOR_DURATION_TICKS / 20)
+                .withStyle(ChatFormatting.GRAY));
         return active ? 1 : 0;
+    }
+
+    public static int setAccessMode(
+            ServerPlayer player, String requestedMode) {
+        TravelerDoorAccessMode mode =
+                TravelerDoorAccessMode.fromId(requestedMode);
+        PlayerMysteryData data =
+                top.aurora.lordofmysteries.player.MysteryCapability.get(
+                        player);
+        data.travelerDoorAccessMode = mode.id();
+        PlayerFeedback.send(player, Component.translatable(
+                "message.lord_of_mysteries.travel.access.updated",
+                Component.translatable(
+                        "message.lord_of_mysteries.travel.access."
+                                + mode.id()))
+                .withStyle(ChatFormatting.AQUA));
+        return 1;
     }
 
     public static boolean relayToHeldMarker(
@@ -165,6 +186,20 @@ public final class TravelMarkerService {
                     "message.lord_of_mysteries.travel.marker_inactive"));
             return false;
         }
+        BlockPos sourceAnchor = findSourceAnchor(leader);
+        if (sourceAnchor == null
+                || !doorSpaceClear(
+                        destinationLevel, destinationMarker.position())) {
+            PlayerFeedback.send(leader, Component.translatable(
+                    "message.lord_of_mysteries.travel.destination_unsafe"));
+            return false;
+        }
+        if (leader.serverLevel() == destinationLevel
+                && sourceAnchor.distSqr(destinationMarker.position()) < 9d) {
+            PlayerFeedback.send(leader, Component.translatable(
+                    "message.lord_of_mysteries.travel.marker_too_close"));
+            return false;
+        }
 
         List<ServerPlayer> passengers = sourcePlayers.stream()
                 .filter(candidate -> M3TravelNetworkLogic.canJoinRelay(
@@ -181,12 +216,14 @@ public final class TravelMarkerService {
                         candidate -> candidate.getUUID().toString()))
                 .limit(M3TravelNetworkLogic.MAX_PASSENGERS)
                 .toList();
-        List<ServerPlayer> travelers = new ArrayList<>();
-        travelers.add(leader);
-        travelers.addAll(passengers);
-        Optional<Map<ServerPlayer, Vec3>> destinations = findDestinations(
-                destinationLevel, travelers, destinationMarker.position());
-        if (destinations.isEmpty()) {
+        if (findDoorArrival(
+                destinationLevel,
+                leader,
+                destinationMarker.position()) == null
+                || findDoorArrival(
+                leader.serverLevel(),
+                leader,
+                sourceAnchor) == null) {
             PlayerFeedback.send(leader, Component.translatable(
                     "message.lord_of_mysteries.travel.destination_unsafe"));
             return false;
@@ -199,51 +236,73 @@ public final class TravelMarkerService {
                     cost));
             return false;
         }
-        Map<ServerPlayer, Origin> origins = new LinkedHashMap<>();
-        for (ServerPlayer traveler : travelers) {
-            origins.put(traveler, new Origin(
-                    traveler.serverLevel(), traveler.position(),
-                    traveler.getYRot(), traveler.getXRot()));
+        TravelerDoorAccessMode access = accessMode(data);
+        String team = leader.getTeam() == null
+                ? "" : leader.getTeam().getName();
+        TravelerDoorEntity sourceDoor = createDoor(
+                leader.serverLevel(),
+                leader.getUUID(),
+                team,
+                access,
+                destinationMarker.dimension(),
+                destinationMarker.position(),
+                sourceAnchor);
+        TravelerDoorEntity destinationDoor = createDoor(
+                destinationLevel,
+                leader.getUUID(),
+                team,
+                access,
+                leader.serverLevel().dimension(),
+                sourceAnchor,
+                destinationMarker.position());
+        if (sourceDoor == null || destinationDoor == null
+                || !leader.serverLevel().addFreshEntity(sourceDoor)) {
+            SpiritualityCost.refund(data, cost);
+            return false;
         }
-        List<ServerPlayer> moved = new ArrayList<>();
-        for (ServerPlayer traveler : travelers) {
-            if (!teleport(traveler, destinationLevel,
-                    destinations.get().get(traveler))) {
-                rollback(moved, origins);
-                SpiritualityCost.refund(data, cost);
-                PlayerFeedback.send(leader, Component.translatable(
-                        "message.lord_of_mysteries.travel.teleport_failed"));
-                return false;
-            }
-            moved.add(traveler);
+        if (!destinationLevel.addFreshEntity(destinationDoor)) {
+            sourceDoor.discard();
+            SpiritualityCost.refund(data, cost);
+            return false;
         }
+        discardPreviousDoors(
+                leader,
+                sourceDoor.getUUID(),
+                destinationDoor.getUUID());
 
         data.apprenticeWardCooldownEndTick =
                 AbilityCooldowns.start(now, LEADER_COOLDOWN_TICKS);
         for (ServerPlayer passenger : passengers) {
-            passenger.getPersistentData().putLong(
-                    PASSENGER_COOLDOWN,
-                    AbilityCooldowns.start(now, PASSENGER_COOLDOWN_TICKS));
-            passenger.addEffect(new MobEffectInstance(
-                    MobEffects.DAMAGE_RESISTANCE,
-                    100, 2, false, false, true));
             PlayerFeedback.send(passenger, Component.translatable(
-                    "message.lord_of_mysteries.travel.passenger_arrival",
-                    leader.getDisplayName()));
+                    "message.lord_of_mysteries.travel.door.invited",
+                    leader.getDisplayName(),
+                    M3TravelNetworkLogic.DOOR_DURATION_TICKS / 20));
         }
-        leader.addEffect(new MobEffectInstance(
-                MobEffects.DAMAGE_RESISTANCE,
-                100, 2, false, false, true));
         PlayerFeedback.send(leader, Component.translatable(
-                "message.lord_of_mysteries.travel.success",
+                "message.lord_of_mysteries.travel.door.opened",
                 destinationMarker.dimension().location().toString(),
                 destinationMarker.position().getX(),
                 destinationMarker.position().getY(),
                 destinationMarker.position().getZ(),
                 passengers.size(),
-                Math.round(cost))
+                Math.round(cost),
+                M3TravelNetworkLogic.DOOR_DURATION_TICKS / 20,
+                Component.translatable(
+                        "message.lord_of_mysteries.travel.access."
+                                + access.id()))
                 .withStyle(ChatFormatting.AQUA));
         return true;
+    }
+
+    public static void recordDoorTransit(
+            ServerPlayer player, UUID owner) {
+        if (owner != null && !owner.equals(player.getUUID())) {
+            long now = player.serverLevel().getGameTime();
+            player.getPersistentData().putLong(
+                    PASSENGER_COOLDOWN,
+                    AbilityCooldowns.start(
+                            now, PASSENGER_COOLDOWN_TICKS));
+        }
     }
 
     private static boolean activeMarker(
@@ -269,19 +328,9 @@ public final class TravelMarkerService {
                 .orElse(false);
     }
 
-    private static Optional<Map<ServerPlayer, Vec3>> findDestinations(
-            ServerLevel level, List<ServerPlayer> travelers,
-            BlockPos marker) {
-        Map<ServerPlayer, Vec3> destinations = new LinkedHashMap<>();
-        List<Vec3> occupied = new ArrayList<>();
-        for (ServerPlayer traveler : travelers) {
-            Vec3 destination = findDestination(
-                    level, traveler, marker, occupied);
-            if (destination == null) return Optional.empty();
-            destinations.put(traveler, destination);
-            occupied.add(destination);
-        }
-        return Optional.of(destinations);
+    public static Vec3 findDoorArrival(
+            ServerLevel level, Entity entity, BlockPos marker) {
+        return findDestination(level, entity, marker, List.of());
     }
 
     private static Vec3 findDestination(
@@ -312,42 +361,75 @@ public final class TravelMarkerService {
         return null;
     }
 
-    private static boolean teleport(
-            ServerPlayer player, ServerLevel destinationLevel,
-            Vec3 destination) {
-        ServerLevel sourceLevel = player.serverLevel();
-        if (sourceLevel == destinationLevel) {
-            player.teleportTo(
-                    destination.x, destination.y, destination.z);
-            return true;
-        }
-        return player.teleportTo(
-                destinationLevel,
-                destination.x, destination.y, destination.z,
-                Set.<RelativeMovement>of(),
-                player.getYRot(), player.getXRot());
-    }
-
-    private static void rollback(
-            List<ServerPlayer> moved,
-            Map<ServerPlayer, Origin> origins) {
-        for (ServerPlayer player : moved) {
-            Origin origin = origins.get(player);
-            if (origin == null) continue;
-            if (player.serverLevel() == origin.level()) {
-                player.teleportTo(
-                        origin.position().x,
-                        origin.position().y,
-                        origin.position().z);
-            } else {
-                player.teleportTo(
-                        origin.level(),
-                        origin.position().x,
-                        origin.position().y,
-                        origin.position().z,
-                        Set.<RelativeMovement>of(),
-                        origin.yaw(), origin.pitch());
+    private static BlockPos findSourceAnchor(ServerPlayer player) {
+        BlockPos desiredFeet = player.blockPosition()
+                .relative(player.getDirection(), 2);
+        for (int[] offset : DESTINATION_OFFSETS) {
+            for (int yOffset : new int[] {0, -1, 1, -2}) {
+                BlockPos floor = desiredFeet.offset(
+                        offset[0], yOffset - 1, offset[1]);
+                if (doorSpaceClear(player.serverLevel(), floor)) {
+                    return floor;
+                }
             }
         }
+        return null;
+    }
+
+    private static boolean doorSpaceClear(
+            ServerLevel level, BlockPos floor) {
+        if (!level.isInWorldBounds(floor)
+                || !level.getWorldBorder().isWithinBounds(floor)
+                || !level.getBlockState(floor).isFaceSturdy(
+                        level, floor, net.minecraft.core.Direction.UP)) {
+            return false;
+        }
+        BlockPos feet = floor.above();
+        return level.getBlockState(feet)
+                .getCollisionShape(level, feet).isEmpty()
+                && level.getBlockState(feet.above())
+                .getCollisionShape(level, feet.above()).isEmpty();
+    }
+
+    private static TravelerDoorEntity createDoor(
+            ServerLevel level,
+            UUID owner,
+            String ownerTeam,
+            TravelerDoorAccessMode access,
+            ResourceKey<Level> targetDimension,
+            BlockPos targetAnchor,
+            BlockPos localAnchor) {
+        TravelerDoorEntity door = ModEntities.TRAVELER_DOOR.get().create(level);
+        if (door == null) return null;
+        door.configure(
+                owner,
+                ownerTeam,
+                access,
+                targetDimension,
+                targetAnchor,
+                M3TravelNetworkLogic.DOOR_DURATION_TICKS);
+        Vec3 position = Vec3.atBottomCenterOf(localAnchor.above());
+        door.moveTo(position.x, position.y, position.z);
+        return door;
+    }
+
+    private static void discardPreviousDoors(
+            ServerPlayer owner, UUID sourceDoor, UUID destinationDoor) {
+        for (ServerLevel level : owner.getServer().getAllLevels()) {
+            for (Entity entity : level.getAllEntities()) {
+                if (entity instanceof TravelerDoorEntity door
+                        && door.ownedBy(owner.getUUID())
+                        && !door.getUUID().equals(sourceDoor)
+                        && !door.getUUID().equals(destinationDoor)) {
+                    door.discard();
+                }
+            }
+        }
+    }
+
+    private static TravelerDoorAccessMode accessMode(
+            PlayerMysteryData data) {
+        return TravelerDoorAccessMode.fromId(
+                data.travelerDoorAccessMode);
     }
 }

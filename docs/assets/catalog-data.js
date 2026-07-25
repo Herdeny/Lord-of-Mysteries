@@ -468,6 +468,37 @@ window.LOM = window.LOM || {};
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
+    "type": "entity",
+    "id": "lord_of_mysteries:traveler_door",
+    "name": "旅行家远门",
+    "en": "Traveler Far Door",
+    "summary": "已在 Forge 实体注册表中实现并具备服务端行为的生物或失控体。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge entity registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:traveler_door"
+      ],
+      [
+        "代码来源",
+        "ModEntities.java"
+      ],
+      [
+        "资源状态",
+        "使用代码渲染或共用纹理"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
     "type": "item",
     "id": "lord_of_mysteries:acting_identity_card",
     "name": "扮演身份卡",
@@ -3081,8 +3112,8 @@ window.LOM = window.LOM || {};
   D.catalogMeta = {
   "registeredItems": 91,
   "registeredBlocks": 7,
-  "registeredEntities": 8,
-  "uniqueRegistryEntries": 99,
+  "registeredEntities": 9,
+  "uniqueRegistryEntries": 100,
   "source": "Forge registries + zh_cn/en_us language resources"
 };
 })(window.LOM);

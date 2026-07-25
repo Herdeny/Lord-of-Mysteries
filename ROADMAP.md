@@ -36,9 +36,9 @@
 - 验收：至少 100 个真实样例节点通过关系校验；旧存档可迁移、可备份、可回滚，并通过死亡、重生、维度与重启运行时验证。
 
 - 126 节点、188 关系内容图通过 orphan、spoiler、compat、localization 与 asset 审计
-- Capability schema 23 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema
+- Capability schema 25 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema
 - 世界加载前原子快照、幂等 schema marker、受限路径恢复工具和恢复前安全备份
-- 13 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒、M1 状态、调查板邻近、城市经济、五途径进阶、真实祭坛仪式、五途径能力世界行为、旅行家多人远门、特性处理工作台和额外负载析出
+- 15 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒、M1 状态、调查板邻近、城市经济、五途径进阶、真实祭坛仪式、五途径能力世界行为、旅行家持续双向远门与权限、特性处理工作台、额外负载析出和全服来源重放拒绝
 - 专服双启动矩阵验证世界种子、schema 快照、保存和干净停服保持稳定
 
 ## M1 · 核心垂直切片
@@ -95,11 +95,11 @@
 - 已预实现：每序列主/副能力各一项，共 20 项服务端能力与 20 项扮演事件；玩家控制默认禁止，伤害遵循 PvP 权限
 - 已预实现：无主物归属、签名书代数、村民每日窃梦、安全传送落点、Boss 控制免疫与收割标记重启边界
 - 已预实现：提线、入梦、战火、窃梦和启门五种序列 5 仪式，包含真实祭坛、环境/材料、单人路线、多人协助、失败后果、持久证明与 /pm ritual 引导
-- 已预实现：旅行家可复用原版磁石指南针建立持久空间标记，远门支持跨维度安全落点、最多三名主动同意同行者、失败回滚与 /pm travel 引导
+- 已预实现：旅行家可复用原版磁石指南针建立持久空间标记，开启存在 20 秒的跨维度双向远门；玩家以实体穿门作最终同意，支持私人/队伍/公开权限、安全落点、失败退款与 /pm travel 引导
 - 已预实现：特性分离台与烙印洗涤台支持层级拆分、同途径重组、直接同源拒绝、记忆封存，以及以永久纯度损失换取污染与烙印净化，并提供 /pm characteristic 引导
 - 已预实现：活体额外特性负载可见、单层同途径吸收、消化/灵性/压力权衡、身份锚定析出、单人路线、最多三名探针见证者、稳定/勉强/失败恢复与守恒产物
 - 已预实现：全服来源 SavedData 对拆分、重组、洗涤、危险吸收和活体析出执行原子消费审计；复制来源跨玩家、跨重启拒绝且不扣资源，管理员可用 /pm characteristic audit 查看匿名统计
-- 待完成：完整原典能力组、形体/共享梦境/永久秘偶系统、双向门实体、最终专属素材生物和途径美术
+- 待完成：完整原典能力组、形体/共享梦境/永久秘偶系统、远门命名/黑名单/领地兼容、最终专属素材生物和途径美术
 - 待验收：五途径经济定位、领地兼容、无唯一最优途径和多人组队互补矩阵
 
 ## M4 · 组织与封印物
@@ -220,7 +220,7 @@
 | structure_specs | 32 |
 | weather_anomaly_specs | 18 |
 
-### repository_evidence_at_0.9.24
+### repository_evidence_at_0.9.25
 
 | 指标 | 数量 |
 |---|---:|
@@ -231,33 +231,36 @@
 | generated_recipes | 13 |
 | playable_commissions | 4 |
 | playable_quest_chains | 4 |
-| junit_tests | 377 |
-| forge_gametests | 14 |
+| junit_tests | 384 |
+| forge_gametests | 15 |
 | sequence_five_physical_ritual_gametests | 1 |
-| traveler_spatial_relay_gametests | 1 |
+| traveler_spatial_relay_gametests | 2 |
+| traveler_persistent_door_entities | 1 |
+| traveler_door_access_modes | 3 |
 | characteristic_processing_gametests | 1 |
 | extra_characteristic_load_gametests | 1 |
 | characteristic_provenance_gametests | 1 |
 | save_rollback_checks | 1 |
 | dedicated_server_starts | 2 |
 | network_protocol | 13 |
-| player_capability_schema | 24 |
+| player_capability_schema | 25 |
 | characteristic_provenance_saved_data | 1 |
 | registered_items | 91 |
 | registered_blocks | 7 |
-| registered_entities | 8 |
+| registered_entities | 9 |
 | sequence_five_rituals | 5 |
 | sequence_five_ritual_guide_commands | 1 |
 | traveler_spatial_relay_guide_commands | 1 |
+| traveler_door_access_commands | 3 |
 | characteristic_processing_guide_commands | 1 |
 | characteristic_provenance_audit_commands | 1 |
 | pages_initial_catalog_batch | 24 |
 | pages_layout_contract_checks | 1 |
 | json_resources | 322 |
-| paired_translations | 1455 |
-| referenced_translation_keys | 561 |
+| paired_translations | 1467 |
+| referenced_translation_keys | 566 |
 | item_and_block_models | 98 |
-| pages_catalog_entries | 188 |
+| pages_catalog_entries | 189 |
 
 
 路线数据的唯一来源是 `roadmap.json`。修改后运行：

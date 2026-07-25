@@ -108,9 +108,33 @@ public final class ProjectMysteryCommands {
                 .then(Commands.literal("ritual").executes(context ->
                         SequenceFiveAdvancementRitual.showGuide(
                                 context.getSource().getPlayerOrException())))
-                .then(Commands.literal("travel").executes(context ->
-                        TravelMarkerService.sendGuide(
-                                context.getSource().getPlayerOrException())))
+                .then(Commands.literal("travel")
+                        .executes(context ->
+                                TravelMarkerService.sendGuide(
+                                        context.getSource()
+                                                .getPlayerOrException()))
+                        .then(Commands.literal("access")
+                                .then(Commands.literal("private")
+                                        .executes(context ->
+                                                TravelMarkerService
+                                                        .setAccessMode(
+                                                                context.getSource()
+                                                                        .getPlayerOrException(),
+                                                                "private")))
+                                .then(Commands.literal("party")
+                                        .executes(context ->
+                                                TravelMarkerService
+                                                        .setAccessMode(
+                                                                context.getSource()
+                                                                        .getPlayerOrException(),
+                                                                "party")))
+                                .then(Commands.literal("public")
+                                        .executes(context ->
+                                                TravelMarkerService
+                                                        .setAccessMode(
+                                                                context.getSource()
+                                                                        .getPlayerOrException(),
+                                                                "public")))))
                 .then(Commands.literal("characteristic")
                         .executes(context ->
                                 CharacteristicProcessingService.sendGuide(

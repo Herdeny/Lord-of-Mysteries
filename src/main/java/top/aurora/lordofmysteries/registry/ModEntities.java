@@ -26,6 +26,7 @@ import top.aurora.lordofmysteries.entity.ThiefBreakdownEntity;
 import top.aurora.lordofmysteries.entity.ApprenticeBreakdownEntity;
 import top.aurora.lordofmysteries.entity.PsychiatristBreakdownEntity;
 import top.aurora.lordofmysteries.entity.PyromaniacBreakdownEntity;
+import top.aurora.lordofmysteries.entity.TravelerDoorEntity;
 
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModEntities {
@@ -101,6 +102,16 @@ public final class ModEntities {
                             .sized(0.6f, 1.95f)
                             .clientTrackingRange(8)
                             .build(ProjectMystery.MOD_ID + ":ashen_puppet"));
+
+    public static final RegistryObject<EntityType<TravelerDoorEntity>>
+            TRAVELER_DOOR = ENTITIES.register("traveler_door", () ->
+                    EntityType.Builder.of(
+                                    TravelerDoorEntity::new,
+                                    MobCategory.MISC)
+                            .sized(1.1f, 2.4f)
+                            .clientTrackingRange(10)
+                            .updateInterval(2)
+                            .build(ProjectMystery.MOD_ID + ":traveler_door"));
 
     @SubscribeEvent
     public static void onCreateAttributes(EntityAttributeCreationEvent event) {

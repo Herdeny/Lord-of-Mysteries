@@ -227,9 +227,19 @@ def main():
         JAVA / "ability" / "M3TravelNetworkLogic.java")
     travel_service = source(
         JAVA / "ability" / "TravelMarkerService.java")
+    door_access = source(
+        JAVA / "ability" / "TravelerDoorAccessMode.java")
+    door_entity = source(
+        JAVA / "entity" / "TravelerDoorEntity.java")
+    entity_registry = source(
+        JAVA / "registry" / "ModEntities.java")
     require(f'literal("{relay["command"]}")' in commands
             and "TravelMarkerService.sendGuide" in commands,
             "traveler spatial relay guide command is missing")
+    require(all(f'literal("{part}")' in commands
+                for part in relay["access_command"])
+            and ".setAccessMode(" in commands,
+            "traveler door access command is missing")
     require(
         f"BASE_SPIRITUALITY_COST = {relay['leader_cost']}f"
         in travel_logic
@@ -240,6 +250,12 @@ def main():
     require(
         f"CONSENT_RADIUS = {relay['consent_radius']}d" in travel_logic,
         "traveler relay consent radius drifted")
+    require(
+        f"DOOR_DURATION_TICKS = {relay['door_duration_ticks']}"
+        in travel_logic
+        and f"TRANSIT_COOLDOWN_TICKS = "
+        f"{relay['transit_cooldown_ticks']}L" in travel_logic,
+        "traveler door lifetime or transit cooldown drifted")
     leader_cooldown = re.search(
         r"LEADER_COOLDOWN_TICKS\s*=\s*([\d_]+)L", travel_service)
     passenger_cooldown = re.search(
@@ -262,9 +278,10 @@ def main():
         < travel_service.index("level.getChunkAt(position)"),
         "traveler relay no longer uses physical vanilla markers")
     require(
-        not relay["requires_sneaking"] or "candidate.isShiftKeyDown()"
+        not relay["opening_support_requires_sneaking"]
+        or "candidate.isShiftKeyDown()"
         in travel_service,
-        "traveler relay passenger consent is missing")
+        "traveler relay opening support consent is missing")
     require(
         not relay["same_source_dimension"]
         or "candidate.serverLevel() == leader.serverLevel()"
@@ -276,13 +293,58 @@ def main():
         "traveler relay no longer requires a matching marker")
     require(
         not relay["failure_preserves_resources"]
-        or ("findDestinations" in travel_service
+        or ("findDoorArrival" in travel_service
             and "SpiritualityCost.tryConsume" in travel_service
-            and travel_service.index("findDestinations")
+            and travel_service.index("findDoorArrival")
             < travel_service.index("SpiritualityCost.tryConsume")
             and "SpiritualityCost.refund(data, cost)" in travel_service
-            and "rollback(moved, origins)" in travel_service),
+            and "sourceDoor.discard()" in travel_service),
         "traveler relay failure no longer preserves resources")
+    require(
+        relay["entity"] == "traveler_door"
+        and '"traveler_door"' in entity_registry
+        and "TravelerDoorEntity::new" in entity_registry
+        and "addFreshEntity(sourceDoor)" in travel_service
+        and "addFreshEntity(destinationDoor)" in travel_service,
+        "traveler relay no longer opens two real door entities")
+    require(
+        not relay["crossing_is_final_consent"]
+        or ("getEntitiesOfClass(" in door_entity
+            and "tryTransit(player)" in door_entity),
+        "traveler door crossing is no longer explicit consent")
+    require(
+        sorted(mode.lower() for mode in relay["access_modes"])
+        == ["party", "private", "public"]
+        and all(mode.upper() in door_access
+                for mode in relay["access_modes"])
+        and f"TravelerDoorAccessMode.{relay['default_access_mode'].upper()}"
+        in door_entity
+        and (not relay["owner_always_allowed"]
+             or "owner.equals(candidate)" in door_access),
+        "traveler door access modes drifted")
+    require(
+        not relay["one_pair_per_owner"]
+        or ("discardPreviousDoors" in travel_service
+            and "door.ownedBy(owner.getUUID())" in travel_service),
+        "traveler door owner pair replacement is missing")
+    require(
+        not relay["persistent"]
+        or ("readAdditionalSaveData" in door_entity
+            and "addAdditionalSaveData" in door_entity
+            and all(f'"{field}"' in door_entity
+                    for field in relay["nbt_fields"])),
+        "traveler door persistence fields drifted")
+    require(
+        not relay["cross_dimension"]
+        or ("getLevel(targetDimension)" in door_entity
+            and "player.teleportTo(" in door_entity),
+        "traveler door cross-dimension transit is missing")
+    require(
+        not relay["safe_arrival_required"]
+        or ("findDoorArrival" in door_entity
+            and "destination == null" in door_entity
+            and "isWithinBounds(targetAnchor)" in door_entity),
+        "traveler door safe-arrival rejection is missing")
 
     processing = contract["characteristic_processing"]
     processing_logic = source(
@@ -515,7 +577,8 @@ def main():
         "economy, newspaper and diagnostics visibility, spirituality and "
         "ritual modifiers, five launch pathways at sequences 6-5, five "
         "dedicated sequence-5 rituals with solo and supporter paths, "
-        "a consent-gated traveler spatial relay, conserved characteristic "
+        "a persistent consent-gated bidirectional traveler door with "
+        "private, party and public access, conserved characteristic "
         "splitting, sealing and washing, visible extra-load absorption and "
         "safe extraction, server-global provenance replay protection, "
         f"{validation['game_tests']} GameTests, and "

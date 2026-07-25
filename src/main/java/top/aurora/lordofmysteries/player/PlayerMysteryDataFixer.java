@@ -38,7 +38,9 @@ public final class PlayerMysteryDataFixer {
             new DataFix("city_economy_and_exposure", 23,
                     PlayerMysteryDataFixer::initializeCityEconomyState),
             new DataFix("characteristic_provenance_nonce", 24,
-                    PlayerMysteryDataFixer::initializeCharacteristicProvenance));
+                    PlayerMysteryDataFixer::initializeCharacteristicProvenance),
+            new DataFix("traveler_door_access", 25,
+                    PlayerMysteryDataFixer::initializeTravelerDoorAccess));
 
     private PlayerMysteryDataFixer() {}
 
@@ -270,6 +272,13 @@ public final class PlayerMysteryDataFixer {
             CompoundTag tag, List<CompoundTag> orphanedEntries) {
         if (!tag.contains("characteristic_provenance_nonce", Tag.TAG_STRING)) {
             tag.putString("characteristic_provenance_nonce", "");
+        }
+    }
+
+    private static void initializeTravelerDoorAccess(
+            CompoundTag tag, List<CompoundTag> orphanedEntries) {
+        if (!tag.contains("traveler_door_access_mode", Tag.TAG_STRING)) {
+            tag.putString("traveler_door_access_mode", "party");
         }
     }
 

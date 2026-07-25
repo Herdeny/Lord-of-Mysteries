@@ -17,6 +17,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -28,6 +29,7 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.ability.M2FoundationAbilityHandler;
 import top.aurora.lordofmysteries.ability.M3LaunchAbilityHandler;
+import top.aurora.lordofmysteries.ability.M3TravelNetworkLogic;
 import top.aurora.lordofmysteries.ability.TravelMarkerService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicConservationService;
@@ -35,6 +37,7 @@ import top.aurora.lordofmysteries.characteristic.CharacteristicProcessingLogic;
 import top.aurora.lordofmysteries.characteristic.CharacteristicProcessingService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicProvenanceSavedData;
 import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
+import top.aurora.lordofmysteries.entity.TravelerDoorEntity;
 import top.aurora.lordofmysteries.knowledge.M1TrialProgress;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerCapabilityEvents;
@@ -472,6 +475,8 @@ public final class PlayerPersistenceGameTests {
                 }
             }
         }
+        BlockPos source = helper.absolutePos(new BlockPos(2, 4, 2));
+        prepareDoorArea(helper, source);
 
         ServerPlayer leader = travelerTestPlayer(helper, "relay-leader");
         ServerPlayer passenger = travelerTestPlayer(
@@ -484,7 +489,6 @@ public final class PlayerPersistenceGameTests {
         data.sequence = 5;
         data.spiritualityMax = 250f;
         data.spirituality = 100f;
-        BlockPos source = helper.absolutePos(new BlockPos(2, 4, 2));
         leader.setPos(source.getX() + 0.5d, source.getY(),
                 source.getZ() + 0.5d);
         passenger.setPos(source.getX() + 1.5d, source.getY(),
@@ -516,17 +520,23 @@ public final class PlayerPersistenceGameTests {
                         && data.apprenticeWardCooldownEndTick
                         > helper.getLevel().getGameTime(),
                 "one consenting passenger must cost 90 spirit and start cooldown");
+        List<TravelerDoorEntity> doors =
+                travelerDoors(helper, leader.getUUID());
+        helper.assertTrue(doors.size() == 2,
+                "successful relay must create exactly two linked door endpoints");
+        helper.assertTrue(doors.stream().allMatch(
+                        door -> door.remainingTicks()
+                                == M3TravelNetworkLogic.DOOR_DURATION_TICKS),
+                "both endpoints must begin with the full twenty-second lifetime");
         helper.assertTrue(leader.distanceToSqr(
-                        marker.getX() + 0.5d,
-                        marker.getY() + 1d,
-                        marker.getZ() + 0.5d) < 25d,
-                "leader must arrive at a collision-safe marker position");
-        helper.assertTrue(passenger.distanceToSqr(
-                        marker.getX() + 0.5d,
-                        marker.getY() + 1d,
-                        marker.getZ() + 0.5d) < 25d
-                        && passenger.hasEffect(MobEffects.DAMAGE_RESISTANCE),
-                "consenting passenger must arrive with temporary protection");
+                        source.getX() + 0.5d,
+                        source.getY(),
+                        source.getZ() + 0.5d) < 0.01d
+                        && passenger.distanceToSqr(
+                        source.getX() + 1.5d,
+                        source.getY(),
+                        source.getZ() + 0.5d) < 0.01d,
+                "opening a door must never force-move the caster or supporter");
         helper.assertTrue(bystander.distanceToSqr(
                         source.getX() + 0.5d,
                         source.getY(),
@@ -540,6 +550,106 @@ public final class PlayerPersistenceGameTests {
                         leader, data, List.of(leader, passenger, bystander))
                         && data.spirituality == spiritAfterSuccess,
                 "cooldown retry must fail without charging spirit");
+        helper.assertTrue(
+                travelerDoors(helper, leader.getUUID()).size() == 2,
+                "cooldown retry must not create duplicate endpoints");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void travelerDoorPersistsAndEnforcesPartyAccess(
+            GameTestHelper helper) {
+        BlockPos marker = helper.absolutePos(new BlockPos(10, 4, 10));
+        BlockPos source = helper.absolutePos(new BlockPos(2, 4, 2));
+        prepareDoorArea(helper, marker.above());
+        prepareDoorArea(helper, source);
+        helper.getLevel().setBlockAndUpdate(
+                marker, Blocks.LODESTONE.defaultBlockState());
+
+        ServerPlayer leader = travelerTestPlayer(helper, "door-owner");
+        ServerPlayer member = travelerTestPlayer(helper, "door-member");
+        ServerPlayer outsider = travelerTestPlayer(helper, "door-outsider");
+        leader.setPos(source.getX() + 0.5d, source.getY(),
+                source.getZ() + 0.5d);
+        member.setPos(source.getX() + 1.5d, source.getY(),
+                source.getZ() + 0.5d);
+        outsider.setPos(source.getX() - 1.5d, source.getY(),
+                source.getZ() + 0.5d);
+        PlayerTeam team = helper.getLevel().getScoreboard()
+                .addPlayerTeam("door-party");
+        helper.getLevel().getScoreboard().addPlayerToTeam(
+                leader.getScoreboardName(), team);
+        helper.getLevel().getScoreboard().addPlayerToTeam(
+                member.getScoreboardName(), team);
+
+        PlayerMysteryData data = MysteryCapability.get(leader);
+        data.pathway = ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID, "apprentice");
+        data.sequence = 5;
+        data.spiritualityMax = 250f;
+        data.spirituality = 100f;
+        data.travelerDoorAccessMode = "party";
+        leader.setItemInHand(
+                InteractionHand.MAIN_HAND,
+                lodestoneCompass(helper, marker));
+
+        helper.assertTrue(TravelMarkerService.relayToHeldMarker(
+                        leader, data, List.of(leader, member, outsider)),
+                "party door must open from a valid physical lodestone marker");
+        List<TravelerDoorEntity> doors =
+                travelerDoors(helper, leader.getUUID());
+        TravelerDoorEntity sourceDoor = doors.stream()
+                .filter(door -> door.targetAnchor().equals(marker))
+                .findFirst()
+                .orElseThrow();
+        TravelerDoorEntity targetDoor = doors.stream()
+                .filter(door -> door != sourceDoor)
+                .findFirst()
+                .orElseThrow();
+        helper.assertTrue(
+                sourceDoor.accessMode()
+                        == top.aurora.lordofmysteries.ability
+                        .TravelerDoorAccessMode.PARTY,
+                "door must snapshot the owner's configured party access");
+        helper.assertTrue(
+                sourceDoor.tryTransit(outsider)
+                        == TravelerDoorEntity.TransitResult.DENIED,
+                "player outside the owner's team must be denied without movement");
+        helper.assertTrue(
+                sourceDoor.tryTransit(member)
+                        == TravelerDoorEntity.TransitResult.SUCCESS,
+                "same-team member must cross the server-authoritative endpoint");
+        helper.assertTrue(member.distanceToSqr(
+                        marker.getX() + 0.5d,
+                        marker.getY() + 1d,
+                        marker.getZ() + 0.5d) < 36d
+                        && member.hasEffect(MobEffects.DAMAGE_RESISTANCE),
+                "authorized transit must use a collision-safe nearby slot");
+        helper.assertTrue(
+                targetDoor.tryTransit(member)
+                        == TravelerDoorEntity.TransitResult.COOLDOWN,
+                "arrival endpoint must not immediately bounce a player back");
+
+        CompoundTag saved =
+                sourceDoor.saveWithoutId(new CompoundTag());
+        helper.assertTrue(saved.contains("target_anchor"),
+                "configured endpoint must serialize to entity NBT");
+        TravelerDoorEntity restored =
+                ModEntities.TRAVELER_DOOR.get().create(helper.getLevel());
+        helper.assertTrue(restored != null,
+                "registered traveler door entity must be constructible");
+        if (restored == null) return;
+        restored.load(saved);
+        helper.assertTrue(
+                leader.getUUID().equals(restored.owner())
+                        && restored.accessMode() == sourceDoor.accessMode()
+                        && restored.targetDimension().equals(
+                                sourceDoor.targetDimension())
+                        && restored.targetAnchor().equals(
+                                sourceDoor.targetAnchor())
+                        && restored.remainingTicks()
+                                == sourceDoor.remainingTicks(),
+                "owner, permission, target and remaining lifetime must survive NBT");
         helper.succeed();
     }
 
@@ -564,10 +674,17 @@ public final class PlayerPersistenceGameTests {
 
         ResourceLocation seer = ResourceLocation.fromNamespaceAndPath(
                 ProjectMystery.MOD_ID, "seer");
+        String processingSeed = testSourceSeed(
+                helper, "characteristic-processing");
         CharacteristicBundle base = CharacteristicBundle.fromPotion(
-                seer, 9, 0.95f, "complete")
-                .advance(8, 0.9f, "rough")
-                .advance(7, 0.85f, "flawed");
+                seer, 9, 0.95f, "complete",
+                processingSeed + "|sequence-9")
+                .advance(
+                        8, 0.9f, "rough",
+                        processingSeed + "|sequence-8")
+                .advance(
+                        7, 0.85f, "flawed",
+                        processingSeed + "|sequence-7");
         CharacteristicBundle polluted = new CharacteristicBundle(
                 base.pathway(),
                 base.highestSequence(),
@@ -678,13 +795,15 @@ public final class PlayerPersistenceGameTests {
         ServerPlayer second = createPlayer(helper, "provenance-second");
         ResourceLocation seer = ResourceLocation.fromNamespaceAndPath(
                 ProjectMystery.MOD_ID, "seer");
+        String provenanceSeed = testSourceSeed(
+                helper, "cross-player-provenance");
         CharacteristicBundle sourceBundle =
                 CharacteristicBundle.fromPotion(
                                 seer, 9, 0.95f, "complete",
-                                "gametest-global-provenance")
+                                provenanceSeed + "|sequence-9")
                         .advance(
                                 8, 0.9f, "complete",
-                                "gametest-global-provenance-advance");
+                                provenanceSeed + "|sequence-8");
         ItemStack source =
                 CharacteristicConservationService.createStack(sourceBundle);
         ItemStack copiedBeforeConsumption = source.copy();
@@ -751,7 +870,9 @@ public final class PlayerPersistenceGameTests {
         ItemStack incoming =
                 CharacteristicConservationService.createStack(
                         CharacteristicBundle.fromPotion(
-                                seer, 7, 0.8f, "gametest-extra"));
+                                seer, 7, 0.8f, "gametest-extra",
+                                testSourceSeed(
+                                        helper, "extra-characteristic-load")));
         helper.assertTrue(
                 CharacteristicLoadService.absorb(player, incoming),
                 "single same-path layer must be absorbable by an active Beyonder");
@@ -848,6 +969,35 @@ public final class PlayerPersistenceGameTests {
                     net.minecraft.world.entity.Entity source) {
             }
         };
+    }
+
+    private static void prepareDoorArea(
+            GameTestHelper helper, BlockPos feetCenter) {
+        for (int x = -4; x <= 4; x++) {
+            for (int z = -4; z <= 4; z++) {
+                BlockPos feet = feetCenter.offset(x, 0, z);
+                helper.getLevel().setBlockAndUpdate(
+                        feet.below(), Blocks.STONE.defaultBlockState());
+                for (int y = 0; y <= 3; y++) {
+                    helper.getLevel().setBlockAndUpdate(
+                            feet.above(y), Blocks.AIR.defaultBlockState());
+                }
+            }
+        }
+    }
+
+    private static List<TravelerDoorEntity> travelerDoors(
+            GameTestHelper helper, UUID owner) {
+        java.util.ArrayList<TravelerDoorEntity> doors =
+                new java.util.ArrayList<>();
+        for (net.minecraft.world.entity.Entity entity
+                : helper.getLevel().getAllEntities()) {
+            if (entity instanceof TravelerDoorEntity door
+                    && door.ownedBy(owner)) {
+                doors.add(door);
+            }
+        }
+        return doors;
     }
 
     private static ItemStack lodestoneCompass(
@@ -952,5 +1102,11 @@ public final class PlayerPersistenceGameTests {
                                 ProjectMystery.MOD_ID,
                                 "knowledge/sequence_five_ritual/" + pathway)),
                 pathway + " ritual proof must survive provider restart");
+    }
+
+    private static String testSourceSeed(
+            GameTestHelper helper, String scenario) {
+        return "gametest|" + scenario + "|"
+                + helper.getLevel().getGameTime() + "|" + UUID.randomUUID();
     }
 }

@@ -41,6 +41,7 @@ class PlayerMysteryDataTest {
         assertEquals(100f, d.spiritualityMax);
         assertEquals(0f, d.pollution);
         assertEquals(PlayerMysteryData.CURRENT_SCHEMA_VERSION, d.schemaVersion);
+        assertEquals("party", d.travelerDoorAccessMode);
         assertFalse(d.emotionReadActive);
         assertEquals("", d.hunterTrackedTarget);
         assertEquals(0L, d.provokeCooldownEndTick);
@@ -388,6 +389,25 @@ class PlayerMysteryDataTest {
     }
 
     @Test
+    void travelerDoorAccessSurvivesCopyAndRepairsInvalidNbt() {
+        PlayerMysteryData source = new PlayerMysteryData();
+        source.travelerDoorAccessMode = "public";
+        PlayerMysteryData copied = new PlayerMysteryData();
+        copied.copyFrom(source);
+        assertEquals("public", copied.travelerDoorAccessMode);
+
+        PlayerMysteryData restored = new PlayerMysteryData();
+        restored.load(source.save());
+        assertEquals("public", restored.travelerDoorAccessMode);
+
+        net.minecraft.nbt.CompoundTag invalid = source.save();
+        invalid.putString("traveler_door_access_mode", "operator");
+        PlayerMysteryData repaired = new PlayerMysteryData();
+        repaired.load(invalid);
+        assertEquals("party", repaired.travelerDoorAccessMode);
+    }
+
+    @Test
     void migrationBackupAndOrphansSurviveRoundTripWithoutDuplication() {
         net.minecraft.nbt.CompoundTag legacy = new net.minecraft.nbt.CompoundTag();
         legacy.putInt("schema_version", 15);
@@ -415,7 +435,7 @@ class PlayerMysteryDataTest {
 
         assertEquals(1, migrated.characteristicBundles.size());
         assertEquals(1, migrated.migrationBackups.size());
-        assertEquals(9, migrated.migrationHistory.size());
+        assertEquals(10, migrated.migrationHistory.size());
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
                 entry.getString("section").equals("known_knowledge")));
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
@@ -431,7 +451,7 @@ class PlayerMysteryDataTest {
         restored.load(migrated.save());
 
         assertEquals(1, restored.migrationBackups.size());
-        assertEquals(9, restored.migrationHistory.size());
+        assertEquals(10, restored.migrationHistory.size());
         assertEquals(migrated.orphanedEntries.size(),
                 restored.orphanedEntries.size());
     }

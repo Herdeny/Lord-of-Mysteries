@@ -34,7 +34,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseResponseTask;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 24;
+    public static final int CURRENT_SCHEMA_VERSION = 25;
     private static final int MAX_MIGRATION_BACKUPS = 3;
     private static final int MAX_MIGRATION_HISTORY = 64;
 
@@ -106,6 +106,7 @@ public class PlayerMysteryData {
     public long apprenticeMirrorCooldownEndTick = 0L;
     public long apprenticeDivinationCooldownEndTick = 0L;
     public long apprenticeWardCooldownEndTick = 0L;
+    public String travelerDoorAccessMode = "party";
     public long psychPacifyCooldownEndTick = 0L;
     public long psychShockCooldownEndTick = 0L;
     public long pyroSpearCooldownEndTick = 0L;
@@ -274,6 +275,7 @@ public class PlayerMysteryData {
         this.apprenticeMirrorCooldownEndTick = src.apprenticeMirrorCooldownEndTick;
         this.apprenticeDivinationCooldownEndTick = src.apprenticeDivinationCooldownEndTick;
         this.apprenticeWardCooldownEndTick = src.apprenticeWardCooldownEndTick;
+        this.travelerDoorAccessMode = src.travelerDoorAccessMode;
         this.psychPacifyCooldownEndTick = src.psychPacifyCooldownEndTick;
         this.psychShockCooldownEndTick = src.psychShockCooldownEndTick;
         this.pyroSpearCooldownEndTick = src.pyroSpearCooldownEndTick;
@@ -418,6 +420,7 @@ public class PlayerMysteryData {
         tag.putLong("apprentice_mirror_cd_end", apprenticeMirrorCooldownEndTick);
         tag.putLong("apprentice_divination_cd_end", apprenticeDivinationCooldownEndTick);
         tag.putLong("apprentice_ward_cd_end", apprenticeWardCooldownEndTick);
+        tag.putString("traveler_door_access_mode", travelerDoorAccessMode);
         tag.putLong("psych_pacify_cd_end", psychPacifyCooldownEndTick);
         tag.putLong("psych_shock_cd_end", psychShockCooldownEndTick);
         tag.putLong("pyro_spear_cd_end", pyroSpearCooldownEndTick);
@@ -625,6 +628,8 @@ public class PlayerMysteryData {
         apprenticeMirrorCooldownEndTick = tag.getLong("apprentice_mirror_cd_end");
         apprenticeDivinationCooldownEndTick = tag.getLong("apprentice_divination_cd_end");
         apprenticeWardCooldownEndTick = tag.getLong("apprentice_ward_cd_end");
+        travelerDoorAccessMode = tag.contains("traveler_door_access_mode")
+                ? tag.getString("traveler_door_access_mode") : "party";
         psychPacifyCooldownEndTick = tag.getLong("psych_pacify_cd_end");
         psychShockCooldownEndTick = tag.getLong("psych_shock_cd_end");
         pyroSpearCooldownEndTick = tag.getLong("pyro_spear_cd_end");
@@ -1032,6 +1037,7 @@ public class PlayerMysteryData {
         hash = mix(hash, apprenticeMirrorCooldownEndTick);
         hash = mix(hash, apprenticeDivinationCooldownEndTick);
         hash = mix(hash, apprenticeWardCooldownEndTick);
+        hash = mix(hash, travelerDoorAccessMode);
         hash = mix(hash, psychPacifyCooldownEndTick);
         hash = mix(hash, psychShockCooldownEndTick);
         hash = mix(hash, pyroSpearCooldownEndTick);

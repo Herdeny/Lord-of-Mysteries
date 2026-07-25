@@ -6,6 +6,8 @@ public final class M3TravelNetworkLogic {
     public static final float BASE_SPIRITUALITY_COST = 80f;
     public static final float PASSENGER_SPIRITUALITY_COST = 10f;
     public static final double CONSENT_RADIUS = 4d;
+    public static final int DOOR_DURATION_TICKS = 400;
+    public static final long TRANSIT_COOLDOWN_TICKS = 40L;
 
     private M3TravelNetworkLogic() {}
 

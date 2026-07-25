@@ -64,4 +64,10 @@ class M3TravelNetworkLogicTest {
                 false, true, true, false, false,
                 true, true, true, Double.POSITIVE_INFINITY));
     }
+
+    @Test
+    void persistentDoorTimingMatchesDesignBoundary() {
+        assertEquals(400, M3TravelNetworkLogic.DOOR_DURATION_TICKS);
+        assertEquals(40L, M3TravelNetworkLogic.TRANSIT_COOLDOWN_TICKS);
+    }
 }
