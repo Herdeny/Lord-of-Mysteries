@@ -99,8 +99,8 @@
 - 已预实现：特性分离台与烙印洗涤台支持层级拆分、同途径重组、直接同源拒绝、记忆封存，以及以永久纯度损失换取污染与烙印净化，并提供 /pm characteristic 引导
 - 已预实现：活体额外特性负载可见、单层同途径吸收、消化/灵性/压力权衡、身份锚定析出、单人路线、最多三名探针见证者、稳定/勉强/失败恢复与守恒产物
 - 已预实现：全服来源 SavedData 对拆分、重组、洗涤、危险吸收和活体析出执行原子消费审计；复制来源跨玩家、跨重启拒绝且不扣资源，管理员可用 /pm characteristic audit 查看匿名统计
-- 已预实现：秘偶大师可将生命不高于 20% 的低抗性敌对生物转为最多三只持久秘偶；玩家 schema 名册与实体 owner 标签双向校验，支持同维安全召回、编队协战、玩家伤害阻断、外国所有权拒绝和显式解除
-- 待完成：完整原典能力组、形体/共享梦境、秘偶收纳卷轴/跨维控制、FTB Chunks 等具体领地 Mod 适配器、组织门权限、最终专属素材生物和途径美术
+- 已预实现：秘偶大师可将生命不高于 20% 的低抗性敌对生物转为最多三只持久秘偶；支持同维召回/协战、玩家友军保护、5 灵性收纳卷轴、服务端权威实体账本、一次性防复制凭证和跨维安全部署
+- 待完成：完整原典能力组、形体记录、FTB Chunks 等具体领地 Mod 适配器、组织门权限、最终专属素材生物和途径美术；共享梦境按 v0.9 增量路线归入 M5，不在 M3 伪报完成
 - 待验收：五途径经济定位、具体领地 Mod 联调、无唯一最优途径和多人组队互补矩阵
 
 ## M4 · 组织与封印物
@@ -221,7 +221,7 @@
 | structure_specs | 32 |
 | weather_anomaly_specs | 18 |
 
-### repository_evidence_at_0.9.27
+### repository_evidence_at_0.9.28
 
 | 指标 | 数量 |
 |---|---:|
@@ -232,8 +232,8 @@
 | generated_recipes | 13 |
 | playable_commissions | 4 |
 | playable_quest_chains | 4 |
-| junit_tests | 397 |
-| forge_gametests | 17 |
+| junit_tests | 404 |
+| forge_gametests | 18 |
 | sequence_five_physical_ritual_gametests | 1 |
 | traveler_spatial_relay_gametests | 3 |
 | traveler_persistent_door_entities | 1 |
@@ -243,17 +243,21 @@
 | traveler_door_operator_commands | 4 |
 | traveler_territory_actions | 3 |
 | persistent_marionette_gametests | 1 |
+| marionette_storage_gametests | 1 |
 | persistent_marionette_roster_cap | 3 |
 | marionette_management_commands | 4 |
+| marionette_storage_items | 1 |
+| marionette_storage_cost | 5 |
+| marionette_storage_cooldown_ticks | 40 |
 | characteristic_processing_gametests | 1 |
 | extra_characteristic_load_gametests | 1 |
 | characteristic_provenance_gametests | 1 |
 | save_rollback_checks | 1 |
 | dedicated_server_starts | 2 |
 | network_protocol | 13 |
-| player_capability_schema | 27 |
+| player_capability_schema | 28 |
 | characteristic_provenance_saved_data | 1 |
-| registered_items | 91 |
+| registered_items | 92 |
 | registered_blocks | 7 |
 | registered_entities | 9 |
 | sequence_five_rituals | 5 |
@@ -264,11 +268,11 @@
 | characteristic_provenance_audit_commands | 1 |
 | pages_initial_catalog_batch | 24 |
 | pages_layout_contract_checks | 1 |
-| json_resources | 322 |
-| paired_translations | 1500 |
-| referenced_translation_keys | 593 |
-| item_and_block_models | 98 |
-| pages_catalog_entries | 190 |
+| json_resources | 324 |
+| paired_translations | 1521 |
+| referenced_translation_keys | 599 |
+| item_and_block_models | 99 |
+| pages_catalog_entries | 191 |
 
 
 路线数据的唯一来源是 `roadmap.json`。修改后运行：

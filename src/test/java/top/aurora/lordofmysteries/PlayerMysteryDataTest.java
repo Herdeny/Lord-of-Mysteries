@@ -441,17 +441,31 @@ class PlayerMysteryDataTest {
         PlayerMysteryData source = new PlayerMysteryData();
         source.marionetteRoster.add(first);
         source.marionetteRoster.add(second);
+        net.minecraft.nbt.CompoundTag entityPayload =
+                new net.minecraft.nbt.CompoundTag();
+        entityPayload.putString("id", "minecraft:zombie");
+        entityPayload.putUUID("UUID", first);
+        source.marionetteStorageRecords.put(
+                first,
+                top.aurora.lordofmysteries.ability.MarionetteStoragePolicy
+                        .createRecord(UUID.randomUUID(), entityPayload));
         source.marionetteCreationCooldownEndTick = 4_200L;
 
         PlayerMysteryData copied = new PlayerMysteryData();
         copied.copyFrom(source);
         assertEquals(List.of(first, second), copied.marionetteRoster);
         assertNotSame(source.marionetteRoster, copied.marionetteRoster);
+        assertEquals(source.marionetteStorageRecords,
+                copied.marionetteStorageRecords);
+        assertNotSame(source.marionetteStorageRecords.get(first),
+                copied.marionetteStorageRecords.get(first));
         assertEquals(4_200L, copied.marionetteCreationCooldownEndTick);
 
         PlayerMysteryData restored = new PlayerMysteryData();
         restored.load(source.save());
         assertEquals(List.of(first, second), restored.marionetteRoster);
+        assertEquals(source.marionetteStorageRecords,
+                restored.marionetteStorageRecords);
         assertEquals(4_200L, restored.marionetteCreationCooldownEndTick);
 
         net.minecraft.nbt.CompoundTag invalid = source.save();
@@ -463,6 +477,8 @@ class PlayerMysteryDataTest {
         PlayerMysteryData repaired = new PlayerMysteryData();
         repaired.load(invalid);
         assertEquals(List.of(first), repaired.marionetteRoster);
+        assertEquals(source.marionetteStorageRecords,
+                repaired.marionetteStorageRecords);
         assertEquals(0L, repaired.marionetteCreationCooldownEndTick);
         assertTrue(repaired.orphanedEntries.stream().anyMatch(entry ->
                 entry.getString("section").equals("marionette_roster")
@@ -498,7 +514,7 @@ class PlayerMysteryDataTest {
 
         assertEquals(1, migrated.characteristicBundles.size());
         assertEquals(1, migrated.migrationBackups.size());
-        assertEquals(12, migrated.migrationHistory.size());
+        assertEquals(13, migrated.migrationHistory.size());
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
                 entry.getString("section").equals("known_knowledge")));
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
@@ -514,7 +530,7 @@ class PlayerMysteryDataTest {
         restored.load(migrated.save());
 
         assertEquals(1, restored.migrationBackups.size());
-        assertEquals(12, restored.migrationHistory.size());
+        assertEquals(13, restored.migrationHistory.size());
         assertEquals(migrated.orphanedEntries.size(),
                 restored.orphanedEntries.size());
     }

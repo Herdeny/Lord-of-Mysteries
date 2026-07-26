@@ -8,7 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
 
+import top.aurora.lordofmysteries.ability.MarionetteStoragePolicy;
 import top.aurora.lordofmysteries.commission.CaseGrade;
 import top.aurora.lordofmysteries.commission.DynamicCaseContactEvent;
 import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
@@ -127,6 +129,33 @@ class PlayerMysteryDataSanitizerTest {
     }
 
     @Test
+    void removesStorageRecordsOutsideRosterOrWithForgedPayload() {
+        java.util.UUID validId = java.util.UUID.randomUUID();
+        java.util.UUID removedId = java.util.UUID.randomUUID();
+        PlayerMysteryData data = dataWithStorageRecord(
+                validId, validId);
+        data.marionetteStorageRecords.put(
+                removedId,
+                storageRecord(removedId));
+        data.marionetteStorageRecords.put(
+                validId,
+                storageRecord(java.util.UUID.randomUUID()));
+
+        assertTrue(data.sanitize() > 0);
+        assertTrue(data.marionetteStorageRecords.isEmpty());
+    }
+
+    @Test
+    void preservesValidStorageRecordWithoutRepair() {
+        java.util.UUID entityId = java.util.UUID.randomUUID();
+        PlayerMysteryData data = dataWithStorageRecord(
+                entityId, entityId);
+
+        assertEquals(0, data.sanitize());
+        assertTrue(data.marionetteStorageRecords.containsKey(entityId));
+    }
+
+    @Test
     void validOrganizationResponseStateNeedsNoRepair() {
         PlayerMysteryData data = new PlayerMysteryData();
         DynamicCaseHistoryEntry history = new DynamicCaseHistoryEntry(
@@ -187,6 +216,23 @@ class PlayerMysteryDataSanitizerTest {
                 DynamicCaseProfile.CaseLocation.MIST_CITY_OUTPOST,
                 CaseGrade.A, 84, 900L, 2,
                 DynamicCaseHistoryEntry.FollowUpStatus.PENDING);
+    }
+
+    private static PlayerMysteryData dataWithStorageRecord(
+            java.util.UUID rosterId, java.util.UUID payloadId) {
+        PlayerMysteryData data = new PlayerMysteryData();
+        data.marionetteRoster.add(rosterId);
+        data.marionetteStorageRecords.put(
+                rosterId, storageRecord(payloadId));
+        return data;
+    }
+
+    private static CompoundTag storageRecord(java.util.UUID entityId) {
+        CompoundTag payload = new CompoundTag();
+        payload.putString("id", "minecraft:zombie");
+        payload.putUUID("UUID", entityId);
+        return MarionetteStoragePolicy.createRecord(
+                java.util.UUID.randomUUID(), payload);
     }
 
 }

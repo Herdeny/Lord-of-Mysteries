@@ -46,7 +46,10 @@ public final class PlayerMysteryDataFixer {
                             ::initializeTravelerDoorSafetyControls),
             new DataFix("persistent_marionette_roster", 27,
                     PlayerMysteryDataFixer
-                            ::initializePersistentMarionetteRoster));
+                            ::initializePersistentMarionetteRoster),
+            new DataFix("marionette_storage_records", 28,
+                    PlayerMysteryDataFixer
+                            ::initializeMarionetteStorageRecords));
 
     private PlayerMysteryDataFixer() {}
 
@@ -321,6 +324,23 @@ public final class PlayerMysteryDataFixer {
             tag.put("marionette_roster", new ListTag());
         }
         putLongDefault(tag, "marionette_creation_cd_end", 0L);
+    }
+
+    private static void initializeMarionetteStorageRecords(
+            CompoundTag tag, List<CompoundTag> orphanedEntries) {
+        Tag existing = tag.get("marionette_storage_records");
+        boolean validList = existing instanceof ListTag list
+                && (list.isEmpty()
+                || list.getElementType() == Tag.TAG_COMPOUND);
+        if (existing != null && !validList) {
+            orphanedEntries.add(orphan(
+                    "marionette_storage_records",
+                    "invalid_container",
+                    existing));
+        }
+        if (!validList) {
+            tag.put("marionette_storage_records", new ListTag());
+        }
     }
 
     private static void putBooleanDefault(CompoundTag tag, String key,

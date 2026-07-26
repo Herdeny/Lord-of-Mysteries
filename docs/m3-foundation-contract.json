@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "capability_schema": 27,
+  "capability_schema": 28,
   "economy": {
     "jobs": {
       "PRESS": {
@@ -180,6 +180,11 @@
     "roster_nbt_key": "marionette_roster",
     "cooldown_nbt_key": "marionette_creation_cd_end",
     "migration_fix": "persistent_marionette_roster",
+    "storage_item": "marionette_scroll",
+    "storage_records_nbt_key": "marionette_storage_records",
+    "storage_migration_fix": "marionette_storage_records",
+    "storage_cost": 5,
+    "storage_cooldown_ticks": 40,
     "maximum_roster": 3,
     "maximum_target_health": 80,
     "maximum_capture_health_ratio": 0.2,
@@ -193,7 +198,14 @@
     "loaded_same_dimension_recall": true,
     "never_force_loads_chunks": true,
     "explicit_release": true,
-    "persistent_entity_tag": true
+    "persistent_entity_tag": true,
+    "server_authoritative_storage_payload": true,
+    "one_time_storage_token": true,
+    "owner_bound_storage": true,
+    "copied_voucher_rejected": true,
+    "cross_dimension_deploy": true,
+    "safe_deployment_required": true,
+    "release_invalidates_storage": true
   },
   "characteristic_processing": {
     "command": "characteristic",
@@ -275,7 +287,7 @@
     }
   },
   "validation": {
-    "game_tests": 17,
+    "game_tests": 18,
     "requires_restart_matrix": true,
     "behavior_test_classes": [
       "CityEconomyPolicyTest",
@@ -288,6 +300,7 @@
       "M3TravelNetworkLogicTest",
       "TravelMarkerServiceTest",
       "TravelerDoorAccessModeTest",
+      "MarionetteStoragePolicyTest",
       "TravelerDoorPolicyTest",
       "MarionettePolicyTest",
       "CharacteristicLoadLogicTest",
@@ -391,6 +404,27 @@
     "message.lord_of_mysteries.marionette.released",
     "message.lord_of_mysteries.marionette.released_all",
     "message.lord_of_mysteries.marionette.recalled",
+    "item.lord_of_mysteries.marionette_scroll",
+    "tooltip.lord_of_mysteries.marionette_scroll.empty",
+    "tooltip.lord_of_mysteries.marionette_scroll.filled",
+    "tooltip.lord_of_mysteries.marionette_scroll.owner_bound",
+    "tooltip.lord_of_mysteries.marionette_scroll.controls",
+    "message.lord_of_mysteries.marionette.entry.stored",
+    "message.lord_of_mysteries.marionette.scroll.empty",
+    "message.lord_of_mysteries.marionette.scroll.captured",
+    "message.lord_of_mysteries.marionette.scroll.deployed",
+    "message.lord_of_mysteries.marionette.scroll.invalid_scroll",
+    "message.lord_of_mysteries.marionette.scroll.wrong_sequence",
+    "message.lord_of_mysteries.marionette.scroll.not_owned",
+    "message.lord_of_mysteries.marionette.scroll.already_stored",
+    "message.lord_of_mysteries.marionette.scroll.insufficient",
+    "message.lord_of_mysteries.marionette.scroll.wrong_owner",
+    "message.lord_of_mysteries.marionette.scroll.released",
+    "message.lord_of_mysteries.marionette.scroll.invalid_token",
+    "message.lord_of_mysteries.marionette.scroll.already_loaded",
+    "message.lord_of_mysteries.marionette.scroll.invalid_payload",
+    "message.lord_of_mysteries.marionette.scroll.no_safe_position",
+    "message.lord_of_mysteries.marionette.scroll.spawn_rejected",
     "message.lord_of_mysteries.travel.passenger_arrival",
     "message.lord_of_mysteries.travel.success",
     "entity.lord_of_mysteries.traveler_door",

@@ -33,6 +33,7 @@ import top.aurora.lordofmysteries.acting.ActingIdentityCardItem;
 import top.aurora.lordofmysteries.acting.ActingReflectionJournalItem;
 import top.aurora.lordofmysteries.characteristic.BrokenCharacteristicItem;
 import top.aurora.lordofmysteries.characteristic.ImprintProbeItem;
+import top.aurora.lordofmysteries.ability.MarionetteScrollItem;
 
 /**
  * 物品注册（Forge 1.20.1）。包含材料、魔药、封印物和方块物品。
@@ -169,6 +170,10 @@ public final class ModItems {
     public static final RegistryObject<Item> PAPER_FIGURINE = ITEMS.register(
             "paper_figurine",
             () -> new Item(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> MARIONETTE_SCROLL = ITEMS.register(
+            "marionette_scroll",
+            () -> new MarionetteScrollItem(
+                    new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SHAPESHIFTER_SERPENT_SPAWN_EGG = ITEMS.register(
             "shapeshifter_serpent_spawn_egg",
             () -> new ForgeSpawnEggItem(

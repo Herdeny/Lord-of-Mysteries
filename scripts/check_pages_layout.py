@@ -97,8 +97,10 @@ def main() -> int:
             "Pages M3 入口与路线摘要必须展示旅行家端点运维", errors)
     require("持久秘偶、完整梦境" not in html,
             "Pages 不得把已实现的持久秘偶继续列为未完成", errors)
-    require("秘偶收纳卷轴/跨维指挥" in html,
-            "Pages 必须保留秘偶后续边界，避免误报 M3 完成", errors)
+    require("秘偶收纳卷轴" in html and "跨维" in html,
+            "Pages M3 入口必须展示已实现的秘偶跨维收纳", errors)
+    require("形体记录、具体领地 Mod 适配器、组织门权限" in html,
+            "Pages 必须保留真实 M3 后续边界，避免误报完成", errors)
 
     require("[hidden] { display: none !important; }" in css,
             "CSS 必须保护 hidden 属性不被布局规则覆盖", errors)

@@ -393,6 +393,14 @@ def main():
         JAVA / "ability" / "MarionettePolicy.java")
     marionette_service = source(
         JAVA / "ability" / "MarionetteService.java")
+    marionette_scroll = source(
+        JAVA / "ability" / "MarionetteScrollItem.java")
+    marionette_storage = source(
+        JAVA / "ability" / "MarionetteStoragePolicy.java")
+    marionette_item_registry = source(
+        JAVA / "registry" / "ModItems.java")
+    gametest_source = source(
+        JAVA / "gametest" / "PlayerPersistenceGameTests.java")
     require(
         f'literal("{marionettes["command"]}")' in commands
         and "MarionetteService.sendGuide" in commands
@@ -469,8 +477,56 @@ def main():
     require(
         not marionettes["explicit_release"]
         or ("data.marionetteRoster.remove" in marionette_service
+            and "data.marionetteStorageRecords.remove" in marionette_service
             and "clearOwnership" in marionette_service),
         "marionette ownership cannot be explicitly revoked")
+    require(
+        f'"{marionettes["storage_item"]}"' in marionette_item_registry
+        and f'"{marionettes["storage_records_nbt_key"]}"' in player
+        and marionettes["storage_migration_fix"] in fixer
+        and "MarionetteStoragePolicy.normalizeRecords" in sanitizer,
+        "marionette storage item, ledger migration or repair is missing")
+    require(
+        f"STORAGE_COST = {marionettes['storage_cost']}f"
+        in marionette_storage
+        and f"ITEM_COOLDOWN_TICKS = "
+        f"{marionettes['storage_cooldown_ticks']}" in marionette_storage,
+        "marionette storage costs drifted")
+    require(
+        not marionettes["server_authoritative_storage_payload"]
+        or ("MarionetteStoragePolicy.payload(record)" in marionette_scroll
+            and "entity_payload" in marionette_storage
+            and "entity_payload" not in source(
+                ROOT / "src" / "main" / "resources" / "assets"
+                / "lord_of_mysteries" / "models" / "item"
+                / "marionette_scroll.json")),
+        "marionette payload is no longer server authoritative")
+    require(
+        not marionettes["one_time_storage_token"]
+        or ("tokenMatches" in marionette_scroll
+            and "marionetteStorageRecords.remove" in marionette_scroll),
+        "marionette storage token is not one-time")
+    require(
+        not marionettes["owner_bound_storage"]
+        or ("owner.getUUID().equals(voucher.ownerId())"
+            in marionette_scroll),
+        "marionette storage is no longer owner-bound")
+    require(
+        not marionettes["copied_voucher_rejected"]
+        or ("INVALID_TOKEN" in marionette_scroll
+            and "copied voucher" in gametest_source.lower()),
+        "copied marionette vouchers are no longer rejected")
+    require(
+        not marionettes["cross_dimension_deploy"]
+        or ("owner.serverLevel()" in marionette_scroll
+            and "EntityType.loadEntityRecursive" in marionette_scroll),
+        "marionette storage cannot deploy into the owner's current dimension")
+    require(
+        not marionettes["safe_deployment_required"]
+        or ("findDeploymentDestination" in marionette_scroll
+            and "level.noCollision" in marionette_scroll
+            and "isWithinBounds" in marionette_scroll),
+        "marionette deployment safe-position checks are missing")
 
     processing = contract["characteristic_processing"]
     processing_logic = source(
@@ -706,7 +762,10 @@ def main():
         "a persistent consent-gated bidirectional traveler door with "
         "private, party and public access, marker names, a persistent "
         "blocklist and territory protection hooks, a three-slot persistent "
-        "marionette roster with safe recall and explicit release, conserved characteristic "
+        "marionette roster with safe recall and explicit release, "
+        "server-authoritative marionette storage with owner-bound one-time "
+        "tokens, copied-voucher rejection and safe cross-dimensional deployment, "
+        "conserved characteristic "
         "splitting, sealing and washing, visible extra-load absorption and "
         "safe extraction, server-global provenance replay protection, "
         f"{validation['game_tests']} GameTests, and "

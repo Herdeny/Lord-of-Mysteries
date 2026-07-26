@@ -13,6 +13,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
 import top.aurora.lordofmysteries.commission.DynamicCaseRelationshipPolicy;
 import top.aurora.lordofmysteries.commission.MysticalExposurePolicy;
 import top.aurora.lordofmysteries.ability.MarionettePolicy;
+import top.aurora.lordofmysteries.ability.MarionetteStoragePolicy;
 import top.aurora.lordofmysteries.ability.TravelerDoorAccessMode;
 import top.aurora.lordofmysteries.ability.TravelerDoorPolicy;
 import top.aurora.lordofmysteries.potion.PotionQuality;
@@ -88,6 +89,17 @@ public final class PlayerMysteryDataSanitizer {
         }
         if (data.marionetteCreationCooldownEndTick < 0L) {
             data.marionetteCreationCooldownEndTick = 0L;
+            repairs++;
+        }
+        java.util.Map<UUID, net.minecraft.nbt.CompoundTag>
+                repairedStorageRecords =
+                MarionetteStoragePolicy.normalizeRecords(
+                        data.marionetteStorageRecords,
+                        data.marionetteRoster);
+        if (!repairedStorageRecords.equals(
+                data.marionetteStorageRecords)) {
+            data.marionetteStorageRecords =
+                    new HashMap<>(repairedStorageRecords);
             repairs++;
         }
 

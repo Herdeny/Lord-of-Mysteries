@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.RegisterGameTestsEvent;
@@ -33,6 +34,7 @@ import top.aurora.lordofmysteries.ability.M2FoundationAbilityHandler;
 import top.aurora.lordofmysteries.ability.M3LaunchAbilityHandler;
 import top.aurora.lordofmysteries.ability.M3TravelNetworkLogic;
 import top.aurora.lordofmysteries.ability.MarionetteService;
+import top.aurora.lordofmysteries.ability.MarionetteScrollItem;
 import top.aurora.lordofmysteries.ability.TravelMarkerService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicConservationService;
@@ -820,6 +822,119 @@ public final class PlayerPersistenceGameTests {
                         && data.marionetteRoster.isEmpty()
                         && MarionetteService.ownerOf(first).isEmpty(),
                 "explicit release must revoke loaded entity ownership immediately");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void marionetteScrollPersistsAndRejectsCopiedVoucher(
+            GameTestHelper helper) {
+        ServerPlayer owner = createPlayer(helper, "marionette-scroll-owner");
+        owner.setPos(helper.absolutePos(
+                new BlockPos(2, 4, 2)).getCenter());
+        PlayerMysteryData data = MysteryCapability.get(owner);
+        data.pathway = SeerPotionItem.SEER_PATHWAY;
+        data.sequence = 5;
+        data.spiritualityMax = 265f;
+        data.spirituality = 120f;
+
+        Mob target = EntityType.ZOMBIE.create(helper.getLevel());
+        helper.assertTrue(target != null,
+                "storage test target must be constructible");
+        if (target == null) return;
+        target.setPos(helper.absolutePos(
+                new BlockPos(4, 4, 2)).getCenter());
+        target.setHealth(target.getMaxHealth() * 0.2f);
+        helper.getLevel().addFreshEntity(target);
+        helper.assertTrue(
+                MarionetteService.create(owner, data, target)
+                        == MarionetteService.CreationResult.SUCCESS,
+                "storage test requires a server-owned marionette");
+        data.marionetteCreationCooldownEndTick = 0L;
+
+        ItemStack scroll =
+                new ItemStack(ModItems.MARIONETTE_SCROLL.get());
+        UUID entityId = target.getUUID();
+        float beforeStorage = data.spirituality;
+        helper.assertTrue(
+                MarionetteScrollItem.capture(owner, scroll, target)
+                        == MarionetteScrollItem.CaptureResult.SUCCESS,
+                "own loaded marionette must enter an empty storage scroll");
+        helper.assertTrue(
+                target.isRemoved()
+                        && MarionetteScrollItem.isFilled(scroll)
+                        && data.marionetteStorageRecords.containsKey(entityId)
+                        && data.spirituality
+                        == beforeStorage - 5f,
+                "capture must atomically remove entity, spend five spirituality and create the authoritative record");
+
+        ItemStack copiedVoucher = scroll.copy();
+        MysteryCapability.Provider restored =
+                new MysteryCapability.Provider();
+        restored.deserializeNBT(data.save());
+        helper.assertTrue(
+                restored.getData().schemaVersion
+                        == PlayerMysteryData.CURRENT_SCHEMA_VERSION
+                        && restored.getData().marionetteRoster.contains(entityId)
+                        && restored.getData().marionetteStorageRecords
+                        .containsKey(entityId),
+                "schema 28 must preserve the stored entity payload and one-time token across restart");
+
+        ServerPlayer intruder = createPlayer(
+                helper, "marionette-scroll-intruder");
+        helper.assertTrue(
+                MarionetteScrollItem.deploy(
+                        intruder,
+                        copiedVoucher,
+                        owner.position())
+                        == MarionetteScrollItem.DeployResult.WRONG_OWNER
+                        && data.marionetteStorageRecords
+                        .containsKey(entityId)
+                        && MarionetteScrollItem.isFilled(copiedVoucher),
+                "owner binding must reject another player without consuming the authoritative record or voucher");
+        Vec3 unsafePosition = new Vec3(
+                owner.getX(),
+                helper.getLevel().getMaxBuildHeight() + 32d,
+                owner.getZ());
+        helper.assertTrue(
+                MarionetteScrollItem.deploy(
+                        owner, scroll, unsafePosition)
+                        == MarionetteScrollItem.DeployResult.NO_SAFE_POSITION
+                        && data.marionetteStorageRecords
+                        .containsKey(entityId)
+                        && MarionetteScrollItem.isFilled(scroll),
+                "unsafe deployment must preserve both the authoritative record and owner voucher");
+
+        BlockPos deploymentFeet =
+                helper.absolutePos(new BlockPos(6, 4, 2));
+        helper.getLevel().setBlockAndUpdate(
+                deploymentFeet.below(),
+                Blocks.STONE.defaultBlockState());
+        helper.getLevel().setBlockAndUpdate(
+                deploymentFeet,
+                Blocks.AIR.defaultBlockState());
+        helper.getLevel().setBlockAndUpdate(
+                deploymentFeet.above(),
+                Blocks.AIR.defaultBlockState());
+        helper.assertTrue(
+                MarionetteScrollItem.deploy(
+                        owner,
+                        scroll,
+                        Vec3.atBottomCenterOf(deploymentFeet))
+                        == MarionetteScrollItem.DeployResult.SUCCESS,
+                "valid owner voucher must deploy at a safe current-dimension position");
+        helper.assertTrue(
+                !MarionetteScrollItem.isFilled(scroll)
+                        && data.marionetteStorageRecords.isEmpty()
+                        && MarionetteService.findLoaded(
+                        owner.getServer(), entityId).isPresent(),
+                "successful deploy must consume only the voucher state and restore the same roster UUID");
+        helper.assertTrue(
+                MarionetteScrollItem.deploy(
+                        owner,
+                        copiedVoucher,
+                        Vec3.atBottomCenterOf(deploymentFeet))
+                        == MarionetteScrollItem.DeployResult.INVALID_TOKEN,
+                "copied voucher must fail after the authoritative one-time record is consumed");
         helper.succeed();
     }
 

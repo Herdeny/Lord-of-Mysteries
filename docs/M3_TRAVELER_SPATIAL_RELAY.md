@@ -1,6 +1,6 @@
 # M3 旅行家持续双向远门
 
-> 适用版本：0.9.27-1.20.1
+> 适用版本：0.9.28-1.20.1
 > 状态：`code_ready`
 > 设计基线：v0.9 旅行家序列 5“远门”纵切；仓库既有行为优先
 
@@ -178,7 +178,7 @@ Capability schema 26 在 schema 25 远门权限基础上新增 `traveler_door_bl
 
 ## 11. 自动化验证
 
-当前发布门禁包含 397 项 JUnit 与 17 项 Forge GameTest：
+当前发布门禁包含 404 项 JUnit 与 18 项 Forge GameTest：
 
 - `M3TravelNetworkLogicTest`：费用钳制、支持者资格、20 秒寿命与反回弹常量；
 - `TravelerDoorAccessModeTest`：门主优先、私人/队伍/公开、队伍规范化和非法值回退；
@@ -188,7 +188,8 @@ Capability schema 26 在 schema 25 远门权限基础上新增 `traveler_door_bl
 - 第 11 项 GameTest：真实磁石、源/目标门、精确扣费、未强制移动、20 秒寿命、开门冷却和失败保留；
 - 第 15 项 GameTest：外人拒绝、原版队友通过、跨门安全落点、目标端防回弹及门 NBT 往返；
 - 第 16 项 GameTest：命名双端一致、目的地领地取消不扣费、实时拉黑/解禁、门名与黑名单 NBT 往返，并验证门主/管理员查询与撤销双端；
-- 第 17 项 GameTest：秘偶纵切，保证 M3 共用持久世界中的新增 schema 27 状态能与旅行家门状态并存；
+- 第 17 项 GameTest：秘偶纵切，保证 M3 共用持久世界中的 schema 27 编队状态能与旅行家门状态并存；
+- 第 18 项 GameTest：验证 schema 28 权威收纳记录、同 UUID 安全部署与复制凭证拒绝；
 - 同一持久测试世界连续运行会使用本轮唯一特性来源，确保全服来源账本不会让复跑测试产生假失败。
 
 CI 另外执行 M3 机器合同、资源/翻译/Pages 图鉴门禁、clean build、存档回滚和同一世界双启动专服矩阵。

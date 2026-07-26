@@ -191,6 +191,12 @@ public final class MarionetteService {
                         Math.round(mob.getMaxHealth()),
                         mob.level().dimension().location().toString())
                         .withStyle(ChatFormatting.AQUA));
+            } else if (data.marionetteStorageRecords.containsKey(id)) {
+                PlayerFeedback.send(owner, Component.translatable(
+                        "message.lord_of_mysteries.marionette.entry.stored",
+                        index + 1,
+                        id.toString())
+                        .withStyle(ChatFormatting.LIGHT_PURPLE));
             } else {
                 PlayerFeedback.send(owner, Component.translatable(
                         "message.lord_of_mysteries.marionette.entry.unloaded",
@@ -210,6 +216,7 @@ public final class MarionetteService {
                     owner, "invalid_slot", ChatFormatting.RED, slot);
         }
         UUID id = data.marionetteRoster.remove(slot - 1);
+        data.marionetteStorageRecords.remove(id);
         findLoaded(owner.getServer(), id).ifPresent(
                 MarionetteService::clearOwnership);
         PlayerFeedback.send(owner, Component.translatable(
@@ -227,6 +234,7 @@ public final class MarionetteService {
                 findLoaded(owner.getServer(), id).ifPresent(
                         MarionetteService::clearOwnership));
         data.marionetteRoster.clear();
+        data.marionetteStorageRecords.clear();
         PlayerFeedback.send(owner, Component.translatable(
                 "message.lord_of_mysteries.marionette.released_all",
                 released).withStyle(ChatFormatting.YELLOW));
@@ -304,6 +312,7 @@ public final class MarionetteService {
         if (owner == null) return;
         PlayerMysteryData data = MysteryCapability.get(owner);
         data.marionetteRoster.remove(event.getEntity().getUUID());
+        data.marionetteStorageRecords.remove(event.getEntity().getUUID());
     }
 
     public static boolean isMarionette(Entity entity) {
@@ -333,6 +342,7 @@ public final class MarionetteService {
             clearOwnership(mob);
             return;
         }
+        data.marionetteStorageRecords.remove(mob.getUUID());
         LivingEntity currentTarget = mob.getTarget();
         if (currentTarget instanceof Player
                 || ownerOf(currentTarget).isPresent()) {
@@ -378,12 +388,14 @@ public final class MarionetteService {
                 && mob.distanceToSqr(candidate) <= 576d;
     }
 
-    private static Optional<Mob> findLoaded(
+    public static Optional<Mob> findLoaded(
             MinecraftServer server, UUID id) {
         if (server == null || id == null) return Optional.empty();
         for (ServerLevel level : server.getAllLevels()) {
             Entity entity = level.getEntity(id);
-            if (entity instanceof Mob mob) return Optional.of(mob);
+            if (entity instanceof Mob mob && !mob.isRemoved()) {
+                return Optional.of(mob);
+            }
         }
         return Optional.empty();
     }
@@ -425,6 +437,11 @@ public final class MarionetteService {
         data.marionetteRoster = new ArrayList<>(
                 MarionettePolicy.normalizeRoster(
                         data.marionetteRoster));
+        data.marionetteStorageRecords =
+                new java.util.HashMap<>(
+                        MarionetteStoragePolicy.normalizeRecords(
+                                data.marionetteStorageRecords,
+                                data.marionetteRoster));
     }
 
     private static boolean feedback(

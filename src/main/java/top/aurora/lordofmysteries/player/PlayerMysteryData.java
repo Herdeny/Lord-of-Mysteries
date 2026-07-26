@@ -18,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 import top.aurora.lordofmysteries.ability.MarionettePolicy;
+import top.aurora.lordofmysteries.ability.MarionetteStoragePolicy;
 import top.aurora.lordofmysteries.ability.TravelerDoorPolicy;
 import top.aurora.lordofmysteries.commission.CaseDebriefRecord;
 import top.aurora.lordofmysteries.commission.CaseHypothesisRecord;
@@ -37,7 +38,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseResponseTask;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 27;
+    public static final int CURRENT_SCHEMA_VERSION = 28;
     private static final int MAX_MIGRATION_BACKUPS = 3;
     private static final int MAX_MIGRATION_HISTORY = 64;
 
@@ -112,6 +113,8 @@ public class PlayerMysteryData {
     public String travelerDoorAccessMode = "party";
     public Set<UUID> travelerDoorBlacklist = new HashSet<>();
     public List<UUID> marionetteRoster = new ArrayList<>();
+    public Map<UUID, CompoundTag> marionetteStorageRecords =
+            new HashMap<>();
     public long marionetteCreationCooldownEndTick = 0L;
     public long psychPacifyCooldownEndTick = 0L;
     public long psychShockCooldownEndTick = 0L;
@@ -286,6 +289,10 @@ public class PlayerMysteryData {
                 new HashSet<>(src.travelerDoorBlacklist);
         this.marionetteRoster =
                 new ArrayList<>(src.marionetteRoster);
+        this.marionetteStorageRecords = new HashMap<>();
+        src.marionetteStorageRecords.forEach((entityId, record) ->
+                this.marionetteStorageRecords.put(
+                        entityId, record.copy()));
         this.marionetteCreationCooldownEndTick =
                 src.marionetteCreationCooldownEndTick;
         this.psychPacifyCooldownEndTick = src.psychPacifyCooldownEndTick;
@@ -443,6 +450,21 @@ public class PlayerMysteryData {
                 .forEach(value -> marionetteRosterTag.add(
                         StringTag.valueOf(value.toString())));
         tag.put("marionette_roster", marionetteRosterTag);
+        ListTag marionetteStorageTag = new ListTag();
+        Map<UUID, CompoundTag> storageRecords =
+                MarionetteStoragePolicy.normalizeRecords(
+                        marionetteStorageRecords,
+                        marionetteRoster);
+        MarionettePolicy.normalizeRoster(marionetteRoster)
+                .forEach(entityId -> {
+                    CompoundTag record = storageRecords.get(entityId);
+                    if (record == null) return;
+                    CompoundTag entry = new CompoundTag();
+                    entry.putUUID("entity_uuid", entityId);
+                    entry.put("record", record.copy());
+                    marionetteStorageTag.add(entry);
+                });
+        tag.put("marionette_storage_records", marionetteStorageTag);
         tag.putLong("marionette_creation_cd_end",
                 marionetteCreationCooldownEndTick);
         tag.putLong("psych_pacify_cd_end", psychPacifyCooldownEndTick);
@@ -706,6 +728,46 @@ public class PlayerMysteryData {
                             "invalid_uuid",
                             payload);
                 }
+            }
+        }
+        marionetteStorageRecords.clear();
+        Tag rawMarionetteStorage =
+                tag.get("marionette_storage_records");
+        boolean validMarionetteStorage =
+                rawMarionetteStorage instanceof ListTag list
+                        && (list.isEmpty()
+                        || list.getElementType() == Tag.TAG_COMPOUND);
+        if (rawMarionetteStorage != null
+                && !validMarionetteStorage) {
+            addOrphan(
+                    "marionette_storage_records",
+                    "invalid_container",
+                    rawMarionetteStorage.copy());
+        } else if (validMarionetteStorage
+                && rawMarionetteStorage instanceof ListTag recordsTag) {
+            for (int index = 0; index < recordsTag.size(); index++) {
+                CompoundTag entry = recordsTag.getCompound(index);
+                if (entry.hasUUID("entity_uuid")
+                        && entry.contains("record", Tag.TAG_COMPOUND)) {
+                    UUID entityId = entry.getUUID("entity_uuid");
+                    CompoundTag record = entry.getCompound("record");
+                    if (marionetteRoster.contains(entityId)
+                            && MarionetteStoragePolicy.isValidRecord(record)
+                            && entityId.equals(
+                            MarionetteStoragePolicy.payload(record)
+                                    .getUUID("UUID"))) {
+                        marionetteStorageRecords.put(
+                                entityId, record.copy());
+                        continue;
+                    }
+                }
+                CompoundTag payload = new CompoundTag();
+                payload.putInt("index", index);
+                payload.put("value", entry.copy());
+                addOrphan(
+                        "marionette_storage_records",
+                        "invalid_record",
+                        payload);
             }
         }
         marionetteCreationCooldownEndTick =
@@ -1120,6 +1182,7 @@ public class PlayerMysteryData {
         hash = mix(hash, travelerDoorAccessMode);
         hash = mix(hash, travelerDoorBlacklist);
         hash = mix(hash, marionetteRoster);
+        hash = mix(hash, marionetteStorageRecords);
         hash = mix(hash, marionetteCreationCooldownEndTick);
         hash = mix(hash, psychPacifyCooldownEndTick);
         hash = mix(hash, psychShockCooldownEndTick);

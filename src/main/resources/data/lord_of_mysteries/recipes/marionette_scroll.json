@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "T": {
+      "item": "lord_of_mysteries:ashen_thread"
+    },
+    "W": {
+      "item": "lord_of_mysteries:memory_seal_wax"
+    }
+  },
+  "pattern": [
+    " T ",
+    "PWP",
+    " T "
+  ],
+  "result": {
+    "item": "lord_of_mysteries:marionette_scroll"
+  },
+  "show_notification": true
+}

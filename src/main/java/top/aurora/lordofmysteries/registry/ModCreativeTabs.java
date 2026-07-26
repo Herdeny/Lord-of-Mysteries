@@ -75,6 +75,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.KNOWLEDGE_COPY.get());
                         output.accept(ModItems.MYSTIC_PLAYING_CARDS.get());
                         output.accept(ModItems.PAPER_FIGURINE.get());
+                        output.accept(ModItems.MARIONETTE_SCROLL.get());
                         output.accept(ModItems.SHAPESHIFTER_SERPENT_SPAWN_EGG.get());
                         output.accept(ModItems.SPIRIT_WISP_SPAWN_EGG.get());
                         output.accept(ModItems.ASHEN_PUPPET_SPAWN_EGG.get());
