@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "version": "0.9.26-1.20.1",
-  "stage": "v0.9 M2 真人验收准备与 M3 远门安全兼容闭环",
+  "version": "0.9.27-1.20.1",
+  "stage": "v0.9 M2 真人验收准备与 M3 持久秘偶编队闭环",
   "milestone": "M2",
   "minecraft_version": "1.20.1",
   "forge_version": "47.4.20",
   "java_version": "17",
-  "last_updated": "2026-07-26T01:11:40+01:00",
-  "last_updated_utc": "2026-07-26T00:11:40Z"
+  "last_updated": "2026-07-26T02:19:24+01:00",
+  "last_updated_utc": "2026-07-26T01:19:24Z"
 }

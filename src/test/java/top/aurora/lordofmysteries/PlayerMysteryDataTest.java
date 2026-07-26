@@ -2,6 +2,7 @@ package top.aurora.lordofmysteries;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -432,6 +433,44 @@ class PlayerMysteryDataTest {
     }
 
     @Test
+    void marionetteRosterSurvivesCopyAndRepairsInvalidNbt() {
+        UUID first =
+                UUID.fromString("00000000-0000-0000-0000-000000000027");
+        UUID second =
+                UUID.fromString("00000000-0000-0000-0000-000000000028");
+        PlayerMysteryData source = new PlayerMysteryData();
+        source.marionetteRoster.add(first);
+        source.marionetteRoster.add(second);
+        source.marionetteCreationCooldownEndTick = 4_200L;
+
+        PlayerMysteryData copied = new PlayerMysteryData();
+        copied.copyFrom(source);
+        assertEquals(List.of(first, second), copied.marionetteRoster);
+        assertNotSame(source.marionetteRoster, copied.marionetteRoster);
+        assertEquals(4_200L, copied.marionetteCreationCooldownEndTick);
+
+        PlayerMysteryData restored = new PlayerMysteryData();
+        restored.load(source.save());
+        assertEquals(List.of(first, second), restored.marionetteRoster);
+        assertEquals(4_200L, restored.marionetteCreationCooldownEndTick);
+
+        net.minecraft.nbt.CompoundTag invalid = source.save();
+        net.minecraft.nbt.ListTag roster = new net.minecraft.nbt.ListTag();
+        roster.add(net.minecraft.nbt.StringTag.valueOf(first.toString()));
+        roster.add(net.minecraft.nbt.StringTag.valueOf("invalid"));
+        invalid.put("marionette_roster", roster);
+        invalid.putLong("marionette_creation_cd_end", -1L);
+        PlayerMysteryData repaired = new PlayerMysteryData();
+        repaired.load(invalid);
+        assertEquals(List.of(first), repaired.marionetteRoster);
+        assertEquals(0L, repaired.marionetteCreationCooldownEndTick);
+        assertTrue(repaired.orphanedEntries.stream().anyMatch(entry ->
+                entry.getString("section").equals("marionette_roster")
+                        && entry.getString("reason").equals(
+                        "invalid_uuid")));
+    }
+
+    @Test
     void migrationBackupAndOrphansSurviveRoundTripWithoutDuplication() {
         net.minecraft.nbt.CompoundTag legacy = new net.minecraft.nbt.CompoundTag();
         legacy.putInt("schema_version", 15);
@@ -459,7 +498,7 @@ class PlayerMysteryDataTest {
 
         assertEquals(1, migrated.characteristicBundles.size());
         assertEquals(1, migrated.migrationBackups.size());
-        assertEquals(11, migrated.migrationHistory.size());
+        assertEquals(12, migrated.migrationHistory.size());
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
                 entry.getString("section").equals("known_knowledge")));
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
@@ -475,7 +514,7 @@ class PlayerMysteryDataTest {
         restored.load(migrated.save());
 
         assertEquals(1, restored.migrationBackups.size());
-        assertEquals(11, restored.migrationHistory.size());
+        assertEquals(12, restored.migrationHistory.size());
         assertEquals(migrated.orphanedEntries.size(),
                 restored.orphanedEntries.size());
     }

@@ -388,6 +388,90 @@ def main():
             and "isWithinBounds(targetAnchor)" in door_entity),
         "traveler door safe-arrival rejection is missing")
 
+    marionettes = contract["persistent_marionettes"]
+    marionette_policy = source(
+        JAVA / "ability" / "MarionettePolicy.java")
+    marionette_service = source(
+        JAVA / "ability" / "MarionetteService.java")
+    require(
+        f'literal("{marionettes["command"]}")' in commands
+        and "MarionetteService.sendGuide" in commands
+        and "MarionetteService.recall" in commands
+        and "MarionetteService.release" in commands,
+        "marionette roster commands are missing")
+    require(
+        f"MAX_MARIONETTES = {marionettes['maximum_roster']}"
+        in marionette_policy
+        and f"MAX_TARGET_HEALTH = "
+        f"{marionettes['maximum_target_health']}f" in marionette_policy
+        and f"MAX_CAPTURE_HEALTH_RATIO = "
+        f"{marionettes['maximum_capture_health_ratio']}f"
+        in marionette_policy
+        and f"CREATION_COST = {marionettes['creation_cost']}f"
+        in marionette_policy
+        and f"CREATION_COOLDOWN_TICKS = "
+        f"{marionettes['creation_cooldown_ticks']:_}L"
+        in marionette_policy,
+        "marionette creation limits drifted")
+    require(
+        not marionettes["requires_hostile_non_player"]
+        or ("!playerTarget" in marionette_policy
+            and "hostileTarget" in marionette_policy
+            and "MobCategory.MONSTER" in marionette_service),
+        "marionette creation can target players or non-hostiles")
+    require(
+        not marionettes["foreign_ownership_rejected"]
+        or ("OWNED_BY_ANOTHER" in marionette_service
+            and "currentOwner != null" in marionette_service),
+        "foreign marionette ownership is no longer rejected")
+    require(
+        not marionettes["player_damage_forbidden"]
+        or ("MarionettePolicy.canDamage" in marionette_service
+            and "victim instanceof Player" in marionette_service
+            and "event.setCanceled(true)" in marionette_service
+            and "victimPlayer || victimOwner != null" in marionette_policy),
+        "marionettes can damage players")
+    require(
+        not marionettes["owner_friendly_fire_forbidden"]
+        or ("MarionettePolicy.canDamage" in marionette_service
+            and "!victimOwner.equals(attackerId)" in marionette_policy),
+        "marionette owner or squad friendly fire is not blocked")
+    require(
+        not marionettes["all_marionette_friendly_fire_forbidden"]
+        or ("attackerOwner != null" in marionette_policy
+            and "victimOwner != null" in marionette_policy
+            and "ownerOf(candidate).isEmpty()" in marionette_service),
+        "marionettes can attack another player's marionettes")
+    require(
+        f'"{marionettes["roster_nbt_key"]}"' in player
+        and f'"{marionettes["cooldown_nbt_key"]}"' in player
+        and marionettes["migration_fix"] in fixer
+        and "MarionettePolicy.normalizeRoster" in sanitizer,
+        "marionette roster persistence, migration or repair is missing")
+    require(
+        marionettes["owner_tag"].split(":", 1)[-1]
+        in marionette_service
+        and (not marionettes["persistent_entity_tag"]
+             or ("getPersistentData().putUUID" in marionette_service
+                 and "setPersistenceRequired()" in marionette_service)),
+        "marionette entity ownership is not persistent")
+    require(
+        not marionettes["loaded_same_dimension_recall"]
+        or ("mob.level() != owner.serverLevel()" in marionette_service
+            and "findRecallDestination" in marionette_service
+            and "mob.teleportTo(" in marionette_service),
+        "same-dimension marionette recall is missing")
+    require(
+        not marionettes["never_force_loads_chunks"]
+        or ("level.getEntity(id)" in marionette_service
+            and "getChunkAt" not in marionette_service),
+        "marionette management can force-load chunks")
+    require(
+        not marionettes["explicit_release"]
+        or ("data.marionetteRoster.remove" in marionette_service
+            and "clearOwnership" in marionette_service),
+        "marionette ownership cannot be explicitly revoked")
+
     processing = contract["characteristic_processing"]
     processing_logic = source(
         JAVA / "characteristic" / "CharacteristicProcessingLogic.java")
@@ -621,7 +705,8 @@ def main():
         "dedicated sequence-5 rituals with solo and supporter paths, "
         "a persistent consent-gated bidirectional traveler door with "
         "private, party and public access, marker names, a persistent "
-        "blocklist and territory protection hooks, conserved characteristic "
+        "blocklist and territory protection hooks, a three-slot persistent "
+        "marionette roster with safe recall and explicit release, conserved characteristic "
         "splitting, sealing and washing, visible extra-load absorption and "
         "safe extraction, server-global provenance replay protection, "
         f"{validation['game_tests']} GameTests, and "

@@ -98,7 +98,10 @@ public final class M3LaunchAbilityHandler {
             M2FoundationAbilityHandler.AbilitySlot slot) {
         if (SeerPotionItem.SEER_PATHWAY.equals(data.pathway)) {
             return slot == M2FoundationAbilityHandler.AbilitySlot.PRIMARY
-                    ? revealSpiritThreads(player, data) : threadRestraint(player, data);
+                    ? revealSpiritThreads(player, data)
+                    : player.isShiftKeyDown()
+                    ? MarionetteService.tryCreateFromLook(player, data)
+                    : threadRestraint(player, data);
         }
         if (SpectatorPotionItem.SPECTATOR_PATHWAY.equals(data.pathway)) {
             return slot == M2FoundationAbilityHandler.AbilitySlot.PRIMARY

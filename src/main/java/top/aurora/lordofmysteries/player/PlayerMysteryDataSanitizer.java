@@ -12,6 +12,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseContactMemoryPolicy;
 import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
 import top.aurora.lordofmysteries.commission.DynamicCaseRelationshipPolicy;
 import top.aurora.lordofmysteries.commission.MysticalExposurePolicy;
+import top.aurora.lordofmysteries.ability.MarionettePolicy;
 import top.aurora.lordofmysteries.ability.TravelerDoorAccessMode;
 import top.aurora.lordofmysteries.ability.TravelerDoorPolicy;
 import top.aurora.lordofmysteries.potion.PotionQuality;
@@ -71,6 +72,23 @@ public final class PlayerMysteryDataSanitizer {
                         new HashSet<>(repairedBlacklist);
                 repairs++;
             }
+        }
+        if (data.marionetteRoster == null) {
+            data.marionetteRoster = new ArrayList<>();
+            repairs++;
+        } else {
+            java.util.List<UUID> repairedRoster =
+                    MarionettePolicy.normalizeRoster(
+                            data.marionetteRoster);
+            if (!repairedRoster.equals(data.marionetteRoster)) {
+                data.marionetteRoster =
+                        new ArrayList<>(repairedRoster);
+                repairs++;
+            }
+        }
+        if (data.marionetteCreationCooldownEndTick < 0L) {
+            data.marionetteCreationCooldownEndTick = 0L;
+            repairs++;
         }
 
         repairs += repairTrialValues(data);

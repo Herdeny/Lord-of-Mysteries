@@ -292,6 +292,41 @@ public final class TravelMarkerService {
         return blocked.size();
     }
 
+    public static int showActiveDoors(
+            ServerPlayer requester, ServerPlayer owner) {
+        List<TravelerDoorEntity> doors = activeDoors(owner);
+        PlayerFeedback.send(requester, Component.translatable(
+                "message.lord_of_mysteries.travel.door.list",
+                owner.getDisplayName(),
+                doors.size())
+                .withStyle(ChatFormatting.GRAY));
+        doors.forEach(door -> PlayerFeedback.send(
+                requester,
+                Component.translatable(
+                        "message.lord_of_mysteries.travel.door.entry",
+                        doorLabel(door.doorName()),
+                        door.level().dimension().location().toString(),
+                        door.getBlockX(),
+                        door.getBlockY(),
+                        door.getBlockZ(),
+                        Math.max(0, door.remainingTicks()) / 20)
+                        .withStyle(ChatFormatting.DARK_AQUA)));
+        return doors.size();
+    }
+
+    public static int closeActiveDoors(
+            ServerPlayer requester, ServerPlayer owner) {
+        List<TravelerDoorEntity> doors = activeDoors(owner);
+        doors.forEach(Entity::discard);
+        PlayerFeedback.send(requester, Component.translatable(
+                "message.lord_of_mysteries.travel.door.closed",
+                owner.getDisplayName(),
+                doors.size())
+                .withStyle(doors.isEmpty()
+                        ? ChatFormatting.YELLOW : ChatFormatting.AQUA));
+        return doors.size();
+    }
+
     public static boolean relayToHeldMarker(
             ServerPlayer leader,
             PlayerMysteryData data,
@@ -609,6 +644,22 @@ public final class TravelMarkerService {
                 }
             }
         }
+    }
+
+    private static List<TravelerDoorEntity> activeDoors(
+            ServerPlayer owner) {
+        List<TravelerDoorEntity> doors = new ArrayList<>();
+        for (ServerLevel level : owner.getServer().getAllLevels()) {
+            for (Entity entity : level.getAllEntities()) {
+                if (entity instanceof TravelerDoorEntity door
+                        && door.ownedBy(owner.getUUID())) {
+                    doors.add(door);
+                }
+            }
+        }
+        doors.sort(Comparator.comparing(
+                door -> door.getUUID().toString()));
+        return List.copyOf(doors);
     }
 
     private static ItemStack markerStackInHands(ServerPlayer player) {

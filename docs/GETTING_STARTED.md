@@ -1,6 +1,6 @@
 # Project Mystery 入门指南
 
-> 适用版本：0.9.26-1.20.1 · v0.9 M2 真人验收准备与 M3 远门安全兼容闭环（M0/M1 已完成）
+> 适用版本：0.9.27-1.20.1 · v0.9 M2 真人验收准备与 M3 持久秘偶编队闭环（M0/M1 已完成）
 >
 > 当前路线：v0.9 · M2 调查与生活
 
@@ -226,10 +226,13 @@
 - 旅行家可把原版指南针绑定到磁石，输入 `/pm travel` 检查标记、名称、20 秒门时限、权限与黑名单；用 `/pm travel name <名称>` 或 `name clear` 管理 32 字符名称，用 `/pm travel access private|party|public` 选择访问模式。
 - `/pm travel block <在线玩家>`、`unblock <在线玩家>` 与 `blocked` 管理最多 32 人持久黑名单；黑名单优先于队伍和公开权限。源端、目标端和每次穿越目标都会检查出生点保护与可取消领地事件。
 - 手持有效标记按 `U` 消耗 80 灵性开启一对双向门。四格内主动潜行并持相同标记的最多三名支持者各增加 10 灵性；开门不会移动任何人，玩家主动走入门体才会传送。
+- `/pm travel doors` 查看自己的已加载端点，`/pm travel close` 主动撤销；管理员可用 `/pm travel admin doors|close <在线玩家>` 运维指定门主。
+- 秘偶大师把普通敌对生物削弱到 20% 生命以下后，对准 14 格内目标潜行按 `U` 创建秘偶；目标最大生命不高于 80，消耗 60 灵性、冷却 120 秒，最多三个持久槽位。
+- `/pm marionette` 查看编队，`recall` 只召回已加载同维秘偶，`release <1..3>` 或 `release all` 主动解除。秘偶不会伤害玩家、门主或同编队成员。
 - `/pm characteristic` 显示非凡特性加工规则。分离台以副手探针检查/潜行拆分，以第二份同途径特性重组，以记忆封蜡封存；洗涤台以每层永久损失 3% 纯度换取污染 -25 和烙印 -20%。
 - 单单位、同途径、不高于当前位阶且已有基础层的破碎特性可潜行持续使用 64 tick 直接吸收；普通右键只警告，不消耗物品。不同途径、多单位、过高位阶、封存和直接同源会安全拒绝。
 - `B` 状态面板与 `/pm characteristic` 会显示额外负载。每层负载降低 12% 扮演消化效率（最低 40%），有效扮演恢复少量灵性但持续增加压力。
 - 安全析出前先用身份卡锚定身份；在真实特性分离台主手身份盐环、副手洗涤香、背包准备 4 份灵性盐。普通右键无损检查，潜行右键执行；最多三名附近潜行持探针玩家可协助。
-- 当前序列 6–5、五种晋升仪式、旅行家 20 秒命名双向远门/三档权限/持久黑名单/领地兼容基础、物品特性加工和活体负载析出是 `code_ready` 纵切；完整梦境、永久秘偶、形体记录、具体领地 Mod 适配器和组织门权限仍未实现。
+- 当前序列 6–5、五种晋升仪式、旅行家 20 秒命名双向远门/三档权限/持久黑名单/端点运维/领地兼容基础、三槽持久秘偶、物品特性加工和活体负载析出是 `code_ready` 纵切；完整梦境、秘偶收纳/跨维指挥、形体记录、具体领地 Mod 适配器和组织门权限仍未实现。
 
-五种仪式的环境、材料、失败恢复和多人职责见 [`M3_SEQUENCE5_ADVANCEMENT_RITUALS.md`](M3_SEQUENCE5_ADVANCEMENT_RITUALS.md)；旅行家标记、费用、同意与安全规则见 [`M3_TRAVELER_SPATIAL_RELAY.md`](M3_TRAVELER_SPATIAL_RELAY.md)；特性配方、负载公式、活体析出和失败矩阵见 [`M3_CHARACTERISTIC_PROCESSING.md`](M3_CHARACTERISTIC_PROCESSING.md)。
+五种仪式的环境、材料、失败恢复和多人职责见 [`M3_SEQUENCE5_ADVANCEMENT_RITUALS.md`](M3_SEQUENCE5_ADVANCEMENT_RITUALS.md)；秘偶规则见 [`M3_MARIONETTE_SQUAD.md`](M3_MARIONETTE_SQUAD.md)；旅行家标记、费用、同意与安全规则见 [`M3_TRAVELER_SPATIAL_RELAY.md`](M3_TRAVELER_SPATIAL_RELAY.md)；特性配方、负载公式、活体析出和失败矩阵见 [`M3_CHARACTERISTIC_PROCESSING.md`](M3_CHARACTERISTIC_PROCESSING.md)。

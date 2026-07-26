@@ -32,6 +32,7 @@ import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.ability.M2FoundationAbilityHandler;
 import top.aurora.lordofmysteries.ability.M3LaunchAbilityHandler;
 import top.aurora.lordofmysteries.ability.M3TravelNetworkLogic;
+import top.aurora.lordofmysteries.ability.MarionetteService;
 import top.aurora.lordofmysteries.ability.TravelMarkerService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicConservationService;
@@ -743,6 +744,82 @@ public final class PlayerPersistenceGameTests {
                         && sourceDoor.tryTransit(blocked)
                         == TravelerDoorEntity.TransitResult.SUCCESS,
                 "removing a player must update live endpoints and restore public access");
+        helper.assertTrue(
+                TravelMarkerService.showActiveDoors(leader, leader) == 2
+                        && TravelMarkerService.closeActiveDoors(
+                        leader, leader) == 2
+                        && travelerDoors(
+                        helper, leader.getUUID()).isEmpty(),
+                "owner and operator door tooling must inspect and revoke both endpoints");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void persistentMarionetteRosterPreservesOwnershipAndResources(
+            GameTestHelper helper) {
+        ServerPlayer owner = createPlayer(helper, "marionette-owner");
+        PlayerMysteryData data = MysteryCapability.get(owner);
+        data.pathway = SeerPotionItem.SEER_PATHWAY;
+        data.sequence = 5;
+        data.spiritualityMax = 265f;
+        data.spirituality = 180f;
+
+        Mob first = EntityType.ZOMBIE.create(helper.getLevel());
+        helper.assertTrue(first != null,
+                "vanilla hostile target must be constructible");
+        if (first == null) return;
+        first.setPos(helper.absolutePos(
+                new BlockPos(3, 4, 3)).getCenter());
+        first.setHealth(first.getMaxHealth() * 0.2f);
+        helper.getLevel().addFreshEntity(first);
+
+        helper.assertTrue(
+                MarionetteService.create(owner, data, first)
+                        == MarionetteService.CreationResult.SUCCESS,
+                "weakened hostile target must become a persistent marionette");
+        helper.assertTrue(
+                data.marionetteRoster.equals(List.of(first.getUUID()))
+                        && MarionetteService.ownerOf(first)
+                        .filter(owner.getUUID()::equals)
+                        .isPresent()
+                        && data.spirituality == 120f,
+                "creation must atomically bind owner, roster and exact spirituality");
+
+        CompoundTag saved = data.save();
+        PlayerMysteryData restored = new PlayerMysteryData();
+        restored.load(saved);
+        helper.assertTrue(
+                restored.schemaVersion
+                        == PlayerMysteryData.CURRENT_SCHEMA_VERSION
+                        && restored.marionetteRoster.equals(
+                        List.of(first.getUUID()))
+                        && restored.marionetteCreationCooldownEndTick
+                        == data.marionetteCreationCooldownEndTick,
+                "schema 27 must preserve roster slots and creation cooldown");
+
+        Mob foreign = EntityType.ZOMBIE.create(helper.getLevel());
+        helper.assertTrue(foreign != null,
+                "second hostile target must be constructible");
+        if (foreign == null) return;
+        foreign.setPos(helper.absolutePos(
+                new BlockPos(5, 4, 3)).getCenter());
+        foreign.setHealth(foreign.getMaxHealth() * 0.1f);
+        foreign.getPersistentData().putUUID(
+                MarionetteService.OWNER_TAG, UUID.randomUUID());
+        helper.getLevel().addFreshEntity(foreign);
+        float beforeRejectedCreation = data.spirituality;
+        helper.assertTrue(
+                MarionetteService.create(owner, data, foreign)
+                        == MarionetteService.CreationResult.OWNED_BY_ANOTHER
+                        && data.spirituality == beforeRejectedCreation
+                        && data.marionetteRoster.size() == 1,
+                "foreign ownership rejection must preserve resources and roster");
+
+        helper.assertTrue(
+                MarionetteService.release(owner, 1) == 1
+                        && data.marionetteRoster.isEmpty()
+                        && MarionetteService.ownerOf(first).isEmpty(),
+                "explicit release must revoke loaded entity ownership immediately");
         helper.succeed();
     }
 

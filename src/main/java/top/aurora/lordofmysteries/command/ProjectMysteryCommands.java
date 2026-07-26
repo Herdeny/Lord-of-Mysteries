@@ -22,6 +22,8 @@ import net.minecraftforge.fml.common.Mod;
 
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.acting.ActingIdentityService;
+import top.aurora.lordofmysteries.ability.MarionettePolicy;
+import top.aurora.lordofmysteries.ability.MarionetteService;
 import top.aurora.lordofmysteries.ability.TravelMarkerService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicProcessingService;
 import top.aurora.lordofmysteries.knowledge.InvestigatorCompassItem;
@@ -166,6 +168,48 @@ public final class ProjectMysteryCommands {
                                                 .showBlockedPlayers(
                                                         context.getSource()
                                                                 .getPlayerOrException())))
+                        .then(Commands.literal("doors")
+                                .executes(context -> {
+                                    ServerPlayer player = context.getSource()
+                                            .getPlayerOrException();
+                                    return TravelMarkerService.showActiveDoors(
+                                            player, player);
+                                }))
+                        .then(Commands.literal("close")
+                                .executes(context -> {
+                                    ServerPlayer player = context.getSource()
+                                            .getPlayerOrException();
+                                    return TravelMarkerService.closeActiveDoors(
+                                            player, player);
+                                }))
+                        .then(Commands.literal("admin")
+                                .requires(source -> source.hasPermission(2))
+                                .then(Commands.literal("doors")
+                                        .then(Commands.argument(
+                                                        "player",
+                                                        EntityArgument.player())
+                                                .executes(context ->
+                                                        TravelMarkerService
+                                                                .showActiveDoors(
+                                                                        context.getSource()
+                                                                                .getPlayerOrException(),
+                                                                        EntityArgument
+                                                                                .getPlayer(
+                                                                                        context,
+                                                                                        "player")))))
+                                .then(Commands.literal("close")
+                                        .then(Commands.argument(
+                                                        "player",
+                                                        EntityArgument.player())
+                                                .executes(context ->
+                                                        TravelMarkerService
+                                                                .closeActiveDoors(
+                                                                        context.getSource()
+                                                                                .getPlayerOrException(),
+                                                                        EntityArgument
+                                                                                .getPlayer(
+                                                                                        context,
+                                                                                        "player"))))))
                         .then(Commands.literal("access")
                                 .then(Commands.literal("private")
                                         .executes(context ->
@@ -188,6 +232,36 @@ public final class ProjectMysteryCommands {
                                                                 context.getSource()
                                                                         .getPlayerOrException(),
                                                                 "public")))))
+                .then(Commands.literal("marionette")
+                        .executes(context ->
+                                MarionetteService.sendGuide(
+                                        context.getSource()
+                                                .getPlayerOrException()))
+                        .then(Commands.literal("recall")
+                                .executes(context ->
+                                        MarionetteService.recall(
+                                                context.getSource()
+                                                        .getPlayerOrException())))
+                        .then(Commands.literal("release")
+                                .then(Commands.literal("all")
+                                        .executes(context ->
+                                                MarionetteService.releaseAll(
+                                                        context.getSource()
+                                                                .getPlayerOrException())))
+                                .then(Commands.argument(
+                                                "slot",
+                                                IntegerArgumentType.integer(
+                                                        1,
+                                                        MarionettePolicy
+                                                                .MAX_MARIONETTES))
+                                        .executes(context ->
+                                                MarionetteService.release(
+                                                        context.getSource()
+                                                                .getPlayerOrException(),
+                                                        IntegerArgumentType
+                                                                .getInteger(
+                                                                        context,
+                                                                        "slot"))))))
                 .then(Commands.literal("characteristic")
                         .executes(context ->
                                 CharacteristicProcessingService.sendGuide(
