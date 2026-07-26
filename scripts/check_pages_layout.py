@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HTML_PATH = ROOT / "docs" / "index.html"
 CSS_PATH = ROOT / "docs" / "assets" / "wiki.css"
 JS_PATH = ROOT / "docs" / "assets" / "wiki.js"
+WIKI_DATA_PATH = ROOT / "docs" / "assets" / "wiki-data.js"
 STATUS_PATH = ROOT / "project-status.json"
 
 
@@ -54,6 +55,7 @@ def main() -> int:
     html = HTML_PATH.read_text(encoding="utf-8")
     css = CSS_PATH.read_text(encoding="utf-8")
     javascript = JS_PATH.read_text(encoding="utf-8")
+    wiki_data = WIKI_DATA_PATH.read_text(encoding="utf-8")
     status = json.loads(STATUS_PATH.read_text(encoding="utf-8"))
     asset_version = status["version"].split("-", 1)[0]
     parser = SiteParser()
@@ -101,6 +103,27 @@ def main() -> int:
             "Pages M3 入口必须展示已实现的秘偶跨维收纳", errors)
     require("形体记录、具体领地 Mod 适配器、组织门权限" in html,
             "Pages 必须保留真实 M3 后续边界，避免误报完成", errors)
+    require("Capability schema 28" in wiki_data
+            and "404 JUnit · 18 GameTest" in wiki_data
+            and "324 JSON · 1521 双语键" in wiki_data
+            and "92 物品 · 7 方块 · 9 实体" in wiki_data
+            and "191 条图鉴" in wiki_data,
+            "Pages 动态机制卡的 schema、测试和资源基线未同步", errors)
+    require("权威收纳" in wiki_data
+            and "一次性 token" in wiki_data
+            and "跨维安全部署" in wiki_data,
+            "Pages 动态 M3 卡必须展示秘偶权威收纳闭环", errors)
+    require("397 JUnit" not in wiki_data
+            and "17 GameTest" not in wiki_data
+            and "17 Forge GameTest" not in wiki_data
+            and "schema 27" not in wiki_data
+            and "322 JSON" not in wiki_data
+            and "1500 双语键" not in wiki_data
+            and "91 物品" not in wiki_data
+            and "190 条图鉴" not in wiki_data
+            and "秘偶收纳/跨维控制" not in wiki_data
+            and "收纳卷轴、跨维指挥" not in wiki_data,
+            "Pages 动态图鉴仍含上一版本的当前状态文案", errors)
 
     require("[hidden] { display: none !important; }" in css,
             "CSS 必须保护 hidden 属性不被布局规则覆盖", errors)
