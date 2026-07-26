@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "capability_schema": 25,
+  "capability_schema": 26,
   "data_counts": {
     "commissions": 4,
     "quest_chains": 4

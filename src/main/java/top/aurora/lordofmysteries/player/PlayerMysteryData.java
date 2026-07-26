@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -16,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
+import top.aurora.lordofmysteries.ability.TravelerDoorPolicy;
 import top.aurora.lordofmysteries.commission.CaseDebriefRecord;
 import top.aurora.lordofmysteries.commission.CaseHypothesisRecord;
 import top.aurora.lordofmysteries.commission.DynamicCaseContactEvent;
@@ -34,7 +36,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseResponseTask;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 25;
+    public static final int CURRENT_SCHEMA_VERSION = 26;
     private static final int MAX_MIGRATION_BACKUPS = 3;
     private static final int MAX_MIGRATION_HISTORY = 64;
 
@@ -107,6 +109,7 @@ public class PlayerMysteryData {
     public long apprenticeDivinationCooldownEndTick = 0L;
     public long apprenticeWardCooldownEndTick = 0L;
     public String travelerDoorAccessMode = "party";
+    public Set<UUID> travelerDoorBlacklist = new HashSet<>();
     public long psychPacifyCooldownEndTick = 0L;
     public long psychShockCooldownEndTick = 0L;
     public long pyroSpearCooldownEndTick = 0L;
@@ -276,6 +279,8 @@ public class PlayerMysteryData {
         this.apprenticeDivinationCooldownEndTick = src.apprenticeDivinationCooldownEndTick;
         this.apprenticeWardCooldownEndTick = src.apprenticeWardCooldownEndTick;
         this.travelerDoorAccessMode = src.travelerDoorAccessMode;
+        this.travelerDoorBlacklist =
+                new HashSet<>(src.travelerDoorBlacklist);
         this.psychPacifyCooldownEndTick = src.psychPacifyCooldownEndTick;
         this.psychShockCooldownEndTick = src.psychShockCooldownEndTick;
         this.pyroSpearCooldownEndTick = src.pyroSpearCooldownEndTick;
@@ -421,6 +426,11 @@ public class PlayerMysteryData {
         tag.putLong("apprentice_divination_cd_end", apprenticeDivinationCooldownEndTick);
         tag.putLong("apprentice_ward_cd_end", apprenticeWardCooldownEndTick);
         tag.putString("traveler_door_access_mode", travelerDoorAccessMode);
+        ListTag travelerBlacklist = new ListTag();
+        TravelerDoorPolicy.normalizeBlacklist(travelerDoorBlacklist)
+                .forEach(value -> travelerBlacklist.add(
+                        StringTag.valueOf(value.toString())));
+        tag.put("traveler_door_blacklist", travelerBlacklist);
         tag.putLong("psych_pacify_cd_end", psychPacifyCooldownEndTick);
         tag.putLong("psych_shock_cd_end", psychShockCooldownEndTick);
         tag.putLong("pyro_spear_cd_end", pyroSpearCooldownEndTick);
@@ -630,6 +640,32 @@ public class PlayerMysteryData {
         apprenticeWardCooldownEndTick = tag.getLong("apprentice_ward_cd_end");
         travelerDoorAccessMode = tag.contains("traveler_door_access_mode")
                 ? tag.getString("traveler_door_access_mode") : "party";
+        travelerDoorBlacklist.clear();
+        Tag rawTravelerBlacklist = tag.get("traveler_door_blacklist");
+        boolean validTravelerBlacklist =
+                rawTravelerBlacklist instanceof ListTag list
+                && (list.isEmpty()
+                        || list.getElementType() == Tag.TAG_STRING);
+        if (rawTravelerBlacklist != null
+                && !validTravelerBlacklist) {
+            addOrphan(
+                    "traveler_door_blacklist",
+                    "invalid_container",
+                    rawTravelerBlacklist.copy());
+        } else if (validTravelerBlacklist
+                && rawTravelerBlacklist instanceof ListTag blockedPlayers) {
+            for (int i = 0; i < blockedPlayers.size(); i++) {
+                String rawUuid = blockedPlayers.getString(i);
+                try {
+                    travelerDoorBlacklist.add(UUID.fromString(rawUuid));
+                } catch (IllegalArgumentException exception) {
+                    addOrphan(
+                            "traveler_door_blacklist",
+                            "invalid_uuid",
+                            StringTag.valueOf(rawUuid));
+                }
+            }
+        }
         psychPacifyCooldownEndTick = tag.getLong("psych_pacify_cd_end");
         psychShockCooldownEndTick = tag.getLong("psych_shock_cd_end");
         pyroSpearCooldownEndTick = tag.getLong("pyro_spear_cd_end");
@@ -1038,6 +1074,7 @@ public class PlayerMysteryData {
         hash = mix(hash, apprenticeDivinationCooldownEndTick);
         hash = mix(hash, apprenticeWardCooldownEndTick);
         hash = mix(hash, travelerDoorAccessMode);
+        hash = mix(hash, travelerDoorBlacklist);
         hash = mix(hash, psychPacifyCooldownEndTick);
         hash = mix(hash, psychShockCooldownEndTick);
         hash = mix(hash, pyroSpearCooldownEndTick);

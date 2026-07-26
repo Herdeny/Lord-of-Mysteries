@@ -1,8 +1,8 @@
 # M2 八槽位动态案件轮换
 
-> 适用版本：`0.9.25-1.20.1`
+> 适用版本：`0.9.26-1.20.1`
 > 设计基线：Project Mystery v0.9
-> 存档：Capability schema 25 · 内容 schema v4
+> 存档：Capability schema 26 · 内容 schema v4
 > 网络：协议 13 · 14 个固定消息 ID
 
 ## 结论

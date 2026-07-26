@@ -40,7 +40,10 @@ public final class PlayerMysteryDataFixer {
             new DataFix("characteristic_provenance_nonce", 24,
                     PlayerMysteryDataFixer::initializeCharacteristicProvenance),
             new DataFix("traveler_door_access", 25,
-                    PlayerMysteryDataFixer::initializeTravelerDoorAccess));
+                    PlayerMysteryDataFixer::initializeTravelerDoorAccess),
+            new DataFix("traveler_door_safety_controls", 26,
+                    PlayerMysteryDataFixer
+                            ::initializeTravelerDoorSafetyControls));
 
     private PlayerMysteryDataFixer() {}
 
@@ -279,6 +282,23 @@ public final class PlayerMysteryDataFixer {
             CompoundTag tag, List<CompoundTag> orphanedEntries) {
         if (!tag.contains("traveler_door_access_mode", Tag.TAG_STRING)) {
             tag.putString("traveler_door_access_mode", "party");
+        }
+    }
+
+    private static void initializeTravelerDoorSafetyControls(
+            CompoundTag tag, List<CompoundTag> orphanedEntries) {
+        Tag existing = tag.get("traveler_door_blacklist");
+        boolean validList = existing instanceof ListTag list
+                && (list.isEmpty()
+                        || list.getElementType() == Tag.TAG_STRING);
+        if (existing != null && !validList) {
+            orphanedEntries.add(orphan(
+                    "traveler_door_blacklist",
+                    "invalid_container",
+                    existing));
+        }
+        if (!validList) {
+            tag.put("traveler_door_blacklist", new ListTag());
         }
     }
 

@@ -2,6 +2,7 @@ package top.aurora.lordofmysteries.player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.UUID;
 
 import net.minecraft.resources.ResourceLocation;
@@ -12,6 +13,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
 import top.aurora.lordofmysteries.commission.DynamicCaseRelationshipPolicy;
 import top.aurora.lordofmysteries.commission.MysticalExposurePolicy;
 import top.aurora.lordofmysteries.ability.TravelerDoorAccessMode;
+import top.aurora.lordofmysteries.ability.TravelerDoorPolicy;
 import top.aurora.lordofmysteries.potion.PotionQuality;
 
 public final class PlayerMysteryDataSanitizer {
@@ -56,6 +58,19 @@ public final class PlayerMysteryDataSanitizer {
         if (!repairedDoorAccess.equals(data.travelerDoorAccessMode)) {
             data.travelerDoorAccessMode = repairedDoorAccess;
             repairs++;
+        }
+        if (data.travelerDoorBlacklist == null) {
+            data.travelerDoorBlacklist = new HashSet<>();
+            repairs++;
+        } else {
+            java.util.Set<UUID> repairedBlacklist =
+                    TravelerDoorPolicy.normalizeBlacklist(
+                            data.travelerDoorBlacklist);
+            if (!repairedBlacklist.equals(data.travelerDoorBlacklist)) {
+                data.travelerDoorBlacklist =
+                        new HashSet<>(repairedBlacklist);
+                repairs++;
+            }
         }
 
         repairs += repairTrialValues(data);

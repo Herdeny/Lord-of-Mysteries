@@ -229,8 +229,14 @@ def main():
         JAVA / "ability" / "TravelMarkerService.java")
     door_access = source(
         JAVA / "ability" / "TravelerDoorAccessMode.java")
+    door_policy = source(
+        JAVA / "ability" / "TravelerDoorPolicy.java")
     door_entity = source(
         JAVA / "entity" / "TravelerDoorEntity.java")
+    territory_event = source(
+        JAVA / "compat" / "TravelerDoorTerritoryEvent.java")
+    territory_service = source(
+        JAVA / "compat" / "TravelerDoorTerritoryService.java")
     entity_registry = source(
         JAVA / "registry" / "ModEntities.java")
     require(f'literal("{relay["command"]}")' in commands
@@ -322,6 +328,42 @@ def main():
         and (not relay["owner_always_allowed"]
              or "owner.equals(candidate)" in door_access),
         "traveler door access modes drifted")
+    require(
+        f'"{relay["marker_name_tag"]}"' in travel_service
+        and f"MAX_NAME_LENGTH = {relay['name_max_length']}"
+        in door_policy
+        and 'literal("name")' in commands
+        and ".setMarkerName(" in commands
+        and ".clearMarkerName(" in commands
+        and '"door_name"' in door_entity,
+        "traveler door marker naming is missing")
+    require(
+        f'"{relay["blacklist_nbt_key"]}"' in player
+        and "traveler_door_safety_controls" in fixer
+        and f"MAX_BLOCKED_PLAYERS = "
+        f"{relay['blacklist_max_players']}" in door_policy
+        and all(f'literal("{token}")' in commands
+                for token in ("block", "unblock", "blocked"))
+        and (not relay["blacklist_overrides_access"]
+             or ("blockedPlayers.contains(candidate)" in door_policy
+                 and door_policy.index("blockedPlayers.contains(candidate)")
+                 < door_policy.index(".allows(owner")))
+        and (not relay["active_blacklist_updates"]
+             or ("updateActiveDoors" in travel_service
+                 and "door.block(candidate)" in travel_service
+                 and "door.unblock(candidate)" in travel_service)),
+        "traveler door blacklist controls drifted")
+    require(
+        relay["territory_event"] in territory_event
+        and all(action in territory_event
+                for action in relay["territory_actions"])
+        and "MinecraftForge.EVENT_BUS.post" in territory_service
+        and (not relay["vanilla_spawn_protection"]
+             or "isUnderSpawnProtection" in territory_service)
+        and travel_service.index("TravelerDoorTerritoryService.allows")
+        < travel_service.index("SpiritualityCost.tryConsume")
+        and "TRANSIT_DESTINATION" in door_entity,
+        "traveler door territory compatibility hook is missing")
     require(
         not relay["one_pair_per_owner"]
         or ("discardPreviousDoors" in travel_service
@@ -578,7 +620,8 @@ def main():
         "ritual modifiers, five launch pathways at sequences 6-5, five "
         "dedicated sequence-5 rituals with solo and supporter paths, "
         "a persistent consent-gated bidirectional traveler door with "
-        "private, party and public access, conserved characteristic "
+        "private, party and public access, marker names, a persistent "
+        "blocklist and territory protection hooks, conserved characteristic "
         "splitting, sealing and washing, visible extra-load absorption and "
         "safe extraction, server-global provenance replay protection, "
         f"{validation['game_tests']} GameTests, and "

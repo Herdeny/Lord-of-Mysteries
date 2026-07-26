@@ -1,5 +1,7 @@
 package top.aurora.lordofmysteries.entity;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -8,6 +10,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -30,6 +34,9 @@ import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.ability.M3TravelNetworkLogic;
 import top.aurora.lordofmysteries.ability.TravelMarkerService;
 import top.aurora.lordofmysteries.ability.TravelerDoorAccessMode;
+import top.aurora.lordofmysteries.ability.TravelerDoorPolicy;
+import top.aurora.lordofmysteries.compat.TravelerDoorTerritoryEvent;
+import top.aurora.lordofmysteries.compat.TravelerDoorTerritoryService;
 import top.aurora.lordofmysteries.player.PlayerFeedback;
 
 public final class TravelerDoorEntity extends Entity {
@@ -43,6 +50,8 @@ public final class TravelerDoorEntity extends Entity {
     private String ownerTeam = "";
     private TravelerDoorAccessMode accessMode =
             TravelerDoorAccessMode.PARTY;
+    private String doorName = "";
+    private Set<UUID> blockedPlayers = new HashSet<>();
     private ResourceKey<Level> targetDimension = Level.OVERWORLD;
     private BlockPos targetAnchor = BlockPos.ZERO;
     private int remainingTicks;
@@ -60,6 +69,8 @@ public final class TravelerDoorEntity extends Entity {
             UUID owner,
             String ownerTeam,
             TravelerDoorAccessMode accessMode,
+            String doorName,
+            Collection<UUID> blockedPlayers,
             ResourceKey<Level> targetDimension,
             BlockPos targetAnchor,
             int remainingTicks) {
@@ -67,6 +78,9 @@ public final class TravelerDoorEntity extends Entity {
         this.ownerTeam = TravelerDoorAccessMode.normalizedTeam(ownerTeam);
         this.accessMode = accessMode == null
                 ? TravelerDoorAccessMode.PARTY : accessMode;
+        this.doorName = TravelerDoorPolicy.normalizeName(doorName);
+        this.blockedPlayers = new HashSet<>(
+                TravelerDoorPolicy.normalizeBlacklist(blockedPlayers));
         this.targetDimension = targetDimension;
         this.targetAnchor = targetAnchor == null
                 ? BlockPos.ZERO : targetAnchor.immutable();
@@ -76,6 +90,7 @@ public final class TravelerDoorEntity extends Entity {
         configured = owner != null
                 && targetDimension != null
                 && remainingTicks > 0;
+        applyDisplayName();
     }
 
     @Override
@@ -127,8 +142,18 @@ public final class TravelerDoorEntity extends Entity {
         }
         String candidateTeam = player.getTeam() == null
                 ? "" : player.getTeam().getName();
-        if (!accessMode.allows(
-                owner, ownerTeam, player.getUUID(), candidateTeam)) {
+        if (!owner.equals(player.getUUID())
+                && blockedPlayers.contains(player.getUUID())) {
+            sendBlocked(player, now);
+            return TransitResult.BLOCKED;
+        }
+        if (!TravelerDoorPolicy.allows(
+                owner,
+                ownerTeam,
+                accessMode,
+                blockedPlayers,
+                player.getUUID(),
+                candidateTeam)) {
             sendDenied(player, now);
             return TransitResult.DENIED;
         }
@@ -140,6 +165,16 @@ public final class TravelerDoorEntity extends Entity {
                         .isWithinBounds(targetAnchor)) {
             sendFailure(player);
             return TransitResult.UNAVAILABLE;
+        }
+        if (!TravelerDoorTerritoryService.allows(
+                player,
+                owner,
+                destinationLevel,
+                targetAnchor.above(),
+                doorName,
+                TravelerDoorTerritoryEvent.Action.TRANSIT_DESTINATION)) {
+            sendTerritoryDenied(player, now);
+            return TransitResult.TERRITORY_DENIED;
         }
         destinationLevel.getChunkAt(targetAnchor);
         Vec3 destination = TravelMarkerService.findDoorArrival(
@@ -196,6 +231,29 @@ public final class TravelerDoorEntity extends Entity {
                 .withStyle(ChatFormatting.RED));
     }
 
+    private void sendBlocked(ServerPlayer player, long now) {
+        long nextFeedback = player.getPersistentData().getLong(
+                DENIED_FEEDBACK_COOLDOWN);
+        if (nextFeedback > now) return;
+        player.getPersistentData().putLong(
+                DENIED_FEEDBACK_COOLDOWN, now + 40L);
+        PlayerFeedback.send(player, Component.translatable(
+                "message.lord_of_mysteries.travel.door.blocked")
+                .withStyle(ChatFormatting.RED));
+    }
+
+    private static void sendTerritoryDenied(
+            ServerPlayer player, long now) {
+        long nextFeedback = player.getPersistentData().getLong(
+                DENIED_FEEDBACK_COOLDOWN);
+        if (nextFeedback > now) return;
+        player.getPersistentData().putLong(
+                DENIED_FEEDBACK_COOLDOWN, now + 40L);
+        PlayerFeedback.send(player, Component.translatable(
+                "message.lord_of_mysteries.travel.territory_denied")
+                .withStyle(ChatFormatting.RED));
+    }
+
     private static void sendFailure(ServerPlayer player) {
         PlayerFeedback.send(player, Component.translatable(
                 "message.lord_of_mysteries.travel.door.destination_failed")
@@ -209,6 +267,20 @@ public final class TravelerDoorEntity extends Entity {
                 tag.getString("owner_team"));
         accessMode = TravelerDoorAccessMode.fromId(
                 tag.getString("access_mode"));
+        doorName = TravelerDoorPolicy.normalizeName(
+                tag.getString("door_name"));
+        blockedPlayers = new HashSet<>();
+        ListTag blocked = tag.getList(
+                "blocked_players", Tag.TAG_STRING);
+        for (int i = 0; i < blocked.size(); i++) {
+            try {
+                blockedPlayers.add(UUID.fromString(blocked.getString(i)));
+            } catch (IllegalArgumentException exception) {
+                continue;
+            }
+        }
+        blockedPlayers = new HashSet<>(
+                TravelerDoorPolicy.normalizeBlacklist(blockedPlayers));
         ResourceLocation dimension = ResourceLocation.tryParse(
                 tag.getString("target_dimension"));
         targetDimension = dimension == null
@@ -223,6 +295,7 @@ public final class TravelerDoorEntity extends Entity {
         configured = owner != null
                 && targetDimension != null
                 && remainingTicks > 0;
+        applyDisplayName();
     }
 
     @Override
@@ -230,6 +303,12 @@ public final class TravelerDoorEntity extends Entity {
         if (owner != null) tag.putUUID("owner", owner);
         tag.putString("owner_team", ownerTeam);
         tag.putString("access_mode", accessMode.id());
+        tag.putString("door_name", doorName);
+        ListTag blocked = new ListTag();
+        TravelerDoorPolicy.normalizeBlacklist(blockedPlayers)
+                .forEach(value -> blocked.add(
+                        StringTag.valueOf(value.toString())));
+        tag.put("blocked_players", blocked);
         if (targetDimension != null) {
             tag.putString(
                     "target_dimension",
@@ -268,6 +347,25 @@ public final class TravelerDoorEntity extends Entity {
         return accessMode;
     }
 
+    public String doorName() {
+        return doorName;
+    }
+
+    public Set<UUID> blockedPlayers() {
+        return Set.copyOf(blockedPlayers);
+    }
+
+    public void block(UUID candidate) {
+        if (candidate == null || candidate.equals(owner)) return;
+        blockedPlayers.add(candidate);
+        blockedPlayers = new HashSet<>(
+                TravelerDoorPolicy.normalizeBlacklist(blockedPlayers));
+    }
+
+    public void unblock(UUID candidate) {
+        if (candidate != null) blockedPlayers.remove(candidate);
+    }
+
     public ResourceKey<Level> targetDimension() {
         return targetDimension;
     }
@@ -280,9 +378,21 @@ public final class TravelerDoorEntity extends Entity {
         return remainingTicks;
     }
 
+    private void applyDisplayName() {
+        if (doorName.isEmpty()) {
+            setCustomName(null);
+            setCustomNameVisible(false);
+            return;
+        }
+        setCustomName(Component.literal(doorName));
+        setCustomNameVisible(true);
+    }
+
     public enum TransitResult {
         SUCCESS,
+        BLOCKED,
         DENIED,
+        TERRITORY_DENIED,
         COOLDOWN,
         UNSAFE,
         UNAVAILABLE,

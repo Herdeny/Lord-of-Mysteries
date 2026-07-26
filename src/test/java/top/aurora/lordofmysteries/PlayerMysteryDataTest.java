@@ -2,6 +2,9 @@ package top.aurora.lordofmysteries;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Set;
+import java.util.UUID;
+
 import org.junit.jupiter.api.Test;
 
 import net.minecraft.resources.ResourceLocation;
@@ -42,6 +45,7 @@ class PlayerMysteryDataTest {
         assertEquals(0f, d.pollution);
         assertEquals(PlayerMysteryData.CURRENT_SCHEMA_VERSION, d.schemaVersion);
         assertEquals("party", d.travelerDoorAccessMode);
+        assertTrue(d.travelerDoorBlacklist.isEmpty());
         assertFalse(d.emotionReadActive);
         assertEquals("", d.hunterTrackedTarget);
         assertEquals(0L, d.provokeCooldownEndTick);
@@ -392,19 +396,39 @@ class PlayerMysteryDataTest {
     void travelerDoorAccessSurvivesCopyAndRepairsInvalidNbt() {
         PlayerMysteryData source = new PlayerMysteryData();
         source.travelerDoorAccessMode = "public";
+        UUID blocked =
+                UUID.fromString("00000000-0000-0000-0000-000000000026");
+        source.travelerDoorBlacklist.add(blocked);
         PlayerMysteryData copied = new PlayerMysteryData();
         copied.copyFrom(source);
         assertEquals("public", copied.travelerDoorAccessMode);
+        assertEquals(Set.of(blocked), copied.travelerDoorBlacklist);
+        assertNotSame(
+                source.travelerDoorBlacklist,
+                copied.travelerDoorBlacklist);
 
         PlayerMysteryData restored = new PlayerMysteryData();
         restored.load(source.save());
         assertEquals("public", restored.travelerDoorAccessMode);
+        assertEquals(Set.of(blocked), restored.travelerDoorBlacklist);
 
         net.minecraft.nbt.CompoundTag invalid = source.save();
         invalid.putString("traveler_door_access_mode", "operator");
         PlayerMysteryData repaired = new PlayerMysteryData();
         repaired.load(invalid);
         assertEquals("party", repaired.travelerDoorAccessMode);
+
+        net.minecraft.nbt.ListTag wrongElementType =
+                new net.minecraft.nbt.ListTag();
+        wrongElementType.add(new net.minecraft.nbt.CompoundTag());
+        invalid.put("traveler_door_blacklist", wrongElementType);
+        repaired.load(invalid);
+        assertTrue(repaired.travelerDoorBlacklist.isEmpty());
+        assertTrue(repaired.orphanedEntries.stream().anyMatch(entry ->
+                entry.getString("section").equals(
+                        "traveler_door_blacklist")
+                        && entry.getString("reason").equals(
+                                "invalid_container")));
     }
 
     @Test
@@ -435,7 +459,7 @@ class PlayerMysteryDataTest {
 
         assertEquals(1, migrated.characteristicBundles.size());
         assertEquals(1, migrated.migrationBackups.size());
-        assertEquals(10, migrated.migrationHistory.size());
+        assertEquals(11, migrated.migrationHistory.size());
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
                 entry.getString("section").equals("known_knowledge")));
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
@@ -451,7 +475,7 @@ class PlayerMysteryDataTest {
         restored.load(migrated.save());
 
         assertEquals(1, restored.migrationBackups.size());
-        assertEquals(10, restored.migrationHistory.size());
+        assertEquals(11, restored.migrationHistory.size());
         assertEquals(migrated.orphanedEntries.size(),
                 restored.orphanedEntries.size());
     }

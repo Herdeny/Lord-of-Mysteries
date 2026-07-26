@@ -47,6 +47,29 @@ class TravelMarkerServiceTest {
         assertTrue(TravelMarkerService.parseMarkerTag(positionOnly).isEmpty());
     }
 
+    @Test
+    void markerNameUsesNamespacedMetadataWithoutChangingVanillaBinding() {
+        CompoundTag tag = markerTag(
+                "minecraft:overworld", new BlockPos(4, 70, -8));
+        tag.putString(
+                TravelMarkerService.MARKER_NAME_TAG,
+                "  \u00a7bNorthern   Relay ");
+
+        assertEquals(
+                "Northern Relay",
+                TravelMarkerService.readMarkerName(tag));
+        assertTrue(TravelMarkerService.parseMarkerTag(tag).isPresent());
+    }
+
+    @Test
+    void missingMarkerNameRemainsSafeAndUnnamed() {
+        assertEquals(
+                "",
+                TravelMarkerService.readMarkerName(markerTag(
+                        "minecraft:overworld", BlockPos.ZERO)));
+        assertEquals("", TravelMarkerService.readMarkerName(null));
+    }
+
     private static CompoundTag markerTag(
             String dimension, BlockPos position) {
         CompoundTag positionTag = new CompoundTag();

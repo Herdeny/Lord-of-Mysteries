@@ -1,9 +1,11 @@
 package top.aurora.lordofmysteries.ability;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.ChatFormatting;
@@ -24,6 +26,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 import top.aurora.lordofmysteries.ProjectMystery;
+import top.aurora.lordofmysteries.compat.TravelerDoorTerritoryEvent;
+import top.aurora.lordofmysteries.compat.TravelerDoorTerritoryService;
 import top.aurora.lordofmysteries.entity.TravelerDoorEntity;
 import top.aurora.lordofmysteries.player.PlayerFeedback;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
@@ -33,6 +37,8 @@ public final class TravelMarkerService {
 
     private static final String PASSENGER_COOLDOWN =
             ProjectMystery.MOD_ID + ":travel_relay_cooldown";
+    static final String MARKER_NAME_TAG =
+            "ProjectMysteryTravelMarkerName";
     private static final long LEADER_COOLDOWN_TICKS = 36_000L;
     private static final long PASSENGER_COOLDOWN_TICKS = 1_200L;
     private static final int[][] DESTINATION_OFFSETS = {
@@ -57,6 +63,19 @@ public final class TravelMarkerService {
         return mainHand.isPresent()
                 ? mainHand
                 : readMarker(player.getOffhandItem());
+    }
+
+    static String readMarkerName(CompoundTag tag) {
+        return tag == null
+                ? ""
+                : TravelerDoorPolicy.normalizeName(
+                        tag.getString(MARKER_NAME_TAG));
+    }
+
+    public static String markerNameInHands(ServerPlayer player) {
+        ItemStack stack = markerStackInHands(player);
+        return stack.isEmpty() || stack.getTag() == null
+                ? "" : readMarkerName(stack.getTag());
     }
 
     public static Optional<Marker> readMarker(ItemStack stack) {
@@ -120,6 +139,10 @@ public final class TravelMarkerService {
                         ? ChatFormatting.AQUA
                         : ChatFormatting.RED));
         PlayerFeedback.send(player, Component.translatable(
+                "message.lord_of_mysteries.travel.guide.name",
+                doorLabel(markerNameInHands(player)))
+                .withStyle(ChatFormatting.GRAY));
+        PlayerFeedback.send(player, Component.translatable(
                 "message.lord_of_mysteries.travel.guide.consent",
                 M3TravelNetworkLogic.MAX_PASSENGERS)
                 .withStyle(ChatFormatting.GRAY));
@@ -133,7 +156,50 @@ public final class TravelMarkerService {
                                 + accessMode(data).id()),
                 M3TravelNetworkLogic.DOOR_DURATION_TICKS / 20)
                 .withStyle(ChatFormatting.GRAY));
+        PlayerFeedback.send(player, Component.translatable(
+                "message.lord_of_mysteries.travel.guide.blocked",
+                data.travelerDoorBlacklist.size(),
+                TravelerDoorPolicy.MAX_BLOCKED_PLAYERS)
+                .withStyle(ChatFormatting.GRAY));
         return active ? 1 : 0;
+    }
+
+    public static int setMarkerName(
+            ServerPlayer player, String requestedName) {
+        ItemStack stack = markerStackInHands(player);
+        if (stack.isEmpty()) {
+            PlayerFeedback.send(player, Component.translatable(
+                    "message.lord_of_mysteries.travel.marker_required"));
+            return 0;
+        }
+        String name = TravelerDoorPolicy.normalizeName(requestedName);
+        if (name.isEmpty()) {
+            PlayerFeedback.send(player, Component.translatable(
+                    "message.lord_of_mysteries.travel.name.invalid")
+                    .withStyle(ChatFormatting.RED));
+            return 0;
+        }
+        stack.getOrCreateTag().putString(MARKER_NAME_TAG, name);
+        PlayerFeedback.send(player, Component.translatable(
+                "message.lord_of_mysteries.travel.name.updated",
+                Component.literal(name))
+                .withStyle(ChatFormatting.AQUA));
+        return 1;
+    }
+
+    public static int clearMarkerName(ServerPlayer player) {
+        ItemStack stack = markerStackInHands(player);
+        if (stack.isEmpty()) {
+            PlayerFeedback.send(player, Component.translatable(
+                    "message.lord_of_mysteries.travel.marker_required"));
+            return 0;
+        }
+        CompoundTag tag = stack.getTag();
+        if (tag != null) tag.remove(MARKER_NAME_TAG);
+        PlayerFeedback.send(player, Component.translatable(
+                "message.lord_of_mysteries.travel.name.cleared")
+                .withStyle(ChatFormatting.AQUA));
+        return 1;
     }
 
     public static int setAccessMode(
@@ -151,6 +217,79 @@ public final class TravelMarkerService {
                                 + mode.id()))
                 .withStyle(ChatFormatting.AQUA));
         return 1;
+    }
+
+    public static int blockPlayer(
+            ServerPlayer owner, ServerPlayer candidate) {
+        if (owner.getUUID().equals(candidate.getUUID())) {
+            PlayerFeedback.send(owner, Component.translatable(
+                    "message.lord_of_mysteries.travel.block.self")
+                    .withStyle(ChatFormatting.RED));
+            return 0;
+        }
+        PlayerMysteryData data =
+                top.aurora.lordofmysteries.player.MysteryCapability.get(
+                        owner);
+        if (data.travelerDoorBlacklist.contains(candidate.getUUID())) {
+            PlayerFeedback.send(owner, Component.translatable(
+                    "message.lord_of_mysteries.travel.block.already",
+                    candidate.getDisplayName())
+                    .withStyle(ChatFormatting.YELLOW));
+            return 0;
+        }
+        if (data.travelerDoorBlacklist.size()
+                >= TravelerDoorPolicy.MAX_BLOCKED_PLAYERS) {
+            PlayerFeedback.send(owner, Component.translatable(
+                    "message.lord_of_mysteries.travel.block.full",
+                    TravelerDoorPolicy.MAX_BLOCKED_PLAYERS)
+                    .withStyle(ChatFormatting.RED));
+            return 0;
+        }
+        data.travelerDoorBlacklist.add(candidate.getUUID());
+        updateActiveDoors(owner, candidate.getUUID(), true);
+        PlayerFeedback.send(owner, Component.translatable(
+                "message.lord_of_mysteries.travel.block.added",
+                candidate.getDisplayName())
+                .withStyle(ChatFormatting.AQUA));
+        return 1;
+    }
+
+    public static int unblockPlayer(
+            ServerPlayer owner, ServerPlayer candidate) {
+        PlayerMysteryData data =
+                top.aurora.lordofmysteries.player.MysteryCapability.get(
+                        owner);
+        if (!data.travelerDoorBlacklist.remove(candidate.getUUID())) {
+            PlayerFeedback.send(owner, Component.translatable(
+                    "message.lord_of_mysteries.travel.block.missing",
+                    candidate.getDisplayName())
+                    .withStyle(ChatFormatting.YELLOW));
+            return 0;
+        }
+        updateActiveDoors(owner, candidate.getUUID(), false);
+        PlayerFeedback.send(owner, Component.translatable(
+                "message.lord_of_mysteries.travel.block.removed",
+                candidate.getDisplayName())
+                .withStyle(ChatFormatting.AQUA));
+        return 1;
+    }
+
+    public static int showBlockedPlayers(ServerPlayer owner) {
+        PlayerMysteryData data =
+                top.aurora.lordofmysteries.player.MysteryCapability.get(
+                        owner);
+        Set<UUID> blocked = TravelerDoorPolicy.normalizeBlacklist(
+                data.travelerDoorBlacklist);
+        PlayerFeedback.send(owner, Component.translatable(
+                "message.lord_of_mysteries.travel.block.list",
+                blocked.size(),
+                TravelerDoorPolicy.MAX_BLOCKED_PLAYERS)
+                .withStyle(ChatFormatting.GRAY));
+        blocked.forEach(value -> PlayerFeedback.send(
+                owner,
+                Component.literal(value.toString())
+                        .withStyle(ChatFormatting.DARK_GRAY)));
+        return blocked.size();
     }
 
     public static boolean relayToHeldMarker(
@@ -200,6 +339,26 @@ public final class TravelMarkerService {
                     "message.lord_of_mysteries.travel.marker_too_close"));
             return false;
         }
+        String doorName = markerNameInHands(leader);
+        if (!TravelerDoorTerritoryService.allows(
+                        leader,
+                        leader.getUUID(),
+                        leader.serverLevel(),
+                        sourceAnchor.above(),
+                        doorName,
+                        TravelerDoorTerritoryEvent.Action.OPEN_SOURCE)
+                || !TravelerDoorTerritoryService.allows(
+                        leader,
+                        leader.getUUID(),
+                        destinationLevel,
+                        destinationMarker.position().above(),
+                        doorName,
+                        TravelerDoorTerritoryEvent.Action.OPEN_DESTINATION)) {
+            PlayerFeedback.send(leader, Component.translatable(
+                    "message.lord_of_mysteries.travel.territory_denied")
+                    .withStyle(ChatFormatting.RED));
+            return false;
+        }
 
         List<ServerPlayer> passengers = sourcePlayers.stream()
                 .filter(candidate -> M3TravelNetworkLogic.canJoinRelay(
@@ -244,6 +403,8 @@ public final class TravelMarkerService {
                 leader.getUUID(),
                 team,
                 access,
+                doorName,
+                data.travelerDoorBlacklist,
                 destinationMarker.dimension(),
                 destinationMarker.position(),
                 sourceAnchor);
@@ -252,6 +413,8 @@ public final class TravelMarkerService {
                 leader.getUUID(),
                 team,
                 access,
+                doorName,
+                data.travelerDoorBlacklist,
                 leader.serverLevel().dimension(),
                 sourceAnchor,
                 destinationMarker.position());
@@ -280,6 +443,7 @@ public final class TravelMarkerService {
         }
         PlayerFeedback.send(leader, Component.translatable(
                 "message.lord_of_mysteries.travel.door.opened",
+                doorLabel(doorName),
                 destinationMarker.dimension().location().toString(),
                 destinationMarker.position().getX(),
                 destinationMarker.position().getY(),
@@ -396,6 +560,8 @@ public final class TravelMarkerService {
             UUID owner,
             String ownerTeam,
             TravelerDoorAccessMode access,
+            String doorName,
+            Collection<UUID> blockedPlayers,
             ResourceKey<Level> targetDimension,
             BlockPos targetAnchor,
             BlockPos localAnchor) {
@@ -405,6 +571,8 @@ public final class TravelMarkerService {
                 owner,
                 ownerTeam,
                 access,
+                doorName,
+                blockedPlayers,
                 targetDimension,
                 targetAnchor,
                 M3TravelNetworkLogic.DOOR_DURATION_TICKS);
@@ -425,6 +593,39 @@ public final class TravelMarkerService {
                 }
             }
         }
+    }
+
+    private static void updateActiveDoors(
+            ServerPlayer owner, UUID candidate, boolean blocked) {
+        for (ServerLevel level : owner.getServer().getAllLevels()) {
+            for (Entity entity : level.getAllEntities()) {
+                if (entity instanceof TravelerDoorEntity door
+                        && door.ownedBy(owner.getUUID())) {
+                    if (blocked) {
+                        door.block(candidate);
+                    } else {
+                        door.unblock(candidate);
+                    }
+                }
+            }
+        }
+    }
+
+    private static ItemStack markerStackInHands(ServerPlayer player) {
+        if (readMarker(player.getMainHandItem()).isPresent()) {
+            return player.getMainHandItem();
+        }
+        if (readMarker(player.getOffhandItem()).isPresent()) {
+            return player.getOffhandItem();
+        }
+        return ItemStack.EMPTY;
+    }
+
+    private static Component doorLabel(String doorName) {
+        return doorName == null || doorName.isEmpty()
+                ? Component.translatable(
+                        "message.lord_of_mysteries.travel.name.unnamed")
+                : Component.literal(doorName);
     }
 
     private static TravelerDoorAccessMode accessMode(

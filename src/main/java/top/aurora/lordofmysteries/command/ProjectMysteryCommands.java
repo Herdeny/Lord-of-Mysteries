@@ -7,6 +7,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -113,6 +114,58 @@ public final class ProjectMysteryCommands {
                                 TravelMarkerService.sendGuide(
                                         context.getSource()
                                                 .getPlayerOrException()))
+                        .then(Commands.literal("name")
+                                .then(Commands.literal("clear")
+                                        .executes(context ->
+                                                TravelMarkerService
+                                                        .clearMarkerName(
+                                                                context.getSource()
+                                                                        .getPlayerOrException())))
+                                .then(Commands.argument(
+                                                "name",
+                                                StringArgumentType
+                                                        .greedyString())
+                                        .executes(context ->
+                                                TravelMarkerService
+                                                        .setMarkerName(
+                                                                context.getSource()
+                                                                        .getPlayerOrException(),
+                                                                StringArgumentType
+                                                                        .getString(
+                                                                                context,
+                                                                                "name")))))
+                        .then(Commands.literal("block")
+                                .then(Commands.argument(
+                                                "player",
+                                                EntityArgument.player())
+                                        .executes(context ->
+                                                TravelMarkerService
+                                                        .blockPlayer(
+                                                                context.getSource()
+                                                                        .getPlayerOrException(),
+                                                                EntityArgument
+                                                                        .getPlayer(
+                                                                                context,
+                                                                                "player")))))
+                        .then(Commands.literal("unblock")
+                                .then(Commands.argument(
+                                                "player",
+                                                EntityArgument.player())
+                                        .executes(context ->
+                                                TravelMarkerService
+                                                        .unblockPlayer(
+                                                                context.getSource()
+                                                                        .getPlayerOrException(),
+                                                                EntityArgument
+                                                                        .getPlayer(
+                                                                                context,
+                                                                                "player")))))
+                        .then(Commands.literal("blocked")
+                                .executes(context ->
+                                        TravelMarkerService
+                                                .showBlockedPlayers(
+                                                        context.getSource()
+                                                                .getPlayerOrException())))
                         .then(Commands.literal("access")
                                 .then(Commands.literal("private")
                                         .executes(context ->

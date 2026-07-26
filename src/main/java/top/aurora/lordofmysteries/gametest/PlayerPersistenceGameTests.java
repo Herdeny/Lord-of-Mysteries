@@ -3,6 +3,7 @@ package top.aurora.lordofmysteries.gametest;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
@@ -22,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.RegisterGameTestsEvent;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
@@ -36,6 +38,7 @@ import top.aurora.lordofmysteries.characteristic.CharacteristicConservationServi
 import top.aurora.lordofmysteries.characteristic.CharacteristicProcessingLogic;
 import top.aurora.lordofmysteries.characteristic.CharacteristicProcessingService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicProvenanceSavedData;
+import top.aurora.lordofmysteries.compat.TravelerDoorTerritoryEvent;
 import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
 import top.aurora.lordofmysteries.entity.TravelerDoorEntity;
 import top.aurora.lordofmysteries.knowledge.M1TrialProgress;
@@ -650,6 +653,96 @@ public final class PlayerPersistenceGameTests {
                         && restored.remainingTicks()
                                 == sourceDoor.remainingTicks(),
                 "owner, permission, target and remaining lifetime must survive NBT");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void travelerDoorSafetyControlsRemainAuthoritative(
+            GameTestHelper helper) {
+        BlockPos marker = helper.absolutePos(new BlockPos(10, 4, 10));
+        BlockPos source = helper.absolutePos(new BlockPos(2, 4, 2));
+        prepareDoorArea(helper, marker.above());
+        prepareDoorArea(helper, source);
+        helper.getLevel().setBlockAndUpdate(
+                marker, Blocks.LODESTONE.defaultBlockState());
+
+        ServerPlayer leader = travelerTestPlayer(helper, "safety-owner");
+        ServerPlayer blocked = travelerTestPlayer(helper, "safety-blocked");
+        leader.setPos(source.getX() + 0.5d, source.getY(),
+                source.getZ() + 0.5d);
+        blocked.setPos(source.getX() + 1.5d, source.getY(),
+                source.getZ() + 0.5d);
+        PlayerMysteryData data = MysteryCapability.get(leader);
+        data.pathway = ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID, "apprentice");
+        data.sequence = 5;
+        data.spiritualityMax = 250f;
+        data.spirituality = 200f;
+        data.travelerDoorAccessMode = "public";
+        leader.setItemInHand(
+                InteractionHand.MAIN_HAND,
+                lodestoneCompass(helper, marker));
+        helper.assertTrue(
+                TravelMarkerService.setMarkerName(
+                        leader, "Northern Relay") == 1,
+                "bound lodestone compass must accept a sanitized door name");
+
+        Consumer<TravelerDoorTerritoryEvent> territoryGuard = event -> {
+            if (event.action()
+                    == TravelerDoorTerritoryEvent.Action.OPEN_DESTINATION) {
+                event.setCanceled(true);
+            }
+        };
+        MinecraftForge.EVENT_BUS.addListener(territoryGuard);
+        try {
+            helper.assertTrue(!TravelMarkerService.relayToHeldMarker(
+                            leader, data, List.of(leader, blocked)),
+                    "a canceled destination territory event must stop opening");
+        } finally {
+            MinecraftForge.EVENT_BUS.unregister(territoryGuard);
+        }
+        helper.assertTrue(data.spirituality == 200f
+                        && travelerDoors(helper, leader.getUUID()).isEmpty(),
+                "territory denial must preserve spirit and create no endpoint");
+
+        helper.assertTrue(TravelMarkerService.relayToHeldMarker(
+                        leader, data, List.of(leader, blocked)),
+                "door must open once the compatibility guard permits it");
+        List<TravelerDoorEntity> doors =
+                travelerDoors(helper, leader.getUUID());
+        helper.assertTrue(doors.size() == 2
+                        && doors.stream().allMatch(door ->
+                        door.doorName().equals("Northern Relay")),
+                "both endpoints must snapshot the sanitized marker name");
+        TravelerDoorEntity sourceDoor = doors.stream()
+                .filter(door -> door.targetAnchor().equals(marker))
+                .findFirst()
+                .orElseThrow();
+
+        helper.assertTrue(
+                TravelMarkerService.blockPlayer(leader, blocked) == 1
+                        && sourceDoor.tryTransit(blocked)
+                        == TravelerDoorEntity.TransitResult.BLOCKED,
+                "adding a player must immediately harden every active endpoint");
+        CompoundTag saved =
+                sourceDoor.saveWithoutId(new CompoundTag());
+        TravelerDoorEntity restored =
+                ModEntities.TRAVELER_DOOR.get().create(helper.getLevel());
+        helper.assertTrue(restored != null,
+                "registered traveler door must restore safety NBT");
+        if (restored == null) return;
+        restored.load(saved);
+        helper.assertTrue(
+                restored.doorName().equals("Northern Relay")
+                        && restored.blockedPlayers().contains(
+                                blocked.getUUID()),
+                "door name and blacklist snapshot must survive entity NBT");
+
+        helper.assertTrue(
+                TravelMarkerService.unblockPlayer(leader, blocked) == 1
+                        && sourceDoor.tryTransit(blocked)
+                        == TravelerDoorEntity.TransitResult.SUCCESS,
+                "removing a player must update live endpoints and restore public access");
         helper.succeed();
     }
 
