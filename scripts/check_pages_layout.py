@@ -91,6 +91,14 @@ def main() -> int:
             "脚本和样式必须使用 docs/assets 本地资源", errors)
     require(all(f"?v={asset_version}" in asset for asset in local_assets),
             f"静态资源缓存版本必须同步为 {asset_version}", errors)
+    require("三槽持久秘偶编队" in html and "/pm marionette" in html,
+            "Pages M3 入口与进度摘要必须展示已实现的持久秘偶编队", errors)
+    require("端点运维" in html and "/pm travel" in html,
+            "Pages M3 入口与路线摘要必须展示旅行家端点运维", errors)
+    require("持久秘偶、完整梦境" not in html,
+            "Pages 不得把已实现的持久秘偶继续列为未完成", errors)
+    require("秘偶收纳卷轴/跨维指挥" in html,
+            "Pages 必须保留秘偶后续边界，避免误报 M3 完成", errors)
 
     require("[hidden] { display: none !important; }" in css,
             "CSS 必须保护 hidden 属性不被布局规则覆盖", errors)
@@ -125,7 +133,7 @@ def main() -> int:
     print(
         "GitHub Pages layout contract passed: "
         f"{len(parser.sections)} sections, {len(parser.ids)} unique ids, "
-        f"asset cache v{asset_version}, catalog batch 24."
+        f"asset cache v{asset_version}, current M3 overview, catalog batch 24."
     )
     return 0
 

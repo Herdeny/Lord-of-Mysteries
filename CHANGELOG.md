@@ -26,6 +26,7 @@ Minecraft 兼容版本。版本与更新时间以 `project-status.json` 为准�
 - Capability 升至 schema 27；命名 DataFix `persistent_marionette_roster` 建立三槽 UUID 名单和创建冷却，非法旧容器与损坏 UUID 保留到 `orphaned_entries`。
 - 秘偶名单和实体门主 UUID 双重校验；复制实体 NBT 不能绕过玩家名单扩充编队。
 - 旅行家门主与管理员现在可查看端点名称、维度、坐标和剩余秒数，并一次性撤销当前已加载的双端门。
+- Pages 首页 M3 入口、进度卡和路线摘要现在明确展示持久秘偶与远门端点运维；布局门禁会拒绝把已实现的持久秘偶再次列为未完成。
 - README、ROADMAP、Pages、Wiki、入门指南、M3 手册、专服矩阵、资源基线和机器合同同步到 0.9.27。
 
 ### Security

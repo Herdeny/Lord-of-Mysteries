@@ -13,7 +13,7 @@
 > - 当前版本：**`0.9.27-1.20.1`**
 > - 开发阶段：**v0.9 M2 真人验收准备与 M3 持久秘偶编队闭环**（M2）
 > - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-> - 最后更新：**2026-07-26 02:19:24 UTC+01:00**（`2026-07-26T01:19:24Z`）
+> - 最后更新：**2026-07-26 02:31:12 UTC+01:00**（`2026-07-26T01:31:12Z`）
 <!-- project-status:end -->
 
 Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 Minecraft 生存冒险 Mod。
@@ -108,6 +108,7 @@ Project Mystery 是一个以魔药、序列、扮演和失控风险为核心的 
 - 新增 `/pm travel doors|close`，门主可查询并撤销自己的已加载端点；管理员可用 `/pm travel admin doors|close <在线玩家>` 执行受权限保护的跨玩家运维。
 - Capability 升至 schema 27；命名 DataFix `persistent_marionette_roster` 建立名单和冷却，非法容器与损坏 UUID 保留到 `orphaned_entries`。
 - 新增 5 项 JUnit 和第 17 项 Forge GameTest，总计 397 项 JUnit / 17 项真实服务器 GameTest；覆盖捕获阈值、三槽上限、迁移、精确扣费、持久所有权、他人抢夺拒绝、显式解除和远门端点运维。
+- Pages 首页 M3 入口、进度卡与路线摘要同步展示持久秘偶和远门运维，并以布局门禁阻止再次把已实现内容误列为待办。
 - 完整规则见 [`docs/M3_MARIONETTE_SQUAD.md`](docs/M3_MARIONETTE_SQUAD.md)；收纳卷轴、跨维指挥、离线自动清账、高级战术 AI、完整特性守恒转换和真人高延迟平衡仍待后续。
 
 ### v0.9.26 M3 远门命名、黑名单与领地兼容基础
