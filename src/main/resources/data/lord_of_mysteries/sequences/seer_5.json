@@ -17,5 +17,5 @@
   "acting_events": ["lord_of_mysteries:marionettist5_reveal_threads", "lord_of_mysteries:marionettist5_restrain_crisis"],
   "potion_id": "lord_of_mysteries:seer_potion_5",
   "digestion_target": 100.0,
-  "adaptation_scope": "Executable thread perception and crisis restraint; permanent marionettes, storage, control view, and advancement ritual remain planned."
+  "adaptation_scope": "Thread perception, crisis restraint, three-slot persistent marionette capture, owner-safe combat, recall/release, authority-backed one-time storage scrolls, cross-dimensional safe deployment, and the Sequence 5 ritual are executable; first-person puppet possession remains future work."
 }

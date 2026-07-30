@@ -22,6 +22,8 @@ import net.minecraftforge.fml.common.Mod;
 
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.acting.ActingIdentityService;
+import top.aurora.lordofmysteries.ability.FacelessFormPolicy;
+import top.aurora.lordofmysteries.ability.FacelessFormService;
 import top.aurora.lordofmysteries.ability.MarionettePolicy;
 import top.aurora.lordofmysteries.ability.MarionetteService;
 import top.aurora.lordofmysteries.ability.TravelMarkerService;
@@ -94,6 +96,9 @@ public final class ProjectMysteryCommands {
                                         context.getSource().getPlayerOrException(), true))))
                 .then(Commands.literal("next").executes(context ->
                         PlayerGuideHandler.showNextStep(
+                                context.getSource().getPlayerOrException())))
+                .then(Commands.literal("m3").executes(context ->
+                        PlayerGuideHandler.showM3Guide(
                                 context.getSource().getPlayerOrException())))
                 .then(Commands.literal("recover").executes(context ->
                         PlayerGuideHandler.restoreStarterKit(
@@ -256,6 +261,58 @@ public final class ProjectMysteryCommands {
                                                                 .MAX_MARIONETTES))
                                         .executes(context ->
                                                 MarionetteService.release(
+                                                        context.getSource()
+                                                                .getPlayerOrException(),
+                                                        IntegerArgumentType
+                                                                .getInteger(
+                                                                        context,
+                                                                        "slot"))))))
+                .then(Commands.literal("faceless")
+                        .executes(context ->
+                                FacelessFormService.sendGuide(
+                                        context.getSource()
+                                                .getPlayerOrException()))
+                        .then(Commands.literal("record")
+                                .executes(context ->
+                                        FacelessFormService.startRecording(
+                                                context.getSource()
+                                                        .getPlayerOrException())
+                                                ? 1 : 0))
+                        .then(Commands.literal("activate")
+                                .executes(context ->
+                                        FacelessFormService.toggleDisguise(
+                                                context.getSource()
+                                                        .getPlayerOrException())
+                                                ? 1 : 0))
+                        .then(Commands.literal("cycle")
+                                .executes(context ->
+                                        FacelessFormService.cycle(
+                                                context.getSource()
+                                                        .getPlayerOrException())))
+                        .then(Commands.literal("select")
+                                .then(Commands.argument(
+                                                "slot",
+                                                IntegerArgumentType.integer(
+                                                        1,
+                                                        FacelessFormPolicy
+                                                                .MAX_FORMS))
+                                        .executes(context ->
+                                                FacelessFormService.select(
+                                                        context.getSource()
+                                                                .getPlayerOrException(),
+                                                        IntegerArgumentType
+                                                                .getInteger(
+                                                                        context,
+                                                                        "slot")))))
+                        .then(Commands.literal("clear")
+                                .then(Commands.argument(
+                                                "slot",
+                                                IntegerArgumentType.integer(
+                                                        1,
+                                                        FacelessFormPolicy
+                                                                .MAX_FORMS))
+                                        .executes(context ->
+                                                FacelessFormService.clear(
                                                         context.getSource()
                                                                 .getPlayerOrException(),
                                                         IntegerArgumentType
@@ -508,9 +565,9 @@ public final class ProjectMysteryCommands {
                 .then(Commands.literal("rules").executes(context ->
                         showLines(context.getSource().getPlayerOrException(), "rules", 5)))
                 .then(Commands.literal("items").executes(context ->
-                        showLines(context.getSource().getPlayerOrException(), "items", 9)))
+                        showLines(context.getSource().getPlayerOrException(), "items", 15)))
                 .then(Commands.literal("bestiary").executes(context ->
-                        showLines(context.getSource().getPlayerOrException(), "bestiary", 4)))
+                        showLines(context.getSource().getPlayerOrException(), "bestiary", 11)))
                 .then(Commands.literal("journal").executes(context ->
                         showJournal(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("m1check").executes(context ->

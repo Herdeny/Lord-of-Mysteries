@@ -101,29 +101,44 @@ def main() -> int:
             "Pages 不得把已实现的持久秘偶继续列为未完成", errors)
     require("秘偶收纳卷轴" in html and "跨维" in html,
             "Pages M3 入口必须展示已实现的秘偶跨维收纳", errors)
-    require("形体记录、具体领地 Mod 适配器、组织门权限" in html,
-            "Pages 必须保留真实 M3 后续边界，避免误报完成", errors)
-    require("Capability schema 28" in wiki_data
-            and "404 JUnit · 18 GameTest" in wiki_data
-            and "324 JSON · 1521 双语键" in wiki_data
-            and "92 物品 · 7 方块 · 9 实体" in wiki_data
-            and "191 条图鉴" in wiki_data,
+    require("精确玩家皮肤/模型/声线" in html
+            and "具体领地 Mod 适配器、组织门权限" in html,
+            "Pages 必须保留真实 M3 发布边界，避免误报完成", errors)
+    require("Capability schema 29" in wiki_data
+            and "416 JUnit · 20 GameTest" in wiki_data
+            and "365 JSON · 1608 双语键" in wiki_data
+            and "109 物品 · 7 方块 · 16 实体" in wiki_data
+            and "217 条图鉴" in wiki_data,
             "Pages 动态机制卡的 schema、测试和资源基线未同步", errors)
     require("权威收纳" in wiki_data
             and "一次性 token" in wiki_data
             and "跨维安全部署" in wiki_data,
             "Pages 动态 M3 卡必须展示秘偶权威收纳闭环", errors)
-    require("397 JUnit" not in wiki_data
+    require("404 JUnit · 18 GameTest" not in wiki_data
+            and "397 JUnit" not in wiki_data
             and "17 GameTest" not in wiki_data
             and "17 Forge GameTest" not in wiki_data
+            and "schema 28" not in wiki_data
             and "schema 27" not in wiki_data
+            and "324 JSON" not in wiki_data
             and "322 JSON" not in wiki_data
+            and "1521 双语键" not in wiki_data
             and "1500 双语键" not in wiki_data
+            and "92 物品" not in wiki_data
             and "91 物品" not in wiki_data
+            and "191 条图鉴" not in wiki_data
             and "190 条图鉴" not in wiki_data
             and "秘偶收纳/跨维控制" not in wiki_data
             and "收纳卷轴、跨维指挥" not in wiki_data,
             "Pages 动态图鉴仍含上一版本的当前状态文案", errors)
+    require("无面人八槽形体记录" in wiki_data
+            and "/pm faceless" in wiki_data
+            and "不保存来源实体/玩家UUID" in wiki_data,
+            "Pages 图鉴必须展示无面人形体、命令与隐私边界", errors)
+    require("M3 专属材料生态" in wiki_data
+            and "10 材料 · 7 生物 · 10 保底配方" in wiki_data
+            and "/pm bestiary" in wiki_data,
+            "Pages 图鉴必须展示最终材料、生物生态与玩家入口", errors)
 
     require("[hidden] { display: none !important; }" in css,
             "CSS 必须保护 hidden 属性不被布局规则覆盖", errors)

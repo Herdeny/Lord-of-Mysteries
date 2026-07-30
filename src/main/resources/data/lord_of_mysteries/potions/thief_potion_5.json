@@ -5,11 +5,11 @@
   "requires": { "pathway": "lord_of_mysteries:thief", "sequence": 6, "digestion": 100.0 },
   "ingredients": [
     { "item": "lord_of_mysteries:dream_scale_fragment", "order": 1, "required": true },
-    { "item": "lord_of_mysteries:mystic_ink", "order": 2, "required": true },
+    { "item": "lord_of_mysteries:black_wax", "order": 2, "required": true },
     { "item": "lord_of_mysteries:moonwater", "order": 3, "required": false, "quality_bonus": 0.2 }
   ],
   "temperature_range": [50, 80],
   "brewing_time_ticks": 1200,
   "failure_result": "lord_of_mysteries:contaminated_mixture",
-  "adaptation_notes": "v0.9 proxy recipe; dream-theft ritual remains planned"
+  "adaptation_notes": "v0.9 registered dream-fragment recipe; the completed dream-theft ritual remains mandatory"
 }

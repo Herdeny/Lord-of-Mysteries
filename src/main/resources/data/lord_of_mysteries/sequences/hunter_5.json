@@ -17,5 +17,5 @@
   "acting_events": ["lord_of_mysteries:reaper5_sweep_flames", "lord_of_mysteries:reaper5_harvest_prey"],
   "potion_id": "lord_of_mysteries:hunter_potion_5",
   "digestion_target": 100.0,
-  "adaptation_scope": "Executable PvP-respecting flame sweep and server-persistent harvest mark; war domain, rebirth, and ritual remain planned."
+  "adaptation_scope": "PvP-respecting flame sweep, server-persistent harvest mark with kill refund/refresh, and the dedicated supported Sequence 5 ritual are executable; sustained war domain and long-cooldown rebirth remain future work."
 }

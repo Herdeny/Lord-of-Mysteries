@@ -12,6 +12,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseContactMemoryPolicy;
 import top.aurora.lordofmysteries.commission.DynamicCaseHistoryEntry;
 import top.aurora.lordofmysteries.commission.DynamicCaseRelationshipPolicy;
 import top.aurora.lordofmysteries.commission.MysticalExposurePolicy;
+import top.aurora.lordofmysteries.ability.FacelessFormPolicy;
 import top.aurora.lordofmysteries.ability.MarionettePolicy;
 import top.aurora.lordofmysteries.ability.MarionetteStoragePolicy;
 import top.aurora.lordofmysteries.ability.TravelerDoorAccessMode;
@@ -73,6 +74,32 @@ public final class PlayerMysteryDataSanitizer {
                         new HashSet<>(repairedBlacklist);
                 repairs++;
             }
+        }
+        java.util.List<net.minecraft.nbt.CompoundTag> repairedFacelessForms =
+                FacelessFormPolicy.normalizeRecords(
+                        data.facelessFormRecords);
+        if (data.facelessFormRecords == null
+                || !repairedFacelessForms.equals(
+                        data.facelessFormRecords)) {
+            data.facelessFormRecords =
+                    new ArrayList<>(repairedFacelessForms);
+            repairs++;
+        }
+        int repairedFacelessSelection =
+                FacelessFormPolicy.normalizeSelection(
+                        data.facelessFormRecords,
+                        data.facelessSelectedForm);
+        if (repairedFacelessSelection != data.facelessSelectedForm) {
+            data.facelessSelectedForm = repairedFacelessSelection;
+            repairs++;
+        }
+        if (data.facelessRecordCooldownEndTick < 0L) {
+            data.facelessRecordCooldownEndTick = 0L;
+            repairs++;
+        }
+        if (data.facelessDisguiseCooldownEndTick < 0L) {
+            data.facelessDisguiseCooldownEndTick = 0L;
+            repairs++;
         }
         if (data.marionetteRoster == null) {
             data.marionetteRoster = new ArrayList<>();

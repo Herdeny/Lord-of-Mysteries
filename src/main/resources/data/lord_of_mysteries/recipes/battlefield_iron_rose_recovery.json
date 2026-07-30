@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:poppy" },
+    { "item": "minecraft:iron_nugget" },
+    { "item": "lord_of_mysteries:ash_powder" },
+    { "item": "lord_of_mysteries:black_wax" }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:battlefield_iron_rose"
+  }
+}

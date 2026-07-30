@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
+import top.aurora.lordofmysteries.ability.FacelessFormPolicy;
 import top.aurora.lordofmysteries.ability.MarionettePolicy;
 import top.aurora.lordofmysteries.ability.MarionetteStoragePolicy;
 import top.aurora.lordofmysteries.ability.TravelerDoorPolicy;
@@ -38,7 +39,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseResponseTask;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 28;
+    public static final int CURRENT_SCHEMA_VERSION = 29;
     private static final int MAX_MIGRATION_BACKUPS = 3;
     private static final int MAX_MIGRATION_HISTORY = 64;
 
@@ -112,6 +113,10 @@ public class PlayerMysteryData {
     public long apprenticeWardCooldownEndTick = 0L;
     public String travelerDoorAccessMode = "party";
     public Set<UUID> travelerDoorBlacklist = new HashSet<>();
+    public List<CompoundTag> facelessFormRecords = new ArrayList<>();
+    public int facelessSelectedForm = -1;
+    public long facelessRecordCooldownEndTick = 0L;
+    public long facelessDisguiseCooldownEndTick = 0L;
     public List<UUID> marionetteRoster = new ArrayList<>();
     public Map<UUID, CompoundTag> marionetteStorageRecords =
             new HashMap<>();
@@ -287,6 +292,13 @@ public class PlayerMysteryData {
         this.travelerDoorAccessMode = src.travelerDoorAccessMode;
         this.travelerDoorBlacklist =
                 new HashSet<>(src.travelerDoorBlacklist);
+        this.facelessFormRecords =
+                copyCompoundTags(src.facelessFormRecords);
+        this.facelessSelectedForm = src.facelessSelectedForm;
+        this.facelessRecordCooldownEndTick =
+                src.facelessRecordCooldownEndTick;
+        this.facelessDisguiseCooldownEndTick =
+                src.facelessDisguiseCooldownEndTick;
         this.marionetteRoster =
                 new ArrayList<>(src.marionetteRoster);
         this.marionetteStorageRecords = new HashMap<>();
@@ -445,6 +457,19 @@ public class PlayerMysteryData {
                 .forEach(value -> travelerBlacklist.add(
                         StringTag.valueOf(value.toString())));
         tag.put("traveler_door_blacklist", travelerBlacklist);
+        ListTag facelessFormsTag = new ListTag();
+        FacelessFormPolicy.normalizeRecords(facelessFormRecords)
+                .forEach(record -> facelessFormsTag.add(record.copy()));
+        tag.put("faceless_form_records", facelessFormsTag);
+        tag.putInt("faceless_selected_form",
+                FacelessFormPolicy.normalizeSelection(
+                        FacelessFormPolicy.normalizeRecords(
+                                facelessFormRecords),
+                        facelessSelectedForm));
+        tag.putLong("faceless_record_cd_end",
+                facelessRecordCooldownEndTick);
+        tag.putLong("faceless_disguise_cd_end",
+                facelessDisguiseCooldownEndTick);
         ListTag marionetteRosterTag = new ListTag();
         MarionettePolicy.normalizeRoster(marionetteRoster)
                 .forEach(value -> marionetteRosterTag.add(
@@ -702,6 +727,44 @@ public class PlayerMysteryData {
                 }
             }
         }
+        facelessFormRecords.clear();
+        Tag rawFacelessForms = tag.get("faceless_form_records");
+        boolean validFacelessForms =
+                rawFacelessForms instanceof ListTag list
+                        && (list.isEmpty()
+                        || list.getElementType() == Tag.TAG_COMPOUND);
+        if (rawFacelessForms != null && !validFacelessForms) {
+            addOrphan(
+                    "faceless_form_records",
+                    "invalid_container",
+                    rawFacelessForms.copy());
+        } else if (validFacelessForms
+                && rawFacelessForms instanceof ListTag recordsTag) {
+            for (int index = 0; index < recordsTag.size(); index++) {
+                CompoundTag record = recordsTag.getCompound(index);
+                if (FacelessFormPolicy.isValid(record)) {
+                    facelessFormRecords.add(record.copy());
+                    continue;
+                }
+                CompoundTag payload = new CompoundTag();
+                payload.putInt("index", index);
+                payload.put("value", record.copy());
+                addOrphan(
+                        "faceless_form_records",
+                        "invalid_record",
+                        payload);
+            }
+        }
+        facelessFormRecords =
+                FacelessFormPolicy.normalizeRecords(facelessFormRecords);
+        facelessSelectedForm = FacelessFormPolicy.normalizeSelection(
+                facelessFormRecords,
+                tag.contains("faceless_selected_form", Tag.TAG_INT)
+                        ? tag.getInt("faceless_selected_form") : -1);
+        facelessRecordCooldownEndTick =
+                tag.getLong("faceless_record_cd_end");
+        facelessDisguiseCooldownEndTick =
+                tag.getLong("faceless_disguise_cd_end");
         marionetteRoster.clear();
         Tag rawMarionetteRoster = tag.get("marionette_roster");
         boolean validMarionetteRoster =
@@ -1181,6 +1244,10 @@ public class PlayerMysteryData {
         hash = mix(hash, apprenticeWardCooldownEndTick);
         hash = mix(hash, travelerDoorAccessMode);
         hash = mix(hash, travelerDoorBlacklist);
+        hash = mix(hash, facelessFormRecords);
+        hash = mix(hash, facelessSelectedForm);
+        hash = mix(hash, facelessRecordCooldownEndTick);
+        hash = mix(hash, facelessDisguiseCooldownEndTick);
         hash = mix(hash, marionetteRoster);
         hash = mix(hash, marionetteStorageRecords);
         hash = mix(hash, marionetteCreationCooldownEndTick);

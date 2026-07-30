@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "lord_of_mysteries:dream_scale_fragment" },
+    { "item": "minecraft:spider_eye" },
+    { "item": "lord_of_mysteries:black_wax" }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:cradle_moth_eye"
+  }
+}

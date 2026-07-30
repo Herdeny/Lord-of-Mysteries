@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:honeycomb" },
+    { "item": "minecraft:charcoal" }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:black_wax",
+    "count": 2
+  }
+}

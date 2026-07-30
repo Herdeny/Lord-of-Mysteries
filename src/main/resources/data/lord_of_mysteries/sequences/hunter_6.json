@@ -17,5 +17,5 @@
   "acting_events": ["lord_of_mysteries:conspirer6_prepare_battlefield", "lord_of_mysteries:conspirer6_turn_enemies"],
   "potion_id": "lord_of_mysteries:hunter_potion_6",
   "digestion_target": 100.0,
-  "adaptation_scope": "Executable battlefield preparation and boss-safe enemy infighting; trap multipliers and weak-point combo remain planned."
+  "adaptation_scope": "Executable battlefield preparation and boss/player-safe enemy infighting provide team setup and combat control; dedicated trap multipliers and per-limb weak-point presentation remain future work."
 }

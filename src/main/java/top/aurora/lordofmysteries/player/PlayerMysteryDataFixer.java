@@ -49,7 +49,10 @@ public final class PlayerMysteryDataFixer {
                             ::initializePersistentMarionetteRoster),
             new DataFix("marionette_storage_records", 28,
                     PlayerMysteryDataFixer
-                            ::initializeMarionetteStorageRecords));
+                            ::initializeMarionetteStorageRecords),
+            new DataFix("faceless_form_records", 29,
+                    PlayerMysteryDataFixer
+                            ::initializeFacelessFormRecords));
 
     private PlayerMysteryDataFixer() {}
 
@@ -341,6 +344,26 @@ public final class PlayerMysteryDataFixer {
         if (!validList) {
             tag.put("marionette_storage_records", new ListTag());
         }
+    }
+
+    private static void initializeFacelessFormRecords(
+            CompoundTag tag, List<CompoundTag> orphanedEntries) {
+        Tag existing = tag.get("faceless_form_records");
+        boolean validList = existing instanceof ListTag list
+                && (list.isEmpty()
+                || list.getElementType() == Tag.TAG_COMPOUND);
+        if (existing != null && !validList) {
+            orphanedEntries.add(orphan(
+                    "faceless_form_records",
+                    "invalid_container",
+                    existing));
+        }
+        if (!validList) {
+            tag.put("faceless_form_records", new ListTag());
+        }
+        putIntDefault(tag, "faceless_selected_form", -1);
+        putLongDefault(tag, "faceless_record_cd_end", 0L);
+        putLongDefault(tag, "faceless_disguise_cd_end", 0L);
     }
 
     private static void putBooleanDefault(CompoundTag tag, String key,

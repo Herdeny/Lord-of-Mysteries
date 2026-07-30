@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "lord_of_mysteries:shadow_marten_claw" },
+    { "item": "minecraft:echo_shard" },
+    { "item": "lord_of_mysteries:black_wax" }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:ability_leech_core"
+  }
+}

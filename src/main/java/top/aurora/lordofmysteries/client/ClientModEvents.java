@@ -10,7 +10,9 @@ import net.minecraft.client.renderer.entity.CaveSpiderRenderer;
 import net.minecraft.client.renderer.entity.HuskRenderer;
 import net.minecraft.client.renderer.entity.VexRenderer;
 import net.minecraft.client.renderer.entity.EndermanRenderer;
+import net.minecraft.client.renderer.entity.EndermiteRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.client.renderer.entity.SilverfishRenderer;
 
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.registry.ModEntities;
@@ -45,6 +47,19 @@ public final class ClientModEvents {
                 ModEntities.SHAPESHIFTER_SERPENT.get(), CaveSpiderRenderer::new);
         event.registerEntityRenderer(ModEntities.SPIRIT_WISP.get(), VexRenderer::new);
         event.registerEntityRenderer(ModEntities.ASHEN_PUPPET.get(), HuskRenderer::new);
+        event.registerEntityRenderer(
+                ModEntities.MARIONETTE_VINE.get(), CaveSpiderRenderer::new);
+        event.registerEntityRenderer(ModEntities.CRADLE_MOTH.get(), VexRenderer::new);
+        event.registerEntityRenderer(
+                ModEntities.TWIN_SERPENT.get(), CaveSpiderRenderer::new);
+        event.registerEntityRenderer(
+                ModEntities.ABILITY_LEECH.get(), SilverfishRenderer::new);
+        event.registerEntityRenderer(
+                ModEntities.SCRIBE_GOLEM.get(), HuskRenderer::new);
+        event.registerEntityRenderer(
+                ModEntities.RIFTLING.get(), EndermiteRenderer::new);
+        event.registerEntityRenderer(
+                ModEntities.WAR_ROSE_HUSK.get(), HuskRenderer::new);
         event.registerEntityRenderer(
                 ModEntities.TRAVELER_DOOR.get(), NoopRenderer::new);
     }

@@ -42,6 +42,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.MOONWATER.get());
                         output.accept(ModItems.PURE_WATER.get());
                         output.accept(ModItems.WHITE_CANDLE.get());
+                        output.accept(ModItems.BLACK_WAX.get());
                         output.accept(ModItems.DEEP_GRAY_SPIRIT_TEAR.get());
                         output.accept(ModItems.HEATHER.get());
                         output.accept(ModItems.SPIRIT_ALCOHOL.get());
@@ -59,6 +60,15 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.IRIDESCENT_TRICKBIRD_FEATHER.get());
                         output.accept(ModItems.METEOR_DUST.get());
                         output.accept(ModItems.BLANK_MANUSCRIPT.get());
+                        output.accept(ModItems.SHAPESHIFTER_BLOOD.get());
+                        output.accept(ModItems.MARIONETTE_VINE_CORE.get());
+                        output.accept(ModItems.CRADLE_MOTH_EYE.get());
+                        output.accept(ModItems.SLEEPING_GIANT_EYELASH.get());
+                        output.accept(ModItems.TWIN_SERPENT_TONGUE.get());
+                        output.accept(ModItems.BATTLEFIELD_IRON_ROSE.get());
+                        output.accept(ModItems.ABILITY_LEECH_CORE.get());
+                        output.accept(ModItems.SCRIBE_GOLEM_FINGER_BONE.get());
+                        output.accept(ModItems.SPATIAL_RIFT_CRYSTAL.get());
                         output.accept(ModItems.MYSTIC_INK.get());
                         output.accept(ModItems.FORMULA_FRAGMENT.get());
                         output.accept(ModItems.NEWSPAPER.get());
@@ -79,6 +89,13 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.SHAPESHIFTER_SERPENT_SPAWN_EGG.get());
                         output.accept(ModItems.SPIRIT_WISP_SPAWN_EGG.get());
                         output.accept(ModItems.ASHEN_PUPPET_SPAWN_EGG.get());
+                        output.accept(ModItems.MARIONETTE_VINE_SPAWN_EGG.get());
+                        output.accept(ModItems.CRADLE_MOTH_SPAWN_EGG.get());
+                        output.accept(ModItems.TWIN_SERPENT_SPAWN_EGG.get());
+                        output.accept(ModItems.ABILITY_LEECH_SPAWN_EGG.get());
+                        output.accept(ModItems.SCRIBE_GOLEM_SPAWN_EGG.get());
+                        output.accept(ModItems.RIFTLING_SPAWN_EGG.get());
+                        output.accept(ModItems.WAR_ROSE_HUSK_SPAWN_EGG.get());
                         output.accept(ModItems.THIEF_BREAKDOWN_SPAWN_EGG.get());
                         output.accept(ModItems.APPRENTICE_BREAKDOWN_SPAWN_EGG.get());
                         output.accept(ModItems.PSYCHIATRIST_BREAKDOWN_SPAWN_EGG.get());

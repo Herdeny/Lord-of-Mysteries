@@ -68,7 +68,45 @@ public final class PlayerGuideHandler {
     }
 
     public static int showNextStep(ServerPlayer player) {
-        sendNextStep(player, currentStage(player, MysteryCapability.get(player)));
+        PlayerMysteryData data = MysteryCapability.get(player);
+        M1ProgressAdvisor.Stage m1Stage = currentStage(player, data);
+        if (shouldUseM3Advisor(data, m1Stage)) {
+            sendM3Step(player, data);
+        } else {
+            sendNextStep(player, m1Stage);
+        }
+        return 1;
+    }
+
+    public static int showM3Guide(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        M3ProgressAdvisor.Advice advice = m3Advice(data);
+        if (advice == null) {
+            player.sendSystemMessage(Component.translatable(
+                    "guide.lord_of_mysteries.m3.unavailable")
+                    .withStyle(ChatFormatting.GRAY));
+            return 0;
+        }
+        player.sendSystemMessage(Component.translatable(
+                "guide.lord_of_mysteries.m3.status",
+                Component.translatable(
+                        KnowledgeText.pathwayTranslationKey(
+                                data.pathway.toString())),
+                data.sequence,
+                String.format(
+                        java.util.Locale.ROOT,
+                        "%.1f", data.digestion))
+                .withStyle(ChatFormatting.GOLD));
+        sendM3Step(player, data);
+        player.sendSystemMessage(Component.translatable(
+                data.sequence <= 6
+                        ? "guide.lord_of_mysteries.m3.controls."
+                        + data.pathway.getPath() + "." + data.sequence
+                        : "guide.lord_of_mysteries.m3.controls.foundation")
+                .withStyle(ChatFormatting.AQUA));
+        player.sendSystemMessage(Component.translatable(
+                "guide.lord_of_mysteries.m3.catalog")
+                .withStyle(ChatFormatting.GRAY));
         return 1;
     }
 
@@ -114,6 +152,53 @@ public final class PlayerGuideHandler {
                         + M1ProgressAdvisor.translationSuffix(stage))
                 .withStyle(stage == M1ProgressAdvisor.Stage.COMPLETE
                         ? ChatFormatting.GREEN : ChatFormatting.AQUA));
+    }
+
+    private static void sendM3Step(
+            ServerPlayer player, PlayerMysteryData data) {
+        M3ProgressAdvisor.Advice advice = m3Advice(data);
+        if (advice == null) return;
+        player.sendSystemMessage(Component.translatable(
+                "guide.lord_of_mysteries.m3.title")
+                .withStyle(ChatFormatting.GOLD));
+        String key = "guide.lord_of_mysteries.m3.next."
+                + advice.stage().translationSuffix();
+        Component step = advice.materialItemPath().isBlank()
+                ? Component.translatable(key)
+                : Component.translatable(
+                        key,
+                        Component.translatable(
+                                "item.lord_of_mysteries."
+                                        + advice.materialItemPath()));
+        player.sendSystemMessage(step.copy().withStyle(
+                advice.stage()
+                        == M3ProgressAdvisor.Stage.MASTER_SEQUENCE_FIVE
+                        ? ChatFormatting.GREEN : ChatFormatting.AQUA));
+    }
+
+    private static boolean shouldUseM3Advisor(
+            PlayerMysteryData data, M1ProgressAdvisor.Stage m1Stage) {
+        if (data.pathway == null
+                || !M3ProgressAdvisor.supports(
+                        data.pathway.getPath())) {
+            return false;
+        }
+        return !data.pathway.getPath().equals("seer")
+                || m1Stage == M1ProgressAdvisor.Stage.COMPLETE
+                || data.sequence <= 6;
+    }
+
+    private static M3ProgressAdvisor.Advice m3Advice(
+            PlayerMysteryData data) {
+        if (data.pathway == null) return null;
+        String pathway = data.pathway.getPath();
+        ResourceLocation ritualProof =
+                ResourceLocation.fromNamespaceAndPath(
+                        ProjectMystery.MOD_ID,
+                        "knowledge/sequence_five_ritual/" + pathway);
+        return M3ProgressAdvisor.evaluate(
+                pathway, data.sequence, data.digestion,
+                data.knownKnowledge.contains(ritualProof));
     }
 
     private static M1ProgressAdvisor.Stage currentStage(

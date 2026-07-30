@@ -36,7 +36,7 @@ class PlayerMysteryDataFixerTest {
         assertTrue(result.migrated());
         assertFalse(result.futureSchema());
         assertEquals(15, result.sourceSchema());
-        assertEquals(13, result.appliedSteps().size());
+        assertEquals(14, result.appliedSteps().size());
         assertEquals("characteristic_bundle_upgrade",
                 result.appliedSteps().get(0).id());
         assertEquals("m1_vertical_slice_state",
@@ -63,6 +63,8 @@ class PlayerMysteryDataFixerTest {
                 result.appliedSteps().get(11).id());
         assertEquals("marionette_storage_records",
                 result.appliedSteps().get(12).id());
+        assertEquals("faceless_form_records",
+                result.appliedSteps().get(13).id());
         assertFalse(result.data().getBoolean("identity_anchored"));
         assertEquals(Long.MIN_VALUE,
                 result.data().getLong("last_city_work_day"));
@@ -93,7 +95,7 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(legacy);
 
-        assertEquals(14, result.appliedSteps().size());
+        assertEquals(15, result.appliedSteps().size());
         assertEquals("legacy_key_normalization",
                 result.appliedSteps().get(0).id());
         assertEquals("characteristic_bundle_upgrade",
@@ -135,7 +137,7 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(previous);
 
-        assertEquals(11, result.appliedSteps().size());
+        assertEquals(12, result.appliedSteps().size());
         assertEquals("case_debrief_archive", result.appliedSteps().get(0).id());
         assertEquals("case_hypothesis_workspace",
                 result.appliedSteps().get(1).id());
@@ -167,7 +169,7 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(previous);
 
-        assertEquals(10, result.appliedSteps().size());
+        assertEquals(11, result.appliedSteps().size());
         assertEquals("case_hypothesis_workspace",
                 result.appliedSteps().get(0).id());
         assertEquals("dynamic_case_history",
@@ -196,7 +198,7 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(previous);
 
-        assertEquals(9, result.appliedSteps().size());
+        assertEquals(10, result.appliedSteps().size());
         assertEquals("dynamic_case_history",
                 result.appliedSteps().get(0).id());
         assertEquals("organization_response_state",
@@ -224,7 +226,7 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(previous);
 
-        assertEquals(8, result.appliedSteps().size());
+        assertEquals(9, result.appliedSteps().size());
         assertEquals("organization_response_state",
                 result.appliedSteps().get(0).id());
         assertEquals("contact_memory_and_response_branches",
@@ -278,7 +280,7 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(previous);
 
-        assertEquals(7, result.appliedSteps().size());
+        assertEquals(8, result.appliedSteps().size());
         assertEquals("contact_memory_and_response_branches",
                 result.appliedSteps().get(0).id());
         assertEquals("city_economy_and_exposure",
@@ -306,7 +308,7 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(previous);
 
-        assertEquals(6, result.appliedSteps().size());
+        assertEquals(7, result.appliedSteps().size());
         assertEquals("city_economy_and_exposure",
                 result.appliedSteps().get(0).id());
         assertEquals("characteristic_provenance_nonce",
@@ -333,7 +335,7 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(previous);
 
-        assertEquals(5, result.appliedSteps().size());
+        assertEquals(6, result.appliedSteps().size());
         assertEquals("characteristic_provenance_nonce",
                 result.appliedSteps().get(0).id());
         assertEquals("traveler_door_access",
@@ -356,7 +358,7 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(previous);
 
-        assertEquals(4, result.appliedSteps().size());
+        assertEquals(5, result.appliedSteps().size());
         assertEquals("traveler_door_access",
                 result.appliedSteps().get(0).id());
         assertEquals("traveler_door_safety_controls",
@@ -378,7 +380,7 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(previous);
 
-        assertEquals(3, result.appliedSteps().size());
+        assertEquals(4, result.appliedSteps().size());
         assertEquals("traveler_door_safety_controls",
                 result.appliedSteps().get(0).id());
         assertEquals("private", result.data().getString(
@@ -409,11 +411,13 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(previous);
 
-        assertEquals(2, result.appliedSteps().size());
+        assertEquals(3, result.appliedSteps().size());
         assertEquals("persistent_marionette_roster",
                 result.appliedSteps().get(0).id());
         assertEquals("marionette_storage_records",
                 result.appliedSteps().get(1).id());
+        assertEquals("faceless_form_records",
+                result.appliedSteps().get(2).id());
         assertTrue(result.data().getList(
                 "marionette_roster", Tag.TAG_STRING).isEmpty());
         assertEquals(-20L, result.data().getLong(
@@ -441,9 +445,11 @@ class PlayerMysteryDataFixerTest {
         PlayerMysteryDataFixer.MigrationResult result =
                 PlayerMysteryDataFixer.migrate(previous);
 
-        assertEquals(1, result.appliedSteps().size());
+        assertEquals(2, result.appliedSteps().size());
         assertEquals("marionette_storage_records",
                 result.appliedSteps().get(0).id());
+        assertEquals("faceless_form_records",
+                result.appliedSteps().get(1).id());
         assertTrue(result.data().getList(
                 "marionette_storage_records", Tag.TAG_COMPOUND).isEmpty());
 
@@ -454,6 +460,38 @@ class PlayerMysteryDataFixerTest {
                 "marionette_storage_records", Tag.TAG_COMPOUND).isEmpty());
         assertEquals(1, repaired.orphanedEntries().size());
         assertEquals("marionette_storage_records",
+                repaired.orphanedEntries().get(0).getString("section"));
+        assertEquals("invalid_container",
+                repaired.orphanedEntries().get(0).getString("reason"));
+    }
+
+    @Test
+    void migratesSchemaTwentyEightWithEmptyFacelessFormLedger() {
+        CompoundTag previous = new CompoundTag();
+        previous.putInt("schema_version", 28);
+
+        PlayerMysteryDataFixer.MigrationResult result =
+                PlayerMysteryDataFixer.migrate(previous);
+
+        assertEquals(1, result.appliedSteps().size());
+        assertEquals("faceless_form_records",
+                result.appliedSteps().get(0).id());
+        assertTrue(result.data().getList(
+                "faceless_form_records", Tag.TAG_COMPOUND).isEmpty());
+        assertEquals(-1, result.data().getInt(
+                "faceless_selected_form"));
+        assertEquals(0L, result.data().getLong(
+                "faceless_record_cd_end"));
+        assertEquals(0L, result.data().getLong(
+                "faceless_disguise_cd_end"));
+
+        previous.putString("faceless_form_records", "invalid");
+        PlayerMysteryDataFixer.MigrationResult repaired =
+                PlayerMysteryDataFixer.migrate(previous);
+        assertTrue(repaired.data().getList(
+                "faceless_form_records", Tag.TAG_COMPOUND).isEmpty());
+        assertEquals(1, repaired.orphanedEntries().size());
+        assertEquals("faceless_form_records",
                 repaired.orphanedEntries().get(0).getString("section"));
         assertEquals("invalid_container",
                 repaired.orphanedEntries().get(0).getString("reason"));

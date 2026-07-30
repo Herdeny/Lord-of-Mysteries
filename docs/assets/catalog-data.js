@@ -221,6 +221,37 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "entity",
+    "id": "lord_of_mysteries:ability_leech",
+    "name": "窃能水蛭",
+    "en": "Ability Leech",
+    "summary": "已在 Forge 实体注册表中实现并具备服务端行为的生物或失控体。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge entity registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:ability_leech"
+      ],
+      [
+        "代码来源",
+        "ModEntities.java"
+      ],
+      [
+        "资源状态",
+        "使用代码渲染或共用纹理"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "entity",
     "id": "lord_of_mysteries:apprentice_breakdown",
     "name": "裂门失控体",
     "en": "Riven-Door Breakdown",
@@ -283,6 +314,68 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "entity",
+    "id": "lord_of_mysteries:cradle_moth",
+    "name": "摇篮蛾",
+    "en": "Cradle Moth",
+    "summary": "已在 Forge 实体注册表中实现并具备服务端行为的生物或失控体。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge entity registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:cradle_moth"
+      ],
+      [
+        "代码来源",
+        "ModEntities.java"
+      ],
+      [
+        "资源状态",
+        "使用代码渲染或共用纹理"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:marionette_vine",
+    "name": "提线魔藤",
+    "en": "Marionette Vine",
+    "summary": "已在 Forge 实体注册表中实现并具备服务端行为的生物或失控体。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge entity registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:marionette_vine"
+      ],
+      [
+        "代码来源",
+        "ModEntities.java"
+      ],
+      [
+        "资源状态",
+        "使用代码渲染或共用纹理"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "entity",
     "id": "lord_of_mysteries:psychiatrist_breakdown",
     "name": "低语失控体",
     "en": "Whispering Breakdown",
@@ -331,6 +424,68 @@ window.LOM = window.LOM || {};
       [
         "注册 ID",
         "lord_of_mysteries:pyromaniac_breakdown"
+      ],
+      [
+        "代码来源",
+        "ModEntities.java"
+      ],
+      [
+        "资源状态",
+        "使用代码渲染或共用纹理"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:riftling",
+    "name": "裂隙灵",
+    "en": "Riftling",
+    "summary": "已在 Forge 实体注册表中实现并具备服务端行为的生物或失控体。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge entity registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:riftling"
+      ],
+      [
+        "代码来源",
+        "ModEntities.java"
+      ],
+      [
+        "资源状态",
+        "使用代码渲染或共用纹理"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:scribe_golem",
+    "name": "誊写魔像",
+    "en": "Scribe Golem",
+    "summary": "已在 Forge 实体注册表中实现并具备服务端行为的生物或失控体。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge entity registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:scribe_golem"
       ],
       [
         "代码来源",
@@ -494,6 +649,130 @@ window.LOM = window.LOM || {};
       [
         "资源状态",
         "使用代码渲染或共用纹理"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:twin_serpent",
+    "name": "双头蛇",
+    "en": "Twin-Headed Serpent",
+    "summary": "已在 Forge 实体注册表中实现并具备服务端行为的生物或失控体。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge entity registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:twin_serpent"
+      ],
+      [
+        "代码来源",
+        "ModEntities.java"
+      ],
+      [
+        "资源状态",
+        "使用代码渲染或共用纹理"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:war_rose_husk",
+    "name": "战蔷薇遗骸",
+    "en": "War-Rose Husk",
+    "summary": "已在 Forge 实体注册表中实现并具备服务端行为的生物或失控体。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge entity registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:war_rose_husk"
+      ],
+      [
+        "代码来源",
+        "ModEntities.java"
+      ],
+      [
+        "资源状态",
+        "使用代码渲染或共用纹理"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:ability_leech_core",
+    "name": "窃能水蛭之核",
+    "en": "Ability Leech Core",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:ability_leech_core"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:ability_leech_spawn_egg",
+    "name": "窃能水蛭刷怪蛋",
+    "en": "Ability Leech Spawn Egg",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:ability_leech_spawn_egg"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
@@ -717,6 +996,68 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "id": "lord_of_mysteries:battlefield_iron_rose",
+    "name": "战场铁蔷薇",
+    "en": "Battlefield Iron Rose",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:battlefield_iron_rose"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:black_wax",
+    "name": "黑色仪式蜡",
+    "en": "Black Ritual Wax",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:black_wax"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
     "id": "lord_of_mysteries:blank_manuscript",
     "name": "空白手稿",
     "en": "Blank Manuscript",
@@ -920,6 +1261,68 @@ window.LOM = window.LOM || {};
       [
         "注册 ID",
         "lord_of_mysteries:contaminated_mixture"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:cradle_moth_eye",
+    "name": "摇篮蛾复眼",
+    "en": "Cradle Moth Compound Eye",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:cradle_moth_eye"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:cradle_moth_spawn_egg",
+    "name": "摇篮蛾刷怪蛋",
+    "en": "Cradle Moth Spawn Egg",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:cradle_moth_spawn_egg"
       ],
       [
         "代码来源",
@@ -1554,6 +1957,68 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "id": "lord_of_mysteries:marionette_vine_core",
+    "name": "提线魔藤之芯",
+    "en": "Marionette Vine Core",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:marionette_vine_core"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:marionette_vine_spawn_egg",
+    "name": "提线魔藤刷怪蛋",
+    "en": "Marionette Vine Spawn Egg",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:marionette_vine_spawn_egg"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
     "id": "lord_of_mysteries:memory_seal_wax",
     "name": "记忆封蜡",
     "en": "Memory Seal Wax",
@@ -1957,6 +2422,99 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "id": "lord_of_mysteries:riftling_spawn_egg",
+    "name": "裂隙灵刷怪蛋",
+    "en": "Riftling Spawn Egg",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:riftling_spawn_egg"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:scribe_golem_finger_bone",
+    "name": "誊写魔像指骨",
+    "en": "Scribe Golem Finger Bone",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:scribe_golem_finger_bone"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:scribe_golem_spawn_egg",
+    "name": "誊写魔像刷怪蛋",
+    "en": "Scribe Golem Spawn Egg",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:scribe_golem_spawn_egg"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
     "id": "lord_of_mysteries:sealed_formula_dossier",
     "name": "密封配方卷宗",
     "en": "Sealed Formula Dossier",
@@ -2005,6 +2563,37 @@ window.LOM = window.LOM || {};
       [
         "注册 ID",
         "lord_of_mysteries:shadow_marten_claw"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:shapeshifter_blood",
+    "name": "变形怪之血",
+    "en": "Shapeshifter Blood",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:shapeshifter_blood"
       ],
       [
         "代码来源",
@@ -2098,6 +2687,68 @@ window.LOM = window.LOM || {};
       [
         "注册 ID",
         "lord_of_mysteries:silver_filings"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:sleeping_giant_eyelash",
+    "name": "睡巨人的睫毛",
+    "en": "Sleeping Giant Eyelash",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:sleeping_giant_eyelash"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:spatial_rift_crystal",
+    "name": "空间裂隙结晶",
+    "en": "Spatial Rift Crystal",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:spatial_rift_crystal"
       ],
       [
         "代码来源",
@@ -2315,6 +2966,99 @@ window.LOM = window.LOM || {};
       [
         "注册 ID",
         "lord_of_mysteries:thief_breakdown_spawn_egg"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:twin_serpent_spawn_egg",
+    "name": "双头蛇刷怪蛋",
+    "en": "Twin-Headed Serpent Spawn Egg",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:twin_serpent_spawn_egg"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:twin_serpent_tongue",
+    "name": "双头蛇信子",
+    "en": "Twin-Headed Serpent Tongue",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:twin_serpent_tongue"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:war_rose_husk_spawn_egg",
+    "name": "战蔷薇遗骸刷怪蛋",
+    "en": "War-Rose Husk Spawn Egg",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:war_rose_husk_spawn_egg"
       ],
       [
         "代码来源",
@@ -3141,10 +3885,10 @@ window.LOM = window.LOM || {};
     return !manualIds[entry.id];
   }));
   D.catalogMeta = {
-  "registeredItems": 92,
+  "registeredItems": 109,
   "registeredBlocks": 7,
-  "registeredEntities": 9,
-  "uniqueRegistryEntries": 101,
+  "registeredEntities": 16,
+  "uniqueRegistryEntries": 125,
   "source": "Forge registries + zh_cn/en_us language resources"
 };
 })(window.LOM);

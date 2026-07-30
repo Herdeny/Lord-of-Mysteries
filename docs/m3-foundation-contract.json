@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "capability_schema": 28,
+  "capability_schema": 29,
   "economy": {
     "jobs": {
       "PRESS": {
@@ -123,6 +123,71 @@
         }
       }
     }
+  },
+  "material_ecology": {
+    "shared_stabilizer": "black_wax",
+    "dedicated_creature_count": 7,
+    "biome_modifier_count": 7,
+    "recovery_recipe_count": 10,
+    "knowledge_unlock_on_kill": true,
+    "materials": {
+      "seer": {
+        "6": "shapeshifter_blood",
+        "5": "marionette_vine_core"
+      },
+      "spectator": {
+        "6": "cradle_moth_eye",
+        "5": "sleeping_giant_eyelash"
+      },
+      "hunter": {
+        "6": "twin_serpent_tongue",
+        "5": "battlefield_iron_rose"
+      },
+      "thief": {
+        "6": "ability_leech_core",
+        "5": "dream_scale_fragment"
+      },
+      "apprentice": {
+        "6": "scribe_golem_finger_bone",
+        "5": "spatial_rift_crystal"
+      }
+    },
+    "creatures": [
+      "marionette_vine",
+      "cradle_moth",
+      "twin_serpent",
+      "ability_leech",
+      "scribe_golem",
+      "riftling",
+      "war_rose_husk"
+    ]
+  },
+  "faceless_forms": {
+    "command": "faceless",
+    "records_nbt_key": "faceless_form_records",
+    "migration_fix": "faceless_form_records",
+    "maximum_forms": 8,
+    "record_duration_ticks": 60,
+    "record_range": 12,
+    "record_cost": 10,
+    "transform_cost": 25,
+    "drain_per_second": 2,
+    "record_cooldown_ticks": 200,
+    "transform_cooldown_ticks": 1200,
+    "server_authoritative": true,
+    "allows_player_targets": false,
+    "stores_source_uuid": false,
+    "ends_on_logout_or_death": true,
+    "spectator_counterplay": true
+  },
+  "m3_guidance": {
+    "command": "m3",
+    "next_command": "next",
+    "pathway_count": 5,
+    "sequence_minimum": 5,
+    "sequence_maximum": 9,
+    "item_guide_lines": 15,
+    "bestiary_guide_lines": 11
   },
   "traveler_spatial_relay": {
     "command": "travel",
@@ -287,7 +352,7 @@
     }
   },
   "validation": {
-    "game_tests": 18,
+    "game_tests": 20,
     "requires_restart_matrix": true,
     "behavior_test_classes": [
       "CityEconomyPolicyTest",
@@ -303,6 +368,9 @@
       "MarionetteStoragePolicyTest",
       "TravelerDoorPolicyTest",
       "MarionettePolicyTest",
+      "FacelessFormPolicyTest",
+      "M3ProgressAdvisorTest",
+      "SpectatorEmotionLogicTest",
       "CharacteristicLoadLogicTest",
       "CharacteristicProvenanceSavedDataTest",
       "CharacteristicProcessingLogicTest",
@@ -349,6 +417,29 @@
     "message.lord_of_mysteries.characteristic.audit",
     "message.lord_of_mysteries.sequence_five_ritual.success",
     "message.lord_of_mysteries.sequence_five_ritual.failure",
+    "message.lord_of_mysteries.faceless.record_started",
+    "message.lord_of_mysteries.faceless.player_target_forbidden",
+    "message.lord_of_mysteries.faceless.record_complete",
+    "message.lord_of_mysteries.faceless.activated",
+    "message.lord_of_mysteries.faceless.deactivated",
+    "message.lord_of_mysteries.faceless.controls",
+    "guide.lord_of_mysteries.m3.title",
+    "guide.lord_of_mysteries.m3.status",
+    "guide.lord_of_mysteries.m3.next.gather_sequence_six",
+    "guide.lord_of_mysteries.m3.next.perform_sequence_five_ritual",
+    "guide.lord_of_mysteries.m3.next.master_sequence_five",
+    "guide.lord_of_mysteries.m3.catalog",
+    "emotion.lord_of_mysteries.abnormal",
+    "item.lord_of_mysteries.black_wax",
+    "item.lord_of_mysteries.shapeshifter_blood",
+    "item.lord_of_mysteries.marionette_vine_core",
+    "item.lord_of_mysteries.cradle_moth_eye",
+    "item.lord_of_mysteries.sleeping_giant_eyelash",
+    "item.lord_of_mysteries.twin_serpent_tongue",
+    "item.lord_of_mysteries.battlefield_iron_rose",
+    "item.lord_of_mysteries.ability_leech_core",
+    "item.lord_of_mysteries.scribe_golem_finger_bone",
+    "item.lord_of_mysteries.spatial_rift_crystal",
     "message.lord_of_mysteries.travel.guide.empty",
     "message.lord_of_mysteries.travel.guide.marker",
     "message.lord_of_mysteries.travel.guide.name",

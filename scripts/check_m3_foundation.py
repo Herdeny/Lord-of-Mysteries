@@ -222,6 +222,155 @@ def main():
     require(acting_count == launch["acting_event_count"],
             "M3 acting event count drifted")
 
+    ecology = contract["material_ecology"]
+    entity_registry = source(
+        JAVA / "registry" / "ModEntities.java")
+    knowledge_discovery = source(
+        JAVA / "knowledge" / "KnowledgeDiscoveryHandler.java")
+    recovery_recipes = [
+        "black_wax",
+        "shapeshifter_blood_extraction",
+        "marionette_vine_core_recovery",
+        "cradle_moth_eye_recovery",
+        "sleeping_giant_eyelash_recovery",
+        "twin_serpent_tongue_recovery",
+        "battlefield_iron_rose_recovery",
+        "ability_leech_core_recovery",
+        "scribe_golem_finger_bone_recovery",
+        "spatial_rift_crystal_recovery",
+    ]
+    require(len(recovery_recipes) == ecology["recovery_recipe_count"]
+            and all((DATA / "recipes" / f"{recipe}.json").is_file()
+                    for recipe in recovery_recipes),
+            "M3 material recovery recipe set drifted")
+    require(
+        f'"{ecology["shared_stabilizer"]}"' in items
+        and ecology["shared_stabilizer"].upper() in crucible,
+        "M3 shared ritual stabilizer is missing")
+    for pathway, sequence_materials in ecology["materials"].items():
+        for sequence, material in sequence_materials.items():
+            require(
+                f'"{material}"' in items
+                and material.upper() in crucible,
+                f"{pathway} sequence {sequence} material {material} "
+                "is not registered in its executable recipe")
+    require(len(ecology["creatures"])
+            == ecology["dedicated_creature_count"],
+            "M3 dedicated creature count drifted")
+    for creature in ecology["creatures"]:
+        require(
+            f'ENTITIES.register("{creature}"' in entity_registry
+            and f'"{creature}_spawn_egg"' in items,
+            f"M3 creature or spawn egg {creature} is missing")
+        require(
+            (DATA / "forge" / "biome_modifier"
+             / f"{creature}_spawns.json").is_file(),
+            f"M3 creature {creature} lacks a biome ecology entry")
+        require(
+            (DATA / "loot_tables" / "entities"
+             / f"{creature}.json").is_file(),
+            f"M3 creature {creature} lacks a server loot table")
+        require(
+            f'"bestiary/{creature}"' in knowledge_discovery,
+            f"M3 creature {creature} no longer unlocks knowledge")
+    biome_modifiers = list(
+        (DATA / "forge" / "biome_modifier").glob("*_spawns.json"))
+    require(sum(path.stem in {
+                f"{creature}_spawns"
+                for creature in ecology["creatures"]}
+                for path in biome_modifiers)
+            == ecology["biome_modifier_count"],
+            "M3 dedicated biome modifier count drifted")
+
+    faceless = contract["faceless_forms"]
+    faceless_policy = source(
+        JAVA / "ability" / "FacelessFormPolicy.java")
+    faceless_service = source(
+        JAVA / "ability" / "FacelessFormService.java")
+    spectator_handler = source(
+        JAVA / "ability" / "SpectatorAbilityHandler.java")
+    require(
+        f'literal("{faceless["command"]}")' in commands
+        and "FacelessFormService.sendGuide" in commands,
+        "Faceless form management command is missing")
+    require(
+        f'"{faceless["records_nbt_key"]}"' in player
+        and faceless["migration_fix"] in fixer,
+        "Faceless form persistence or migration is missing")
+    require(
+        f"MAX_FORMS = {faceless['maximum_forms']}"
+        in faceless_policy
+        and f"RECORD_DURATION_TICKS = "
+        f"{faceless['record_duration_ticks']}L" in faceless_service
+        and f"RECORD_RANGE = {faceless['record_range']}d"
+        in faceless_service
+        and f"RECORD_COST = {faceless['record_cost']}f"
+        in faceless_service
+        and f"TRANSFORM_COST = {faceless['transform_cost']}f"
+        in faceless_service
+        and f"TRANSFORM_DRAIN_PER_SECOND = "
+        f"{faceless['drain_per_second']}f" in faceless_service
+        and f"RECORD_COOLDOWN_TICKS = "
+        f"{faceless['record_cooldown_ticks']}L" in faceless_service
+        and f"TRANSFORM_COOLDOWN_TICKS = "
+        f"{faceless['transform_cooldown_ticks']}L" in faceless_service,
+        "Faceless form costs, capacity, range, or cooldowns drifted")
+    require(
+        not faceless["server_authoritative"]
+        or ("AbilityTargeting.findLookTarget" in faceless_service
+            and "PlayerMysteryData data = MysteryCapability.get(player)"
+            in faceless_service),
+        "Faceless forms are no longer server-authoritative")
+    require(
+        faceless["allows_player_targets"]
+        or ("!(target instanceof Player)" in faceless_policy
+            and "FacelessFormPolicy.canRecord(target)" in faceless_service
+            and "player_target_forbidden" in faceless_service),
+        "Faceless forms no longer reject player identity targets")
+    require(
+        faceless["stores_source_uuid"]
+        or "target.getUUID()" not in faceless_policy,
+        "Faceless records persist the source target UUID")
+    require(
+        not faceless["ends_on_logout_or_death"]
+        or ("PlayerLoggedOutEvent" in faceless_service
+            and "LivingDeathEvent" in faceless_service
+            and faceless_service.count("deactivate(player, true)") >= 2),
+        "Faceless disguise no longer ends safely on logout and death")
+    require(
+        not faceless["spectator_counterplay"]
+        or ("FacelessFormService.isDisguised" in spectator_handler
+            and "Emotion.ABNORMAL" in source(
+                    JAVA / "ability" / "SpectatorEmotionLogic.java")),
+        "Spectator counterplay no longer reveals anomalous identities")
+
+    guidance = contract["m3_guidance"]
+    guide_handler = source(
+        JAVA / "knowledge" / "PlayerGuideHandler.java")
+    progress_advisor = source(
+        JAVA / "knowledge" / "M3ProgressAdvisor.java")
+    require(
+        f'literal("{guidance["command"]}")' in commands
+        and "PlayerGuideHandler.showM3Guide" in commands
+        and f'literal("{guidance["next_command"]}")' in commands
+        and "sendM3Step" in guide_handler,
+        "M3 player guidance commands are missing")
+    require(
+        progress_advisor.count("new Materials(")
+        == guidance["pathway_count"],
+        "M3 progress advisor pathway coverage drifted")
+    require(
+        f'sequence < {guidance["sequence_minimum"]}'
+        in progress_advisor
+        and f'sequence > {guidance["sequence_maximum"]}'
+        in progress_advisor,
+        "M3 progress advisor sequence range drifted")
+    require(
+        f'"items", {guidance["item_guide_lines"]}' in commands
+        and f'"bestiary", {guidance["bestiary_guide_lines"]}'
+        in commands,
+        "in-game M3 material or bestiary guide count drifted")
+
     relay = contract["traveler_spatial_relay"]
     travel_logic = source(
         JAVA / "ability" / "M3TravelNetworkLogic.java")
@@ -758,6 +907,9 @@ def main():
         "six deterministic restart-persistent world events, event-sensitive "
         "economy, newspaper and diagnostics visibility, spirituality and "
         "ritual modifiers, five launch pathways at sequences 6-5, five "
+        "dedicated material routes, seven biome-spawned ingredient creatures, "
+        "persistent server-authoritative Faceless forms with Spectator "
+        "counterplay, pathway-aware in-game M3 guidance, five "
         "dedicated sequence-5 rituals with solo and supporter paths, "
         "a persistent consent-gated bidirectional traveler door with "
         "private, party and public access, marker names, a persistent "

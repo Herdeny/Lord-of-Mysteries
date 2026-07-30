@@ -1,6 +1,6 @@
 # M3 秘偶大师持久编队
 
-> 适用版本：0.9.28-1.20.1
+> 适用版本：0.9.29-1.20.1
 > 状态：`code_ready` 可玩纵切
 > 设计基线：v0.9 秘偶大师序列 5；仓库现有服务端规则优先
 
@@ -72,7 +72,7 @@
 
 ## 6. 持久化与修复
 
-Capability schema 28 继承 schema 27 的编队字段，并新增：
+Capability schema 29 继承 schema 27–28 的编队与权威收纳字段，并继续兼容：
 
 - `marionette_roster`：最多三个去重 UUID，保持插入顺序；
 - `marionette_creation_cd_end`：创建冷却结束 tick；
@@ -125,7 +125,7 @@ Capability schema 28 继承 schema 27 的编队字段，并新增：
 - `MarionetteStoragePolicyTest` 覆盖服务端载荷防御复制、token 精确匹配、名册约束、伪造 UUID 拒绝和读副本不可回写。
 - 第 17 项 Forge GameTest 使用真实服务端玩家与僵尸验证精确扣费、实体所有权、schema 27 NBT、
   冷却、他人抢夺拒绝和显式解除。
-- 第 18 项 Forge GameTest 验证 5 灵性收纳、schema 28 Provider 重启、他人持券拒绝、无安全落点时账本/卷轴原子保留、同 UUID 安全部署、权威记录消费与复制凭证拒绝。
+- 真实 Forge GameTest 验证 5 灵性收纳、schema 29 Provider 重启、他人持券拒绝、无安全落点时账本/卷轴原子保留、同 UUID 安全部署、权威记录消费与复制凭证拒绝。
 - M3 机器合同检查命令入口、数值常量、玩家伤害禁令、同维安全召回、无强制区块加载及持久字段。
 
 自动化不能替代真实玩家跨维操作、长时区块卸载、门主离线死亡、不同敌对生物 AI 和多人高延迟的真人验收。

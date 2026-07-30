@@ -47,6 +47,10 @@ class PlayerMysteryDataTest {
         assertEquals(PlayerMysteryData.CURRENT_SCHEMA_VERSION, d.schemaVersion);
         assertEquals("party", d.travelerDoorAccessMode);
         assertTrue(d.travelerDoorBlacklist.isEmpty());
+        assertTrue(d.facelessFormRecords.isEmpty());
+        assertEquals(-1, d.facelessSelectedForm);
+        assertEquals(0L, d.facelessRecordCooldownEndTick);
+        assertEquals(0L, d.facelessDisguiseCooldownEndTick);
         assertFalse(d.emotionReadActive);
         assertEquals("", d.hunterTrackedTarget);
         assertEquals(0L, d.provokeCooldownEndTick);
@@ -487,6 +491,65 @@ class PlayerMysteryDataTest {
     }
 
     @Test
+    void facelessFormsSurviveCopyRoundTripAndRejectCorruptRecords() {
+        net.minecraft.nbt.CompoundTag form =
+                facelessForm(
+                        "00000000-0000-0000-0000-000000000029",
+                        "Archivist",
+                        "minecraft:villager");
+        PlayerMysteryData source = new PlayerMysteryData();
+        source.facelessFormRecords.add(form);
+        source.facelessSelectedForm = 0;
+        source.facelessRecordCooldownEndTick = 1_200L;
+        source.facelessDisguiseCooldownEndTick = 2_400L;
+
+        PlayerMysteryData copied = new PlayerMysteryData();
+        copied.copyFrom(source);
+        assertEquals(source.facelessFormRecords,
+                copied.facelessFormRecords);
+        assertNotSame(source.facelessFormRecords,
+                copied.facelessFormRecords);
+        assertNotSame(source.facelessFormRecords.get(0),
+                copied.facelessFormRecords.get(0));
+        assertEquals(0, copied.facelessSelectedForm);
+        assertEquals(1_200L, copied.facelessRecordCooldownEndTick);
+        assertEquals(2_400L, copied.facelessDisguiseCooldownEndTick);
+
+        PlayerMysteryData restored = new PlayerMysteryData();
+        restored.load(source.save());
+        assertEquals(source.facelessFormRecords,
+                restored.facelessFormRecords);
+        assertEquals(0, restored.facelessSelectedForm);
+        assertEquals(1_200L, restored.facelessRecordCooldownEndTick);
+        assertEquals(2_400L, restored.facelessDisguiseCooldownEndTick);
+
+        net.minecraft.nbt.CompoundTag invalid = source.save();
+        net.minecraft.nbt.ListTag records = invalid.getList(
+                "faceless_form_records",
+                net.minecraft.nbt.Tag.TAG_COMPOUND);
+        net.minecraft.nbt.CompoundTag corrupt =
+                new net.minecraft.nbt.CompoundTag();
+        corrupt.putString("entity_type", "not a resource location");
+        records.add(corrupt);
+        invalid.put("faceless_form_records", records);
+        invalid.putInt("faceless_selected_form", 99);
+        invalid.putLong("faceless_record_cd_end", -10L);
+        invalid.putLong("faceless_disguise_cd_end", -20L);
+
+        PlayerMysteryData repaired = new PlayerMysteryData();
+        repaired.load(invalid);
+        assertEquals(1, repaired.facelessFormRecords.size());
+        assertEquals(0, repaired.facelessSelectedForm);
+        assertEquals(0L, repaired.facelessRecordCooldownEndTick);
+        assertEquals(0L, repaired.facelessDisguiseCooldownEndTick);
+        assertTrue(repaired.orphanedEntries.stream().anyMatch(entry ->
+                entry.getString("section").equals(
+                        "faceless_form_records")
+                        && entry.getString("reason").equals(
+                                "invalid_record")));
+    }
+
+    @Test
     void migrationBackupAndOrphansSurviveRoundTripWithoutDuplication() {
         net.minecraft.nbt.CompoundTag legacy = new net.minecraft.nbt.CompoundTag();
         legacy.putInt("schema_version", 15);
@@ -514,7 +577,7 @@ class PlayerMysteryDataTest {
 
         assertEquals(1, migrated.characteristicBundles.size());
         assertEquals(1, migrated.migrationBackups.size());
-        assertEquals(13, migrated.migrationHistory.size());
+        assertEquals(14, migrated.migrationHistory.size());
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
                 entry.getString("section").equals("known_knowledge")));
         assertTrue(migrated.orphanedEntries.stream().anyMatch(entry ->
@@ -530,8 +593,22 @@ class PlayerMysteryDataTest {
         restored.load(migrated.save());
 
         assertEquals(1, restored.migrationBackups.size());
-        assertEquals(13, restored.migrationHistory.size());
+        assertEquals(14, restored.migrationHistory.size());
         assertEquals(migrated.orphanedEntries.size(),
                 restored.orphanedEntries.size());
+    }
+
+    private static net.minecraft.nbt.CompoundTag facelessForm(
+            String recordUuid, String displayName, String entityType) {
+        net.minecraft.nbt.CompoundTag record =
+                new net.minecraft.nbt.CompoundTag();
+        record.putUUID("record_uuid", UUID.fromString(recordUuid));
+        record.putString("entity_type", entityType);
+        record.putString("display_name", displayName);
+        record.putBoolean("player_form", false);
+        record.putFloat("width", 0.6f);
+        record.putFloat("height", 1.95f);
+        record.putFloat("max_health", 20f);
+        return record;
     }
 }

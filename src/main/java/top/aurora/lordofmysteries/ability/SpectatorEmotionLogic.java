@@ -6,6 +6,7 @@ public final class SpectatorEmotionLogic {
         ANGER("anger"),
         FEAR("fear"),
         CURIOSITY("curiosity"),
+        ABNORMAL("abnormal"),
         CALM("calm");
 
         private final String id;
@@ -22,6 +23,13 @@ public final class SpectatorEmotionLogic {
     private SpectatorEmotionLogic() {}
 
     public static Emotion classify(boolean aggressive, float healthRatio, boolean attentive) {
+        return classify(aggressive, healthRatio, attentive, false);
+    }
+
+    public static Emotion classify(
+            boolean aggressive, float healthRatio, boolean attentive,
+            boolean anomalousIdentity) {
+        if (anomalousIdentity) return Emotion.ABNORMAL;
         if (aggressive) return Emotion.ANGER;
         if (healthRatio <= 0.25f) return Emotion.FEAR;
         if (attentive) return Emotion.CURIOSITY;

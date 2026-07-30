@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "lord_of_mysteries:meteor_dust" },
+    { "item": "minecraft:amethyst_shard" },
+    { "item": "minecraft:ender_pearl" },
+    { "item": "lord_of_mysteries:spirit_salt" }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:spatial_rift_crystal"
+  }
+}

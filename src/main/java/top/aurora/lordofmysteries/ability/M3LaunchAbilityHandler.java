@@ -71,8 +71,14 @@ public final class M3LaunchAbilityHandler {
             ServerPlayer player, PlayerMysteryData data,
             M2FoundationAbilityHandler.AbilitySlot slot) {
         if (SeerPotionItem.SEER_PATHWAY.equals(data.pathway)) {
-            return slot == M2FoundationAbilityHandler.AbilitySlot.PRIMARY
-                    ? facelessVeil(player, data) : facelessRestraint(player, data);
+            if (slot == M2FoundationAbilityHandler.AbilitySlot.PRIMARY) {
+                return player.isShiftKeyDown()
+                        ? FacelessFormService.startRecording(player)
+                        : FacelessFormService.toggleDisguise(player);
+            }
+            return player.isShiftKeyDown()
+                    ? FacelessFormService.cycle(player) > 0
+                    : facelessRestraint(player, data);
         }
         if (SpectatorPotionItem.SPECTATOR_PATHWAY.equals(data.pathway)) {
             return slot == M2FoundationAbilityHandler.AbilitySlot.PRIMARY
@@ -97,9 +103,12 @@ public final class M3LaunchAbilityHandler {
             ServerPlayer player, PlayerMysteryData data,
             M2FoundationAbilityHandler.AbilitySlot slot) {
         if (SeerPotionItem.SEER_PATHWAY.equals(data.pathway)) {
-            return slot == M2FoundationAbilityHandler.AbilitySlot.PRIMARY
-                    ? revealSpiritThreads(player, data)
-                    : player.isShiftKeyDown()
+            if (slot == M2FoundationAbilityHandler.AbilitySlot.PRIMARY) {
+                return player.isShiftKeyDown()
+                        ? FacelessFormService.startRecording(player)
+                        : revealSpiritThreads(player, data);
+            }
+            return player.isShiftKeyDown()
                     ? MarionetteService.tryCreateFromLook(player, data)
                     : threadRestraint(player, data);
         }
@@ -121,27 +130,6 @@ public final class M3LaunchAbilityHandler {
                     : travelerRelayOrOutpost(player, data);
         }
         return false;
-    }
-
-    private static boolean facelessVeil(
-            ServerPlayer player, PlayerMysteryData data) {
-        long now = player.level().getGameTime();
-        if (!AbilityCooldowns.ready(data.airBulletCooldownEndTick, now)) {
-            return cooldown(player, data.airBulletCooldownEndTick, now);
-        }
-        if (!SpiritualityCost.tryConsume(data, 25f)) return insufficient(player, 25f);
-        player.addEffect(new MobEffectInstance(
-                MobEffects.INVISIBILITY, 600, 0, false, true, true));
-        player.addEffect(new MobEffectInstance(
-                MobEffects.MOVEMENT_SPEED, 600, 0, false, false, true));
-        data.airBulletCooldownEndTick = AbilityCooldowns.start(now, 1200L);
-        particles(player.serverLevel(), player.position(), ParticleTypes.CLOUD, 30);
-        PlayerFeedback.send(player, Component.translatable(
-                "message.lord_of_mysteries.m3.faceless_veil")
-                .withStyle(ChatFormatting.GRAY));
-        ActingEventHandler.trigger(
-                player, ActingEvent.FACELESS6_MAINTAIN_COVER, null);
-        return true;
     }
 
     private static boolean facelessRestraint(

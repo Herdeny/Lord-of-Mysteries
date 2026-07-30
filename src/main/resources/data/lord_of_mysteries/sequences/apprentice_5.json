@@ -17,5 +17,5 @@
   "acting_events": ["lord_of_mysteries:traveler5_cross_distance", "lord_of_mysteries:traveler5_return_outpost"],
   "potion_id": "lord_of_mysteries:apprentice_potion_5",
   "digestion_target": 100.0,
-  "adaptation_scope": "Collision-safe short door and Overworld outpost return; arbitrary marks, shared team portals, spirit sight, and ritual remain planned."
+  "adaptation_scope": "Collision-safe short travel, persistent named lodestone markers, 20-second bidirectional cross-dimensional team doors, explicit passenger consent, private/party/public access, blacklist and territory hooks, endpoint operations, outpost fallback, and the dedicated ritual are executable; general spirit-world sight remains future work."
 }

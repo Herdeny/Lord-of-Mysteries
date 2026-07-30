@@ -33,6 +33,20 @@ public final class KnowledgeDiscoveryHandler {
             path = "bestiary/spirit_wisp";
         } else if (type == ModEntities.ASHEN_PUPPET.get()) {
             path = "bestiary/ashen_puppet";
+        } else if (type == ModEntities.MARIONETTE_VINE.get()) {
+            path = "bestiary/marionette_vine";
+        } else if (type == ModEntities.CRADLE_MOTH.get()) {
+            path = "bestiary/cradle_moth";
+        } else if (type == ModEntities.TWIN_SERPENT.get()) {
+            path = "bestiary/twin_serpent";
+        } else if (type == ModEntities.ABILITY_LEECH.get()) {
+            path = "bestiary/ability_leech";
+        } else if (type == ModEntities.SCRIBE_GOLEM.get()) {
+            path = "bestiary/scribe_golem";
+        } else if (type == ModEntities.RIFTLING.get()) {
+            path = "bestiary/riftling";
+        } else if (type == ModEntities.WAR_ROSE_HUSK.get()) {
+            path = "bestiary/war_rose_husk";
         } else if (type == ModEntities.SEER_BREAKDOWN.get()) {
             path = "bestiary/seer_breakdown";
         } else if (type == ModEntities.THIEF_BREAKDOWN.get()) {

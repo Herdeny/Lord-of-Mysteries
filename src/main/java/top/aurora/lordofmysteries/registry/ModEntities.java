@@ -9,6 +9,8 @@ import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Endermite;
+import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,11 +24,18 @@ import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
 import top.aurora.lordofmysteries.entity.ShapeshifterSerpentEntity;
 import top.aurora.lordofmysteries.entity.SpiritWispEntity;
 import top.aurora.lordofmysteries.entity.AshenPuppetEntity;
+import top.aurora.lordofmysteries.entity.AbilityLeechEntity;
+import top.aurora.lordofmysteries.entity.CradleMothEntity;
+import top.aurora.lordofmysteries.entity.MarionetteVineEntity;
+import top.aurora.lordofmysteries.entity.RiftlingEntity;
+import top.aurora.lordofmysteries.entity.ScribeGolemEntity;
 import top.aurora.lordofmysteries.entity.ThiefBreakdownEntity;
 import top.aurora.lordofmysteries.entity.ApprenticeBreakdownEntity;
 import top.aurora.lordofmysteries.entity.PsychiatristBreakdownEntity;
 import top.aurora.lordofmysteries.entity.PyromaniacBreakdownEntity;
 import top.aurora.lordofmysteries.entity.TravelerDoorEntity;
+import top.aurora.lordofmysteries.entity.TwinSerpentEntity;
+import top.aurora.lordofmysteries.entity.WarRoseHuskEntity;
 
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModEntities {
@@ -103,6 +112,60 @@ public final class ModEntities {
                             .clientTrackingRange(8)
                             .build(ProjectMystery.MOD_ID + ":ashen_puppet"));
 
+    public static final RegistryObject<EntityType<MarionetteVineEntity>>
+            MARIONETTE_VINE = ENTITIES.register("marionette_vine", () ->
+                    EntityType.Builder.of(
+                                    MarionetteVineEntity::new,
+                                    MobCategory.MONSTER)
+                            .sized(0.9f, 0.65f)
+                            .clientTrackingRange(8)
+                            .build(ProjectMystery.MOD_ID + ":marionette_vine"));
+
+    public static final RegistryObject<EntityType<CradleMothEntity>> CRADLE_MOTH =
+            ENTITIES.register("cradle_moth", () ->
+                    EntityType.Builder.of(CradleMothEntity::new, MobCategory.MONSTER)
+                            .sized(0.55f, 0.8f)
+                            .clientTrackingRange(8)
+                            .build(ProjectMystery.MOD_ID + ":cradle_moth"));
+
+    public static final RegistryObject<EntityType<TwinSerpentEntity>> TWIN_SERPENT =
+            ENTITIES.register("twin_serpent", () ->
+                    EntityType.Builder.of(TwinSerpentEntity::new, MobCategory.MONSTER)
+                            .sized(0.82f, 0.55f)
+                            .clientTrackingRange(8)
+                            .build(ProjectMystery.MOD_ID + ":twin_serpent"));
+
+    public static final RegistryObject<EntityType<AbilityLeechEntity>> ABILITY_LEECH =
+            ENTITIES.register("ability_leech", () ->
+                    EntityType.Builder.of(AbilityLeechEntity::new, MobCategory.MONSTER)
+                            .sized(0.45f, 0.3f)
+                            .clientTrackingRange(8)
+                            .build(ProjectMystery.MOD_ID + ":ability_leech"));
+
+    public static final RegistryObject<EntityType<ScribeGolemEntity>> SCRIBE_GOLEM =
+            ENTITIES.register("scribe_golem", () ->
+                    EntityType.Builder.of(ScribeGolemEntity::new, MobCategory.MONSTER)
+                            .sized(0.7f, 2.1f)
+                            .clientTrackingRange(8)
+                            .build(ProjectMystery.MOD_ID + ":scribe_golem"));
+
+    public static final RegistryObject<EntityType<RiftlingEntity>> RIFTLING =
+            ENTITIES.register("riftling", () ->
+                    EntityType.Builder.of(RiftlingEntity::new, MobCategory.MONSTER)
+                            .sized(0.45f, 0.35f)
+                            .clientTrackingRange(8)
+                            .build(ProjectMystery.MOD_ID + ":riftling"));
+
+    public static final RegistryObject<EntityType<WarRoseHuskEntity>> WAR_ROSE_HUSK =
+            ENTITIES.register("war_rose_husk", () ->
+                    EntityType.Builder.of(
+                                    WarRoseHuskEntity::new,
+                                    MobCategory.MONSTER)
+                            .sized(0.65f, 2.05f)
+                            .fireImmune()
+                            .clientTrackingRange(8)
+                            .build(ProjectMystery.MOD_ID + ":war_rose_husk"));
+
     public static final RegistryObject<EntityType<TravelerDoorEntity>>
             TRAVELER_DOOR = ENTITIES.register("traveler_door", () ->
                     EntityType.Builder.of(
@@ -167,6 +230,51 @@ public final class ModEntities {
                 .add(Attributes.ARMOR, 3.0)
                 .add(Attributes.FOLLOW_RANGE, 28.0)
                 .build());
+        event.put(MARIONETTE_VINE.get(), Spider.createAttributes()
+                .add(Attributes.MAX_HEALTH, 30.0)
+                .add(Attributes.ATTACK_DAMAGE, 6.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.31)
+                .add(Attributes.ARMOR, 4.0)
+                .add(Attributes.FOLLOW_RANGE, 28.0)
+                .build());
+        event.put(CRADLE_MOTH.get(), Vex.createAttributes()
+                .add(Attributes.MAX_HEALTH, 22.0)
+                .add(Attributes.ATTACK_DAMAGE, 5.0)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
+                .build());
+        event.put(TWIN_SERPENT.get(), Spider.createAttributes()
+                .add(Attributes.MAX_HEALTH, 32.0)
+                .add(Attributes.ATTACK_DAMAGE, 7.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.36)
+                .add(Attributes.ARMOR, 3.0)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
+                .build());
+        event.put(ABILITY_LEECH.get(), Silverfish.createAttributes()
+                .add(Attributes.MAX_HEALTH, 18.0)
+                .add(Attributes.ATTACK_DAMAGE, 4.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.32)
+                .add(Attributes.FOLLOW_RANGE, 24.0)
+                .build());
+        event.put(SCRIBE_GOLEM.get(), Zombie.createAttributes()
+                .add(Attributes.MAX_HEALTH, 42.0)
+                .add(Attributes.ATTACK_DAMAGE, 7.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.23)
+                .add(Attributes.ARMOR, 8.0)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
+                .build());
+        event.put(RIFTLING.get(), Endermite.createAttributes()
+                .add(Attributes.MAX_HEALTH, 20.0)
+                .add(Attributes.ATTACK_DAMAGE, 5.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.34)
+                .add(Attributes.FOLLOW_RANGE, 24.0)
+                .build());
+        event.put(WAR_ROSE_HUSK.get(), Zombie.createAttributes()
+                .add(Attributes.MAX_HEALTH, 38.0)
+                .add(Attributes.ATTACK_DAMAGE, 7.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.27)
+                .add(Attributes.ARMOR, 6.0)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
+                .build());
     }
 
     public static void registerSpawnPlacements() {
@@ -182,6 +290,41 @@ public final class ModEntities {
                 Monster::checkMonsterSpawnRules);
         SpawnPlacements.register(
                 ASHEN_PUPPET.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(
+                MARIONETTE_VINE.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(
+                CRADLE_MOTH.get(),
+                SpawnPlacements.Type.NO_RESTRICTIONS,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(
+                TWIN_SERPENT.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(
+                ABILITY_LEECH.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(
+                SCRIBE_GOLEM.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(
+                RIFTLING.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(
+                WAR_ROSE_HUSK.get(),
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Monster::checkMonsterSpawnRules);

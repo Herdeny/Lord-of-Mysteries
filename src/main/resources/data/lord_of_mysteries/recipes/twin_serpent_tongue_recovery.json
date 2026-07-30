@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "lord_of_mysteries:ember_salamander_gland" },
+    { "item": "minecraft:rabbit_foot" },
+    { "item": "lord_of_mysteries:black_wax" }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:twin_serpent_tongue"
+  }
+}

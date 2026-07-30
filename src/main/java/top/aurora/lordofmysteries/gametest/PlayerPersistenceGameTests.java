@@ -18,6 +18,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
@@ -28,8 +29,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.RegisterGameTestsEvent;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import top.aurora.lordofmysteries.ProjectMystery;
+import top.aurora.lordofmysteries.ability.FacelessFormPolicy;
 import top.aurora.lordofmysteries.ability.M2FoundationAbilityHandler;
 import top.aurora.lordofmysteries.ability.M3LaunchAbilityHandler;
 import top.aurora.lordofmysteries.ability.M3TravelNetworkLogic;
@@ -1234,6 +1237,134 @@ public final class PlayerPersistenceGameTests {
                 player.getInventory().countItem(
                         ModItems.SPIRIT_SALT.get()) == saltBeforeRetry,
                 "retry without extra load must preserve all materials");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void facelessFormsArePrivatePersistentAndWorldBacked(
+            GameTestHelper helper) {
+        ServerPlayer first = m3Player(
+                helper, "faceless-first", "seer", 6);
+        ServerPlayer second = m3Player(
+                helper, "faceless-second", "seer", 6);
+        Villager villager = EntityType.VILLAGER.create(
+                helper.getLevel());
+        helper.assertTrue(villager != null,
+                "registered identity target must be constructible");
+        if (villager == null) return;
+        villager.setCustomName(
+                net.minecraft.network.chat.Component.literal(
+                        "Archive Witness"));
+        villager.setPos(first.getX() + 2d, first.getY(), first.getZ());
+        helper.getLevel().addFreshEntity(villager);
+        helper.assertTrue(FacelessFormPolicy.canRecord(villager),
+                "non-player living targets must remain recordable");
+        helper.assertTrue(!FacelessFormPolicy.canRecord(second),
+                "other players must not be valid identity-recording targets");
+        boolean playerRecordRejected = false;
+        try {
+            FacelessFormPolicy.createRecord(second);
+        } catch (IllegalArgumentException expected) {
+            playerRecordRejected = true;
+        }
+        helper.assertTrue(playerRecordRejected,
+                "direct policy calls must reject player identity records");
+
+        PlayerMysteryData firstData = MysteryCapability.get(first);
+        PlayerMysteryData secondData = MysteryCapability.get(second);
+        FacelessFormPolicy.Selection firstStored =
+                FacelessFormPolicy.store(
+                        firstData.facelessFormRecords,
+                        FacelessFormPolicy.createRecord(villager),
+                        firstData.facelessSelectedForm);
+        firstData.facelessFormRecords = firstStored.records();
+        firstData.facelessSelectedForm = firstStored.selectedIndex();
+        firstData.facelessRecordCooldownEndTick = 1_200L;
+        firstData.facelessDisguiseCooldownEndTick = 2_400L;
+        FacelessFormPolicy.Selection secondStored =
+                FacelessFormPolicy.store(
+                        secondData.facelessFormRecords,
+                        FacelessFormPolicy.createRecord(villager),
+                        secondData.facelessSelectedForm);
+        secondData.facelessFormRecords = secondStored.records();
+        secondData.facelessSelectedForm = secondStored.selectedIndex();
+
+        helper.assertTrue(firstData.facelessFormRecords.size() == 1
+                        && secondData.facelessFormRecords.size() == 1,
+                "each player must own an independent identity ledger");
+        helper.assertTrue(!FacelessFormPolicy.recordId(
+                        firstData.facelessFormRecords.get(0)).equals(
+                        FacelessFormPolicy.recordId(
+                                secondData.facelessFormRecords.get(0))),
+                "record identifiers must not be shared across players");
+        helper.assertTrue("Archive Witness".equals(
+                        FacelessFormPolicy.displayName(
+                                firstData.facelessFormRecords.get(0))),
+                "recorded display identity must come from a live world target");
+
+        CompoundTag serialized = firstData.save();
+        helper.assertTrue(!serialized.toString().contains(
+                        villager.getUUID().toString())
+                        && !serialized.toString().contains(
+                        second.getUUID().toString()),
+                "identity records must not persist target or other-player UUIDs");
+        MysteryCapability.Provider restored =
+                new MysteryCapability.Provider();
+        restored.deserializeNBT(serialized);
+        PlayerMysteryData restoredData = restored.getData();
+        helper.assertTrue(
+                restoredData.facelessFormRecords.equals(
+                        firstData.facelessFormRecords)
+                        && restoredData.facelessSelectedForm == 0
+                        && restoredData.facelessRecordCooldownEndTick
+                        == 1_200L
+                        && restoredData.facelessDisguiseCooldownEndTick
+                        == 2_400L,
+                "forms, selection, and cooldowns must survive provider restart");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void m3MaterialCreaturesRegisterAndEnterWorld(
+            GameTestHelper helper) {
+        List<Mob> creatures = List.of(
+                ModEntities.MARIONETTE_VINE.get().create(helper.getLevel()),
+                ModEntities.CRADLE_MOTH.get().create(helper.getLevel()),
+                ModEntities.TWIN_SERPENT.get().create(helper.getLevel()),
+                ModEntities.ABILITY_LEECH.get().create(helper.getLevel()),
+                ModEntities.SCRIBE_GOLEM.get().create(helper.getLevel()),
+                ModEntities.RIFTLING.get().create(helper.getLevel()),
+                ModEntities.WAR_ROSE_HUSK.get().create(helper.getLevel()));
+        helper.assertTrue(creatures.stream().noneMatch(
+                        java.util.Objects::isNull),
+                "all seven M3 ingredient creatures must be constructible");
+        int index = 0;
+        for (Mob creature : creatures) {
+            if (creature == null) return;
+            creature.setNoAi(true);
+            creature.setPos(
+                    helper.absolutePos(new BlockPos(
+                            1 + index % 4, 3, 1 + index / 4))
+                            .getCenter());
+            helper.assertTrue(
+                    helper.getLevel().addFreshEntity(creature),
+                    "M3 ingredient creature must enter the server world");
+            ResourceLocation typeId =
+                    ForgeRegistries.ENTITY_TYPES.getKey(
+                            creature.getType());
+            helper.assertTrue(typeId != null
+                            && ProjectMystery.MOD_ID.equals(
+                            typeId.getNamespace())
+                            && creature.getMaxHealth() > 0f
+                            && creature.getAttributeValue(
+                            net.minecraft.world.entity.ai.attributes
+                                    .Attributes.ATTACK_DAMAGE) > 0d,
+                    "M3 ingredient creature must retain a registered mod id and combat attributes");
+            index++;
+        }
+        helper.assertTrue(creatures.stream().allMatch(
+                        Mob::isAlive),
+                "all M3 ingredient creatures must remain alive after spawn");
         helper.succeed();
     }
 

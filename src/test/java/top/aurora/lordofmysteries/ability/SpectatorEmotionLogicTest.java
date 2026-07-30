@@ -13,6 +13,13 @@ class SpectatorEmotionLogicTest {
     }
 
     @Test
+    void anomalousIdentityOverridesVisibleEmotion() {
+        assertEquals(SpectatorEmotionLogic.Emotion.ABNORMAL,
+                SpectatorEmotionLogic.classify(
+                        true, 0.1f, true, true));
+    }
+
+    @Test
     void lowHealthReadsAsFear() {
         assertEquals(SpectatorEmotionLogic.Emotion.FEAR,
                 SpectatorEmotionLogic.classify(false, 0.25f, true));

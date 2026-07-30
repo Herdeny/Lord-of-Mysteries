@@ -17,5 +17,5 @@
   "acting_events": ["lord_of_mysteries:dream_stealer5_retrieve_dream", "lord_of_mysteries:dream_stealer5_escape_reality"],
   "potion_id": "lord_of_mysteries:thief_potion_5",
   "digestion_target": 100.0,
-  "adaptation_scope": "Once-per-villager-day harmless dream extraction and collision-safe blink; dream infiltration, lie web, and ritual remain planned."
+  "adaptation_scope": "Once-per-villager-day harmless dream extraction, collision-safe reality dislocation, and the dedicated supported Sequence 5 ritual are executable; player dream infiltration and lie-web feedback depend on the later M5 dream layer."
 }

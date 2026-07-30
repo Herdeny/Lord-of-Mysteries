@@ -29,6 +29,7 @@
 - [偷盗者与学徒序列 8–7](M2-Sequence-8-7-Thief-and-Apprentice)
 - [心理医生与纵火家序列 7](M2-Sequence-7-Psychiatrist-and-Pyromaniac)
 - [M3 首发五途径序列 6–5](M3-Launch-Pathways)
+- [M3 专属材料生态与无面人形体](M3-Material-Ecology-and-Faceless-Forms)
 - [M3 序列 5 专属晋升仪式](M3-Sequence-5-Advancement-Rituals)
 - [M3 旅行家空间标记与同行远门](M3-Traveler-Spatial-Relay)
 - [M3 非凡特性处理](M3-Characteristic-Processing)

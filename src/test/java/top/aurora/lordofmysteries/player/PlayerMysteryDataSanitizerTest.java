@@ -156,6 +156,21 @@ class PlayerMysteryDataSanitizerTest {
     }
 
     @Test
+    void repairsFacelessSelectionCooldownsAndInvalidRecords() {
+        PlayerMysteryData data = new PlayerMysteryData();
+        data.facelessFormRecords.add(new CompoundTag());
+        data.facelessSelectedForm = 7;
+        data.facelessRecordCooldownEndTick = -1L;
+        data.facelessDisguiseCooldownEndTick = -2L;
+
+        assertTrue(data.sanitize() >= 4);
+        assertTrue(data.facelessFormRecords.isEmpty());
+        assertEquals(-1, data.facelessSelectedForm);
+        assertEquals(0L, data.facelessRecordCooldownEndTick);
+        assertEquals(0L, data.facelessDisguiseCooldownEndTick);
+    }
+
+    @Test
     void validOrganizationResponseStateNeedsNoRepair() {
         PlayerMysteryData data = new PlayerMysteryData();
         DynamicCaseHistoryEntry history = new DynamicCaseHistoryEntry(

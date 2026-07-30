@@ -74,6 +74,7 @@ public final class ModItems {
     public static final RegistryObject<Item> MOONWATER = simple("moonwater");
     public static final RegistryObject<Item> PURE_WATER = simple("pure_water");
     public static final RegistryObject<Item> WHITE_CANDLE = simple("white_candle");
+    public static final RegistryObject<Item> BLACK_WAX = simple("black_wax");
     public static final RegistryObject<Item> DEEP_GRAY_SPIRIT_TEAR =
             simple("deep_gray_spirit_tear");
     public static final RegistryObject<Item> HEATHER = simple("heather");
@@ -102,6 +103,24 @@ public final class ModItems {
             simple("meteor_dust");
     public static final RegistryObject<Item> BLANK_MANUSCRIPT =
             simple("blank_manuscript");
+    public static final RegistryObject<Item> SHAPESHIFTER_BLOOD =
+            simple("shapeshifter_blood");
+    public static final RegistryObject<Item> MARIONETTE_VINE_CORE =
+            simple("marionette_vine_core");
+    public static final RegistryObject<Item> CRADLE_MOTH_EYE =
+            simple("cradle_moth_eye");
+    public static final RegistryObject<Item> SLEEPING_GIANT_EYELASH =
+            simple("sleeping_giant_eyelash");
+    public static final RegistryObject<Item> TWIN_SERPENT_TONGUE =
+            simple("twin_serpent_tongue");
+    public static final RegistryObject<Item> BATTLEFIELD_IRON_ROSE =
+            simple("battlefield_iron_rose");
+    public static final RegistryObject<Item> ABILITY_LEECH_CORE =
+            simple("ability_leech_core");
+    public static final RegistryObject<Item> SCRIBE_GOLEM_FINGER_BONE =
+            simple("scribe_golem_finger_bone");
+    public static final RegistryObject<Item> SPATIAL_RIFT_CRYSTAL =
+            simple("spatial_rift_crystal");
     public static final RegistryObject<Item> MYSTIC_INK = simple("mystic_ink");
     public static final RegistryObject<Item> FORMULA_FRAGMENT = ITEMS.register(
             "formula_fragment",
@@ -189,6 +208,41 @@ public final class ModItems {
             () -> new ForgeSpawnEggItem(
                     ModEntities.ASHEN_PUPPET, 0x4A4541, 0xB09A82,
                     new Item.Properties()));
+    public static final RegistryObject<Item> MARIONETTE_VINE_SPAWN_EGG =
+            ITEMS.register("marionette_vine_spawn_egg",
+                    () -> new ForgeSpawnEggItem(
+                            ModEntities.MARIONETTE_VINE, 0x203B2A, 0xA67C52,
+                            new Item.Properties()));
+    public static final RegistryObject<Item> CRADLE_MOTH_SPAWN_EGG =
+            ITEMS.register("cradle_moth_spawn_egg",
+                    () -> new ForgeSpawnEggItem(
+                            ModEntities.CRADLE_MOTH, 0xD8D1B6, 0x76649A,
+                            new Item.Properties()));
+    public static final RegistryObject<Item> TWIN_SERPENT_SPAWN_EGG =
+            ITEMS.register("twin_serpent_spawn_egg",
+                    () -> new ForgeSpawnEggItem(
+                            ModEntities.TWIN_SERPENT, 0x552B24, 0xD1653B,
+                            new Item.Properties()));
+    public static final RegistryObject<Item> ABILITY_LEECH_SPAWN_EGG =
+            ITEMS.register("ability_leech_spawn_egg",
+                    () -> new ForgeSpawnEggItem(
+                            ModEntities.ABILITY_LEECH, 0x161722, 0x7B5BA7,
+                            new Item.Properties()));
+    public static final RegistryObject<Item> SCRIBE_GOLEM_SPAWN_EGG =
+            ITEMS.register("scribe_golem_spawn_egg",
+                    () -> new ForgeSpawnEggItem(
+                            ModEntities.SCRIBE_GOLEM, 0xD9D2BD, 0x31546B,
+                            new Item.Properties()));
+    public static final RegistryObject<Item> RIFTLING_SPAWN_EGG =
+            ITEMS.register("riftling_spawn_egg",
+                    () -> new ForgeSpawnEggItem(
+                            ModEntities.RIFTLING, 0x24143D, 0x8E6CD1,
+                            new Item.Properties()));
+    public static final RegistryObject<Item> WAR_ROSE_HUSK_SPAWN_EGG =
+            ITEMS.register("war_rose_husk_spawn_egg",
+                    () -> new ForgeSpawnEggItem(
+                            ModEntities.WAR_ROSE_HUSK, 0x4A1D20, 0xC14F58,
+                            new Item.Properties()));
     public static final RegistryObject<Item> THIEF_BREAKDOWN_SPAWN_EGG = ITEMS.register(
             "thief_breakdown_spawn_egg",
             () -> new ForgeSpawnEggItem(

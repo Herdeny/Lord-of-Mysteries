@@ -26,6 +26,7 @@ public final class CrucibleRecipeLogic {
     public static final String SPIRIT_SALT = "lord_of_mysteries:spirit_salt";
     public static final String ASHEN_THREAD = "lord_of_mysteries:ashen_thread";
     public static final String WHITE_CANDLE = "lord_of_mysteries:white_candle";
+    public static final String BLACK_WAX = "lord_of_mysteries:black_wax";
     public static final String SHADOW_MARTEN_CLAW =
             "lord_of_mysteries:shadow_marten_claw";
     public static final String STARLIGHT_MOSS =
@@ -44,6 +45,24 @@ public final class CrucibleRecipeLogic {
     public static final String METEOR_DUST = "lord_of_mysteries:meteor_dust";
     public static final String BLANK_MANUSCRIPT =
             "lord_of_mysteries:blank_manuscript";
+    public static final String SHAPESHIFTER_BLOOD =
+            "lord_of_mysteries:shapeshifter_blood";
+    public static final String MARIONETTE_VINE_CORE =
+            "lord_of_mysteries:marionette_vine_core";
+    public static final String CRADLE_MOTH_EYE =
+            "lord_of_mysteries:cradle_moth_eye";
+    public static final String SLEEPING_GIANT_EYELASH =
+            "lord_of_mysteries:sleeping_giant_eyelash";
+    public static final String TWIN_SERPENT_TONGUE =
+            "lord_of_mysteries:twin_serpent_tongue";
+    public static final String BATTLEFIELD_IRON_ROSE =
+            "lord_of_mysteries:battlefield_iron_rose";
+    public static final String ABILITY_LEECH_CORE =
+            "lord_of_mysteries:ability_leech_core";
+    public static final String SCRIBE_GOLEM_FINGER_BONE =
+            "lord_of_mysteries:scribe_golem_finger_bone";
+    public static final String SPATIAL_RIFT_CRYSTAL =
+            "lord_of_mysteries:spatial_rift_crystal";
     public static final String BLAZE_POWDER = "minecraft:blaze_powder";
     public static final String SLIME_BALL = "minecraft:slime_ball";
     public static final String GOLD_NUGGET = "minecraft:gold_nugget";
@@ -142,9 +161,9 @@ public final class CrucibleRecipeLogic {
         MAGICIAN(BrewedPotion.SEER_7,
                 SHAPESHIFTER_SERPENT_GLAND, ASH_POWDER, SILVER_FILINGS, 90f),
         FACELESS(BrewedPotion.SEER_6,
-                SHAPESHIFTER_SERPENT_GLAND, SILVER_FILINGS, ASHEN_THREAD, 75f),
+                SHAPESHIFTER_BLOOD, SILVER_FILINGS, BLACK_WAX, 75f),
         MARIONETTIST(BrewedPotion.SEER_5,
-                ASHEN_THREAD, SPIRIT_SALT, WHITE_CANDLE, 65f),
+                MARIONETTE_VINE_CORE, BLACK_WAX, SPIRIT_SALT, 65f),
         SPECTATOR(BrewedPotion.SPECTATOR_9,
                 SPIRIT_HERB, FERMENTED_SPIDER_EYE, HONEY_BOTTLE, 70f),
         TELEPATHIST(BrewedPotion.SPECTATOR_8,
@@ -152,18 +171,18 @@ public final class CrucibleRecipeLogic {
         PSYCHIATRIST(BrewedPotion.SPECTATOR_7,
                 DREAM_SCALE_FRAGMENT, FERMENTED_SPIDER_EYE, MYSTIC_INK, 74f),
         HYPNOTIST(BrewedPotion.SPECTATOR_6,
-                DREAM_SCALE_FRAGMENT, HEATHER, HONEY_BOTTLE, 70f),
+                CRADLE_MOTH_EYE, BLACK_WAX, HEATHER, 70f),
         DREAMWALKER(BrewedPotion.SPECTATOR_5,
-                DREAM_SCALE_FRAGMENT, MOONWATER, SILVER_FILINGS, 65f),
+                SLEEPING_GIANT_EYELASH, MOONWATER, SILVER_FILINGS, 65f),
         HUNTER(BrewedPotion.HUNTER_9, SPIRIT_HERB, BONE, RABBIT_FOOT, 70f),
         PROVOKER(BrewedPotion.HUNTER_8,
                 SPIRIT_HERB, GUNPOWDER, REDSTONE, 70f),
         PYROMANIAC(BrewedPotion.HUNTER_7,
                 EMBER_SALAMANDER_GLAND, BLAZE_POWDER, GUNPOWDER, 82f),
         CONSPIRER(BrewedPotion.HUNTER_6,
-                EMBER_SALAMANDER_GLAND, SPIRIT_ALCOHOL, BONE, 75f),
+                TWIN_SERPENT_TONGUE, BLACK_WAX, SPIRIT_ALCOHOL, 75f),
         REAPER(BrewedPotion.HUNTER_5,
-                ASH_POWDER, BLAZE_POWDER, SPIRIT_SALT, 82f),
+                BATTLEFIELD_IRON_ROSE, ASH_POWDER, BLACK_WAX, 82f),
         THIEF(BrewedPotion.THIEF_9,
                 SHADOW_MARTEN_CLAW, FERMENTED_SPIDER_EYE, SPIRIT_ALCOHOL, 68f),
         SWINDLER(BrewedPotion.THIEF_8,
@@ -171,9 +190,9 @@ public final class CrucibleRecipeLogic {
         CRYPTOLOGIST(BrewedPotion.THIEF_7,
                 ANCIENT_TABLET_SPORE_SAC, MOSS_BLOCK, REDSTONE, 65f),
         PROMETHEUS(BrewedPotion.THIEF_6,
-                SHADOW_MARTEN_CLAW, ASH_POWDER, SPIRIT_ALCOHOL, 70f),
+                ABILITY_LEECH_CORE, ASH_POWDER, BLACK_WAX, 70f),
         DREAM_STEALER(BrewedPotion.THIEF_5,
-                DREAM_SCALE_FRAGMENT, MYSTIC_INK, MOONWATER, 65f),
+                DREAM_SCALE_FRAGMENT, BLACK_WAX, MOONWATER, 65f),
         APPRENTICE(BrewedPotion.APPRENTICE_9,
                 STARLIGHT_MOSS, AMETHYST_SHARD, MYSTIC_INK, 72f),
         TRICKMASTER(BrewedPotion.APPRENTICE_8,
@@ -181,9 +200,9 @@ public final class CrucibleRecipeLogic {
         ASTROLOGER(BrewedPotion.APPRENTICE_7,
                 METEOR_DUST, MOONWATER, COMPASS, 62f),
         SCRIBE(BrewedPotion.APPRENTICE_6,
-                BLANK_MANUSCRIPT, SPIRIT_SALT, MYSTIC_INK, 65f),
+                SCRIBE_GOLEM_FINGER_BONE, SPIRIT_SALT, BLACK_WAX, 65f),
         TRAVELER(BrewedPotion.APPRENTICE_5,
-                METEOR_DUST, SILVER_FILINGS, ENDER_PEARL, 75f);
+                SPATIAL_RIFT_CRYSTAL, SILVER_FILINGS, SPIRIT_SALT, 75f);
 
         private final BrewedPotion potion;
         private final String first;

@@ -12,7 +12,7 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/logo.png">
   <link rel="icon" href="assets/logo.png">
-  <link rel="stylesheet" href="assets/wiki.css?v=0.9.28">
+  <link rel="stylesheet" href="assets/wiki.css?v=0.9.29">
 </head>
 <body id="top">
   <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -78,8 +78,8 @@
             <strong class="pending">待验收</strong>
           </div>
           <div>
-            <span>M3 序列 6–5</span>
-            <strong class="code-ready">code_ready</strong>
+            <span>M3 可玩候选</span>
+            <strong class="code-ready">playable</strong>
           </div>
         </div>
       </aside>
@@ -112,9 +112,9 @@
         </article>
         <article class="entry-card">
           <span class="entry-index">03</span>
-          <p class="entry-kicker">M3 测试者</p>
-          <h3>序列 6–5、远门与秘偶</h3>
-          <p>完成专属仪式后使用 <code>Y</code> / <code>U</code>；旅行家用 <code>/pm travel</code> 管理双向远门，秘偶大师用 <code>/pm marionette</code> 管理三槽编队，并用秘偶收纳卷轴跨维携带。</p>
+          <p class="entry-kicker">M3 玩家</p>
+          <h3>材料生态、形体、远门与秘偶</h3>
+          <p>先用 <code>/pm m3</code> 获取当前下一步；<code>/pm items</code> 与 <code>/pm bestiary</code> 指向专属材料和生物。无面人用 <code>/pm faceless</code> 管理八槽形体，旅行家用 <code>/pm travel</code> 做端点运维，秘偶大师用 <code>/pm marionette</code> 管理三槽持久秘偶编队与秘偶收纳卷轴。</p>
           <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M3-Launch-Pathways" target="_blank" rel="noopener">打开 M3 玩家入口 ↗</a>
         </article>
         <article class="entry-card">
@@ -150,7 +150,7 @@
         <article class="progress-card active-progress">
           <div class="progress-card-head">
             <span class="milestone-mark">M2</span>
-            <span class="state-badge active">当前里程碑</span>
+            <span class="state-badge active">机器范围完成</span>
           </div>
           <h3>调查与生活</h3>
           <p>正式街区、动态案件、证据推理、组织响应、职业经济、神秘暴露与世界事件已经形成服务端权威闭环。</p>
@@ -162,14 +162,14 @@
         <article class="progress-card">
           <div class="progress-card-head">
             <span class="milestone-mark violet">M3</span>
-            <span class="state-badge planned">首批预实现</span>
+            <span class="state-badge planned">当前里程碑</span>
           </div>
           <h3>五条首发途径</h3>
-          <p>序列 6–5 已具备魔药、能力、扮演、五种专属仪式、旅行家 20 秒双向远门/命名/权限/黑名单/端点运维、秘偶大师三槽持久编队/权威收纳卷轴/跨维安全部署、非凡特性加工及全服来源审计；完整子系统与真人多人平衡仍在推进。</p>
+          <p>序列 6–5 已具备 10 瓶魔药、10 种最终材料、7 种生态生物、20 项能力、20 项扮演、五种专属仪式、无面人八槽形体、旅行家双向远门、秘偶大师三槽编队/权威收纳、非凡特性加工及全服来源审计。</p>
           <p>特性分离台与洗涤台提供守恒拆分、同途径重组、封存和有纯度代价的净化；主世界账本阻止已消费来源跨玩家、跨维度或重启后重放。</p>
           <ul>
             <li>来源重放不扣特性、催化剂、探针耐久或析出材料，处理结果由服务端原子结算</li>
-            <li>形体记录、具体领地 Mod 适配器、组织门权限与专属资源仍未标为完成；共享梦境依 v0.9 路线归入 M5</li>
+            <li>精确玩家皮肤/模型/声线、具体领地 Mod 适配器、组织门权限、高精美术和真人互补长测仍是发布边界；共享梦境归入 M5</li>
           </ul>
         </article>
       </div>
@@ -239,9 +239,9 @@
       </div>
       <div class="roadmap-overview">
         <div class="roadmap-progress" aria-label="当前路线位置">
-          <span style="--progress: 19%"></span>
+          <span style="--progress: 27%"></span>
         </div>
-        <p><b>M0–M1</b> 已完成机器门禁 · <b>M2</b> 等待真人专服门禁 · <b>M3</b> 已完成五种仪式、旅行家持续双向远门/权限/端点运维、三槽持久秘偶编队/跨维收纳、特性加工与全服来源审计纵切</p>
+        <p><b>M0–M1</b> 已完成机器门禁 · <b>M2</b> 自动化范围闭环并保留真人长测 · <b>M3</b> 已完成最终材料生态、无面人形体、五种仪式、旅行家双向远门、三槽秘偶/跨维收纳、特性加工与全服来源审计的可玩候选</p>
       </div>
       <div class="roadmap" id="roadmap-track"></div>
       <details class="future-roadmap">
@@ -261,7 +261,7 @@
       </div>
       <div class="resource-grid">
         <a class="resource-card" href="https://github.com/Herdeny/Lord-of-Mysteries/wiki" target="_blank" rel="noopener">
-          <span>玩家知识库</span><strong>GitHub Wiki</strong><small>玩法手册、案件说明、M3 仪式、远门、秘偶与特性加工</small>
+          <span>玩家知识库</span><strong>GitHub Wiki</strong><small>玩法手册、案件说明、M3 材料生态、无面人形体、仪式、远门、秘偶与特性加工</small>
         </a>
         <a class="resource-card" href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/DEDICATED_SERVER_TEST_MATRIX.md" target="_blank" rel="noopener">
           <span>服务器运维</span><strong>专服验证矩阵</strong><small>启动、重启、多人、回滚与诊断</small>
@@ -319,10 +319,10 @@
     </article>
   </div>
 
-  <script src="assets/project-meta.js?v=0.9.28"></script>
-  <script src="assets/roadmap-data.js?v=0.9.28"></script>
-  <script src="assets/wiki-data.js?v=0.9.28"></script>
-  <script src="assets/catalog-data.js?v=0.9.28"></script>
-  <script src="assets/wiki.js?v=0.9.28"></script>
+  <script src="assets/project-meta.js?v=0.9.29"></script>
+  <script src="assets/roadmap-data.js?v=0.9.29"></script>
+  <script src="assets/wiki-data.js?v=0.9.29"></script>
+  <script src="assets/catalog-data.js?v=0.9.29"></script>
+  <script src="assets/wiki.js?v=0.9.29"></script>
 </body>
 </html>

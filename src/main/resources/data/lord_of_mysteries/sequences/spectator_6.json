@@ -17,5 +17,5 @@
   "acting_events": ["lord_of_mysteries:hypnotist6_deescalate_hostile", "lord_of_mysteries:hypnotist6_barrier_ally"],
   "potion_id": "lord_of_mysteries:spectator_potion_6",
   "digestion_target": 100.0,
-  "adaptation_scope": "Executable non-player hypnosis and local ally barrier; memory editing and delayed suggestion remain planned."
+  "adaptation_scope": "Non-player hypnosis, local ally barrier, and emotion-layer detection of active Faceless identity anomalies are executable; persistent memory editing and delayed conditional suggestions remain future work."
 }

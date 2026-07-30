@@ -210,45 +210,45 @@ class CrucibleRecipeLogicTest {
     void allFivePathwaysHaveDistinctSequenceSixAndFiveRecipes() {
         List<RecipeCase> cases = List.of(
                 new RecipeCase(CrucibleRecipeLogic.BrewedPotion.SEER_6,
-                        List.of(CrucibleRecipeLogic.SHAPESHIFTER_SERPENT_GLAND,
+                        List.of(CrucibleRecipeLogic.SHAPESHIFTER_BLOOD,
                                 CrucibleRecipeLogic.SILVER_FILINGS,
-                                CrucibleRecipeLogic.ASHEN_THREAD), 75f),
+                                CrucibleRecipeLogic.BLACK_WAX), 75f),
                 new RecipeCase(CrucibleRecipeLogic.BrewedPotion.SEER_5,
-                        List.of(CrucibleRecipeLogic.ASHEN_THREAD,
-                                CrucibleRecipeLogic.SPIRIT_SALT,
-                                CrucibleRecipeLogic.WHITE_CANDLE), 65f),
+                        List.of(CrucibleRecipeLogic.MARIONETTE_VINE_CORE,
+                                CrucibleRecipeLogic.BLACK_WAX,
+                                CrucibleRecipeLogic.SPIRIT_SALT), 65f),
                 new RecipeCase(CrucibleRecipeLogic.BrewedPotion.SPECTATOR_6,
-                        List.of(CrucibleRecipeLogic.DREAM_SCALE_FRAGMENT,
-                                CrucibleRecipeLogic.HEATHER,
-                                CrucibleRecipeLogic.HONEY_BOTTLE), 70f),
+                        List.of(CrucibleRecipeLogic.CRADLE_MOTH_EYE,
+                                CrucibleRecipeLogic.BLACK_WAX,
+                                CrucibleRecipeLogic.HEATHER), 70f),
                 new RecipeCase(CrucibleRecipeLogic.BrewedPotion.SPECTATOR_5,
-                        List.of(CrucibleRecipeLogic.DREAM_SCALE_FRAGMENT,
+                        List.of(CrucibleRecipeLogic.SLEEPING_GIANT_EYELASH,
                                 CrucibleRecipeLogic.MOONWATER,
                                 CrucibleRecipeLogic.SILVER_FILINGS), 65f),
                 new RecipeCase(CrucibleRecipeLogic.BrewedPotion.HUNTER_6,
-                        List.of(CrucibleRecipeLogic.EMBER_SALAMANDER_GLAND,
-                                CrucibleRecipeLogic.SPIRIT_ALCOHOL,
-                                CrucibleRecipeLogic.BONE), 75f),
+                        List.of(CrucibleRecipeLogic.TWIN_SERPENT_TONGUE,
+                                CrucibleRecipeLogic.BLACK_WAX,
+                                CrucibleRecipeLogic.SPIRIT_ALCOHOL), 75f),
                 new RecipeCase(CrucibleRecipeLogic.BrewedPotion.HUNTER_5,
-                        List.of(CrucibleRecipeLogic.ASH_POWDER,
-                                CrucibleRecipeLogic.BLAZE_POWDER,
-                                CrucibleRecipeLogic.SPIRIT_SALT), 82f),
-                new RecipeCase(CrucibleRecipeLogic.BrewedPotion.THIEF_6,
-                        List.of(CrucibleRecipeLogic.SHADOW_MARTEN_CLAW,
+                        List.of(CrucibleRecipeLogic.BATTLEFIELD_IRON_ROSE,
                                 CrucibleRecipeLogic.ASH_POWDER,
-                                CrucibleRecipeLogic.SPIRIT_ALCOHOL), 70f),
+                                CrucibleRecipeLogic.BLACK_WAX), 82f),
+                new RecipeCase(CrucibleRecipeLogic.BrewedPotion.THIEF_6,
+                        List.of(CrucibleRecipeLogic.ABILITY_LEECH_CORE,
+                                CrucibleRecipeLogic.ASH_POWDER,
+                                CrucibleRecipeLogic.BLACK_WAX), 70f),
                 new RecipeCase(CrucibleRecipeLogic.BrewedPotion.THIEF_5,
                         List.of(CrucibleRecipeLogic.DREAM_SCALE_FRAGMENT,
-                                CrucibleRecipeLogic.MYSTIC_INK,
+                                CrucibleRecipeLogic.BLACK_WAX,
                                 CrucibleRecipeLogic.MOONWATER), 65f),
                 new RecipeCase(CrucibleRecipeLogic.BrewedPotion.APPRENTICE_6,
-                        List.of(CrucibleRecipeLogic.BLANK_MANUSCRIPT,
+                        List.of(CrucibleRecipeLogic.SCRIBE_GOLEM_FINGER_BONE,
                                 CrucibleRecipeLogic.SPIRIT_SALT,
-                                CrucibleRecipeLogic.MYSTIC_INK), 65f),
+                                CrucibleRecipeLogic.BLACK_WAX), 65f),
                 new RecipeCase(CrucibleRecipeLogic.BrewedPotion.APPRENTICE_5,
-                        List.of(CrucibleRecipeLogic.METEOR_DUST,
+                        List.of(CrucibleRecipeLogic.SPATIAL_RIFT_CRYSTAL,
                                 CrucibleRecipeLogic.SILVER_FILINGS,
-                                CrucibleRecipeLogic.ENDER_PEARL), 75f));
+                                CrucibleRecipeLogic.SPIRIT_SALT), 75f));
 
         for (RecipeCase recipe : cases) {
             CrucibleRecipeLogic.BrewResult result =
@@ -267,6 +267,16 @@ class CrucibleRecipeLogicTest {
                 CrucibleRecipeLogic.DREAM_SCALE_FRAGMENT,
                 CrucibleRecipeLogic.SPIRIT_SALT,
                 CrucibleRecipeLogic.ENDER_PEARL), 70f);
+        assertEquals(CrucibleRecipeLogic.BrewedPotion.CONTAMINATED, result.potion());
+        assertEquals(PotionQuality.CONTAMINATED, result.quality());
+    }
+
+    @Test
+    void retiredProxyRecipeNoLongerBypassesM3MaterialEcology() {
+        CrucibleRecipeLogic.BrewResult result = CrucibleRecipeLogic.evaluateRecipe(List.of(
+                CrucibleRecipeLogic.SHAPESHIFTER_SERPENT_GLAND,
+                CrucibleRecipeLogic.SILVER_FILINGS,
+                CrucibleRecipeLogic.ASHEN_THREAD), 75f);
         assertEquals(CrucibleRecipeLogic.BrewedPotion.CONTAMINATED, result.potion());
         assertEquals(PotionQuality.CONTAMINATED, result.quality());
     }

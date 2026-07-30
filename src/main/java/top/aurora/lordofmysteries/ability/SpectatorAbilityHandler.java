@@ -246,10 +246,13 @@ public final class SpectatorAbilityHandler {
                 ? 1f : target.getHealth() / target.getMaxHealth();
         boolean attentive = !(target instanceof Enemy)
                 && target.distanceToSqr(observer) <= 36d;
-        return SpectatorEmotionLogic.classify(aggressive, healthRatio, attentive);
+        return SpectatorEmotionLogic.classify(
+                aggressive, healthRatio, attentive,
+                FacelessFormService.isDisguised(target));
     }
 
     private static String surfaceState(LivingEntity target) {
+        if (FacelessFormService.isDisguised(target)) return "abnormal";
         if (target instanceof Mob mob && mob.getTarget() != null) return "anger";
         if (target.getHealth() <= target.getMaxHealth() * 0.25f) return "fear";
         if (target instanceof Villager) return "curiosity";

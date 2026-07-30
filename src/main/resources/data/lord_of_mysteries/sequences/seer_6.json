@@ -17,5 +17,5 @@
   "acting_events": ["lord_of_mysteries:faceless6_maintain_cover", "lord_of_mysteries:faceless6_restrain_without_identity"],
   "potion_id": "lord_of_mysteries:seer_potion_6",
   "digestion_target": 100.0,
-  "adaptation_scope": "Executable disguise veil and non-player restraint; recorded forms, name synchronization, and voice imitation remain planned."
+  "adaptation_scope": "Server-authoritative 3-second form recording, eight persistent identity slots, selected-name synchronization, spirituality-draining disguise, Spectator anomaly counterplay, and non-player restraint are executable; exact player skin/model and voice imitation remain future presentation work."
 }
