@@ -1,6 +1,6 @@
 # M3 专属材料生态与无面人形体
 
-> 当前版本：`0.9.30-1.20.1` · Capability schema 30 · 状态：`playable candidate`
+> 当前版本：`0.9.31-1.20.1` · Capability schema 30 · 状态：`playable candidate`
 
 ## 快速开始
 

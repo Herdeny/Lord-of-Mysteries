@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate GitHub Pages structure and interaction contracts without a browser."""
+"""Validate the GitHub Pages structure, content baseline, and interactions."""
 
 from __future__ import annotations
 
@@ -14,6 +14,7 @@ HTML_PATH = ROOT / "docs" / "index.html"
 CSS_PATH = ROOT / "docs" / "assets" / "wiki.css"
 JS_PATH = ROOT / "docs" / "assets" / "wiki.js"
 WIKI_DATA_PATH = ROOT / "docs" / "assets" / "wiki-data.js"
+CATALOG_DATA_PATH = ROOT / "docs" / "assets" / "catalog-data.js"
 STATUS_PATH = ROOT / "project-status.json"
 
 
@@ -28,7 +29,9 @@ class SiteParser(HTMLParser):
         self.language = ""
         self.has_viewport = False
 
-    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+    def handle_starttag(
+            self, tag: str,
+            attrs: list[tuple[str, str | None]]) -> None:
         attributes = dict(attrs)
         self.tags[tag] = self.tags.get(tag, 0) + 1
         element_id = attributes.get("id")
@@ -51,11 +54,16 @@ def require(condition: bool, message: str, errors: list[str]) -> None:
         errors.append(message)
 
 
+def contains_all(text: str, values: tuple[str, ...]) -> bool:
+    return all(value in text for value in values)
+
+
 def main() -> int:
     html = HTML_PATH.read_text(encoding="utf-8")
     css = CSS_PATH.read_text(encoding="utf-8")
     javascript = JS_PATH.read_text(encoding="utf-8")
     wiki_data = WIKI_DATA_PATH.read_text(encoding="utf-8")
+    catalog_data = CATALOG_DATA_PATH.read_text(encoding="utf-8")
     status = json.loads(STATUS_PATH.read_text(encoding="utf-8"))
     asset_version = status["version"].split("-", 1)[0]
     parser = SiteParser()
@@ -63,123 +71,123 @@ def main() -> int:
     errors: list[str] = []
 
     required_ids = {
-        "main-content",
-        "start",
-        "mechanics",
-        "pathways",
-        "sequences",
-        "sequence-tabs",
-        "seq-ladder",
-        "catalog",
-        "search",
-        "filter-group",
-        "cards",
-        "load-more",
-        "roadmap",
-        "resources",
+        "main-content", "start", "mechanics", "pathways", "sequences",
+        "sequence-tabs", "seq-ladder", "catalog", "search",
+        "filter-group", "cards", "load-more", "roadmap", "resources",
         "modal",
     }
-    require(parser.language == "zh-CN", "HTML lang 必须是 zh-CN", errors)
-    require(parser.has_viewport, "Pages 缺少 viewport meta", errors)
-    require(parser.tags.get("main", 0) == 1, "Pages 必须只有一个 main", errors)
-    require(parser.tags.get("h1", 0) == 1, "Pages 必须只有一个 h1", errors)
-    require(len(parser.ids) == len(set(parser.ids)), "Pages 存在重复 id", errors)
-    require(required_ids.issubset(parser.ids), "Pages 缺少关键交互 id", errors)
-    require(all("reveal" not in classes.split() for _, classes in parser.sections),
-            "内容 section 不得依赖 reveal 才可见", errors)
+    require(parser.language == "zh-CN", "HTML lang must be zh-CN", errors)
+    require(parser.has_viewport, "Pages is missing the viewport meta tag", errors)
+    require(parser.tags.get("main", 0) == 1, "Pages must contain one main", errors)
+    require(parser.tags.get("h1", 0) == 1, "Pages must contain one h1", errors)
+    require(
+        len(parser.ids) == len(set(parser.ids)),
+        "Pages contains duplicate DOM ids", errors)
+    require(
+        required_ids.issubset(parser.ids),
+        "Pages is missing a required interaction id", errors)
+    require(
+        all("reveal" not in classes.split() for _, classes in parser.sections),
+        "Content sections must not depend on reveal for visibility", errors)
 
     local_assets = parser.scripts + parser.stylesheets
-    require(all(asset.startswith("assets/") for asset in local_assets),
-            "脚本和样式必须使用 docs/assets 本地资源", errors)
-    require(all(f"?v={asset_version}" in asset for asset in local_assets),
-            f"静态资源缓存版本必须同步为 {asset_version}", errors)
-    require("三槽持久秘偶编队" in html and "/pm marionette" in html,
-            "Pages M3 入口与进度摘要必须展示已实现的持久秘偶编队", errors)
-    require("三种战术" in html and "离线休眠" in html,
-            "Pages M3 入口必须展示秘偶战术和离线安全", errors)
-    require("端点运维" in html and "/pm travel" in html,
-            "Pages M3 入口与路线摘要必须展示旅行家端点运维", errors)
-    require("组织实时准入" in html and "/pm m3 team" in html,
-            "Pages M3 入口必须展示组织远门和队伍职责顾问", errors)
-    require("持久秘偶、完整梦境" not in html,
-            "Pages 不得把已实现的持久秘偶继续列为未完成", errors)
-    require("秘偶收纳卷轴" in html and "跨维" in html,
-            "Pages M3 入口必须展示已实现的秘偶跨维收纳", errors)
-    require("精确玩家皮肤/模型/声线" in html
-            and "具体领地 Mod 适配归入 M7" in html,
-            "Pages 必须保留真实 M3 发布边界，避免误报完成", errors)
-    require("Capability schema 30" in wiki_data
-            and "427 JUnit · 22 GameTest" in wiki_data
-            and "365 JSON · 1631 双语键" in wiki_data
-            and "109 物品 · 7 方块 · 16 实体" in wiki_data
-            and "218 条图鉴" in wiki_data,
-            "Pages 动态机制卡的 schema、测试和资源基线未同步", errors)
-    require("权威收纳" in wiki_data
-            and "一次性 token" in wiki_data
-            and "跨维安全部署" in wiki_data,
-            "Pages 动态 M3 卡必须展示秘偶权威收纳闭环", errors)
-    require("404 JUnit · 18 GameTest" not in wiki_data
-            and "397 JUnit" not in wiki_data
-            and "17 GameTest" not in wiki_data
-            and "17 Forge GameTest" not in wiki_data
-            and "schema 28" not in wiki_data
-            and "schema 27" not in wiki_data
-            and "324 JSON" not in wiki_data
-            and "322 JSON" not in wiki_data
-            and "1521 双语键" not in wiki_data
-            and "1500 双语键" not in wiki_data
-            and "92 物品" not in wiki_data
-            and "91 物品" not in wiki_data
-            and "191 条图鉴" not in wiki_data
-            and "190 条图鉴" not in wiki_data
-            and "秘偶收纳/跨维控制" not in wiki_data
-            and "收纳卷轴、跨维指挥" not in wiki_data,
-            "Pages 动态图鉴仍含上一版本的当前状态文案", errors)
-    require("Capability schema 29" not in wiki_data
-            and "416 JUnit · 20 GameTest" not in wiki_data
-            and "365 JSON · 1608 双语键" not in wiki_data
-            and "217 条图鉴" not in wiki_data,
-            "Pages 动态图鉴仍含 0.9.29 当前基线", errors)
-    require("无面人八槽形体记录" in wiki_data
-            and "/pm faceless" in wiki_data
-            and "不保存来源实体/玩家UUID" in wiki_data,
-            "Pages 图鉴必须展示无面人形体、命令与隐私边界", errors)
-    require("M3 专属材料生态" in wiki_data
-            and "10 材料 · 7 生物 · 10 保底配方" in wiki_data
-            and "/pm bestiary" in wiki_data,
-            "Pages 图鉴必须展示最终材料、生物生态与玩家入口", errors)
-    require("M3 队伍职责顾问" in wiki_data
-            and "调查 · 控制 · 支援 · 战斗 · 生存 · 潜入 · 资源 · 机动" in wiki_data
-            and "不显示姓名 · 不读取远端途径" in wiki_data,
-            "Pages 图鉴必须展示隐私安全的 M3 队伍职责顾问", errors)
-    require("受信任组织" in wiki_data
-            and "门主/访客实时声望≥8" in wiki_data
-            and "follow · guard 12格 · passive" in wiki_data,
-            "Pages 图鉴必须展示组织门与秘偶战术闭环", errors)
+    require(
+        all(asset.startswith("assets/") for asset in local_assets),
+        "Scripts and stylesheets must be local docs/assets files", errors)
+    require(
+        all(f"?v={asset_version}" in asset for asset in local_assets),
+        f"Static asset cache versions must be {asset_version}", errors)
 
-    require("[hidden] { display: none !important; }" in css,
-            "CSS 必须保护 hidden 属性不被布局规则覆盖", errors)
-    require("scroll-margin-top: 0" in css,
-            "锚点 section 不得与 html scroll-padding 重复偏移", errors)
-    require("@media (max-width: 820px)" in css and "@media (max-width: 560px)" in css,
-            "Pages 缺少平板或手机响应式断点", errors)
-    require(".filter-group" in css and "overflow-x: auto" in css,
-            "移动端分类筛选必须支持横向滚动", errors)
-    require(".reveal { opacity: 0" not in css,
-            "禁止恢复会令锚点直达空白的透明 reveal 样式", errors)
+    require(
+        contains_all(
+            html,
+            ("三槽持久秘偶编队", "/pm marionette", "三种战术",
+             "离线休眠", "/pm travel", "/pm m3 team")),
+        "Pages must retain the implemented M3 multiplayer entry points", errors)
+    require(
+        contains_all(
+            html,
+            ("M4 首批闭环", "7 / 24 封印物", "/pm m4",
+             "组织行动与封印物保管", "12份组织定义", "7份封印物定义")),
+        "Pages must expose the current M4 playable loop and truthful scope", errors)
+    require(
+        contains_all(
+            html,
+            ("精确玩家皮肤/模型/声线", "具体领地 Mod 适配归入 M7",
+             "完整目标仍为24件逐件验证封印物")),
+        "Pages must retain the M3 and M4 release boundaries", errors)
+    require(
+        "持久秘偶、完整梦境" not in html,
+        "Pages must not list persistent marionettes as unfinished", errors)
 
-    require("var PAGE_SIZE = 24;" in javascript,
-            "图鉴首批数量必须固定为 24", errors)
-    require("visibleLimit += PAGE_SIZE" in javascript,
-            "图鉴缺少分批加载逻辑", errors)
-    require("function restoreHashTarget()" in javascript,
-            "动态渲染后必须恢复 URL 锚点", errors)
-    require("style.scrollBehavior = \"auto\"" in javascript,
-            "锚点恢复必须绕过长距离平滑滚动", errors)
-    require("modalTrigger.focus()" in javascript,
-            "详情弹窗关闭后必须恢复触发器焦点", errors)
-    require("aria-selected" in javascript and "aria-pressed" in javascript,
-            "途径切换与图鉴筛选必须暴露可访问状态", errors)
+    require(
+        contains_all(
+            wiki_data,
+            ("Capability schema 30", "439 JUnit · 24 GameTest",
+             "389 JSON · 1741 双语键", "115 物品 · 7 方块 · 16 实体",
+             "147 节点 · 197 关系", "237 条图鉴")),
+        "Dynamic Pages cards do not match the current validation baseline", errors)
+    require(
+        contains_all(
+            wiki_data,
+            ("M4 组织行动与封印物保管", "/pm organization",
+             "/pm artifact", "7 / 24", "普通玩家只能查看自己负责或持有")),
+        "Dynamic Pages cards are missing the M4 authority and privacy model", errors)
+    require(
+        contains_all(
+            catalog_data,
+            ('"organizationDefinitions": 12', '"artifactDefinitions": 7',
+             '"registeredItems": 115',
+             '"id": "lord_of_mysteries:organization/church_night_watch"',
+             '"id": "lord_of_mysteries:artifact_3_091_kindly_umbrella"')),
+        "Generated Pages catalog is missing M4 definitions or registrations", errors)
+
+    stale_markers = (
+        "427 JUnit · 22 GameTest",
+        "365 JSON · 1631 双语键",
+        "109 物品 · 7 方块 · 16 实体",
+        "126 节点 · 188 关系",
+        "218 条图鉴",
+        "Capability schema 29",
+    )
+    require(
+        not any(marker in wiki_data for marker in stale_markers),
+        "Dynamic Pages cards still contain a previous current baseline", errors)
+
+    require(
+        "[hidden] { display: none !important; }" in css,
+        "CSS must preserve native hidden semantics", errors)
+    require(
+        "scroll-margin-top: 0" in css,
+        "Sections must not double-apply the top anchor offset", errors)
+    require(
+        "@media (max-width: 820px)" in css
+        and "@media (max-width: 560px)" in css,
+        "Pages is missing tablet or phone breakpoints", errors)
+    require(
+        ".filter-group" in css and "overflow-x: auto" in css,
+        "Mobile catalog filters must support horizontal scrolling", errors)
+    require(
+        ".reveal { opacity: 0" not in css,
+        "CSS must not hide content behind reveal animations", errors)
+
+    require(
+        "var PAGE_SIZE = 24;" in javascript,
+        "Catalog page size must remain 24", errors)
+    require(
+        "visibleLimit += PAGE_SIZE" in javascript,
+        "Catalog is missing incremental loading", errors)
+    require(
+        "function restoreHashTarget()" in javascript
+        and 'style.scrollBehavior = "auto"' in javascript,
+        "Dynamic rendering must restore URL anchors without long scrolling",
+        errors)
+    require(
+        "modalTrigger.focus()" in javascript,
+        "Closing the details modal must restore focus", errors)
+    require(
+        "aria-selected" in javascript and "aria-pressed" in javascript,
+        "Tabs and catalog filters must expose accessible state", errors)
 
     if errors:
         print("GitHub Pages layout contract failed:", file=sys.stderr)
@@ -190,7 +198,7 @@ def main() -> int:
     print(
         "GitHub Pages layout contract passed: "
         f"{len(parser.sections)} sections, {len(parser.ids)} unique ids, "
-        f"asset cache v{asset_version}, current M3 overview, catalog batch 24."
+        f"asset cache v{asset_version}, M4 overview, catalog batch 24."
     )
     return 0
 

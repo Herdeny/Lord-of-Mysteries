@@ -183,9 +183,21 @@ def registrations(path, registry_name, helper=None):
     return names
 
 
+def managed_artifact_registrations():
+    path = (
+        ROOT / "src/main/java/top/aurora/lordofmysteries"
+        / "artifact/ManagedArtifactKind.java"
+    )
+    return set(re.findall(
+        r'\b[A-Z][A-Z0-9_]*\(\s*"([a-z0-9_]+)"\s*\)',
+        path.read_text(encoding="utf-8"),
+    ))
+
+
 def check_registries(errors):
     languages = load_json(LANG / "en_us.json", errors) or {}
     items = registrations(REGISTRY / "ModItems.java", "ITEMS", "simple")
+    items.update(managed_artifact_registrations())
     blocks = registrations(REGISTRY / "ModBlocks.java", "BLOCKS")
     entities = registrations(REGISTRY / "ModEntities.java", "ENTITIES")
 

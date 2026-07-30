@@ -21,11 +21,13 @@ on:
       - "scripts/check_m1_playability.py"
       - "scripts/check_m2_investigation.py"
       - "scripts/check_m3_foundation.py"
+      - "scripts/check_m4_foundation.py"
       - "scripts/check_resource_integrity.py"
       - "scripts/gen_pages_catalog.py"
       - "docs/m1-playability-contract.json"
       - "docs/m2-investigation-contract.json"
       - "docs/m3-foundation-contract.json"
+      - "docs/m4-foundation-contract.json"
       - "docs/pathways_master.csv"
       - "docs/recipes_master.csv"
       - "docs/Project_Mystery_Design_Doc_v0_9.md"
@@ -55,11 +57,13 @@ on:
       - "scripts/check_m1_playability.py"
       - "scripts/check_m2_investigation.py"
       - "scripts/check_m3_foundation.py"
+      - "scripts/check_m4_foundation.py"
       - "scripts/check_resource_integrity.py"
       - "scripts/gen_pages_catalog.py"
       - "docs/m1-playability-contract.json"
       - "docs/m2-investigation-contract.json"
       - "docs/m3-foundation-contract.json"
+      - "docs/m4-foundation-contract.json"
       - "docs/pathways_master.csv"
       - "docs/recipes_master.csv"
       - "docs/Project_Mystery_Design_Doc_v0_9.md"
@@ -122,6 +126,9 @@ jobs:
       - name: Verify M3 launch pathway contract
         run: python3 scripts/check_m3_foundation.py
 
+      - name: Verify M4 organization and artifact contract
+        run: python3 scripts/check_m4_foundation.py
+
       - name: Verify generated Pages catalog
         run: python3 scripts/gen_pages_catalog.py --check
 
@@ -144,8 +151,8 @@ jobs:
         run: |
           set -o pipefail
           ./gradlew -Dnet.minecraftforge.gradle.check.certs=false --stacktrace runGameTestServer | tee build/gametest-server.log
-          grep -F "22 tests are now running!" build/gametest-server.log
-          grep -F "All 22 required tests passed" build/gametest-server.log
+          grep -F "24 tests are now running!" build/gametest-server.log
+          grep -F "All 24 required tests passed" build/gametest-server.log
 
       - name: Dedicated server restart matrix
         run: python3 scripts/run_server_restart_matrix.py --timeout 180

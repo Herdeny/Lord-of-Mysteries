@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "milestone": "M4",
+  "status": "first_playable_loop",
+  "organizations": {
+    "count": 12,
+    "churches": 7,
+    "secret_organizations": 5,
+    "daily_action_count": 3,
+    "data_planes": [
+      "public_front",
+      "covert_units",
+      "doctrines",
+      "resources",
+      "territories",
+      "relations",
+      "strategy_weights"
+    ],
+    "action_types": [
+      "night_patrol",
+      "artifact_transfer",
+      "heresy_review",
+      "disaster_relief",
+      "high_council",
+      "secret_recruitment"
+    ],
+    "world_seed_deterministic": true,
+    "risk_uses_world_exposure": true,
+    "actions_exist_without_players": true,
+    "assignments_are_player_isolated": true,
+    "persistent_data_name": "lord_of_mysteries_organization_actions",
+    "commands": [
+      "m4",
+      "organization",
+      "catalog",
+      "claim",
+      "submit",
+      "abandon"
+    ]
+  },
+  "artifacts": {
+    "implemented": 7,
+    "m4_target": 24,
+    "definitions": [
+      "eternal_matchbox",
+      "artifact_3_091_kindly_umbrella",
+      "artifact_3_207_honest_mirror",
+      "artifact_2_031_sleeping_bell",
+      "artifact_2_166_guest_mask",
+      "artifact_2_203_merciful_chain",
+      "artifact_1_012_city_whistle"
+    ],
+    "states": [
+      "BORROWED",
+      "LEAKED",
+      "RECOVERED",
+      "RETURNED",
+      "ABUSED"
+    ],
+    "persistent_data_name": "lord_of_mysteries_artifact_custody",
+    "world_unique_instances": true,
+    "trusted_reputation": 8,
+    "tracks": [
+      "instance",
+      "artifact",
+      "organization",
+      "state",
+      "responsible",
+      "holder",
+      "dimension",
+      "position",
+      "contamination",
+      "uses",
+      "issued_day",
+      "due_day",
+      "last_seen",
+      "incidents"
+    ],
+    "offline_overdue_leak": true,
+    "safe_use_limit": true,
+    "contamination_threshold": true,
+    "holder_change_recovery": true,
+    "same_player_duplicate_quarantine": true,
+    "cross_player_duplicate_quarantine": true,
+    "legacy_matchbox_adoption": true,
+    "stabilization": {
+      "calming_incense": 1,
+      "pure_water": 1
+    },
+    "operator_abuse_retirement": true,
+    "player_status_is_private": true,
+    "guest_mask_permission_bypass": false,
+    "commands": [
+      "artifact",
+      "catalog",
+      "borrow",
+      "return",
+      "stabilize",
+      "mask",
+      "admin",
+      "ledger",
+      "retire"
+    ]
+  },
+  "pages": {
+    "generated_from_registries": true,
+    "generated_from_organization_data": true,
+    "generated_from_artifact_data": true,
+    "organization_entries": 12,
+    "artifact_entries": 7
+  },
+  "validation": {
+    "junit_tests": 439,
+    "game_tests": 24,
+    "behavior_test_classes": [
+      "OrganizationDefinitionTest",
+      "OrganizationActionPolicyTest",
+      "SealedArtifactDefinitionTest",
+      "ArtifactCustodySavedDataTest"
+    ],
+    "game_test_methods": [
+      "m4OrganizationActionsSupportConcurrentPlayers",
+      "m4ArtifactCustodySurvivesLossLeakAndAbuse"
+    ]
+  }
+}

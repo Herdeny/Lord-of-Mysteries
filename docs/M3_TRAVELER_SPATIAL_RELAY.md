@@ -1,6 +1,6 @@
 # M3 旅行家持续双向远门
 
-> 适用版本：0.9.30-1.20.1
+> 适用版本：0.9.31-1.20.1
 > 状态：`code_ready`
 > 设计基线：v0.9 旅行家序列 5“远门”纵切；仓库既有行为优先
 
@@ -192,7 +192,7 @@ Provider 往返和 sanitizer 均覆盖该字段。
 
 ## 11. 自动化验证
 
-当前发布门禁包含 427 项 JUnit 与 22 项 Forge GameTest：
+当前发布门禁包含 439 项 JUnit 与 24 项 Forge GameTest：
 
 - `M3TravelNetworkLogicTest`：费用钳制、支持者资格、20 秒寿命与反回弹常量；
 - `TravelerDoorAccessModeTest`：门主优先、私人/队伍/组织/公开、队伍规范化和非法值回退；

@@ -5,8 +5,10 @@ import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -39,6 +41,14 @@ public final class EternalMatchboxItem extends Item {
         Level level = context.getLevel();
         Player player = context.getPlayer();
         if (player == null) return InteractionResult.PASS;
+        if (!level.isClientSide()
+                && player instanceof ServerPlayer serverPlayer
+                && !SealedArtifactService.allowUse(
+                        serverPlayer,
+                        context.getItemInHand(),
+                        ManagedArtifactKind.ETERNAL_MATCHBOX)) {
+            return InteractionResult.FAIL;
+        }
         if (isSealed(context.getItemInHand())) {
             if (!level.isClientSide()) {
                 player.sendSystemMessage(Component.translatable(
@@ -54,6 +64,10 @@ public final class EternalMatchboxItem extends Item {
         if (!level.isClientSide()) {
             level.setBlock(firePos, Blocks.SOUL_FIRE.defaultBlockState(), 11);
             payCost(player);
+            SealedArtifactService.recordUse(
+                    (ServerPlayer) player,
+                    context.getItemInHand(),
+                    ManagedArtifactKind.ETERNAL_MATCHBOX);
             context.getItemInHand().hurtAndBreak(1, player,
                     broken -> broken.broadcastBreakEvent(context.getHand()));
         }
@@ -63,6 +77,13 @@ public final class EternalMatchboxItem extends Item {
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player player,
                                                    LivingEntity target, InteractionHand hand) {
+        if (!player.level().isClientSide()
+                && player instanceof ServerPlayer serverPlayer
+                && !SealedArtifactService.allowUse(
+                        serverPlayer, stack,
+                        ManagedArtifactKind.ETERNAL_MATCHBOX)) {
+            return InteractionResult.FAIL;
+        }
         if (isSealed(stack)) {
             if (!player.level().isClientSide()) {
                 player.sendSystemMessage(Component.translatable(
@@ -80,9 +101,21 @@ public final class EternalMatchboxItem extends Item {
             target.hurt(player.damageSources().magic(), damage);
             target.setSecondsOnFire(5);
             payCost(player);
+            SealedArtifactService.recordUse(
+                    (ServerPlayer) player, stack,
+                    ManagedArtifactKind.ETERNAL_MATCHBOX);
             stack.hurtAndBreak(1, player, broken -> broken.broadcastBreakEvent(hand));
         }
         return InteractionResult.sidedSuccess(player.level().isClientSide());
+    }
+
+    @Override
+    public void inventoryTick(
+            ItemStack stack, Level level, Entity entity,
+            int slot, boolean selected) {
+        SealedArtifactService.observeInventory(
+                stack, level, entity,
+                ManagedArtifactKind.ETERNAL_MATCHBOX);
     }
 
     private void payCost(Player player) {

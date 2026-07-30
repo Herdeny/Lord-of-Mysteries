@@ -118,6 +118,23 @@ def verify_migration_backup():
     return True, snapshot
 
 
+def verify_latest_log_encoding():
+    latest_log = RUN_DIR / "logs" / "latest.log"
+    if not latest_log.is_file():
+        return False, f"missing runtime log: {latest_log}"
+    try:
+        log_text = latest_log.read_text(encoding="utf-8")
+    except UnicodeDecodeError as exc:
+        return False, f"runtime log is not valid UTF-8: {latest_log} ({exc})"
+    if "\ufffd" in log_text or "锟斤拷" in log_text:
+        return False, f"runtime log contains replacement or mojibake text: {latest_log}"
+    required_markers = (EXPECTED["commissions"], EXPECTED["quests"])
+    missing_markers = [marker for marker in required_markers if marker not in log_text]
+    if missing_markers:
+        return False, f"runtime log is missing expected load markers: {missing_markers}"
+    return True, latest_log
+
+
 def run(timeout_seconds):
     RUN_DIR.mkdir(exist_ok=True)
     (RUN_DIR / "eula.txt").write_text("eula=true\n", encoding="utf-8")
@@ -197,10 +214,15 @@ def run(timeout_seconds):
         if not backup_valid:
             print(f"server smoke failed; {backup_evidence}", file=sys.stderr)
             return 1
+        log_valid, log_evidence = verify_latest_log_encoding()
+        if not log_valid:
+            print(f"server smoke failed; {log_evidence}", file=sys.stderr)
+            return 1
         print(
             "server smoke passed: definitions loaded, runtime diagnostics passed, "
             "migration backup verified, command loop responded, world flushed, "
-            f"seed captured, and server stopped cleanly ({backup_evidence})"
+            "seed captured, UTF-8 runtime log verified, and server stopped cleanly "
+            f"({backup_evidence}; {log_evidence})"
         )
         return 0
     finally:

@@ -3,6 +3,342 @@ window.LOM = window.LOM || {};
 (function (D) {
   var generatedEntries = [
   {
+    "type": "artifact",
+    "id": "lord_of_mysteries:artifact_1_012_city_whistle",
+    "name": "1-012 城市警哨",
+    "en": "1-012 City Whistle",
+    "summary": "在前哨应急范围内揭示大量敌对生物。",
+    "tags": [
+      "封印物",
+      "危险等级5",
+      "保管台账",
+      "M4"
+    ],
+    "details": [
+      [
+        "登记编号",
+        "lord_of_mysteries:artifact_1_012_city_whistle"
+      ],
+      [
+        "保管组织",
+        "拾荒者行会"
+      ],
+      [
+        "危险等级",
+        "5"
+      ],
+      [
+        "安全使用",
+        "2 次"
+      ],
+      [
+        "借用期限",
+        "1 天"
+      ],
+      [
+        "泄漏阈值",
+        "15"
+      ],
+      [
+        "效果",
+        "在前哨应急范围内揭示大量敌对生物。"
+      ],
+      [
+        "代价",
+        "造成极高压力和神秘暴露。"
+      ]
+    ],
+    "long": "该封印物使用世界级保管台账记录唯一实例、责任人、当前持有人、最后维度与坐标、污染、使用次数、借出日、到期日和事故。逾期、超出安全使用次数、污染达到阈值、换手或复制会进入泄漏、回收或滥用处理；来客面具不会绕过任何权限。"
+  },
+  {
+    "type": "artifact",
+    "id": "lord_of_mysteries:artifact_2_031_sleeping_bell",
+    "name": "2-031 沉睡之铃",
+    "en": "2-031 Sleeping Bell",
+    "summary": "大范围削弱并迟缓非玩家生物。",
+    "tags": [
+      "封印物",
+      "危险等级3",
+      "保管台账",
+      "M4"
+    ],
+    "details": [
+      [
+        "登记编号",
+        "lord_of_mysteries:artifact_2_031_sleeping_bell"
+      ],
+      [
+        "保管组织",
+        "长夜守望教会"
+      ],
+      [
+        "危险等级",
+        "3"
+      ],
+      [
+        "安全使用",
+        "4 次"
+      ],
+      [
+        "借用期限",
+        "3 天"
+      ],
+      [
+        "泄漏阈值",
+        "15"
+      ],
+      [
+        "效果",
+        "大范围削弱并迟缓非玩家生物。"
+      ],
+      [
+        "代价",
+        "使用者同时承受迟缓、黑暗和压力。"
+      ]
+    ],
+    "long": "该封印物使用世界级保管台账记录唯一实例、责任人、当前持有人、最后维度与坐标、污染、使用次数、借出日、到期日和事故。逾期、超出安全使用次数、污染达到阈值、换手或复制会进入泄漏、回收或滥用处理；来客面具不会绕过任何权限。"
+  },
+  {
+    "type": "artifact",
+    "id": "lord_of_mysteries:artifact_2_166_guest_mask",
+    "name": "2-166 来客面具",
+    "en": "2-166 Guest Mask",
+    "summary": "记录组织伪装并提供短暂隐身。",
+    "tags": [
+      "封印物",
+      "危险等级3",
+      "保管台账",
+      "M4"
+    ],
+    "details": [
+      [
+        "登记编号",
+        "lord_of_mysteries:artifact_2_166_guest_mask"
+      ],
+      [
+        "保管组织",
+        "心智炼成社"
+      ],
+      [
+        "危险等级",
+        "3"
+      ],
+      [
+        "安全使用",
+        "5 次"
+      ],
+      [
+        "借用期限",
+        "2 天"
+      ],
+      [
+        "泄漏阈值",
+        "18"
+      ],
+      [
+        "效果",
+        "记录组织伪装并提供短暂隐身。"
+      ],
+      [
+        "代价",
+        "至少需要4点真实声望，且绝不绕过权限检查。"
+      ]
+    ],
+    "long": "该封印物使用世界级保管台账记录唯一实例、责任人、当前持有人、最后维度与坐标、污染、使用次数、借出日、到期日和事故。逾期、超出安全使用次数、污染达到阈值、换手或复制会进入泄漏、回收或滥用处理；来客面具不会绕过任何权限。"
+  },
+  {
+    "type": "artifact",
+    "id": "lord_of_mysteries:artifact_2_203_merciful_chain",
+    "name": "2-203 慈悲之链",
+    "en": "2-203 Merciful Chain",
+    "summary": "束缚非玩家生物并中断其追击。",
+    "tags": [
+      "封印物",
+      "危险等级4",
+      "保管台账",
+      "M4"
+    ],
+    "details": [
+      [
+        "登记编号",
+        "lord_of_mysteries:artifact_2_203_merciful_chain"
+      ],
+      [
+        "保管组织",
+        "铁誓战争教团"
+      ],
+      [
+        "危险等级",
+        "4"
+      ],
+      [
+        "安全使用",
+        "3 次"
+      ],
+      [
+        "借用期限",
+        "2 天"
+      ],
+      [
+        "泄漏阈值",
+        "16"
+      ],
+      [
+        "效果",
+        "束缚非玩家生物并中断其追击。"
+      ],
+      [
+        "代价",
+        "施加高精神压力；玩家和首领免疫控制。"
+      ]
+    ],
+    "long": "该封印物使用世界级保管台账记录唯一实例、责任人、当前持有人、最后维度与坐标、污染、使用次数、借出日、到期日和事故。逾期、超出安全使用次数、污染达到阈值、换手或复制会进入泄漏、回收或滥用处理；来客面具不会绕过任何权限。"
+  },
+  {
+    "type": "artifact",
+    "id": "lord_of_mysteries:artifact_3_091_kindly_umbrella",
+    "name": "3-091 善意之伞",
+    "en": "3-091 Kindly Umbrella",
+    "summary": "露天雨中提供抗性提升与缓降。",
+    "tags": [
+      "封印物",
+      "危险等级2",
+      "保管台账",
+      "M4"
+    ],
+    "details": [
+      [
+        "登记编号",
+        "lord_of_mysteries:artifact_3_091_kindly_umbrella"
+      ],
+      [
+        "保管组织",
+        "风暴灯塔教会"
+      ],
+      [
+        "危险等级",
+        "2"
+      ],
+      [
+        "安全使用",
+        "8 次"
+      ],
+      [
+        "借用期限",
+        "5 天"
+      ],
+      [
+        "泄漏阈值",
+        "18"
+      ],
+      [
+        "效果",
+        "露天雨中提供抗性提升与缓降。"
+      ],
+      [
+        "代价",
+        "累积承诺债务并周期性施加虚弱。"
+      ]
+    ],
+    "long": "该封印物使用世界级保管台账记录唯一实例、责任人、当前持有人、最后维度与坐标、污染、使用次数、借出日、到期日和事故。逾期、超出安全使用次数、污染达到阈值、换手或复制会进入泄漏、回收或滥用处理；来客面具不会绕过任何权限。"
+  },
+  {
+    "type": "artifact",
+    "id": "lord_of_mysteries:artifact_3_207_honest_mirror",
+    "name": "3-207 诚实之镜",
+    "en": "3-207 Honest Mirror",
+    "summary": "揭示附近非玩家生物并剥离隐身。",
+    "tags": [
+      "封印物",
+      "危险等级2",
+      "保管台账",
+      "M4"
+    ],
+    "details": [
+      [
+        "登记编号",
+        "lord_of_mysteries:artifact_3_207_honest_mirror"
+      ],
+      [
+        "保管组织",
+        "知识圣堂"
+      ],
+      [
+        "危险等级",
+        "2"
+      ],
+      [
+        "安全使用",
+        "6 次"
+      ],
+      [
+        "借用期限",
+        "4 天"
+      ],
+      [
+        "泄漏阈值",
+        "14"
+      ],
+      [
+        "效果",
+        "揭示附近非玩家生物并剥离隐身。"
+      ],
+      [
+        "代价",
+        "增加精神压力和神秘暴露。"
+      ]
+    ],
+    "long": "该封印物使用世界级保管台账记录唯一实例、责任人、当前持有人、最后维度与坐标、污染、使用次数、借出日、到期日和事故。逾期、超出安全使用次数、污染达到阈值、换手或复制会进入泄漏、回收或滥用处理；来客面具不会绕过任何权限。"
+  },
+  {
+    "type": "artifact",
+    "id": "lord_of_mysteries:eternal_matchbox",
+    "name": "永燃火柴盒",
+    "en": "Eternal Matchbox",
+    "summary": "点燃方块或以灵火灼烧非玩家目标。",
+    "tags": [
+      "封印物",
+      "危险等级4",
+      "保管台账",
+      "M4"
+    ],
+    "details": [
+      [
+        "登记编号",
+        "lord_of_mysteries:eternal_matchbox"
+      ],
+      [
+        "保管组织",
+        "烈阳圣坛"
+      ],
+      [
+        "危险等级",
+        "4"
+      ],
+      [
+        "安全使用",
+        "4 次"
+      ],
+      [
+        "借用期限",
+        "3 天"
+      ],
+      [
+        "泄漏阈值",
+        "16"
+      ],
+      [
+        "效果",
+        "点燃方块或以灵火灼烧非玩家目标。"
+      ],
+      [
+        "代价",
+        "怒意与精神压力逐次累积，泄漏时自动封印。"
+      ]
+    ],
+    "long": "该封印物使用世界级保管台账记录唯一实例、责任人、当前持有人、最后维度与坐标、污染、使用次数、借出日、到期日和事故。逾期、超出安全使用次数、污染达到阈值、换手或复制会进入泄漏、回收或滥用处理；来客面具不会绕过任何权限。"
+  },
+  {
     "type": "block",
     "id": "lord_of_mysteries:characteristic_separator",
     "name": "特性分离台",
@@ -1616,37 +1952,6 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
-    "id": "lord_of_mysteries:eternal_matchbox",
-    "name": "永燃火柴盒",
-    "en": "Eternal Matchbox",
-    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
-    "tags": [
-      "已注册",
-      "中英双语",
-      "自动同步"
-    ],
-    "details": [
-      [
-        "注册表",
-        "Forge item registry"
-      ],
-      [
-        "注册 ID",
-        "lord_of_mysteries:eternal_matchbox"
-      ],
-      [
-        "代码来源",
-        "ModItems.java"
-      ],
-      [
-        "资源状态",
-        "item 模型已提供"
-      ]
-    ],
-    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
-  },
-  {
-    "type": "item",
     "id": "lord_of_mysteries:formula_fragment",
     "name": "配方残页",
     "en": "Formula Fragment",
@@ -3103,6 +3408,630 @@ window.LOM = window.LOM || {};
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
+    "type": "org",
+    "id": "lord_of_mysteries:organization/church_earth_mother",
+    "name": "丰壤母庭",
+    "en": "Court of the Bountiful Earth",
+    "summary": "教会。每天按数据权重自主生成行动，并使用玩家独立的接取与结算状态。",
+    "tags": [
+      "组织",
+      "教会",
+      "自主行动",
+      "M4"
+    ],
+    "details": [
+      [
+        "类型",
+        "教会"
+      ],
+      [
+        "公开身份",
+        "Clinics, granaries, and rural cooperatives"
+      ],
+      [
+        "隐秘单位",
+        "green healers、blight wardens"
+      ],
+      [
+        "教义",
+        "preserve life、restore exhausted land"
+      ],
+      [
+        "资源",
+        "herb gardens、granaries、field hospitals"
+      ],
+      [
+        "领地",
+        "garden ward、outer farms"
+      ],
+      [
+        "盟友",
+        "1"
+      ],
+      [
+        "敌对",
+        "1"
+      ],
+      [
+        "行动权重",
+        "disaster_relief 4.5、night_patrol 2、artifact_transfer 1、high_council 1"
+      ]
+    ],
+    "long": "组织定义覆盖公开身份、隐秘单位、教义、资源、领地、关系和行动策略七个数据面。服务端按世界种子、游戏日和全服神秘暴露确定每日三项行动；玩家只选择是否参与，不能决定组织是否行动或伪造奖励。"
+  },
+  {
+    "type": "org",
+    "id": "lord_of_mysteries:organization/church_eternal_sun",
+    "name": "烈阳圣坛",
+    "en": "Sanctuary of the Eternal Sun",
+    "summary": "教会。每天按数据权重自主生成行动，并使用玩家独立的接取与结算状态。",
+    "tags": [
+      "组织",
+      "教会",
+      "自主行动",
+      "M4"
+    ],
+    "details": [
+      [
+        "类型",
+        "教会"
+      ],
+      [
+        "公开身份",
+        "Schools, public kitchens, and purification rites"
+      ],
+      [
+        "隐秘单位",
+        "dawn judges、radiant escorts"
+      ],
+      [
+        "教义",
+        "expose corruption、serve openly"
+      ],
+      [
+        "资源",
+        "sanctuaries、purification chambers、public registries"
+      ],
+      [
+        "领地",
+        "sun plaza、southern school district"
+      ],
+      [
+        "盟友",
+        "1"
+      ],
+      [
+        "敌对",
+        "1"
+      ],
+      [
+        "行动权重",
+        "heresy_review 4、disaster_relief 3、night_patrol 1.5、high_council 1"
+      ]
+    ],
+    "long": "组织定义覆盖公开身份、隐秘单位、教义、资源、领地、关系和行动策略七个数据面。服务端按世界种子、游戏日和全服神秘暴露确定每日三项行动；玩家只选择是否参与，不能决定组织是否行动或伪造奖励。"
+  },
+  {
+    "type": "org",
+    "id": "lord_of_mysteries:organization/church_forge_gear",
+    "name": "炉心与机械教会",
+    "en": "Church of Forge and Gear",
+    "summary": "教会。每天按数据权重自主生成行动，并使用玩家独立的接取与结算状态。",
+    "tags": [
+      "组织",
+      "教会",
+      "自主行动",
+      "M4"
+    ],
+    "details": [
+      [
+        "类型",
+        "教会"
+      ],
+      [
+        "公开身份",
+        "Foundries, workshops, and worker safety"
+      ],
+      [
+        "隐秘单位",
+        "gear inspectors、vault engineers"
+      ],
+      [
+        "教义",
+        "measure every risk、repair before replacement"
+      ],
+      [
+        "资源",
+        "forges、mechanical laboratories、containment frames"
+      ],
+      [
+        "领地",
+        "industrial ward、eastern rail depot"
+      ],
+      [
+        "盟友",
+        "1"
+      ],
+      [
+        "敌对",
+        "1"
+      ],
+      [
+        "行动权重",
+        "artifact_transfer 4、disaster_relief 2、heresy_review 2、high_council 1"
+      ]
+    ],
+    "long": "组织定义覆盖公开身份、隐秘单位、教义、资源、领地、关系和行动策略七个数据面。服务端按世界种子、游戏日和全服神秘暴露确定每日三项行动；玩家只选择是否参与，不能决定组织是否行动或伪造奖励。"
+  },
+  {
+    "type": "org",
+    "id": "lord_of_mysteries:organization/church_night_watch",
+    "name": "长夜守望教会",
+    "en": "Church of the Night Watch",
+    "summary": "教会。每天按数据权重自主生成行动，并使用玩家独立的接取与结算状态。",
+    "tags": [
+      "组织",
+      "教会",
+      "自主行动",
+      "M4"
+    ],
+    "details": [
+      [
+        "类型",
+        "教会"
+      ],
+      [
+        "公开身份",
+        "Night shelters, hospitals, and funeral aid"
+      ],
+      [
+        "隐秘单位",
+        "night patrol、dream wardens"
+      ],
+      [
+        "教义",
+        "protect sleepers、contain before pursuit"
+      ],
+      [
+        "资源",
+        "watch posts、dream records、sealed vault"
+      ],
+      [
+        "领地",
+        "mist city north quarter、riverside cemetery"
+      ],
+      [
+        "盟友",
+        "1"
+      ],
+      [
+        "敌对",
+        "1"
+      ],
+      [
+        "行动权重",
+        "night_patrol 4、artifact_transfer 2、disaster_relief 1.5、heresy_review 1"
+      ]
+    ],
+    "long": "组织定义覆盖公开身份、隐秘单位、教义、资源、领地、关系和行动策略七个数据面。服务端按世界种子、游戏日和全服神秘暴露确定每日三项行动；玩家只选择是否参与，不能决定组织是否行动或伪造奖励。"
+  },
+  {
+    "type": "org",
+    "id": "lord_of_mysteries:organization/church_tempest_beacon",
+    "name": "风暴灯塔教会",
+    "en": "Church of the Tempest Beacon",
+    "summary": "教会。每天按数据权重自主生成行动，并使用玩家独立的接取与结算状态。",
+    "tags": [
+      "组织",
+      "教会",
+      "自主行动",
+      "M4"
+    ],
+    "details": [
+      [
+        "类型",
+        "教会"
+      ],
+      [
+        "公开身份",
+        "Harbor rescue, navigation, and storm relief"
+      ],
+      [
+        "隐秘单位",
+        "breakwater guard、storm listeners"
+      ],
+      [
+        "教义",
+        "act decisively、hold the coast"
+      ],
+      [
+        "资源",
+        "signal towers、patrol boats、weather archives"
+      ],
+      [
+        "领地",
+        "mist city docks、western breakwater"
+      ],
+      [
+        "盟友",
+        "1"
+      ],
+      [
+        "敌对",
+        "1"
+      ],
+      [
+        "行动权重",
+        "disaster_relief 4、night_patrol 3、artifact_transfer 1.5、high_council 1"
+      ]
+    ],
+    "long": "组织定义覆盖公开身份、隐秘单位、教义、资源、领地、关系和行动策略七个数据面。服务端按世界种子、游戏日和全服神秘暴露确定每日三项行动；玩家只选择是否参与，不能决定组织是否行动或伪造奖励。"
+  },
+  {
+    "type": "org",
+    "id": "lord_of_mysteries:organization/church_war_oath",
+    "name": "铁誓战争教团",
+    "en": "Order of the Iron Oath",
+    "summary": "教会。每天按数据权重自主生成行动，并使用玩家独立的接取与结算状态。",
+    "tags": [
+      "组织",
+      "教会",
+      "自主行动",
+      "M4"
+    ],
+    "details": [
+      [
+        "类型",
+        "教会"
+      ],
+      [
+        "公开身份",
+        "Veteran relief, civil defense, and disaster logistics"
+      ],
+      [
+        "隐秘单位",
+        "oath guard、field arbiters"
+      ],
+      [
+        "教义",
+        "honor declared terms、hold the line"
+      ],
+      [
+        "资源",
+        "armories、training yards、supply depots"
+      ],
+      [
+        "领地",
+        "barracks ward、northern gate"
+      ],
+      [
+        "盟友",
+        "1"
+      ],
+      [
+        "敌对",
+        "1"
+      ],
+      [
+        "行动权重",
+        "night_patrol 4、disaster_relief 2.5、high_council 2、artifact_transfer 1"
+      ]
+    ],
+    "long": "组织定义覆盖公开身份、隐秘单位、教义、资源、领地、关系和行动策略七个数据面。服务端按世界种子、游戏日和全服神秘暴露确定每日三项行动；玩家只选择是否参与，不能决定组织是否行动或伪造奖励。"
+  },
+  {
+    "type": "org",
+    "id": "lord_of_mysteries:organization/church_wisdom_archive",
+    "name": "知识圣堂",
+    "en": "Sanctum of Wisdom",
+    "summary": "教会。每天按数据权重自主生成行动，并使用玩家独立的接取与结算状态。",
+    "tags": [
+      "组织",
+      "教会",
+      "自主行动",
+      "M4"
+    ],
+    "details": [
+      [
+        "类型",
+        "教会"
+      ],
+      [
+        "公开身份",
+        "Libraries, examinations, and historical preservation"
+      ],
+      [
+        "隐秘单位",
+        "restricted librarians、cipher examiners"
+      ],
+      [
+        "教义",
+        "verify every claim、classify dangerous knowledge"
+      ],
+      [
+        "资源",
+        "sealed stacks、translation rooms、case indexes"
+      ],
+      [
+        "领地",
+        "academy quarter、old archive"
+      ],
+      [
+        "盟友",
+        "1"
+      ],
+      [
+        "敌对",
+        "1"
+      ],
+      [
+        "行动权重",
+        "heresy_review 3.5、high_council 2.5、artifact_transfer 2、night_patrol 1"
+      ]
+    ],
+    "long": "组织定义覆盖公开身份、隐秘单位、教义、资源、领地、关系和行动策略七个数据面。服务端按世界种子、游戏日和全服神秘暴露确定每日三项行动；玩家只选择是否参与，不能决定组织是否行动或伪造奖励。"
+  },
+  {
+    "type": "org",
+    "id": "lord_of_mysteries:organization/secret_aurora_rite",
+    "name": "极昼秘仪会",
+    "en": "Aurora Rite",
+    "summary": "隐秘组织。每天按数据权重自主生成行动，并使用玩家独立的接取与结算状态。",
+    "tags": [
+      "组织",
+      "隐秘组织",
+      "自主行动",
+      "M4"
+    ],
+    "details": [
+      [
+        "类型",
+        "隐秘组织"
+      ],
+      [
+        "公开身份",
+        "Traveling observatory and charitable lectures"
+      ],
+      [
+        "隐秘单位",
+        "dawn cells、wandering heralds"
+      ],
+      [
+        "教义",
+        "seek revelation、recruit through shared visions"
+      ],
+      [
+        "资源",
+        "hidden shrines、coded star charts、safe houses"
+      ],
+      [
+        "领地",
+        "east tenements、abandoned observatory"
+      ],
+      [
+        "盟友",
+        "1"
+      ],
+      [
+        "敌对",
+        "1"
+      ],
+      [
+        "行动权重",
+        "secret_recruitment 4.5、artifact_transfer 2.5、heresy_review 1.5、high_council 1"
+      ]
+    ],
+    "long": "组织定义覆盖公开身份、隐秘单位、教义、资源、领地、关系和行动策略七个数据面。服务端按世界种子、游戏日和全服神秘暴露确定每日三项行动；玩家只选择是否参与，不能决定组织是否行动或伪造奖励。"
+  },
+  {
+    "type": "org",
+    "id": "lord_of_mysteries:organization/secret_cipher_lodge",
+    "name": "密文会",
+    "en": "Cipher Lodge",
+    "summary": "隐秘组织。每天按数据权重自主生成行动，并使用玩家独立的接取与结算状态。",
+    "tags": [
+      "组织",
+      "隐秘组织",
+      "自主行动",
+      "M4"
+    ],
+    "details": [
+      [
+        "类型",
+        "隐秘组织"
+      ],
+      [
+        "公开身份",
+        "Translation bureau and antiquarian book exchange"
+      ],
+      [
+        "隐秘单位",
+        "cipher rooms、silent couriers"
+      ],
+      [
+        "教义",
+        "information survives owners、trade proofs not rumors"
+      ],
+      [
+        "资源",
+        "codebooks、dead drops、forbidden catalogs"
+      ],
+      [
+        "领地",
+        "printer alley、old archive tunnels"
+      ],
+      [
+        "盟友",
+        "1"
+      ],
+      [
+        "敌对",
+        "1"
+      ],
+      [
+        "行动权重",
+        "heresy_review 3、secret_recruitment 3、artifact_transfer 2、high_council 1.5"
+      ]
+    ],
+    "long": "组织定义覆盖公开身份、隐秘单位、教义、资源、领地、关系和行动策略七个数据面。服务端按世界种子、游戏日和全服神秘暴露确定每日三项行动；玩家只选择是否参与，不能决定组织是否行动或伪造奖励。"
+  },
+  {
+    "type": "org",
+    "id": "lord_of_mysteries:organization/secret_crimson_rose",
+    "name": "赤蔷薇学社",
+    "en": "Crimson Rose Society",
+    "summary": "隐秘组织。每天按数据权重自主生成行动，并使用玩家独立的接取与结算状态。",
+    "tags": [
+      "组织",
+      "隐秘组织",
+      "自主行动",
+      "M4"
+    ],
+    "details": [
+      [
+        "类型",
+        "隐秘组织"
+      ],
+      [
+        "公开身份",
+        "Botanical society and collectors club"
+      ],
+      [
+        "隐秘单位",
+        "thorn circles、red gardeners"
+      ],
+      [
+        "教义",
+        "beauty conceals leverage、debts must flower"
+      ],
+      [
+        "资源",
+        "rare gardens、invitation network、poison cabinets"
+      ],
+      [
+        "领地",
+        "glasshouse lane、southern estates"
+      ],
+      [
+        "盟友",
+        "1"
+      ],
+      [
+        "敌对",
+        "1"
+      ],
+      [
+        "行动权重",
+        "secret_recruitment 3.5、artifact_transfer 2.5、heresy_review 2、night_patrol 1"
+      ]
+    ],
+    "long": "组织定义覆盖公开身份、隐秘单位、教义、资源、领地、关系和行动策略七个数据面。服务端按世界种子、游戏日和全服神秘暴露确定每日三项行动；玩家只选择是否参与，不能决定组织是否行动或伪造奖励。"
+  },
+  {
+    "type": "org",
+    "id": "lord_of_mysteries:organization/secret_mind_alchemy",
+    "name": "心智炼成社",
+    "en": "Society of Mind Alchemy",
+    "summary": "隐秘组织。每天按数据权重自主生成行动，并使用玩家独立的接取与结算状态。",
+    "tags": [
+      "组织",
+      "隐秘组织",
+      "自主行动",
+      "M4"
+    ],
+    "details": [
+      [
+        "类型",
+        "隐秘组织"
+      ],
+      [
+        "公开身份",
+        "Private salons and experimental therapy"
+      ],
+      [
+        "隐秘单位",
+        "observation circles、memory artisans"
+      ],
+      [
+        "教义",
+        "shape conduct quietly、hide the observer"
+      ],
+      [
+        "资源",
+        "dream journals、private clinics、identity files"
+      ],
+      [
+        "领地",
+        "theater district、quiet villas"
+      ],
+      [
+        "盟友",
+        "1"
+      ],
+      [
+        "敌对",
+        "1"
+      ],
+      [
+        "行动权重",
+        "secret_recruitment 4、heresy_review 3、artifact_transfer 1.5、high_council 1"
+      ]
+    ],
+    "long": "组织定义覆盖公开身份、隐秘单位、教义、资源、领地、关系和行动策略七个数据面。服务端按世界种子、游戏日和全服神秘暴露确定每日三项行动；玩家只选择是否参与，不能决定组织是否行动或伪造奖励。"
+  },
+  {
+    "type": "org",
+    "id": "lord_of_mysteries:organization/secret_reclaimer_guild",
+    "name": "拾荒者行会",
+    "en": "Reclaimer Guild",
+    "summary": "隐秘组织。每天按数据权重自主生成行动，并使用玩家独立的接取与结算状态。",
+    "tags": [
+      "组织",
+      "隐秘组织",
+      "自主行动",
+      "M4"
+    ],
+    "details": [
+      [
+        "类型",
+        "隐秘组织"
+      ],
+      [
+        "公开身份",
+        "Salvage brokers and estate clearances"
+      ],
+      [
+        "隐秘单位",
+        "recovery crews、quiet auctioneers"
+      ],
+      [
+        "教义",
+        "nothing dangerous stays lost、custody is negotiable"
+      ],
+      [
+        "资源",
+        "salvage maps、hidden warehouses、auction contacts"
+      ],
+      [
+        "领地",
+        "rail yards、flooded warehouses"
+      ],
+      [
+        "盟友",
+        "1"
+      ],
+      [
+        "敌对",
+        "1"
+      ],
+      [
+        "行动权重",
+        "artifact_transfer 5、secret_recruitment 2.5、night_patrol 1.5、heresy_review 1"
+      ]
+    ],
+    "long": "组织定义覆盖公开身份、隐秘单位、教义、资源、领地、关系和行动策略七个数据面。服务端按世界种子、游戏日和全服神秘暴露确定每日三项行动；玩家只选择是否参与，不能决定组织是否行动或伪造奖励。"
+  },
+  {
     "type": "potion",
     "id": "lord_of_mysteries:apprentice_potion_5",
     "name": "旅行家魔药",
@@ -3885,10 +4814,12 @@ window.LOM = window.LOM || {};
     return !manualIds[entry.id];
   }));
   D.catalogMeta = {
-  "registeredItems": 109,
+  "registeredItems": 115,
   "registeredBlocks": 7,
   "registeredEntities": 16,
-  "uniqueRegistryEntries": 125,
-  "source": "Forge registries + zh_cn/en_us language resources"
+  "organizationDefinitions": 12,
+  "artifactDefinitions": 7,
+  "uniqueRegistryEntries": 143,
+  "source": "Forge registries + organization/artifact data + zh_cn/en_us"
 };
 })(window.LOM);

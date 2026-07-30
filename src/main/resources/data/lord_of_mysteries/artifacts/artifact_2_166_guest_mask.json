@@ -1,0 +1,27 @@
+{
+  "id": "lord_of_mysteries:artifact_2_166_guest_mask",
+  "type": "artifact",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/101", "REPO:M4_ARTIFACT_CUSTODY"],
+  "spoiler_level": 2,
+  "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+  "links": {
+    "requires": ["lord_of_mysteries:organization/secret_mind_alchemy"],
+    "produces": [],
+    "used_by": [],
+    "countered_by": []
+  },
+  "implementation_state": "playable",
+  "item": "lord_of_mysteries:artifact_2_166_guest_mask",
+  "custody_organization": "lord_of_mysteries:organization/secret_mind_alchemy",
+  "title_key": "item.lord_of_mysteries.artifact_2_166_guest_mask",
+  "danger_level": 3,
+  "safe_uses": 5,
+  "loan_days": 2,
+  "leak_threshold": 18,
+  "effect_key": "artifact.lord_of_mysteries.artifact_2_166_guest_mask.effect",
+  "cost_key": "artifact.lord_of_mysteries.artifact_2_166_guest_mask.cost",
+  "containment": ["store facing a blank wall", "never treat disguise as authorization"]
+}

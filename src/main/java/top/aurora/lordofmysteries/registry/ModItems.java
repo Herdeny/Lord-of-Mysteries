@@ -16,6 +16,8 @@ import top.aurora.lordofmysteries.potion.HunterPotionItem;
 import top.aurora.lordofmysteries.potion.M2PathwayPotionItem;
 import top.aurora.lordofmysteries.artifact.EternalMatchboxItem;
 import top.aurora.lordofmysteries.artifact.CalmingIncenseItem;
+import top.aurora.lordofmysteries.artifact.ManagedArtifactKind;
+import top.aurora.lordofmysteries.artifact.ManagedSealedArtifactItem;
 import top.aurora.lordofmysteries.artifact.SpiritLanternItem;
 import top.aurora.lordofmysteries.artifact.ProtectiveCharmItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorCompassItem;
@@ -394,9 +396,21 @@ public final class ModItems {
             () -> new M2PathwayPotionItem(
                     new Item.Properties(), M2PathwayPotionItem.Pathway.APPRENTICE, 5));
 
-    // —— 封印物（当前实现永燃火柴盒）——
+    // —— 封印物（M4 组织保管与泄漏/追回纵切）——
     public static final RegistryObject<Item> ETERNAL_MATCHBOX = ITEMS.register("eternal_matchbox",
             () -> new EternalMatchboxItem(new Item.Properties().durability(16).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> ARTIFACT_KINDLY_UMBRELLA =
+            managedArtifact(ManagedArtifactKind.KINDLY_UMBRELLA, Rarity.RARE);
+    public static final RegistryObject<Item> ARTIFACT_HONEST_MIRROR =
+            managedArtifact(ManagedArtifactKind.HONEST_MIRROR, Rarity.RARE);
+    public static final RegistryObject<Item> ARTIFACT_SLEEPING_BELL =
+            managedArtifact(ManagedArtifactKind.SLEEPING_BELL, Rarity.EPIC);
+    public static final RegistryObject<Item> ARTIFACT_GUEST_MASK =
+            managedArtifact(ManagedArtifactKind.GUEST_MASK, Rarity.EPIC);
+    public static final RegistryObject<Item> ARTIFACT_MERCIFUL_CHAIN =
+            managedArtifact(ManagedArtifactKind.MERCIFUL_CHAIN, Rarity.EPIC);
+    public static final RegistryObject<Item> ARTIFACT_CITY_WHISTLE =
+            managedArtifact(ManagedArtifactKind.CITY_WHISTLE, Rarity.EPIC);
 
     // —— 方块物品 ——
     // BlockItem 让方块可以以物品形式存在于背包和创造模式标签中。
@@ -427,4 +441,15 @@ public final class ModItems {
                     () -> new BlockItem(
                             ModBlocks.IMPRINT_WASHING_ALTAR.get(),
                             new Item.Properties().rarity(Rarity.RARE)));
+
+    private static RegistryObject<Item> managedArtifact(
+            ManagedArtifactKind kind, Rarity rarity) {
+        return ITEMS.register(
+                kind.path(),
+                () -> new ManagedSealedArtifactItem(
+                        kind,
+                        new Item.Properties()
+                                .stacksTo(1)
+                                .rarity(rarity)));
+    }
 }

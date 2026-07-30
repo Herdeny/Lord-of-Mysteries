@@ -1,6 +1,6 @@
 # M3 专属材料生态与无面人形体记录
 
-> 适用版本：`0.9.30-1.20.1`
+> 适用版本：`0.9.31-1.20.1`
 >
 > 数据基线：Capability schema 30 · content schema v4 · SimpleChannel protocol 13
 > 状态：`playable candidate`；真实材料获取、保底恢复、形体记录、隐私迁移与世界运行已自动验证

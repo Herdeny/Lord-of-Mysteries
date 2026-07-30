@@ -1,0 +1,27 @@
+{
+  "id": "lord_of_mysteries:artifact_1_012_city_whistle",
+  "type": "artifact",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/101", "REPO:M4_ARTIFACT_CUSTODY"],
+  "spoiler_level": 2,
+  "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+  "links": {
+    "requires": ["lord_of_mysteries:organization/secret_reclaimer_guild"],
+    "produces": [],
+    "used_by": [],
+    "countered_by": []
+  },
+  "implementation_state": "playable",
+  "item": "lord_of_mysteries:artifact_1_012_city_whistle",
+  "custody_organization": "lord_of_mysteries:organization/secret_reclaimer_guild",
+  "title_key": "item.lord_of_mysteries.artifact_1_012_city_whistle",
+  "danger_level": 5,
+  "safe_uses": 2,
+  "loan_days": 1,
+  "leak_threshold": 15,
+  "effect_key": "artifact.lord_of_mysteries.artifact_1_012_city_whistle.effect",
+  "cost_key": "artifact.lord_of_mysteries.artifact_1_012_city_whistle.cost",
+  "containment": ["use only inside the outpost response perimeter", "return before the next dawn"]
+}

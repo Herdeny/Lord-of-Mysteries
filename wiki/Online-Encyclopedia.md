@@ -1,6 +1,6 @@
 # 在线资料站与可搜索图鉴
 
-> 版本：0.9.30-1.20.1
+> 版本：0.9.31-1.20.1
 > 入口：<https://herdeny.github.io/Lord-of-Mysteries/>
 
 ## 最快使用方式
@@ -10,6 +10,7 @@
 | 第一次游玩 | [资料站首页](https://herdeny.github.io/Lord-of-Mysteries/#start) |
 | 比较五条途径 | [途径定位](https://herdeny.github.io/Lord-of-Mysteries/#pathways) |
 | 查看序列 9–5 | [序列浏览器](https://herdeny.github.io/Lord-of-Mysteries/#sequences) |
+| 查看组织与封印物 | [M4 组织与封印物](M4-Organizations-and-Sealed-Artifacts) |
 | 查物品、方块、实体或能力 | [可搜索图鉴](https://herdeny.github.io/Lord-of-Mysteries/#catalog) |
 | 查看真实开发进度 | [路线概览](https://herdeny.github.io/Lord-of-Mysteries/#roadmap) |
 
@@ -17,14 +18,14 @@
 
 - 输入中文名、英文名、注册 ID 或标签关键词。
 - 使用“能力、机制、魔药、方块、物品、封印物、仪式、组织、世界、状态”分类缩小范围。
-- 首页先显示 24 条，点击“加载更多”继续浏览；所有 218 条仍可直接搜索。
+- 首页先显示 24 条，点击“加载更多”继续浏览；所有 237 条仍可直接搜索。
 - 点击任一卡片查看完整说明、标签和细节；按 Esc 可关闭并返回原卡片。
 - 手机端分类是一排可横向滑动的按钮，图鉴卡为单列。
 
 ## 数据可信度
 
-- 109 个物品、7 个方块、16 个实体由实际 Forge 注册表和中英语言资源自动生成；方块物品与方块按 ID 去重。
-- 能力、机制、仪式、组织与世界条目来自仓库维护数据。
+- 115 个物品、7 个方块、16 个实体由实际 Forge 注册表和中英语言资源自动生成；方块物品与方块按 ID 去重。
+- 12 个组织和 7 件封印物由 schema v4 数据定义自动生成；能力、机制、仪式与世界条目来自仓库维护数据。
 - CI 会拒绝注册表、翻译、生成图鉴或页面布局契约漂移。
 - `playable`、`code_ready`、真人门禁和规划内容会分别标注，不会把路线目标冒充已实现。
 
@@ -98,6 +99,14 @@
 - 秘偶条目加入 `follow`/`guard`/`passive`、12 格守卫锚点、权威收纳保持战术和门主离线 NoAI 休眠。
 - 专服、迁移与资源条目同步为 schema 30、427 项 JUnit、22 项 Forge GameTest、365 JSON、1631 对双语键、628 个静态引用、116 个模型、109 个物品、7 个方块、16 个实体和 218 条图鉴。
 - Pages 发布边界不再把组织门或基础战术列为未完成；FTB Chunks 等具体适配归入 M7。
+
+## 0.9.31 内容同步
+
+- 首页新增 M4 玩家入口和当前进度卡，明确 12 个组织、6 类自主行动与首批 7/24 件封印物，不把完整 M4 目标提前报完成。
+- 图鉴生成器识别 `ManagedArtifactKind` 辅助注册，并直接读取 12 份组织定义和 7 份封印物定义；图鉴增至 237 条唯一记录。
+- M4 机制卡展示 `/pm m4`、`/pm organization`、`/pm artifact`、玩家任务隔离、世界唯一保管、逾期泄漏、换手/复制回收、稳定、归还和管理员退役。
+- 普通玩家页面只说明并展示本人负责或持有的保管记录；完整封印物位置台账属于权限等级 2 管理命令。
+- 当前自动化基线同步为 schema 30、439 项 JUnit、24 项 Forge GameTest、389 JSON、1741 对双语键、713 个静态引用、122 个模型、115 个物品、7 个方块、16 个实体和 147 节点/197 关系内容图。
 
 维护与验证细节见仓库文档
 [`docs/PAGES_INFORMATION_ARCHITECTURE.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/PAGES_INFORMATION_ARCHITECTURE.md)。

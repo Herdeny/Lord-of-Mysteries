@@ -1,0 +1,27 @@
+{
+  "id": "lord_of_mysteries:artifact_3_091_kindly_umbrella",
+  "type": "artifact",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/101", "REPO:M4_ARTIFACT_CUSTODY"],
+  "spoiler_level": 2,
+  "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+  "links": {
+    "requires": ["lord_of_mysteries:organization/church_tempest_beacon"],
+    "produces": [],
+    "used_by": [],
+    "countered_by": []
+  },
+  "implementation_state": "playable",
+  "item": "lord_of_mysteries:artifact_3_091_kindly_umbrella",
+  "custody_organization": "lord_of_mysteries:organization/church_tempest_beacon",
+  "title_key": "item.lord_of_mysteries.artifact_3_091_kindly_umbrella",
+  "danger_level": 2,
+  "safe_uses": 8,
+  "loan_days": 5,
+  "leak_threshold": 18,
+  "effect_key": "artifact.lord_of_mysteries.artifact_3_091_kindly_umbrella.effect",
+  "cost_key": "artifact.lord_of_mysteries.artifact_3_091_kindly_umbrella.cost",
+  "containment": ["dry fully before vault storage", "do not open beneath a solid roof"]
+}

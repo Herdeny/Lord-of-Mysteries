@@ -24,6 +24,10 @@ on:
       - "scripts/check_pages_layout.py"
       - "scripts/check_release_timestamp.py"
       - "scripts/check_m3_foundation.py"
+      - "scripts/check_m4_foundation.py"
+      - "src/main/java/top/aurora/lordofmysteries/artifact/ManagedArtifactKind.java"
+      - "src/main/resources/data/lord_of_mysteries/organizations/**"
+      - "src/main/resources/data/lord_of_mysteries/artifacts/**"
       - "src/main/java/top/aurora/lordofmysteries/registry/ModItems.java"
       - "src/main/java/top/aurora/lordofmysteries/registry/ModBlocks.java"
       - "src/main/java/top/aurora/lordofmysteries/registry/ModEntities.java"
@@ -50,6 +54,10 @@ on:
       - "scripts/check_pages_layout.py"
       - "scripts/check_release_timestamp.py"
       - "scripts/check_m3_foundation.py"
+      - "scripts/check_m4_foundation.py"
+      - "src/main/java/top/aurora/lordofmysteries/artifact/ManagedArtifactKind.java"
+      - "src/main/resources/data/lord_of_mysteries/organizations/**"
+      - "src/main/resources/data/lord_of_mysteries/artifacts/**"
       - "src/main/java/top/aurora/lordofmysteries/registry/ModItems.java"
       - "src/main/java/top/aurora/lordofmysteries/registry/ModBlocks.java"
       - "src/main/java/top/aurora/lordofmysteries/registry/ModEntities.java"
@@ -94,6 +102,9 @@ jobs:
 
       - name: Verify M3 foundation contract
         run: python3 scripts/check_m3_foundation.py
+
+      - name: Verify M4 foundation contract
+        run: python3 scripts/check_m4_foundation.py
 
       - name: Verify generated datapack
         run: python3 scripts/gen_datapack.py --check

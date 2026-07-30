@@ -1,0 +1,29 @@
+{
+  "id": "lord_of_mysteries:organization/church_earth_mother",
+  "type": "organization",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/66", "REPO:M4_ORGANIZATIONS"],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/organization_basics",
+  "links": {"requires": [], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "kind": "church",
+  "title_key": "organization.lord_of_mysteries.church_earth_mother",
+  "public_front": "Clinics, granaries, and rural cooperatives",
+  "covert_units": ["green healers", "blight wardens"],
+  "doctrines": ["preserve life", "restore exhausted land"],
+  "resources": ["herb gardens", "granaries", "field hospitals"],
+  "territories": ["garden ward", "outer farms"],
+  "relations": {
+    "allies": ["lord_of_mysteries:organization/church_eternal_sun"],
+    "enemies": ["lord_of_mysteries:organization/secret_crimson_rose"]
+  },
+  "strategy_weights": {
+    "disaster_relief": 4.5,
+    "night_patrol": 2.0,
+    "artifact_transfer": 1.0,
+    "high_council": 1.0
+  }
+}

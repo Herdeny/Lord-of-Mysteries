@@ -1,0 +1,27 @@
+{
+  "id": "lord_of_mysteries:artifact_2_031_sleeping_bell",
+  "type": "artifact",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/101", "REPO:M4_ARTIFACT_CUSTODY"],
+  "spoiler_level": 2,
+  "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+  "links": {
+    "requires": ["lord_of_mysteries:organization/church_night_watch"],
+    "produces": [],
+    "used_by": [],
+    "countered_by": []
+  },
+  "implementation_state": "playable",
+  "item": "lord_of_mysteries:artifact_2_031_sleeping_bell",
+  "custody_organization": "lord_of_mysteries:organization/church_night_watch",
+  "title_key": "item.lord_of_mysteries.artifact_2_031_sleeping_bell",
+  "danger_level": 3,
+  "safe_uses": 4,
+  "loan_days": 3,
+  "leak_threshold": 15,
+  "effect_key": "artifact.lord_of_mysteries.artifact_2_031_sleeping_bell.effect",
+  "cost_key": "artifact.lord_of_mysteries.artifact_2_031_sleeping_bell.cost",
+  "containment": ["secure the clapper with black thread", "never ring beside a sleeping ally"]
+}

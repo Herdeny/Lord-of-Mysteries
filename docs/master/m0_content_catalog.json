@@ -40,6 +40,30 @@
       "implementation_state": "verified"
     },
     {
+      "id": "lord_of_mysteries:knowledge/organization_basics",
+      "type": "knowledge",
+      "schema_version": 4,
+      "canon_status": "original",
+      "source_tier": "D",
+      "source_refs": ["GDD:v0.9/M4", "REPO:OrganizationDefinition"],
+      "spoiler_level": 1,
+      "knowledge_gate": "lord_of_mysteries:knowledge/organization_basics",
+      "links": {"requires": ["lord_of_mysteries:knowledge/investigator_basics"], "produces": [], "used_by": [], "countered_by": []},
+      "implementation_state": "data_ready"
+    },
+    {
+      "id": "lord_of_mysteries:knowledge/artifact_custody",
+      "type": "knowledge",
+      "schema_version": 4,
+      "canon_status": "original",
+      "source_tier": "D",
+      "source_refs": ["GDD:v0.9/M4", "REPO:SealedArtifactService"],
+      "spoiler_level": 2,
+      "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+      "links": {"requires": ["lord_of_mysteries:knowledge/organization_basics"], "produces": [], "used_by": [], "countered_by": []},
+      "implementation_state": "data_ready"
+    },
+    {
       "id": "lord_of_mysteries:spirit_herb",
       "type": "item",
       "schema_version": 4,

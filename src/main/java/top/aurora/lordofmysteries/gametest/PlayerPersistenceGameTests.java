@@ -1,6 +1,7 @@
 package top.aurora.lordofmysteries.gametest;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -41,6 +42,9 @@ import top.aurora.lordofmysteries.ability.MarionetteScrollItem;
 import top.aurora.lordofmysteries.ability.MarionetteTacticalMode;
 import top.aurora.lordofmysteries.ability.TravelMarkerService;
 import top.aurora.lordofmysteries.ability.TravelerDoorOrganizationPolicy;
+import top.aurora.lordofmysteries.artifact.ArtifactCustodySavedData;
+import top.aurora.lordofmysteries.artifact.ArtifactCustodyState;
+import top.aurora.lordofmysteries.artifact.SealedArtifactDefinition;
 import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicConservationService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicProcessingLogic;
@@ -50,6 +54,10 @@ import top.aurora.lordofmysteries.compat.TravelerDoorTerritoryEvent;
 import top.aurora.lordofmysteries.entity.SeerBreakdownEntity;
 import top.aurora.lordofmysteries.entity.TravelerDoorEntity;
 import top.aurora.lordofmysteries.knowledge.M1TrialProgress;
+import top.aurora.lordofmysteries.organization.OrganizationActionPolicy;
+import top.aurora.lordofmysteries.organization.OrganizationActionSavedData;
+import top.aurora.lordofmysteries.organization.OrganizationActionType;
+import top.aurora.lordofmysteries.organization.OrganizationDefinition;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerCapabilityEvents;
 import top.aurora.lordofmysteries.player.PlayerDataSection;
@@ -1556,6 +1564,166 @@ public final class PlayerPersistenceGameTests {
                         Mob::isAlive),
                 "all M3 ingredient creatures must remain alive after spawn");
         helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void m4OrganizationActionsSupportConcurrentPlayers(
+            GameTestHelper helper) {
+        Map<ResourceLocation, OrganizationDefinition> organizations =
+                Map.of(
+                        m4Id("organization/gametest_watch"),
+                        m4Organization("gametest_watch"),
+                        m4Id("organization/gametest_forge"),
+                        m4Organization("gametest_forge"),
+                        m4Id("organization/gametest_archive"),
+                        m4Organization("gametest_archive"),
+                        m4Id("organization/gametest_relief"),
+                        m4Organization("gametest_relief"));
+        OrganizationActionSavedData saved =
+                OrganizationActionSavedData.get(helper.getLevel());
+        long day = 10_000L + helper.getLevel().getGameTime();
+        helper.assertTrue(saved.refresh(
+                        helper.getLevel().getSeed(), day, 75f,
+                        organizations),
+                "M4 organizations must autonomously refresh without players");
+        helper.assertTrue(
+                saved.actions().size()
+                        == OrganizationActionPolicy.DAILY_ACTION_COUNT
+                        && saved.actions().stream()
+                        .map(OrganizationActionPolicy.PlannedAction
+                                ::organization)
+                        .distinct().count()
+                        == OrganizationActionPolicy.DAILY_ACTION_COUNT
+                        && saved.actions().stream()
+                        .allMatch(action -> action.risk() >= 3),
+                "daily action slots must be distinct and exposure-sensitive");
+
+        ServerPlayer first = createPlayer(helper, "m4-org-first");
+        ServerPlayer second = createPlayer(helper, "m4-org-second");
+        helper.assertTrue(saved.assign(
+                        first.getUUID(), 1,
+                        helper.getLevel().getGameTime())
+                        && saved.assign(
+                        second.getUUID(), 1,
+                        helper.getLevel().getGameTime()),
+                "separate players must independently claim the same public action");
+        saved.addProgress(first.getUUID(), 3);
+        helper.assertTrue(
+                saved.assignment(first.getUUID()).progress() == 3
+                        && saved.assignment(second.getUUID()).progress() == 0,
+                "one player's progress must not mutate another assignment");
+
+        OrganizationActionSavedData restored =
+                OrganizationActionSavedData.load(
+                        saved.save(new CompoundTag()));
+        helper.assertTrue(
+                restored.assignment(first.getUUID()).progress() == 3
+                        && restored.assignment(second.getUUID()).progress() == 0,
+                "concurrent assignments must survive SavedData round-trip");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void m4ArtifactCustodySurvivesLossLeakAndAbuse(
+            GameTestHelper helper) {
+        ArtifactCustodySavedData ledger =
+                ArtifactCustodySavedData.get(helper.getLevel());
+        UUID responsible = UUID.randomUUID();
+        SealedArtifactDefinition definition = new SealedArtifactDefinition(
+                m4Id("gametest_artifact"),
+                m4Id("gametest_artifact"),
+                m4Id("organization/gametest_watch"),
+                "item.lord_of_mysteries.gametest_artifact",
+                3, 3, 2, 12,
+                "artifact.gametest.effect",
+                "artifact.gametest.cost",
+                "lord_of_mysteries:knowledge/test",
+                List.of("seal", "audit"));
+        UUID instance = ledger.issue(
+                definition, responsible, 5L,
+                helper.getLevel().getGameTime(),
+                helper.getLevel().dimension().location(),
+                helper.absolutePos(new BlockPos(2, 2, 2)));
+        helper.assertTrue(instance != null,
+                "a verified artifact definition must issue one instance");
+        if (instance == null) return;
+        ledger.markDropped(
+                instance,
+                helper.getLevel().dimension().location(),
+                helper.absolutePos(new BlockPos(4, 2, 4)),
+                helper.getLevel().getGameTime() + 1L);
+        helper.assertTrue(ledger.expireOverdue(8L) == 1
+                        && ledger.record(instance).state()
+                        == ArtifactCustodyState.LEAKED,
+                "a lost artifact must leak after its due day even while offline");
+        ledger.observe(
+                instance, definition.id(), responsible,
+                helper.getLevel().dimension().location(),
+                helper.absolutePos(new BlockPos(4, 2, 4)),
+                8L, helper.getLevel().getGameTime() + 2L);
+        helper.assertTrue(ledger.stabilize(instance, responsible)
+                        && ledger.returnToVault(instance, responsible),
+                "the responsible player must be able to stabilize and return a recovered leak");
+
+        UUID duplicate = ledger.issue(
+                definition, responsible, 9L,
+                helper.getLevel().getGameTime() + 3L,
+                helper.getLevel().dimension().location(),
+                helper.absolutePos(new BlockPos(2, 2, 2)));
+        helper.assertTrue(duplicate != null,
+                "returned custody must release the unique vault slot");
+        if (duplicate == null) return;
+        UUID secondHolder = UUID.randomUUID();
+        ledger.observe(
+                duplicate, definition.id(), responsible,
+                helper.getLevel().dimension().location(),
+                helper.absolutePos(new BlockPos(2, 2, 2)),
+                9L, helper.getLevel().getGameTime() + 4L);
+        helper.assertTrue(
+                ledger.observe(
+                        duplicate, definition.id(), secondHolder,
+                        helper.getLevel().dimension().location(),
+                        helper.absolutePos(new BlockPos(3, 2, 2)),
+                        9L, helper.getLevel().getGameTime() + 4L)
+                        == ArtifactCustodySavedData.Observation.DUPLICATE
+                        && ledger.record(duplicate).state()
+                        == ArtifactCustodyState.ABUSED
+                        && ledger.retireAbused(duplicate),
+                "same-tick dual custody must quarantine until operator retirement");
+
+        ArtifactCustodySavedData restored =
+                ArtifactCustodySavedData.load(
+                        ledger.save(new CompoundTag()));
+        helper.assertTrue(
+                restored.record(instance).state()
+                        == ArtifactCustodyState.RETURNED
+                        && restored.record(duplicate).state()
+                        == ArtifactCustodyState.RETURNED,
+                "safe return and abuse retirement must survive server SavedData");
+        helper.succeed();
+    }
+
+    private static OrganizationDefinition m4Organization(String path) {
+        return new OrganizationDefinition(
+                m4Id("organization/" + path),
+                OrganizationDefinition.Kind.CHURCH,
+                "organization.lord_of_mysteries." + path,
+                "public service",
+                List.of("field unit"),
+                List.of("contain and verify"),
+                List.of("vault"),
+                List.of("mist city"),
+                List.of(),
+                List.of(),
+                Map.of(
+                        OrganizationActionType.NIGHT_PATROL, 3d,
+                        OrganizationActionType.ARTIFACT_TRANSFER, 2d,
+                        OrganizationActionType.DISASTER_RELIEF, 1d));
+    }
+
+    private static ResourceLocation m4Id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID, path);
     }
 
     private static ServerPlayer travelerTestPlayer(

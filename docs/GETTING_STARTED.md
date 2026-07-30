@@ -1,8 +1,8 @@
 # Project Mystery 入门指南
 
-> 适用版本：0.9.30-1.20.1 · v0.9 M3 首发五途径可玩候选与组织/编队治理（M0/M1 与 M2 自动化范围已完成）
+> 适用版本：0.9.31-1.20.1 · v0.9 M4 组织与封印物首批可玩闭环（M0–M3 机器实施范围已完成）
 >
-> 当前路线：v0.9 · M3 首发五途径
+> 当前路线：v0.9 · M4 组织与封印物
 
 ## 1. 第一次进入世界
 
@@ -244,3 +244,28 @@
 - 当前序列 6–5、最终专属材料/七种生态生物、五种晋升仪式、无面人八槽形体、旅行家 20 秒命名双向远门/四档权限/组织实时准入/持久黑名单/端点运维/领地兼容基础、三槽持久秘偶/三种战术/离线休眠/主人绑定收纳卷轴/跨维安全部署、队伍职责顾问、物品特性加工和活体负载析出进入 M3 `playable candidate`。精确玩家皮肤/模型/声线、复杂秘偶阵型、高精美术和真人互补长测仍是发布边界；具体领地 Mod 适配归入 M7，共享梦境归入 M5。
 
 专属材料、生物、保底配方、无面人操作与隐私边界见 [`M3_MATERIAL_ECOLOGY_AND_FACELESS_FORMS.md`](M3_MATERIAL_ECOLOGY_AND_FACELESS_FORMS.md)；五种仪式的环境、材料、失败恢复和多人职责见 [`M3_SEQUENCE5_ADVANCEMENT_RITUALS.md`](M3_SEQUENCE5_ADVANCEMENT_RITUALS.md)；秘偶规则见 [`M3_MARIONETTE_SQUAD.md`](M3_MARIONETTE_SQUAD.md)；旅行家标记、费用、同意与安全规则见 [`M3_TRAVELER_SPATIAL_RELAY.md`](M3_TRAVELER_SPATIAL_RELAY.md)；特性配方、负载公式、活体析出和失败矩阵见 [`M3_CHARACTERISTIC_PROCESSING.md`](M3_CHARACTERISTIC_PROCESSING.md)。
+
+## 10. M4 组织与封印物
+
+M3机器实施范围完成后，当前里程碑进入M4。输入 `/pm m4` 会显示12个组织和当日三个自主行动；行动按世界种子、游戏日与全服最高神秘暴露生成，不要求玩家在线才刷新。
+
+1. `/pm organization` 查看行动；
+2. `/pm organization claim <1-3>` 接取；
+3. 完成夜间巡查、封印物转运、异端材料复核、灾后救济、高层议事或秘密招募；
+4. 回迷雾城前哨服务台10格内 `/pm organization submit`；
+5. 对保管组织达到8点声望后，使用 `/pm artifact borrow <编号>` 借出封印物；
+6. `/pm artifact catalog` 查看效果、代价、安全次数、借期和泄漏阈值；
+7. 泄漏时准备安神香×1、纯水×1，执行 `/pm artifact stabilize`；
+8. 回前哨 `/pm artifact return`。
+
+首批7件为永燃火柴盒、善意之伞、诚实之镜、沉睡之铃、来客面具、慈悲之链和城市警哨。每种封印物在世界中只能有一个活跃实例，台账追踪责任人、持有人、维度、坐标、污染、次数、期限和事故。
+
+- 离线或掉落不会暂停借期；
+- 非责任人拾取进入回收状态，不能擅自使用；
+- 同玩家复制、跨玩家同刻双持、物品/定义伪造进入滥用隔离；
+- 来客面具只提供外观身份与短暂隐身，永远不授予权限；
+- 多人可接同一组织行动，但任务进度、消耗与奖励按玩家UUID隔离；
+- 封印物转运不会同时结算直接归还和组织任务两份奖励。
+
+当前完整目标仍是24件逐件验证封印物，已实现7/24。完整命令、状态、故障恢复和管理员流程见
+[`M4_ORGANIZATIONS_AND_ARTIFACTS.md`](M4_ORGANIZATIONS_AND_ARTIFACTS.md)。

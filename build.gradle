@@ -18,7 +18,7 @@ base {
     archivesName = mod_name
 }
 
-// Forge 1.20.1 要求 Java 17
+// Forge 1.20.1 requires Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
@@ -29,6 +29,9 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            jvmArgs '-Dfile.encoding=UTF-8',
+                    '-Dsun.stdout.encoding=UTF-8',
+                    '-Dsun.stderr.encoding=UTF-8'
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             mods {
@@ -40,6 +43,9 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+            jvmArgs '-Dfile.encoding=UTF-8',
+                    '-Dsun.stdout.encoding=UTF-8',
+                    '-Dsun.stderr.encoding=UTF-8'
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             arg '--nogui'
@@ -52,6 +58,9 @@ minecraft {
 
         gameTestServer {
             workingDirectory project.file('run')
+            jvmArgs '-Dfile.encoding=UTF-8',
+                    '-Dsun.stdout.encoding=UTF-8',
+                    '-Dsun.stderr.encoding=UTF-8'
             property 'forge.enabledGameTestNamespaces', "${mod_id},minecraft"
             mods {
                 "${mod_id}" {
@@ -62,6 +71,9 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
+            jvmArgs '-Dfile.encoding=UTF-8',
+                    '-Dsun.stdout.encoding=UTF-8',
+                    '-Dsun.stderr.encoding=UTF-8'
             args '--mod', mod_id, '--all',
                 '--output', file('src/generated/resources/').getAbsolutePath(),
                 '--existing', file('src/main/resources/').getAbsolutePath()
@@ -74,7 +86,7 @@ minecraft {
     }
 }
 
-// 数据生成产出加入资源
+// Include generated datapack output in the published resources.
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 tasks.configureEach {
@@ -216,6 +228,26 @@ tasks.register('checkM3Foundation', Exec) {
             'scripts/run_server_restart_matrix.py'
 }
 
+tasks.register('checkM4Foundation', Exec) {
+    group = 'verification'
+    description = 'Checks the first playable M4 organization and sealed-artifact loop.'
+    dependsOn 'generatePagesCatalog'
+    commandLine pythonExecutable, 'scripts/check_m4_foundation.py'
+    inputs.files 'scripts/check_m4_foundation.py',
+            'docs/m4-foundation-contract.json',
+            fileTree('src/main/java/top/aurora/lordofmysteries/organization'),
+            fileTree('src/main/java/top/aurora/lordofmysteries/artifact'),
+            fileTree('src/main/java/top/aurora/lordofmysteries/command'),
+            fileTree('src/main/resources/data/lord_of_mysteries/organizations'),
+            fileTree('src/main/resources/data/lord_of_mysteries/artifacts'),
+            fileTree('src/main/resources/assets/lord_of_mysteries/lang'),
+            fileTree('src/main/resources/assets/lord_of_mysteries/models/item'),
+            fileTree('src/test/java/top/aurora/lordofmysteries/organization'),
+            fileTree('src/test/java/top/aurora/lordofmysteries/artifact'),
+            'src/main/java/top/aurora/lordofmysteries/gametest/PlayerPersistenceGameTests.java',
+            'docs/assets/catalog-data.js'
+}
+
 tasks.register('checkResourceIntegrity', Exec) {
     group = 'verification'
     description = 'Checks JSON, translations, asset references, and registry resources.'
@@ -235,6 +267,9 @@ tasks.register('generatePagesCatalog', Exec) {
             'src/main/java/top/aurora/lordofmysteries/registry/ModItems.java',
             'src/main/java/top/aurora/lordofmysteries/registry/ModBlocks.java',
             'src/main/java/top/aurora/lordofmysteries/registry/ModEntities.java',
+            'src/main/java/top/aurora/lordofmysteries/artifact/ManagedArtifactKind.java',
+            fileTree('src/main/resources/data/lord_of_mysteries/organizations'),
+            fileTree('src/main/resources/data/lord_of_mysteries/artifacts'),
             'src/main/resources/assets/lord_of_mysteries/lang/zh_cn.json',
             'src/main/resources/assets/lord_of_mysteries/lang/en_us.json'
     outputs.file 'docs/assets/catalog-data.js'
@@ -305,6 +340,7 @@ tasks.named('check').configure {
     dependsOn 'checkProjectMysteryData', 'checkV09Design',
             'checkContentGraph', 'checkM1Playability',
             'checkM2Investigation', 'checkM3Foundation',
+            'checkM4Foundation',
             'checkResourceIntegrity',
             'checkPagesCatalog'
 }

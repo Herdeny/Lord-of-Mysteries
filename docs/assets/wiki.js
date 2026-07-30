@@ -73,7 +73,7 @@
 
   /* Release metadata */
   setText("#hero-version", meta.version);
-  setText("#hero-milestone", (window.LOM_PROJECT_META || {}).milestone || "M2");
+  setText("#hero-milestone", (window.LOM_PROJECT_META || {}).milestone || "M4");
   setText("#release-version", meta.version);
   setText("#release-stage", meta.stage);
   var metaDl = $("#meta-dl");
@@ -243,7 +243,7 @@
   var roadmap = data.roadmap || [];
   var stateText = { done: "已完成", active: "进行中", planned: "规划", future: "远期" };
   roadmap.forEach(function (milestone, index) {
-    if (index < 4 && roadmapRoot) {
+    if (index < 5 && roadmapRoot) {
       var card = create("article", "rm-card " + milestone.state);
       var head = create("div", "rm-card-head");
       head.appendChild(create("span", "rm-badge", milestone.id));
@@ -288,6 +288,8 @@
       "物品 " + (catalogMeta.registeredItems || 0),
       "方块 " + (catalogMeta.registeredBlocks || 0),
       "实体 " + (catalogMeta.registeredEntities || 0),
+      "组织 " + (catalogMeta.organizationDefinitions || 0),
+      "封印物 " + (catalogMeta.artifactDefinitions || 0),
       "数据源：" + (catalogMeta.source || "仓库数据")
     ].forEach(function (label) {
       coverageRoot.appendChild(create("span", "coverage-chip", label));

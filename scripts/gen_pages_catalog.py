@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_ROOT = ROOT / "src" / "main" / "java" / "top" / "aurora" / "lordofmysteries" / "registry"
 ASSET_ROOT = ROOT / "src" / "main" / "resources" / "assets" / "lord_of_mysteries"
+DATA_ROOT = ROOT / "src" / "main" / "resources" / "data" / "lord_of_mysteries"
 OUTPUT_PATH = ROOT / "docs" / "assets" / "catalog-data.js"
 MOD_ID = "lord_of_mysteries"
 
@@ -29,6 +30,14 @@ def load_registry_ids():
         REGISTRY_ROOT / "ModItems.java",
         r'\bsimple\(\s*"([a-z0-9_]+)"\s*\)|\bITEMS\.register\(\s*"([a-z0-9_]+)"',
     )
+    managed_artifacts = unique_matches(
+        ROOT / "src" / "main" / "java" / "top" / "aurora"
+        / "lordofmysteries" / "artifact" / "ManagedArtifactKind.java",
+        r'\b[A-Z][A-Z0-9_]*\(\s*"([a-z0-9_]+)"\s*\)',
+    )
+    for registry_id in managed_artifacts:
+        if registry_id not in items:
+            items.append(registry_id)
     blocks = unique_matches(
         REGISTRY_ROOT / "ModBlocks.java",
         r'\bBLOCKS\.register\(\s*"([a-z0-9_]+)"',
@@ -45,6 +54,17 @@ def load_registry_ids():
 def load_language(language):
     path = ASSET_ROOT / "lang" / f"{language}.json"
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_definitions(directory):
+    definitions = {}
+    for path in sorted((DATA_ROOT / directory).glob("*.json")):
+        definition = json.loads(path.read_text(encoding="utf-8"))
+        definition_id = definition.get("id")
+        if not definition_id or definition_id in definitions:
+            raise ValueError(f"{directory} contains an invalid or duplicate id: {path.name}")
+        definitions[definition_id] = definition
+    return definitions
 
 
 def resource_state(kind, registry_id):
@@ -101,10 +121,88 @@ def entry_for(kind, registry_id, zh_cn, en_us):
     }
 
 
+def artifact_entry(entry, definition, organizations, zh_cn, en_us):
+    effect_key = definition["effect_key"]
+    cost_key = definition["cost_key"]
+    custody_id = definition["custody_organization"]
+    custody = organizations.get(custody_id)
+    if effect_key not in zh_cn or effect_key not in en_us:
+        raise ValueError(f"artifact definition misses translated effect: {definition['id']}")
+    if cost_key not in zh_cn or cost_key not in en_us:
+        raise ValueError(f"artifact definition misses translated cost: {definition['id']}")
+    if custody is None:
+        raise ValueError(f"artifact definition references unknown custodian: {definition['id']}")
+    custody_key = custody["title_key"]
+    if custody_key not in zh_cn or custody_key not in en_us:
+        raise ValueError(f"artifact custodian misses translations: {custody_id}")
+    return {
+        **entry,
+        "type": "artifact",
+        "summary": zh_cn[effect_key],
+        "tags": [
+            "封印物",
+            f"危险等级{definition['danger_level']}",
+            "保管台账",
+            "M4",
+        ],
+        "details": [
+            ["登记编号", definition["id"]],
+            ["保管组织", zh_cn[custody_key]],
+            ["危险等级", str(definition["danger_level"])],
+            ["安全使用", f"{definition['safe_uses']} 次"],
+            ["借用期限", f"{definition['loan_days']} 天"],
+            ["泄漏阈值", str(definition["leak_threshold"])],
+            ["效果", zh_cn[effect_key]],
+            ["代价", zh_cn[cost_key]],
+        ],
+        "long": (
+            "该封印物使用世界级保管台账记录唯一实例、责任人、当前持有人、"
+            "最后维度与坐标、污染、使用次数、借出日、到期日和事故。"
+            "逾期、超出安全使用次数、污染达到阈值、换手或复制会进入泄漏、"
+            "回收或滥用处理；来客面具不会绕过任何权限。"
+        ),
+    }
+
+
+def organization_entry(definition, zh_cn, en_us):
+    title_key = definition["title_key"]
+    if title_key not in zh_cn or title_key not in en_us:
+        raise ValueError(f"organization misses translations: {definition['id']}")
+    kind = "教会" if definition["kind"] == "church" else "隐秘组织"
+    strategies = sorted(
+        definition["strategy_weights"].items(),
+        key=lambda value: (-value[1], value[0]),
+    )
+    return {
+        "type": "org",
+        "id": definition["id"],
+        "name": zh_cn[title_key],
+        "en": en_us[title_key],
+        "summary": f"{kind}。每天按数据权重自主生成行动，并使用玩家独立的接取与结算状态。",
+        "tags": ["组织", kind, "自主行动", "M4"],
+        "details": [
+            ["类型", kind],
+            ["公开身份", definition["public_front"]],
+            ["隐秘单位", "、".join(definition["covert_units"])],
+            ["教义", "、".join(definition["doctrines"])],
+            ["资源", "、".join(definition["resources"])],
+            ["领地", "、".join(definition["territories"])],
+            ["盟友", str(len(definition["relations"].get("allies", [])))],
+            ["敌对", str(len(definition["relations"].get("enemies", [])))],
+            ["行动权重", "、".join(f"{key} {weight:g}" for key, weight in strategies)],
+        ],
+        "long": (
+            "组织定义覆盖公开身份、隐秘单位、教义、资源、领地、关系和行动策略"
+            "七个数据面。服务端按世界种子、游戏日和全服神秘暴露确定每日三项"
+            "行动；玩家只选择是否参与，不能决定组织是否行动或伪造奖励。"
+        ),
+    }
 def render():
     items, blocks, entities = load_registry_ids()
     zh_cn = load_language("zh_cn")
     en_us = load_language("en_us")
+    organizations = load_definitions("organizations")
+    artifacts = load_definitions("artifacts")
 
     block_ids = set(blocks)
     entries = [
@@ -114,14 +212,30 @@ def render():
     ]
     entries.extend(entry_for("block", registry_id, zh_cn, en_us) for registry_id in blocks)
     entries.extend(entry_for("entity", registry_id, zh_cn, en_us) for registry_id in entities)
+    entries = [
+        artifact_entry(
+            entry,
+            artifacts[entry["id"]],
+            organizations,
+            zh_cn,
+            en_us,
+        ) if entry["id"] in artifacts else entry
+        for entry in entries
+    ]
+    entries.extend(
+        organization_entry(definition, zh_cn, en_us)
+        for definition in organizations.values()
+    )
     entries.sort(key=lambda entry: (entry["type"], entry["id"]))
 
     metadata = {
         "registeredItems": len(items),
         "registeredBlocks": len(blocks),
         "registeredEntities": len(entities),
+        "organizationDefinitions": len(organizations),
+        "artifactDefinitions": len(artifacts),
         "uniqueRegistryEntries": len(entries),
-        "source": "Forge registries + zh_cn/en_us language resources",
+        "source": "Forge registries + organization/artifact data + zh_cn/en_us",
     }
     encoded_entries = json.dumps(entries, ensure_ascii=False, indent=2)
     encoded_metadata = json.dumps(metadata, ensure_ascii=False, indent=2)

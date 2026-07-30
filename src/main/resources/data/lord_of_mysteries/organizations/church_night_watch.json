@@ -1,0 +1,29 @@
+{
+  "id": "lord_of_mysteries:organization/church_night_watch",
+  "type": "organization",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/66", "REPO:M4_ORGANIZATIONS"],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/organization_basics",
+  "links": {"requires": [], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "kind": "church",
+  "title_key": "organization.lord_of_mysteries.church_night_watch",
+  "public_front": "Night shelters, hospitals, and funeral aid",
+  "covert_units": ["night patrol", "dream wardens"],
+  "doctrines": ["protect sleepers", "contain before pursuit"],
+  "resources": ["watch posts", "dream records", "sealed vault"],
+  "territories": ["mist city north quarter", "riverside cemetery"],
+  "relations": {
+    "allies": ["lord_of_mysteries:organization/church_wisdom_archive"],
+    "enemies": ["lord_of_mysteries:organization/secret_mind_alchemy"]
+  },
+  "strategy_weights": {
+    "night_patrol": 4.0,
+    "artifact_transfer": 2.0,
+    "disaster_relief": 1.5,
+    "heresy_review": 1.0
+  }
+}

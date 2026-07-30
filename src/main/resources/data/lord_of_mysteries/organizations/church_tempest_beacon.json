@@ -1,0 +1,29 @@
+{
+  "id": "lord_of_mysteries:organization/church_tempest_beacon",
+  "type": "organization",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/66", "REPO:M4_ORGANIZATIONS"],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/organization_basics",
+  "links": {"requires": [], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "kind": "church",
+  "title_key": "organization.lord_of_mysteries.church_tempest_beacon",
+  "public_front": "Harbor rescue, navigation, and storm relief",
+  "covert_units": ["breakwater guard", "storm listeners"],
+  "doctrines": ["act decisively", "hold the coast"],
+  "resources": ["signal towers", "patrol boats", "weather archives"],
+  "territories": ["mist city docks", "western breakwater"],
+  "relations": {
+    "allies": ["lord_of_mysteries:organization/church_war_oath"],
+    "enemies": ["lord_of_mysteries:organization/secret_crimson_rose"]
+  },
+  "strategy_weights": {
+    "night_patrol": 3.0,
+    "disaster_relief": 4.0,
+    "artifact_transfer": 1.5,
+    "high_council": 1.0
+  }
+}

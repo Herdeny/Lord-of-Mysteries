@@ -1,0 +1,27 @@
+{
+  "id": "lord_of_mysteries:artifact_2_203_merciful_chain",
+  "type": "artifact",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/101", "REPO:M4_ARTIFACT_CUSTODY"],
+  "spoiler_level": 2,
+  "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+  "links": {
+    "requires": ["lord_of_mysteries:organization/church_war_oath"],
+    "produces": [],
+    "used_by": [],
+    "countered_by": []
+  },
+  "implementation_state": "playable",
+  "item": "lord_of_mysteries:artifact_2_203_merciful_chain",
+  "custody_organization": "lord_of_mysteries:organization/church_war_oath",
+  "title_key": "item.lord_of_mysteries.artifact_2_203_merciful_chain",
+  "danger_level": 4,
+  "safe_uses": 3,
+  "loan_days": 2,
+  "leak_threshold": 16,
+  "effect_key": "artifact.lord_of_mysteries.artifact_2_203_merciful_chain.effect",
+  "cost_key": "artifact.lord_of_mysteries.artifact_2_203_merciful_chain.cost",
+  "containment": ["coil around an inert iron ring", "never bind players or bosses"]
+}

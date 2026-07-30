@@ -111,7 +111,8 @@ def load_nodes(errors):
             nodes.append((entry, str(catalog_path.relative_to(ROOT))))
     for directory in (
             MAIN_DATA / "commissions", MAIN_DATA / "quests",
-            MAIN_DATA / "sequences"):
+            MAIN_DATA / "sequences", MAIN_DATA / "organizations",
+            MAIN_DATA / "artifacts"):
         for path in sorted(directory.glob("*.json")):
             nodes.append((read_json(path), str(path.relative_to(ROOT))))
     for path in sorted((GENERATED_DATA / "pathway_catalog").glob("*.json")):
@@ -149,6 +150,17 @@ def runtime_ids():
         names.update(re.findall(
             rf'{registry}\.register\(\s*"([a-z0-9_.-]+)"', text))
         ids.update(f"lord_of_mysteries:{name}" for name in names)
+    artifact_kinds = (
+        ROOT / "src/main/java/top/aurora/lordofmysteries"
+        / "artifact/ManagedArtifactKind.java"
+    ).read_text(encoding="utf-8")
+    ids.update(
+        f"lord_of_mysteries:{name}"
+        for name in re.findall(
+            r'\b[A-Z][A-Z0-9_]*\(\s*"([a-z0-9_]+)"\s*\)',
+            artifact_kinds,
+        )
+    )
     with (ROOT / "docs/recipes_master.csv").open(
             encoding="utf-8-sig", newline="") as stream:
         ids.update(

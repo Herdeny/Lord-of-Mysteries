@@ -25,17 +25,19 @@ public final class SaveMigrationEvents {
                             PlayerMysteryData.CURRENT_SCHEMA_VERSION);
             if (result.created()) {
                 ProjectMystery.LOGGER.info(
-                        "[Project Mystery] 已创建 schema {} 迁移前备份：{}（{} 文件，{} bytes）",
+                        "[Project Mystery] Created pre-migration schema {} backup: {} "
+                                + "({} files, {} bytes)",
                         result.targetSchema(), result.snapshotDirectory(),
                         result.fileCount(), result.totalBytes());
             } else {
                 ProjectMystery.LOGGER.debug(
-                        "[Project Mystery] schema {} 迁移备份已存在：{}",
+                        "[Project Mystery] Pre-migration schema {} backup exists: {}",
                         result.targetSchema(), result.snapshotDirectory());
             }
         } catch (IOException exception) {
             throw new IllegalStateException(
-                    "Project Mystery 无法创建迁移前备份，已阻止服务器继续加载存档",
+                    "Project Mystery could not create the pre-migration backup; "
+                            + "world loading was stopped",
                     exception);
         }
     }

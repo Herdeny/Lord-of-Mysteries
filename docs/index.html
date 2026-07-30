@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
   <title>Project Mystery · 玩家资料站</title>
-  <meta name="description" content="Project Mystery 玩家资料站：Forge 1.20.1 安装指引、核心玩法、五条途径、序列能力、自动同步图鉴与开发路线。">
+  <meta name="description" content="Project Mystery 玩家资料站：Forge 1.20.1 安装指引、五条途径、组织行动、封印物保管、自动同步图鉴与开发路线。">
   <meta name="theme-color" content="#100f0c">
   <meta property="og:title" content="Project Mystery · 玩家资料站">
   <meta property="og:description" content="从普通人到非凡者：快速开始、玩法循环、途径序列、物品图鉴与真实开发进度。">
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/logo.png">
   <link rel="icon" href="assets/logo.png">
-  <link rel="stylesheet" href="assets/wiki.css?v=0.9.30">
+  <link rel="stylesheet" href="assets/wiki.css?v=0.9.31">
 </head>
 <body id="top">
   <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -46,7 +46,7 @@
         <p class="eyebrow">Project Mystery · 玩家资料站</p>
         <div class="release-chip">
           <span class="status-dot" aria-hidden="true"></span>
-          <span>当前里程碑 <b id="hero-milestone">M2</b></span>
+          <span>当前里程碑 <b id="hero-milestone">M4</b></span>
           <span class="release-chip-separator" aria-hidden="true"></span>
           <span id="hero-version">载入版本中</span>
         </div>
@@ -79,7 +79,11 @@
           </div>
           <div>
             <span>M3 可玩候选</span>
-            <strong class="code-ready">playable</strong>
+            <strong>机器范围完成</strong>
+          </div>
+          <div>
+            <span>M4 首批闭环</span>
+            <strong class="code-ready">7 / 24 封印物</strong>
           </div>
         </div>
       </aside>
@@ -119,6 +123,13 @@
         </article>
         <article class="entry-card">
           <span class="entry-index">04</span>
+          <p class="entry-kicker">M4 玩家</p>
+          <h3>组织行动与封印物保管</h3>
+          <p>用 <code>/pm m4</code> 查看每日行动；提升组织声望后在前哨借用首批7件封印物，并处理借期、泄漏、回收与归还。</p>
+          <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M4-Organizations-and-Sealed-Artifacts" target="_blank" rel="noopener">打开 M4 玩家手册 ↗</a>
+        </article>
+        <article class="entry-card">
+          <span class="entry-index">05</span>
           <p class="entry-kicker">服主 / 开发者</p>
           <h3>部署、诊断与贡献</h3>
           <p>用 <code>/pm doctor</code> 与 <code>/pm servercheck</code> 检查专服；开发前先阅读设计基线与贡献门禁。</p>
@@ -162,7 +173,7 @@
         <article class="progress-card">
           <div class="progress-card-head">
             <span class="milestone-mark violet">M3</span>
-            <span class="state-badge planned">当前里程碑</span>
+            <span class="state-badge planned">机器范围完成</span>
           </div>
           <h3>五条首发途径</h3>
           <p>序列 6–5 已具备 10 瓶魔药、10 种最终材料、7 种生态生物、20 项能力、20 项扮演、五种专属仪式、无面人八槽形体、旅行家四档双向远门/组织实时准入/端点运维、秘偶大师三槽持久秘偶编队/三种战术/离线休眠/权威收纳/跨维安全部署、队伍职责顾问、非凡特性加工及全服来源审计。</p>
@@ -170,6 +181,18 @@
           <ul>
             <li>来源重放不扣特性、催化剂、探针耐久或析出材料，处理结果由服务端原子结算</li>
             <li>精确玩家皮肤/模型/声线、复杂秘偶阵型、高精美术和真人互补长测仍是 M3 发布边界；具体领地 Mod 适配归入 M7，共享梦境归入 M5</li>
+          </ul>
+        </article>
+        <article class="progress-card active-progress">
+          <div class="progress-card-head">
+            <span class="milestone-mark">M4</span>
+            <span class="state-badge active">当前里程碑</span>
+          </div>
+          <h3>组织与封印物</h3>
+          <p>七个教会、五个隐秘组织、六类自主行动和首批7件封印物已形成服务端权威闭环。世界台账覆盖唯一借出、责任人/持有人、离线逾期、污染与安全次数、换手回收、复制隔离、稳定、归还和管理员退役。</p>
+          <ul>
+            <li>Pages图鉴直接从12份组织定义、7份封印物定义、Forge注册表和双语资源生成</li>
+            <li>完整目标仍为24件逐件验证封印物；据点、NPC日程、跨周战略和真人长测继续实施</li>
           </ul>
         </article>
       </div>
@@ -239,13 +262,13 @@
       </div>
       <div class="roadmap-overview">
         <div class="roadmap-progress" aria-label="当前路线位置">
-          <span style="--progress: 27%"></span>
+          <span style="--progress: 35%"></span>
         </div>
-        <p><b>M0–M1</b> 已完成机器门禁 · <b>M2</b> 自动化范围闭环并保留真人长测 · <b>M3</b> 已完成最终材料生态、无面人形体、五种仪式、旅行家组织双向远门、三槽秘偶/三种战术/离线休眠/跨维收纳、队伍职责顾问、特性加工与全服来源审计的可玩候选</p>
+        <p><b>M0–M3</b> 机器实施范围已完成并保留真人发布门禁 · <b>M4</b> 正在扩展12组织、每日自主行动与24件封印物，首批7件已接入完整保管/泄漏/回收闭环</p>
       </div>
       <div class="roadmap" id="roadmap-track"></div>
       <details class="future-roadmap">
-        <summary>查看 M4–M12 远期路线</summary>
+        <summary>查看 M5–M12 后续路线</summary>
         <div id="future-roadmap-track"></div>
       </details>
       <a class="button roadmap-link" href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/ROADMAP.md" target="_blank" rel="noopener">打开完整路线与验收条件 ↗</a>
@@ -261,7 +284,7 @@
       </div>
       <div class="resource-grid">
         <a class="resource-card" href="https://github.com/Herdeny/Lord-of-Mysteries/wiki" target="_blank" rel="noopener">
-          <span>玩家知识库</span><strong>GitHub Wiki</strong><small>玩法手册、案件说明、M3 材料生态、无面人形体、仪式、远门、秘偶与特性加工</small>
+          <span>玩家知识库</span><strong>GitHub Wiki</strong><small>玩法手册、案件说明、M3材料生态/仪式/远门/秘偶，以及M4组织行动和封印物保管</small>
         </a>
         <a class="resource-card" href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/DEDICATED_SERVER_TEST_MATRIX.md" target="_blank" rel="noopener">
           <span>服务器运维</span><strong>专服验证矩阵</strong><small>启动、重启、多人、回滚与诊断</small>
@@ -319,10 +342,10 @@
     </article>
   </div>
 
-  <script src="assets/project-meta.js?v=0.9.30"></script>
-  <script src="assets/roadmap-data.js?v=0.9.30"></script>
-  <script src="assets/wiki-data.js?v=0.9.30"></script>
-  <script src="assets/catalog-data.js?v=0.9.30"></script>
-  <script src="assets/wiki.js?v=0.9.30"></script>
+  <script src="assets/project-meta.js?v=0.9.31"></script>
+  <script src="assets/roadmap-data.js?v=0.9.31"></script>
+  <script src="assets/wiki-data.js?v=0.9.31"></script>
+  <script src="assets/catalog-data.js?v=0.9.31"></script>
+  <script src="assets/wiki.js?v=0.9.31"></script>
 </body>
 </html>

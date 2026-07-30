@@ -1,0 +1,27 @@
+{
+  "id": "lord_of_mysteries:artifact_3_207_honest_mirror",
+  "type": "artifact",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/101", "REPO:M4_ARTIFACT_CUSTODY"],
+  "spoiler_level": 2,
+  "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+  "links": {
+    "requires": ["lord_of_mysteries:organization/church_wisdom_archive"],
+    "produces": [],
+    "used_by": [],
+    "countered_by": []
+  },
+  "implementation_state": "playable",
+  "item": "lord_of_mysteries:artifact_3_207_honest_mirror",
+  "custody_organization": "lord_of_mysteries:organization/church_wisdom_archive",
+  "title_key": "item.lord_of_mysteries.artifact_3_207_honest_mirror",
+  "danger_level": 2,
+  "safe_uses": 6,
+  "loan_days": 4,
+  "leak_threshold": 14,
+  "effect_key": "artifact.lord_of_mysteries.artifact_3_207_honest_mirror.effect",
+  "cost_key": "artifact.lord_of_mysteries.artifact_3_207_honest_mirror.cost",
+  "containment": ["cover reflective face between questions", "record every revealed target"]
+}

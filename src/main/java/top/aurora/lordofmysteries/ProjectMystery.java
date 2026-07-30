@@ -22,7 +22,7 @@ import top.aurora.lordofmysteries.registry.ModEntities;
  * 技术基线：Minecraft 1.20.1 · Forge 47.4.x · Java 17
  * 设计基线：docs/DESIGN_BASELINE.md（Project Mystery v0.9）
  *
- * 当前按 v0.9 路线推进 M0 内容基建，并把既有 M1/M2 可玩内容作为迁移资产重新验收；
+ * 当前按 v0.9 路线推进 M4 组织与封印物可玩闭环，并持续回归 M0-M3 已交付内容；
  * 完整 M0-M12 门禁由 roadmap.json 定义。
  *
  * 注：1.20.1 没有 NeoForge 的 Attachments API，玩家数据走 Forge Capability。

@@ -1,6 +1,6 @@
 # M1 两小时试炼追踪器
 
-> 当前版本：`0.9.30-1.20.1` · Capability schema 30
+> 当前版本：`0.9.31-1.20.1` · Capability schema 30
 
 使用 `/pm trial start|resume|status|report|verify|stop|reset` 记录 M1 两小时玩法。命令无需管理员权限，离线时间不计入时长。
 
@@ -16,6 +16,6 @@
 
 ## 连续性
 
-追踪器独立记录重连、专服重启、维度往返和死亡恢复。状态使用当前 schema 30 保存，并由 22 项 Forge GameTest、全服来源重放拒绝、无面人记录、材料生物入世、旅行家组织双向门、秘偶权威收纳/战术跨部署和同一世界双启动专服矩阵验证。
+追踪器独立记录重连、专服重启、维度往返和死亡恢复。状态使用当前 schema 30 保存，并由 24 项 Forge GameTest、全服来源重放拒绝、无面人记录、材料生物入世、旅行家组织双向门、秘偶权威收纳/战术跨部署、M4 多人隔离负向路径和同一世界双启动专服矩阵验证。
 
 完整字段和命令见 [仓库文档](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M1_TRIAL_TRACKER.md)。

@@ -27,6 +27,7 @@ import top.aurora.lordofmysteries.ability.FacelessFormService;
 import top.aurora.lordofmysteries.ability.MarionettePolicy;
 import top.aurora.lordofmysteries.ability.MarionetteService;
 import top.aurora.lordofmysteries.ability.TravelMarkerService;
+import top.aurora.lordofmysteries.artifact.SealedArtifactService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicProcessingService;
 import top.aurora.lordofmysteries.knowledge.InvestigatorCompassItem;
 import top.aurora.lordofmysteries.knowledge.InvestigatorNotesItem;
@@ -40,6 +41,7 @@ import top.aurora.lordofmysteries.knowledge.M1TrialTimer;
 import top.aurora.lordofmysteries.knowledge.M1TrialTracker;
 import top.aurora.lordofmysteries.knowledge.PlayerGuideHandler;
 import top.aurora.lordofmysteries.network.NetworkProtocol;
+import top.aurora.lordofmysteries.organization.OrganizationActionService;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
@@ -108,6 +110,112 @@ public final class ProjectMysteryCommands {
                                                 .showM3TeamGuide(
                                                         context.getSource()
                                                                 .getPlayerOrException()))))
+                .then(Commands.literal("m4")
+                        .executes(context ->
+                                OrganizationActionService.showGuide(
+                                        context.getSource()
+                                                .getPlayerOrException())))
+                .then(Commands.literal("organization")
+                        .executes(context ->
+                                OrganizationActionService.showActions(
+                                        context.getSource()
+                                                .getPlayerOrException()))
+                        .then(Commands.literal("catalog")
+                                .executes(context ->
+                                        OrganizationActionService
+                                                .showOrganizations(
+                                                        context.getSource()
+                                                                .getPlayerOrException())))
+                        .then(Commands.literal("claim")
+                                .then(Commands.argument(
+                                                "slot",
+                                                IntegerArgumentType.integer(
+                                                        1, 3))
+                                        .executes(context ->
+                                                OrganizationActionService
+                                                        .claim(
+                                                                context.getSource()
+                                                                        .getPlayerOrException(),
+                                                                IntegerArgumentType
+                                                                        .getInteger(
+                                                                                context,
+                                                                                "slot")))))
+                        .then(Commands.literal("submit")
+                                .executes(context ->
+                                        OrganizationActionService.submit(
+                                                context.getSource()
+                                                        .getPlayerOrException())))
+                        .then(Commands.literal("abandon")
+                                .executes(context ->
+                                        OrganizationActionService.abandon(
+                                                context.getSource()
+                                                        .getPlayerOrException()))))
+                .then(Commands.literal("artifact")
+                        .executes(context ->
+                                SealedArtifactService.showGuide(
+                                        context.getSource()
+                                                .getPlayerOrException()))
+                        .then(Commands.literal("catalog")
+                                .executes(context ->
+                                        SealedArtifactService.showCatalog(
+                                                context.getSource()
+                                                        .getPlayerOrException())))
+                        .then(Commands.literal("borrow")
+                                .then(Commands.argument(
+                                                "artifact",
+                                                StringArgumentType.word())
+                                        .executes(context ->
+                                                SealedArtifactService.borrow(
+                                                        context.getSource()
+                                                                .getPlayerOrException(),
+                                                        StringArgumentType
+                                                                .getString(
+                                                                        context,
+                                                                        "artifact")))))
+                        .then(Commands.literal("return")
+                                .executes(context ->
+                                        SealedArtifactService.returnHeld(
+                                                context.getSource()
+                                                        .getPlayerOrException())))
+                        .then(Commands.literal("stabilize")
+                                .executes(context ->
+                                        SealedArtifactService.stabilize(
+                                                context.getSource()
+                                                        .getPlayerOrException())))
+                        .then(Commands.literal("mask")
+                                .then(Commands.argument(
+                                                "organization",
+                                                StringArgumentType.word())
+                                        .executes(context ->
+                                                SealedArtifactService
+                                                        .setGuestMaskOrganization(
+                                                                context.getSource()
+                                                                        .getPlayerOrException(),
+                                                                StringArgumentType
+                                                                        .getString(
+                                                                                context,
+                                                                                "organization")))))
+                        .then(Commands.literal("admin")
+                                .requires(source -> source.hasPermission(2))
+                                .then(Commands.literal("ledger")
+                                        .executes(context ->
+                                                SealedArtifactService
+                                                        .showLedger(
+                                                                context.getSource()
+                                                                        .getPlayerOrException())))
+                                .then(Commands.literal("retire")
+                                        .then(Commands.argument(
+                                                        "instance",
+                                                        StringArgumentType.word())
+                                                .executes(context ->
+                                                        SealedArtifactService
+                                                                .retireAbused(
+                                                                        context.getSource()
+                                                                                .getPlayerOrException(),
+                                                                        StringArgumentType
+                                                                                .getString(
+                                                                                        context,
+                                                                                        "instance")))))))
                 .then(Commands.literal("recover").executes(context ->
                         PlayerGuideHandler.restoreStarterKit(
                                 context.getSource().getPlayerOrException(), true)))

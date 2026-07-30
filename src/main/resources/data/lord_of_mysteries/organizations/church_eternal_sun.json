@@ -1,0 +1,29 @@
+{
+  "id": "lord_of_mysteries:organization/church_eternal_sun",
+  "type": "organization",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/66", "REPO:M4_ORGANIZATIONS"],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/organization_basics",
+  "links": {"requires": [], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "kind": "church",
+  "title_key": "organization.lord_of_mysteries.church_eternal_sun",
+  "public_front": "Schools, public kitchens, and purification rites",
+  "covert_units": ["dawn judges", "radiant escorts"],
+  "doctrines": ["expose corruption", "serve openly"],
+  "resources": ["sanctuaries", "purification chambers", "public registries"],
+  "territories": ["sun plaza", "southern school district"],
+  "relations": {
+    "allies": ["lord_of_mysteries:organization/church_earth_mother"],
+    "enemies": ["lord_of_mysteries:organization/secret_aurora_rite"]
+  },
+  "strategy_weights": {
+    "heresy_review": 4.0,
+    "disaster_relief": 3.0,
+    "night_patrol": 1.5,
+    "high_council": 1.0
+  }
+}
