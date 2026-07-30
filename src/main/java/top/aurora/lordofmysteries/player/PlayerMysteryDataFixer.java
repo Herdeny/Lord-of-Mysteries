@@ -52,7 +52,10 @@ public final class PlayerMysteryDataFixer {
                             ::initializeMarionetteStorageRecords),
             new DataFix("faceless_form_records", 29,
                     PlayerMysteryDataFixer
-                            ::initializeFacelessFormRecords));
+                            ::initializeFacelessFormRecords),
+            new DataFix("m3_squad_governance", 30,
+                    PlayerMysteryDataFixer
+                            ::initializeM3SquadGovernance));
 
     private PlayerMysteryDataFixer() {}
 
@@ -364,6 +367,22 @@ public final class PlayerMysteryDataFixer {
         putIntDefault(tag, "faceless_selected_form", -1);
         putLongDefault(tag, "faceless_record_cd_end", 0L);
         putLongDefault(tag, "faceless_disguise_cd_end", 0L);
+    }
+
+    private static void initializeM3SquadGovernance(
+            CompoundTag tag, List<CompoundTag> orphanedEntries) {
+        Tag existing = tag.get("traveler_door_organization");
+        if (existing != null && existing.getId() != Tag.TAG_STRING) {
+            orphanedEntries.add(orphan(
+                    "traveler_door_organization",
+                    "invalid_container",
+                    existing));
+            tag.remove("traveler_door_organization");
+        }
+        if (!tag.contains(
+                "traveler_door_organization", Tag.TAG_STRING)) {
+            tag.putString("traveler_door_organization", "");
+        }
     }
 
     private static void putBooleanDefault(CompoundTag tag, String key,

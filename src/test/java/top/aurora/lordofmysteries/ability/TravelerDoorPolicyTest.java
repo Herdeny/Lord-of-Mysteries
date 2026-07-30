@@ -55,6 +55,42 @@ class TravelerDoorPolicyTest {
     }
 
     @Test
+    void organizationAccessRequiresMutualTrustAndStillHonorsBlocklist() {
+        String organization =
+                "lord_of_mysteries:organization/detective_agency";
+        assertTrue(TravelerDoorPolicy.allows(
+                OWNER,
+                "",
+                TravelerDoorAccessMode.ORGANIZATION,
+                organization,
+                8,
+                Set.of(),
+                MEMBER,
+                "",
+                9));
+        assertFalse(TravelerDoorPolicy.allows(
+                OWNER,
+                "",
+                TravelerDoorAccessMode.ORGANIZATION,
+                organization,
+                8,
+                Set.of(MEMBER),
+                MEMBER,
+                "",
+                9));
+        assertFalse(TravelerDoorPolicy.allows(
+                OWNER,
+                "",
+                TravelerDoorAccessMode.ORGANIZATION,
+                organization,
+                8,
+                Set.of(),
+                MEMBER,
+                "",
+                7));
+    }
+
+    @Test
     void namesRemoveFormattingControlsAndRepeatedWhitespace() {
         assertEquals(
                 "North Gate Safe",

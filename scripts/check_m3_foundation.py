@@ -378,6 +378,8 @@ def main():
         JAVA / "ability" / "TravelMarkerService.java")
     door_access = source(
         JAVA / "ability" / "TravelerDoorAccessMode.java")
+    door_organization = source(
+        JAVA / "ability" / "TravelerDoorOrganizationPolicy.java")
     door_policy = source(
         JAVA / "ability" / "TravelerDoorPolicy.java")
     door_entity = source(
@@ -469,7 +471,7 @@ def main():
         "traveler door crossing is no longer explicit consent")
     require(
         sorted(mode.lower() for mode in relay["access_modes"])
-        == ["party", "private", "public"]
+        == ["organization", "party", "private", "public"]
         and all(mode.upper() in door_access
                 for mode in relay["access_modes"])
         and f"TravelerDoorAccessMode.{relay['default_access_mode'].upper()}"
@@ -477,6 +479,20 @@ def main():
         and (not relay["owner_always_allowed"]
              or "owner.equals(candidate)" in door_access),
         "traveler door access modes drifted")
+    require(
+        f'"{relay["organization_nbt_key"]}"' in player
+        and relay["organization_migration_fix"] in fixer
+        and f"TRUSTED_REPUTATION = "
+        f"{relay['organization_trusted_reputation']}"
+        in door_organization
+        and 'literal("organization")' in commands
+        and "setOrganizationAccess" in travel_service
+        and (not relay["organization_live_candidate_check"]
+             or ("MysteryCapability.get(player)" in door_entity
+                 and "candidateOrganizationReputation" in door_entity
+                 and "TravelerDoorOrganizationPolicy.reputation"
+                 in door_entity)),
+        "traveler organization access is missing or no longer live checked")
     require(
         f'"{relay["marker_name_tag"]}"' in travel_service
         and f"MAX_NAME_LENGTH = {relay['name_max_length']}"
@@ -546,6 +562,8 @@ def main():
         JAVA / "ability" / "MarionetteScrollItem.java")
     marionette_storage = source(
         JAVA / "ability" / "MarionetteStoragePolicy.java")
+    marionette_tactics = source(
+        JAVA / "ability" / "MarionetteTacticalMode.java")
     marionette_item_registry = source(
         JAVA / "registry" / "ModItems.java")
     gametest_source = source(
@@ -676,6 +694,27 @@ def main():
             and "level.noCollision" in marionette_scroll
             and "isWithinBounds" in marionette_scroll),
         "marionette deployment safe-position checks are missing")
+    require(
+        sorted(mode.lower() for mode in marionettes["tactical_modes"])
+        == ["follow", "guard", "passive"]
+        and all(mode.upper() in marionette_tactics
+                for mode in marionettes["tactical_modes"])
+        and marionettes["tactical_mode_tag"].split(":", 1)[-1]
+        in marionette_service
+        and 'literal("mode")' in commands
+        and "setTacticalMode" in commands
+        and (not marionettes["stored_tactics_persist"]
+             or ("ForgeData" in marionette_service
+                 and "storedTacticalMode" in marionette_service)),
+        "marionette tactical modes or storage persistence drifted")
+    require(
+        not marionettes["offline_dormancy"]
+        or ("enterDormancy" in marionette_service
+            and "leaveDormancy" in marionette_service
+            and (not marionettes["offline_dormancy_disables_ai"]
+                 or ("setNoAi(true)" in marionette_service
+                     and "PREVIOUS_NO_AI_TAG" in marionette_service))),
+        "offline marionette dormancy is missing")
 
     processing = contract["characteristic_processing"]
     processing_logic = source(
@@ -912,9 +951,9 @@ def main():
         "counterplay, pathway-aware in-game M3 guidance, five "
         "dedicated sequence-5 rituals with solo and supporter paths, "
         "a persistent consent-gated bidirectional traveler door with "
-        "private, party and public access, marker names, a persistent "
+        "private, party, trusted-organization and public access, marker names, a persistent "
         "blocklist and territory protection hooks, a three-slot persistent "
-        "marionette roster with safe recall and explicit release, "
+        "marionette roster with safe recall, tactical modes, offline dormancy and explicit release, "
         "server-authoritative marionette storage with owner-bound one-time "
         "tokens, copied-voucher rejection and safe cross-dimensional deployment, "
         "conserved characteristic "

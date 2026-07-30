@@ -20,6 +20,7 @@ import top.aurora.lordofmysteries.characteristic.CharacteristicLedger;
 import top.aurora.lordofmysteries.ability.FacelessFormPolicy;
 import top.aurora.lordofmysteries.ability.MarionettePolicy;
 import top.aurora.lordofmysteries.ability.MarionetteStoragePolicy;
+import top.aurora.lordofmysteries.ability.TravelerDoorOrganizationPolicy;
 import top.aurora.lordofmysteries.ability.TravelerDoorPolicy;
 import top.aurora.lordofmysteries.commission.CaseDebriefRecord;
 import top.aurora.lordofmysteries.commission.CaseHypothesisRecord;
@@ -39,7 +40,7 @@ import top.aurora.lordofmysteries.commission.DynamicCaseResponseTask;
  */
 public class PlayerMysteryData {
 
-    public static final int CURRENT_SCHEMA_VERSION = 29;
+    public static final int CURRENT_SCHEMA_VERSION = 30;
     private static final int MAX_MIGRATION_BACKUPS = 3;
     private static final int MAX_MIGRATION_HISTORY = 64;
 
@@ -112,6 +113,7 @@ public class PlayerMysteryData {
     public long apprenticeDivinationCooldownEndTick = 0L;
     public long apprenticeWardCooldownEndTick = 0L;
     public String travelerDoorAccessMode = "party";
+    public String travelerDoorOrganization = "";
     public Set<UUID> travelerDoorBlacklist = new HashSet<>();
     public List<CompoundTag> facelessFormRecords = new ArrayList<>();
     public int facelessSelectedForm = -1;
@@ -290,6 +292,7 @@ public class PlayerMysteryData {
         this.apprenticeDivinationCooldownEndTick = src.apprenticeDivinationCooldownEndTick;
         this.apprenticeWardCooldownEndTick = src.apprenticeWardCooldownEndTick;
         this.travelerDoorAccessMode = src.travelerDoorAccessMode;
+        this.travelerDoorOrganization = src.travelerDoorOrganization;
         this.travelerDoorBlacklist =
                 new HashSet<>(src.travelerDoorBlacklist);
         this.facelessFormRecords =
@@ -452,6 +455,10 @@ public class PlayerMysteryData {
         tag.putLong("apprentice_divination_cd_end", apprenticeDivinationCooldownEndTick);
         tag.putLong("apprentice_ward_cd_end", apprenticeWardCooldownEndTick);
         tag.putString("traveler_door_access_mode", travelerDoorAccessMode);
+        tag.putString(
+                "traveler_door_organization",
+                TravelerDoorOrganizationPolicy.normalizeId(
+                        travelerDoorOrganization));
         ListTag travelerBlacklist = new ListTag();
         TravelerDoorPolicy.normalizeBlacklist(travelerDoorBlacklist)
                 .forEach(value -> travelerBlacklist.add(
@@ -701,6 +708,9 @@ public class PlayerMysteryData {
         apprenticeWardCooldownEndTick = tag.getLong("apprentice_ward_cd_end");
         travelerDoorAccessMode = tag.contains("traveler_door_access_mode")
                 ? tag.getString("traveler_door_access_mode") : "party";
+        travelerDoorOrganization =
+                TravelerDoorOrganizationPolicy.normalizeId(
+                        tag.getString("traveler_door_organization"));
         travelerDoorBlacklist.clear();
         Tag rawTravelerBlacklist = tag.get("traveler_door_blacklist");
         boolean validTravelerBlacklist =
@@ -1243,6 +1253,7 @@ public class PlayerMysteryData {
         hash = mix(hash, apprenticeDivinationCooldownEndTick);
         hash = mix(hash, apprenticeWardCooldownEndTick);
         hash = mix(hash, travelerDoorAccessMode);
+        hash = mix(hash, travelerDoorOrganization);
         hash = mix(hash, travelerDoorBlacklist);
         hash = mix(hash, facelessFormRecords);
         hash = mix(hash, facelessSelectedForm);

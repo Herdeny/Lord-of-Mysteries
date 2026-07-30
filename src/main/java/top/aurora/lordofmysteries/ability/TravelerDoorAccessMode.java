@@ -6,6 +6,7 @@ import java.util.UUID;
 public enum TravelerDoorAccessMode {
     PRIVATE,
     PARTY,
+    ORGANIZATION,
     PUBLIC;
 
     public String id() {
@@ -24,6 +25,7 @@ public enum TravelerDoorAccessMode {
             case PARTY -> !normalizedTeam(ownerTeam).isEmpty()
                     && normalizedTeam(ownerTeam).equals(
                             normalizedTeam(candidateTeam));
+            case ORGANIZATION -> false;
             case PUBLIC -> true;
         };
     }

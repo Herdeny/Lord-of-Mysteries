@@ -95,20 +95,24 @@ def main() -> int:
             f"静态资源缓存版本必须同步为 {asset_version}", errors)
     require("三槽持久秘偶编队" in html and "/pm marionette" in html,
             "Pages M3 入口与进度摘要必须展示已实现的持久秘偶编队", errors)
+    require("三种战术" in html and "离线休眠" in html,
+            "Pages M3 入口必须展示秘偶战术和离线安全", errors)
     require("端点运维" in html and "/pm travel" in html,
             "Pages M3 入口与路线摘要必须展示旅行家端点运维", errors)
+    require("组织实时准入" in html and "/pm m3 team" in html,
+            "Pages M3 入口必须展示组织远门和队伍职责顾问", errors)
     require("持久秘偶、完整梦境" not in html,
             "Pages 不得把已实现的持久秘偶继续列为未完成", errors)
     require("秘偶收纳卷轴" in html and "跨维" in html,
             "Pages M3 入口必须展示已实现的秘偶跨维收纳", errors)
     require("精确玩家皮肤/模型/声线" in html
-            and "具体领地 Mod 适配器、组织门权限" in html,
+            and "具体领地 Mod 适配归入 M7" in html,
             "Pages 必须保留真实 M3 发布边界，避免误报完成", errors)
-    require("Capability schema 29" in wiki_data
-            and "416 JUnit · 20 GameTest" in wiki_data
-            and "365 JSON · 1608 双语键" in wiki_data
+    require("Capability schema 30" in wiki_data
+            and "427 JUnit · 22 GameTest" in wiki_data
+            and "365 JSON · 1631 双语键" in wiki_data
             and "109 物品 · 7 方块 · 16 实体" in wiki_data
-            and "217 条图鉴" in wiki_data,
+            and "218 条图鉴" in wiki_data,
             "Pages 动态机制卡的 schema、测试和资源基线未同步", errors)
     require("权威收纳" in wiki_data
             and "一次性 token" in wiki_data
@@ -131,6 +135,11 @@ def main() -> int:
             and "秘偶收纳/跨维控制" not in wiki_data
             and "收纳卷轴、跨维指挥" not in wiki_data,
             "Pages 动态图鉴仍含上一版本的当前状态文案", errors)
+    require("Capability schema 29" not in wiki_data
+            and "416 JUnit · 20 GameTest" not in wiki_data
+            and "365 JSON · 1608 双语键" not in wiki_data
+            and "217 条图鉴" not in wiki_data,
+            "Pages 动态图鉴仍含 0.9.29 当前基线", errors)
     require("无面人八槽形体记录" in wiki_data
             and "/pm faceless" in wiki_data
             and "不保存来源实体/玩家UUID" in wiki_data,
@@ -139,6 +148,14 @@ def main() -> int:
             and "10 材料 · 7 生物 · 10 保底配方" in wiki_data
             and "/pm bestiary" in wiki_data,
             "Pages 图鉴必须展示最终材料、生物生态与玩家入口", errors)
+    require("M3 队伍职责顾问" in wiki_data
+            and "调查 · 控制 · 支援 · 战斗 · 生存 · 潜入 · 资源 · 机动" in wiki_data
+            and "不显示姓名 · 不读取远端途径" in wiki_data,
+            "Pages 图鉴必须展示隐私安全的 M3 队伍职责顾问", errors)
+    require("受信任组织" in wiki_data
+            and "门主/访客实时声望≥8" in wiki_data
+            and "follow · guard 12格 · passive" in wiki_data,
+            "Pages 图鉴必须展示组织门与秘偶战术闭环", errors)
 
     require("[hidden] { display: none !important; }" in css,
             "CSS 必须保护 hidden 属性不被布局规则覆盖", errors)

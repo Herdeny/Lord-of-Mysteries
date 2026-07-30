@@ -38,7 +38,9 @@ import top.aurora.lordofmysteries.ability.M3LaunchAbilityHandler;
 import top.aurora.lordofmysteries.ability.M3TravelNetworkLogic;
 import top.aurora.lordofmysteries.ability.MarionetteService;
 import top.aurora.lordofmysteries.ability.MarionetteScrollItem;
+import top.aurora.lordofmysteries.ability.MarionetteTacticalMode;
 import top.aurora.lordofmysteries.ability.TravelMarkerService;
+import top.aurora.lordofmysteries.ability.TravelerDoorOrganizationPolicy;
 import top.aurora.lordofmysteries.characteristic.CharacteristicBundle;
 import top.aurora.lordofmysteries.characteristic.CharacteristicConservationService;
 import top.aurora.lordofmysteries.characteristic.CharacteristicProcessingLogic;
@@ -760,6 +762,100 @@ public final class PlayerPersistenceGameTests {
     }
 
     @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void travelerDoorOrganizationTrustIsLiveAndDenyByDefault(
+            GameTestHelper helper) {
+        BlockPos marker = helper.absolutePos(new BlockPos(10, 4, 10));
+        BlockPos source = helper.absolutePos(new BlockPos(2, 4, 2));
+        prepareDoorArea(helper, marker.above());
+        prepareDoorArea(helper, source);
+        helper.getLevel().setBlockAndUpdate(
+                marker, Blocks.LODESTONE.defaultBlockState());
+
+        ServerPlayer owner = travelerTestPlayer(
+                helper, "organization-owner");
+        ServerPlayer trusted = travelerTestPlayer(
+                helper, "organization-trusted");
+        ServerPlayer neutral = travelerTestPlayer(
+                helper, "organization-neutral");
+        ServerPlayer blocked = travelerTestPlayer(
+                helper, "organization-blocked");
+        owner.setPos(source.getCenter());
+        trusted.setPos(source.offset(1, 0, 0).getCenter());
+        neutral.setPos(source.offset(-1, 0, 0).getCenter());
+        blocked.setPos(source.offset(0, 0, 1).getCenter());
+
+        ResourceLocation organization = ResourceLocation.parse(
+                "lord_of_mysteries:organization/detective_agency");
+        PlayerMysteryData ownerData = MysteryCapability.get(owner);
+        ownerData.pathway = ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID, "apprentice");
+        ownerData.sequence = 5;
+        ownerData.spiritualityMax = 250f;
+        ownerData.spirituality = 120f;
+        ownerData.orgReputation.put(
+                organization,
+                TravelerDoorOrganizationPolicy.TRUSTED_REPUTATION);
+        MysteryCapability.get(trusted).orgReputation.put(
+                organization, 12);
+        MysteryCapability.get(neutral).orgReputation.put(
+                organization, 7);
+        MysteryCapability.get(blocked).orgReputation.put(
+                organization, 10);
+        ownerData.travelerDoorBlacklist.add(blocked.getUUID());
+        owner.setItemInHand(
+                InteractionHand.MAIN_HAND,
+                lodestoneCompass(helper, marker));
+
+        helper.assertTrue(
+                TravelMarkerService.setOrganizationAccess(
+                        owner, "detective_agency") == 1,
+                "trusted owner must be able to select a stable organization id");
+        helper.assertTrue(TravelMarkerService.relayToHeldMarker(
+                        owner, ownerData, List.of(owner)),
+                "trusted organization door must open without requiring passengers");
+        TravelerDoorEntity sourceDoor =
+                travelerDoors(helper, owner.getUUID()).stream()
+                        .filter(door -> door.targetAnchor().equals(marker))
+                        .findFirst()
+                        .orElseThrow();
+        helper.assertTrue(
+                organization.toString().equals(
+                        sourceDoor.organizationId()),
+                "door endpoint must snapshot the normalized organization id");
+        helper.assertTrue(
+                sourceDoor.tryTransit(neutral)
+                        == TravelerDoorEntity.TransitResult.DENIED,
+                "neutral reputation must fail closed even when the id matches");
+        helper.assertTrue(
+                sourceDoor.tryTransit(blocked)
+                        == TravelerDoorEntity.TransitResult.BLOCKED,
+                "explicit blocklist must override trusted organization status");
+        helper.assertTrue(
+                sourceDoor.tryTransit(trusted)
+                        == TravelerDoorEntity.TransitResult.SUCCESS,
+                "trusted contact must cross after a live capability check");
+
+        CompoundTag saved =
+                sourceDoor.saveWithoutId(new CompoundTag());
+        TravelerDoorEntity restored =
+                ModEntities.TRAVELER_DOOR.get().create(helper.getLevel());
+        helper.assertTrue(restored != null,
+                "organization door must restore from registered entity type");
+        if (restored == null) return;
+        restored.load(saved);
+        helper.assertTrue(
+                restored.accessMode()
+                        == top.aurora.lordofmysteries.ability
+                        .TravelerDoorAccessMode.ORGANIZATION
+                        && restored.organizationId().equals(
+                                organization.toString())
+                        && restored.blockedPlayers().contains(
+                                blocked.getUUID()),
+                "organization id, access mode and deny override must survive NBT");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
     public static void persistentMarionetteRosterPreservesOwnershipAndResources(
             GameTestHelper helper) {
         ServerPlayer owner = createPlayer(helper, "marionette-owner");
@@ -938,6 +1034,100 @@ public final class PlayerPersistenceGameTests {
                         Vec3.atBottomCenterOf(deploymentFeet))
                         == MarionetteScrollItem.DeployResult.INVALID_TOKEN,
                 "copied voucher must fail after the authoritative one-time record is consumed");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void marionetteTacticsSurviveStorageAndDeployment(
+            GameTestHelper helper) {
+        ServerPlayer owner = createPlayer(
+                helper, "marionette-tactics-owner");
+        owner.setPos(helper.absolutePos(
+                new BlockPos(2, 4, 2)).getCenter());
+        PlayerMysteryData data = MysteryCapability.get(owner);
+        data.pathway = SeerPotionItem.SEER_PATHWAY;
+        data.sequence = 5;
+        data.spiritualityMax = 265f;
+        data.spirituality = 120f;
+
+        Mob target = EntityType.ZOMBIE.create(helper.getLevel());
+        helper.assertTrue(target != null,
+                "tactical test target must be constructible");
+        if (target == null) return;
+        target.setPos(helper.absolutePos(
+                new BlockPos(4, 4, 2)).getCenter());
+        target.setHealth(target.getMaxHealth() * 0.2f);
+        helper.getLevel().addFreshEntity(target);
+        helper.assertTrue(
+                MarionetteService.create(owner, data, target)
+                        == MarionetteService.CreationResult.SUCCESS
+                        && MarionetteService.setTacticalMode(
+                                owner, 1, "guard") == 1
+                        && MarionetteService.tacticalMode(target)
+                                == MarionetteTacticalMode.GUARD,
+                "loaded owned marionette must accept guard mode");
+
+        UUID entityId = target.getUUID();
+        ItemStack scroll = new ItemStack(
+                ModItems.MARIONETTE_SCROLL.get());
+        helper.assertTrue(
+                MarionetteScrollItem.capture(owner, scroll, target)
+                        == MarionetteScrollItem.CaptureResult.SUCCESS,
+                "guard marionette must enter authoritative storage");
+        CompoundTag storedPayload =
+                data.marionetteStorageRecords.get(entityId)
+                        .getCompound("entity_payload");
+        helper.assertTrue(
+                "guard".equals(storedPayload
+                        .getCompound("ForgeData")
+                        .getString(
+                                MarionetteService.TACTICAL_MODE_TAG)),
+                "storage payload must preserve the selected tactical mode");
+
+        MysteryCapability.Provider restored =
+                new MysteryCapability.Provider();
+        restored.deserializeNBT(data.save());
+        helper.assertTrue(
+                restored.getData().schemaVersion == 30
+                        && "guard".equals(restored.getData()
+                                .marionetteStorageRecords.get(entityId)
+                                .getCompound("entity_payload")
+                                .getCompound("ForgeData")
+                                .getString(
+                                        MarionetteService
+                                                .TACTICAL_MODE_TAG)),
+                "schema 30 provider restart must preserve stored tactics");
+
+        BlockPos deploymentFeet =
+                helper.absolutePos(new BlockPos(6, 4, 2));
+        helper.getLevel().setBlockAndUpdate(
+                deploymentFeet.below(),
+                Blocks.STONE.defaultBlockState());
+        helper.getLevel().setBlockAndUpdate(
+                deploymentFeet,
+                Blocks.AIR.defaultBlockState());
+        helper.getLevel().setBlockAndUpdate(
+                deploymentFeet.above(),
+                Blocks.AIR.defaultBlockState());
+        helper.assertTrue(
+                MarionetteScrollItem.deploy(
+                        owner,
+                        scroll,
+                        Vec3.atBottomCenterOf(deploymentFeet))
+                        == MarionetteScrollItem.DeployResult.SUCCESS,
+                "stored tactical marionette must deploy atomically");
+        Mob deployed = MarionetteService.findLoaded(
+                        owner.getServer(), entityId)
+                .orElseThrow();
+        helper.assertTrue(
+                MarionetteService.tacticalMode(deployed)
+                        == MarionetteTacticalMode.GUARD
+                        && MarionetteService.setTacticalMode(
+                                owner, 1, "passive") == 1
+                        && MarionetteService.tacticalMode(deployed)
+                                == MarionetteTacticalMode.PASSIVE
+                        && deployed.getTarget() == null,
+                "deployment must restore guard mode and passive order must clear combat");
         helper.succeed();
     }
 

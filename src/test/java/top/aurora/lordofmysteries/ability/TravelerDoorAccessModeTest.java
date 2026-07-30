@@ -34,6 +34,8 @@ class TravelerDoorAccessModeTest {
                 OWNER, "alpha", OTHER, "beta"));
         assertTrue(TravelerDoorAccessMode.PARTY.allows(
                 OWNER, "alpha", OTHER, "alpha"));
+        assertFalse(TravelerDoorAccessMode.ORGANIZATION.allows(
+                OWNER, "alpha", OTHER, "alpha"));
     }
 
     @Test

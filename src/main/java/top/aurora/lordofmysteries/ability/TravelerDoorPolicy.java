@@ -20,14 +20,42 @@ public final class TravelerDoorPolicy {
             Collection<UUID> blockedPlayers,
             UUID candidate,
             String candidateTeam) {
+        return allows(
+                owner,
+                ownerTeam,
+                accessMode,
+                "",
+                0,
+                blockedPlayers,
+                candidate,
+                candidateTeam,
+                0);
+    }
+
+    public static boolean allows(
+            UUID owner,
+            String ownerTeam,
+            TravelerDoorAccessMode accessMode,
+            String organizationId,
+            int ownerOrganizationReputation,
+            Collection<UUID> blockedPlayers,
+            UUID candidate,
+            String candidateTeam,
+            int candidateOrganizationReputation) {
         if (owner == null || candidate == null) return false;
         if (owner.equals(candidate)) return true;
         if (blockedPlayers != null && blockedPlayers.contains(candidate)) {
             return false;
         }
-        return (accessMode == null
-                ? TravelerDoorAccessMode.PARTY : accessMode)
-                .allows(owner, ownerTeam, candidate, candidateTeam);
+        TravelerDoorAccessMode mode = accessMode == null
+                ? TravelerDoorAccessMode.PARTY : accessMode;
+        if (mode == TravelerDoorAccessMode.ORGANIZATION) {
+            return TravelerDoorOrganizationPolicy.allows(
+                    organizationId,
+                    ownerOrganizationReputation,
+                    candidateOrganizationReputation);
+        }
+        return mode.allows(owner, ownerTeam, candidate, candidateTeam);
     }
 
     public static String normalizeName(String requestedName) {

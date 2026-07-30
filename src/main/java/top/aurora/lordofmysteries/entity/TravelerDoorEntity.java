@@ -34,10 +34,13 @@ import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.ability.M3TravelNetworkLogic;
 import top.aurora.lordofmysteries.ability.TravelMarkerService;
 import top.aurora.lordofmysteries.ability.TravelerDoorAccessMode;
+import top.aurora.lordofmysteries.ability.TravelerDoorOrganizationPolicy;
 import top.aurora.lordofmysteries.ability.TravelerDoorPolicy;
 import top.aurora.lordofmysteries.compat.TravelerDoorTerritoryEvent;
 import top.aurora.lordofmysteries.compat.TravelerDoorTerritoryService;
+import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerFeedback;
+import top.aurora.lordofmysteries.player.PlayerMysteryData;
 
 public final class TravelerDoorEntity extends Entity {
 
@@ -50,6 +53,8 @@ public final class TravelerDoorEntity extends Entity {
     private String ownerTeam = "";
     private TravelerDoorAccessMode accessMode =
             TravelerDoorAccessMode.PARTY;
+    private String organizationId = "";
+    private int ownerOrganizationReputation;
     private String doorName = "";
     private Set<UUID> blockedPlayers = new HashSet<>();
     private ResourceKey<Level> targetDimension = Level.OVERWORLD;
@@ -69,6 +74,8 @@ public final class TravelerDoorEntity extends Entity {
             UUID owner,
             String ownerTeam,
             TravelerDoorAccessMode accessMode,
+            String organizationId,
+            int ownerOrganizationReputation,
             String doorName,
             Collection<UUID> blockedPlayers,
             ResourceKey<Level> targetDimension,
@@ -78,6 +85,9 @@ public final class TravelerDoorEntity extends Entity {
         this.ownerTeam = TravelerDoorAccessMode.normalizedTeam(ownerTeam);
         this.accessMode = accessMode == null
                 ? TravelerDoorAccessMode.PARTY : accessMode;
+        this.organizationId =
+                TravelerDoorOrganizationPolicy.normalizeId(organizationId);
+        this.ownerOrganizationReputation = ownerOrganizationReputation;
         this.doorName = TravelerDoorPolicy.normalizeName(doorName);
         this.blockedPlayers = new HashSet<>(
                 TravelerDoorPolicy.normalizeBlacklist(blockedPlayers));
@@ -89,7 +99,13 @@ public final class TravelerDoorEntity extends Entity {
                 Math.max(0, remainingTicks));
         configured = owner != null
                 && targetDimension != null
-                && remainingTicks > 0;
+                && remainingTicks > 0
+                && (this.accessMode
+                        != TravelerDoorAccessMode.ORGANIZATION
+                        || TravelerDoorOrganizationPolicy.allows(
+                                this.organizationId,
+                                this.ownerOrganizationReputation,
+                                this.ownerOrganizationReputation));
         applyDisplayName();
     }
 
@@ -142,6 +158,11 @@ public final class TravelerDoorEntity extends Entity {
         }
         String candidateTeam = player.getTeam() == null
                 ? "" : player.getTeam().getName();
+        PlayerMysteryData candidateData = MysteryCapability.get(player);
+        int candidateOrganizationReputation =
+                TravelerDoorOrganizationPolicy.reputation(
+                        candidateData.orgReputation,
+                        organizationId);
         if (!owner.equals(player.getUUID())
                 && blockedPlayers.contains(player.getUUID())) {
             sendBlocked(player, now);
@@ -151,9 +172,12 @@ public final class TravelerDoorEntity extends Entity {
                 owner,
                 ownerTeam,
                 accessMode,
+                organizationId,
+                ownerOrganizationReputation,
                 blockedPlayers,
                 player.getUUID(),
-                candidateTeam)) {
+                candidateTeam,
+                candidateOrganizationReputation)) {
             sendDenied(player, now);
             return TransitResult.DENIED;
         }
@@ -267,6 +291,11 @@ public final class TravelerDoorEntity extends Entity {
                 tag.getString("owner_team"));
         accessMode = TravelerDoorAccessMode.fromId(
                 tag.getString("access_mode"));
+        organizationId =
+                TravelerDoorOrganizationPolicy.normalizeId(
+                        tag.getString("organization_id"));
+        ownerOrganizationReputation =
+                tag.getInt("owner_organization_reputation");
         doorName = TravelerDoorPolicy.normalizeName(
                 tag.getString("door_name"));
         blockedPlayers = new HashSet<>();
@@ -294,7 +323,13 @@ public final class TravelerDoorEntity extends Entity {
                 Math.max(0, tag.getInt("remaining_ticks")));
         configured = owner != null
                 && targetDimension != null
-                && remainingTicks > 0;
+                && remainingTicks > 0
+                && (accessMode
+                        != TravelerDoorAccessMode.ORGANIZATION
+                        || TravelerDoorOrganizationPolicy.allows(
+                                organizationId,
+                                ownerOrganizationReputation,
+                                ownerOrganizationReputation));
         applyDisplayName();
     }
 
@@ -303,6 +338,10 @@ public final class TravelerDoorEntity extends Entity {
         if (owner != null) tag.putUUID("owner", owner);
         tag.putString("owner_team", ownerTeam);
         tag.putString("access_mode", accessMode.id());
+        tag.putString("organization_id", organizationId);
+        tag.putInt(
+                "owner_organization_reputation",
+                ownerOrganizationReputation);
         tag.putString("door_name", doorName);
         ListTag blocked = new ListTag();
         TravelerDoorPolicy.normalizeBlacklist(blockedPlayers)
@@ -345,6 +384,10 @@ public final class TravelerDoorEntity extends Entity {
 
     public TravelerDoorAccessMode accessMode() {
         return accessMode;
+    }
+
+    public String organizationId() {
+        return organizationId;
     }
 
     public String doorName() {

@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -46,8 +47,23 @@ public final class MarionetteService {
 
     public static final String OWNER_TAG =
             ProjectMystery.MOD_ID + ":marionette_owner";
+    public static final String TACTICAL_MODE_TAG =
+            ProjectMystery.MOD_ID + ":marionette_tactical_mode";
     private static final String CREATED_AT_TAG =
             ProjectMystery.MOD_ID + ":marionette_created_at";
+    private static final String DORMANT_TAG =
+            ProjectMystery.MOD_ID + ":marionette_dormant";
+    private static final String PREVIOUS_NO_AI_TAG =
+            ProjectMystery.MOD_ID + ":marionette_previous_no_ai";
+    private static final String GUARD_DIMENSION_TAG =
+            ProjectMystery.MOD_ID + ":marionette_guard_dimension";
+    private static final String GUARD_X_TAG =
+            ProjectMystery.MOD_ID + ":marionette_guard_x";
+    private static final String GUARD_Y_TAG =
+            ProjectMystery.MOD_ID + ":marionette_guard_y";
+    private static final String GUARD_Z_TAG =
+            ProjectMystery.MOD_ID + ":marionette_guard_z";
+    private static final double GUARD_RADIUS_SQUARED = 144d;
     private static final int[][] RECALL_OFFSETS = {
             {2, 0}, {-2, 0}, {0, 2}, {0, -2},
             {2, 2}, {2, -2}, {-2, 2}, {-2, -2},
@@ -131,6 +147,7 @@ public final class MarionetteService {
         long now = owner.level().getGameTime();
         target.getPersistentData().putUUID(OWNER_TAG, owner.getUUID());
         target.getPersistentData().putLong(CREATED_AT_TAG, now);
+        applyTacticalMode(target, MarionetteTacticalMode.FOLLOW);
         target.setPersistenceRequired();
         target.setTarget(null);
         target.getNavigation().stop();
@@ -189,13 +206,16 @@ public final class MarionetteService {
                         mob.getDisplayName(),
                         Math.round(mob.getHealth()),
                         Math.round(mob.getMaxHealth()),
-                        mob.level().dimension().location().toString())
+                        mob.level().dimension().location().toString(),
+                        tacticalModeComponent(tacticalMode(mob)))
                         .withStyle(ChatFormatting.AQUA));
             } else if (data.marionetteStorageRecords.containsKey(id)) {
                 PlayerFeedback.send(owner, Component.translatable(
                         "message.lord_of_mysteries.marionette.entry.stored",
                         index + 1,
-                        id.toString())
+                        id.toString(),
+                        tacticalModeComponent(storedTacticalMode(
+                                data.marionetteStorageRecords.get(id))))
                         .withStyle(ChatFormatting.LIGHT_PURPLE));
             } else {
                 PlayerFeedback.send(owner, Component.translatable(
@@ -206,6 +226,60 @@ public final class MarionetteService {
             }
         }
         return data.marionetteRoster.size();
+    }
+
+    public static int setTacticalMode(
+            ServerPlayer owner, int slot, String requestedMode) {
+        PlayerMysteryData data = MysteryCapability.get(owner);
+        normalize(data);
+        if (!MarionetteTacticalMode.isValidId(requestedMode)) {
+            return feedbackCode(
+                    owner, "mode.invalid", ChatFormatting.RED,
+                    requestedMode);
+        }
+        if (slot < 1 || slot > data.marionetteRoster.size()) {
+            return feedbackCode(
+                    owner, "invalid_slot", ChatFormatting.RED, slot);
+        }
+        MarionetteTacticalMode mode =
+                MarionetteTacticalMode.fromId(requestedMode);
+        UUID id = data.marionetteRoster.get(slot - 1);
+        boolean updated = updateTacticalMode(owner, data, id, mode);
+        if (!updated) {
+            return feedbackCode(
+                    owner, "mode.unloaded", ChatFormatting.YELLOW, slot);
+        }
+        PlayerFeedback.send(owner, Component.translatable(
+                "message.lord_of_mysteries.marionette.mode.updated",
+                slot,
+                tacticalModeComponent(mode))
+                .withStyle(ChatFormatting.AQUA));
+        return 1;
+    }
+
+    public static int setAllTacticalModes(
+            ServerPlayer owner, String requestedMode) {
+        PlayerMysteryData data = MysteryCapability.get(owner);
+        normalize(data);
+        if (!MarionetteTacticalMode.isValidId(requestedMode)) {
+            return feedbackCode(
+                    owner, "mode.invalid", ChatFormatting.RED,
+                    requestedMode);
+        }
+        MarionetteTacticalMode mode =
+                MarionetteTacticalMode.fromId(requestedMode);
+        int updated = 0;
+        for (UUID id : data.marionetteRoster) {
+            if (updateTacticalMode(owner, data, id, mode)) updated++;
+        }
+        PlayerFeedback.send(owner, Component.translatable(
+                "message.lord_of_mysteries.marionette.mode.updated_all",
+                updated,
+                data.marionetteRoster.size(),
+                tacticalModeComponent(mode))
+                .withStyle(updated > 0
+                        ? ChatFormatting.AQUA : ChatFormatting.YELLOW));
+        return updated;
     }
 
     public static int release(ServerPlayer owner, int slot) {
@@ -332,10 +406,10 @@ public final class MarionetteService {
         if (ownerId == null) return;
         ServerPlayer owner = server.getPlayerList().getPlayer(ownerId);
         if (owner == null) {
-            mob.setTarget(null);
-            mob.getNavigation().stop();
+            enterDormancy(mob);
             return;
         }
+        leaveDormancy(mob);
         PlayerMysteryData data = MysteryCapability.get(owner);
         normalize(data);
         if (!data.marionetteRoster.contains(mob.getUUID())) {
@@ -355,6 +429,16 @@ public final class MarionetteService {
             return;
         }
 
+        MarionetteTacticalMode mode = tacticalMode(mob);
+        if (!mode.allowsCombat()) {
+            mob.setTarget(null);
+            mob.getNavigation().stop();
+            return;
+        }
+        if (mode == MarionetteTacticalMode.GUARD) {
+            maintainGuard(mob);
+            return;
+        }
         LivingEntity commandedTarget = combatTarget(owner, mob);
         if (commandedTarget != null) {
             mob.setTarget(commandedTarget);
@@ -364,6 +448,58 @@ public final class MarionetteService {
                 && mob.distanceToSqr(owner) > 64d) {
             mob.getNavigation().moveTo(owner, 1.1d);
         }
+    }
+
+    private static void maintainGuard(Mob mob) {
+        BlockPos anchor = guardAnchor(mob).orElseGet(() -> {
+            setGuardAnchor(mob);
+            return mob.blockPosition();
+        });
+        LivingEntity currentTarget = mob.getTarget();
+        if (!validGuardTarget(mob, anchor, currentTarget)) {
+            mob.setTarget(null);
+            currentTarget = null;
+        }
+        if (currentTarget == null) {
+            LivingEntity guardTarget = mob.level().getEntitiesOfClass(
+                            Mob.class,
+                            AABB.ofSize(
+                                    Vec3.atCenterOf(anchor),
+                                    24d, 12d, 24d),
+                            candidate -> validGuardTarget(
+                                    mob, anchor, candidate))
+                    .stream()
+                    .min(java.util.Comparator.comparingDouble(
+                            mob::distanceToSqr))
+                    .orElse(null);
+            if (guardTarget != null) {
+                mob.setTarget(guardTarget);
+                return;
+            }
+        }
+        if (currentTarget == null
+                && mob.distanceToSqr(Vec3.atCenterOf(anchor)) > 9d) {
+            mob.getNavigation().moveTo(
+                    anchor.getX() + 0.5d,
+                    anchor.getY(),
+                    anchor.getZ() + 0.5d,
+                    1.0d);
+        }
+    }
+
+    private static boolean validGuardTarget(
+            Mob guardian,
+            BlockPos anchor,
+            LivingEntity candidate) {
+        return candidate instanceof Mob mob
+                && candidate != guardian
+                && candidate.isAlive()
+                && mob.getType().getCategory() == MobCategory.MONSTER
+                && ownerOf(candidate).isEmpty()
+                && candidate.level() == guardian.level()
+                && candidate.distanceToSqr(
+                        Vec3.atCenterOf(anchor))
+                        <= GUARD_RADIUS_SQUARED;
     }
 
     private static LivingEntity combatTarget(
@@ -401,10 +537,134 @@ public final class MarionetteService {
     }
 
     private static void clearOwnership(Mob mob) {
+        leaveDormancy(mob);
         mob.getPersistentData().remove(OWNER_TAG);
         mob.getPersistentData().remove(CREATED_AT_TAG);
+        mob.getPersistentData().remove(TACTICAL_MODE_TAG);
+        clearGuardAnchor(mob);
         mob.setTarget(null);
         mob.getNavigation().stop();
+    }
+
+    public static MarionetteTacticalMode tacticalMode(Entity entity) {
+        return entity == null
+                ? MarionetteTacticalMode.FOLLOW
+                : MarionetteTacticalMode.fromId(
+                        entity.getPersistentData().getString(
+                                TACTICAL_MODE_TAG));
+    }
+
+    static MarionetteTacticalMode storedTacticalMode(
+            CompoundTag record) {
+        CompoundTag payload = MarionetteStoragePolicy.payload(record);
+        CompoundTag forgeData = payload.getCompound("ForgeData");
+        return MarionetteTacticalMode.fromId(
+                forgeData.getString(TACTICAL_MODE_TAG));
+    }
+
+    private static boolean updateTacticalMode(
+            ServerPlayer owner,
+            PlayerMysteryData data,
+            UUID id,
+            MarionetteTacticalMode mode) {
+        Optional<Mob> loaded = findLoaded(owner.getServer(), id);
+        if (loaded.isPresent()
+                && owner.getUUID().equals(
+                        ownerOf(loaded.get()).orElse(null))) {
+            applyTacticalMode(loaded.get(), mode);
+            return true;
+        }
+        CompoundTag record = data.marionetteStorageRecords.get(id);
+        if (!MarionetteStoragePolicy.isValidRecord(record)) {
+            return false;
+        }
+        CompoundTag payload = MarionetteStoragePolicy.payload(record);
+        CompoundTag forgeData = payload.getCompound("ForgeData");
+        forgeData.putString(TACTICAL_MODE_TAG, mode.id());
+        clearGuardAnchor(forgeData);
+        payload.put("ForgeData", forgeData);
+        data.marionetteStorageRecords.put(
+                id,
+                MarionetteStoragePolicy.createRecord(
+                        record.getUUID(
+                                MarionetteStoragePolicy.TOKEN_KEY),
+                        payload));
+        return true;
+    }
+
+    private static void applyTacticalMode(
+            Mob mob, MarionetteTacticalMode mode) {
+        mob.getPersistentData().putString(
+                TACTICAL_MODE_TAG, mode.id());
+        mob.setTarget(null);
+        mob.getNavigation().stop();
+        clearGuardAnchor(mob);
+        if (mode == MarionetteTacticalMode.GUARD) {
+            setGuardAnchor(mob);
+        }
+    }
+
+    private static Component tacticalModeComponent(
+            MarionetteTacticalMode mode) {
+        return Component.translatable(
+                "message.lord_of_mysteries.marionette.mode."
+                        + mode.id());
+    }
+
+    private static void enterDormancy(Mob mob) {
+        CompoundTag data = mob.getPersistentData();
+        if (!data.getBoolean(DORMANT_TAG)) {
+            data.putBoolean(PREVIOUS_NO_AI_TAG, mob.isNoAi());
+            data.putBoolean(DORMANT_TAG, true);
+            mob.setNoAi(true);
+        }
+        mob.setTarget(null);
+        mob.getNavigation().stop();
+    }
+
+    private static void leaveDormancy(Mob mob) {
+        CompoundTag data = mob.getPersistentData();
+        if (!data.getBoolean(DORMANT_TAG)) return;
+        mob.setNoAi(data.getBoolean(PREVIOUS_NO_AI_TAG));
+        data.remove(DORMANT_TAG);
+        data.remove(PREVIOUS_NO_AI_TAG);
+    }
+
+    private static void setGuardAnchor(Mob mob) {
+        CompoundTag data = mob.getPersistentData();
+        data.putString(
+                GUARD_DIMENSION_TAG,
+                mob.level().dimension().location().toString());
+        BlockPos position = mob.blockPosition();
+        data.putInt(GUARD_X_TAG, position.getX());
+        data.putInt(GUARD_Y_TAG, position.getY());
+        data.putInt(GUARD_Z_TAG, position.getZ());
+    }
+
+    private static Optional<BlockPos> guardAnchor(Mob mob) {
+        CompoundTag data = mob.getPersistentData();
+        if (!mob.level().dimension().location().toString().equals(
+                data.getString(GUARD_DIMENSION_TAG))
+                || !data.contains(GUARD_X_TAG)
+                || !data.contains(GUARD_Y_TAG)
+                || !data.contains(GUARD_Z_TAG)) {
+            return Optional.empty();
+        }
+        return Optional.of(new BlockPos(
+                data.getInt(GUARD_X_TAG),
+                data.getInt(GUARD_Y_TAG),
+                data.getInt(GUARD_Z_TAG)));
+    }
+
+    private static void clearGuardAnchor(Mob mob) {
+        clearGuardAnchor(mob.getPersistentData());
+    }
+
+    private static void clearGuardAnchor(CompoundTag data) {
+        data.remove(GUARD_DIMENSION_TAG);
+        data.remove(GUARD_X_TAG);
+        data.remove(GUARD_Y_TAG);
+        data.remove(GUARD_Z_TAG);
     }
 
     private static Vec3 findRecallDestination(

@@ -1,6 +1,6 @@
 # M3 专属材料生态与无面人形体
 
-> 当前版本：`0.9.29-1.20.1` · Capability schema 29 · 状态：`playable candidate`
+> 当前版本：`0.9.30-1.20.1` · Capability schema 30 · 状态：`playable candidate`
 
 ## 快速开始
 
@@ -33,7 +33,7 @@
 
 ## 当前边界
 
-当前已实现身份名、隐匿、持续成本、记录选择、持久化和反伪装反馈；精确玩家皮肤、实体模型、动作和声线替换仍未实现。具体领地 Mod 适配器、组织门权限、高精原创美术与真人多人互补长测也继续作为发布门禁；共享梦境属于 M5。
+当前已实现身份名、隐匿、持续成本、记录选择、持久化和反伪装反馈；精确玩家皮肤、实体模型、动作和声线替换仍未实现。组织门权限已在 0.9.30 完成；高精原创美术与真人多人互补长测继续作为 M3 发布门禁，具体领地 Mod 适配归入 M7，共享梦境属于 M5。
 
 完整配方、保底合成、生物战斗行为、多人/重启规则和故障排查见
 [`docs/M3_MATERIAL_ECOLOGY_AND_FACELESS_FORMS.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M3_MATERIAL_ECOLOGY_AND_FACELESS_FORMS.md)。

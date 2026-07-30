@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "version": "0.9.29-1.20.1",
-  "stage": "v0.9 M3 首发五途径可玩候选与专属材料生态",
+  "version": "0.9.30-1.20.1",
+  "stage": "v0.9 M3 首发五途径可玩候选与组织/编队治理",
   "milestone": "M3",
   "minecraft_version": "1.20.1",
   "forge_version": "47.4.20",
   "java_version": "17",
-  "last_updated": "2026-07-30T04:24:25+01:00",
-  "last_updated_utc": "2026-07-30T03:24:25Z"
+  "last_updated": "2026-07-30T05:49:30+01:00",
+  "last_updated_utc": "2026-07-30T04:49:30Z"
 }

@@ -14,9 +14,9 @@ window.LOM_ROADMAP_META = {
       "acceptance": "至少 100 个真实样例节点通过关系校验；旧存档可迁移、可备份、可回滚，并通过死亡、重生、维度与重启运行时验证。",
       "points": [
         "126 节点、188 关系内容图通过 orphan、spoiler、compat、localization 与 asset 审计",
-        "Capability schema 29 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema",
+        "Capability schema 30 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema",
         "世界加载前原子快照、幂等 schema marker、受限路径恢复工具和恢复前安全备份",
-        "20 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒、M1 状态、调查板邻近、城市经济、五途径进阶、真实祭坛仪式、五途径能力世界行为、旅行家持续双向远门、持久秘偶、无面人隐私记录、材料生物入世、特性处理、额外负载析出和全服来源重放拒绝",
+        "22 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒、M1 状态、调查板邻近、城市经济、五途径进阶、真实祭坛仪式、五途径能力世界行为、旅行家持续双向远门/组织门禁、持久秘偶/战术状态、无面人隐私记录、材料生物入世、特性处理、额外负载析出和全服来源重放拒绝",
         "专服双启动矩阵验证世界种子、schema 快照、保存和干净停服保持稳定"
       ]
     },
@@ -83,12 +83,12 @@ window.LOM_ROADMAP_META = {
         "已完成：提线、入梦、战火、窃梦和启门五种序列 5 仪式，连接真实祭坛、环境材料、单人路线、多人协助、失败后果、持久证明与 /pm ritual 引导",
         "已完成：10 种序列 6–5 专属主材料、10 条保底恢复配方、7 种材料生物、7 套生态生成、战斗行为、掉落表、生成蛋、双语名称与知识发现",
         "已完成：无面人可凝视记录最多 8 种非玩家形体，记录仅保存随机记录 ID、实体类型和外形摘要，不保存来源实体或玩家 UUID；支持选择、循环、持续灵性消耗、死亡/离线解除及观众异常情绪反制",
-        "已完成：旅行家可建立跨重启空间标记和 20 秒跨维双向远门；玩家主动穿门确认，支持私人/队伍/公开权限、名称、持久黑名单、出生点保护、可取消领地事件、安全落点、失败退款与端点运维",
-        "已完成：秘偶大师三槽持久编队、同维召回/协战、玩家友军保护、5 灵性权威收纳卷轴、一次性防复制凭证和跨维安全部署",
+        "已完成：旅行家可建立跨重启空间标记和 20 秒跨维双向远门；玩家主动穿门确认，支持私人/队伍/受信任组织/公开权限、名称、持久黑名单、出生点保护、可取消领地事件、安全落点、失败退款与端点运维",
+        "已完成：秘偶大师三槽持久编队、跟随/守卫/被动三态、离线无 AI 休眠、同维召回/协战、玩家友军保护、5 灵性权威收纳卷轴、一次性防复制凭证和跨维安全部署",
         "已完成：特性分离、同途径重组、直接同源拒绝、记忆封存、洗涤、额外负载吸收/析出和全服来源原子消费审计",
-        "已完成：/pm m3、/pm next、/pm items、/pm bestiary 与 /pm faceless 形成五途径阶段引导、材料来源、生态图鉴和形体管理闭环",
-        "已完成：Capability schema 29、416 项 JUnit 与 20 项 Forge GameTest 覆盖旧档迁移、隐私隔离、重启持久化、真实世界生物注册、多人权限和失败不扣费",
-        "发布边界：精确玩家皮肤/模型/声线、完整原典能力穷举、组织门权限、具体领地 Mod 适配器、专属高精美术与真人无唯一最优途径长测继续单独跟踪；共享梦境依 v0.9 路线归入 M5"
+        "已完成：/pm m3、/pm m3 team、/pm next、/pm items、/pm bestiary 与 /pm faceless 形成五途径阶段引导、附近同队互补职责、材料来源、生态图鉴和形体管理闭环",
+        "已完成：Capability schema 30、427 项 JUnit 与 22 项 Forge GameTest 覆盖旧档迁移、隐私隔离、重启持久化、真实世界生物注册、组织门准入/拒绝/黑名单覆盖、秘偶战术跨收纳部署和失败不扣费",
+        "发布边界：精确玩家皮肤/模型/声线、完整原典能力穷举、专属高精美术与真人无唯一最优途径长测继续单独跟踪；具体领地 Mod 适配按 v0.9 归入 M7，共享梦境归入 M5"
       ]
     },
     {
@@ -233,7 +233,7 @@ window.LOM_ROADMAP_META = {
       "structure_specs": 32,
       "weather_anomaly_specs": 18
     },
-    "repository_evidence_at_0.9.29": {
+    "repository_evidence_at_0.9.30": {
       "content_graph_nodes": 126,
       "content_graph_edges": 188,
       "schema4_sequence_definitions": 25,
@@ -241,20 +241,21 @@ window.LOM_ROADMAP_META = {
       "generated_recipes": 13,
       "playable_commissions": 4,
       "playable_quest_chains": 4,
-      "junit_tests": 416,
-      "forge_gametests": 20,
+      "junit_tests": 427,
+      "forge_gametests": 22,
       "sequence_five_physical_ritual_gametests": 1,
-      "traveler_spatial_relay_gametests": 3,
+      "traveler_spatial_relay_gametests": 4,
       "traveler_persistent_door_entities": 1,
-      "traveler_door_access_modes": 3,
+      "traveler_door_access_modes": 4,
       "traveler_marker_name_commands": 2,
       "traveler_door_block_commands": 3,
       "traveler_door_operator_commands": 4,
       "traveler_territory_actions": 3,
       "persistent_marionette_gametests": 1,
-      "marionette_storage_gametests": 1,
+      "marionette_storage_gametests": 2,
+      "marionette_tactical_gametests": 1,
       "persistent_marionette_roster_cap": 3,
-      "marionette_management_commands": 4,
+      "marionette_management_commands": 6,
       "marionette_storage_items": 1,
       "marionette_storage_cost": 5,
       "marionette_storage_cooldown_ticks": 40,
@@ -264,7 +265,7 @@ window.LOM_ROADMAP_META = {
       "save_rollback_checks": 1,
       "dedicated_server_starts": 2,
       "network_protocol": 13,
-      "player_capability_schema": 29,
+      "player_capability_schema": 30,
       "characteristic_provenance_saved_data": 1,
       "registered_items": 109,
       "registered_blocks": 7,
@@ -272,7 +273,7 @@ window.LOM_ROADMAP_META = {
       "sequence_five_rituals": 5,
       "sequence_five_ritual_guide_commands": 1,
       "traveler_spatial_relay_guide_commands": 1,
-      "traveler_door_access_commands": 3,
+      "traveler_door_access_commands": 4,
       "characteristic_processing_guide_commands": 1,
       "characteristic_provenance_audit_commands": 1,
       "faceless_form_capacity": 8,
@@ -281,13 +282,14 @@ window.LOM_ROADMAP_META = {
       "m3_material_creatures": 7,
       "m3_material_ecology_gametests": 1,
       "m3_progress_guide_commands": 1,
+      "m3_team_guide_commands": 1,
       "pages_initial_catalog_batch": 24,
       "pages_layout_contract_checks": 1,
       "json_resources": 365,
-      "paired_translations": 1608,
-      "referenced_translation_keys": 619,
+      "paired_translations": 1631,
+      "referenced_translation_keys": 628,
       "item_and_block_models": 116,
-      "pages_catalog_entries": 217
+      "pages_catalog_entries": 218
     }
   }
 };

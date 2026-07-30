@@ -156,6 +156,17 @@ public final class TravelMarkerService {
                                 + accessMode(data).id()),
                 M3TravelNetworkLogic.DOOR_DURATION_TICKS / 20)
                 .withStyle(ChatFormatting.GRAY));
+        if (accessMode(data)
+                == TravelerDoorAccessMode.ORGANIZATION) {
+            PlayerFeedback.send(player, Component.translatable(
+                    "message.lord_of_mysteries.travel.guide.organization",
+                    data.travelerDoorOrganization,
+                    TravelerDoorOrganizationPolicy.reputation(
+                            data.orgReputation,
+                            data.travelerDoorOrganization),
+                    TravelerDoorOrganizationPolicy.TRUSTED_REPUTATION)
+                    .withStyle(ChatFormatting.GRAY));
+        }
         PlayerFeedback.send(player, Component.translatable(
                 "message.lord_of_mysteries.travel.guide.blocked",
                 data.travelerDoorBlacklist.size(),
@@ -184,6 +195,34 @@ public final class TravelMarkerService {
                 "message.lord_of_mysteries.travel.name.updated",
                 Component.literal(name))
                 .withStyle(ChatFormatting.AQUA));
+        return 1;
+    }
+
+    public static int setOrganizationAccess(
+            ServerPlayer player, String requestedOrganization) {
+        String organizationId =
+                TravelerDoorOrganizationPolicy.normalizeId(
+                        requestedOrganization);
+        PlayerMysteryData data =
+                top.aurora.lordofmysteries.player.MysteryCapability.get(
+                        player);
+        int reputation = TravelerDoorOrganizationPolicy.reputation(
+                data.orgReputation, organizationId);
+        if (organizationId.isEmpty()
+                || !TravelerDoorOrganizationPolicy.trusted(reputation)) {
+            PlayerFeedback.send(player, Component.translatable(
+                    "message.lord_of_mysteries.travel.organization.denied",
+                    TravelerDoorOrganizationPolicy.TRUSTED_REPUTATION,
+                    reputation).withStyle(ChatFormatting.RED));
+            return 0;
+        }
+        data.travelerDoorAccessMode =
+                TravelerDoorAccessMode.ORGANIZATION.id();
+        data.travelerDoorOrganization = organizationId;
+        PlayerFeedback.send(player, Component.translatable(
+                "message.lord_of_mysteries.travel.organization.updated",
+                organizationId,
+                reputation).withStyle(ChatFormatting.AQUA));
         return 1;
     }
 
@@ -431,6 +470,25 @@ public final class TravelMarkerService {
             return false;
         }
         TravelerDoorAccessMode access = accessMode(data);
+        String organizationId =
+                TravelerDoorOrganizationPolicy.normalizeId(
+                        data.travelerDoorOrganization);
+        int ownerOrganizationReputation =
+                TravelerDoorOrganizationPolicy.reputation(
+                        data.orgReputation, organizationId);
+        if (access == TravelerDoorAccessMode.ORGANIZATION
+                && !TravelerDoorOrganizationPolicy.allows(
+                        organizationId,
+                        ownerOrganizationReputation,
+                        ownerOrganizationReputation)) {
+            SpiritualityCost.refund(data, cost);
+            PlayerFeedback.send(leader, Component.translatable(
+                    "message.lord_of_mysteries.travel.organization.denied",
+                    TravelerDoorOrganizationPolicy.TRUSTED_REPUTATION,
+                    ownerOrganizationReputation)
+                    .withStyle(ChatFormatting.RED));
+            return false;
+        }
         String team = leader.getTeam() == null
                 ? "" : leader.getTeam().getName();
         TravelerDoorEntity sourceDoor = createDoor(
@@ -438,6 +496,8 @@ public final class TravelMarkerService {
                 leader.getUUID(),
                 team,
                 access,
+                organizationId,
+                ownerOrganizationReputation,
                 doorName,
                 data.travelerDoorBlacklist,
                 destinationMarker.dimension(),
@@ -448,6 +508,8 @@ public final class TravelMarkerService {
                 leader.getUUID(),
                 team,
                 access,
+                organizationId,
+                ownerOrganizationReputation,
                 doorName,
                 data.travelerDoorBlacklist,
                 leader.serverLevel().dimension(),
@@ -595,6 +657,8 @@ public final class TravelMarkerService {
             UUID owner,
             String ownerTeam,
             TravelerDoorAccessMode access,
+            String organizationId,
+            int ownerOrganizationReputation,
             String doorName,
             Collection<UUID> blockedPlayers,
             ResourceKey<Level> targetDimension,
@@ -606,6 +670,8 @@ public final class TravelMarkerService {
                 owner,
                 ownerTeam,
                 access,
+                organizationId,
+                ownerOrganizationReputation,
                 doorName,
                 blockedPlayers,
                 targetDimension,

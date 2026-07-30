@@ -16,6 +16,7 @@ import top.aurora.lordofmysteries.ability.FacelessFormPolicy;
 import top.aurora.lordofmysteries.ability.MarionettePolicy;
 import top.aurora.lordofmysteries.ability.MarionetteStoragePolicy;
 import top.aurora.lordofmysteries.ability.TravelerDoorAccessMode;
+import top.aurora.lordofmysteries.ability.TravelerDoorOrganizationPolicy;
 import top.aurora.lordofmysteries.ability.TravelerDoorPolicy;
 import top.aurora.lordofmysteries.potion.PotionQuality;
 
@@ -60,6 +61,21 @@ public final class PlayerMysteryDataSanitizer {
                 data.travelerDoorAccessMode).id();
         if (!repairedDoorAccess.equals(data.travelerDoorAccessMode)) {
             data.travelerDoorAccessMode = repairedDoorAccess;
+            repairs++;
+        }
+        String repairedDoorOrganization =
+                TravelerDoorOrganizationPolicy.normalizeId(
+                        data.travelerDoorOrganization);
+        if (!repairedDoorOrganization.equals(
+                data.travelerDoorOrganization)) {
+            data.travelerDoorOrganization = repairedDoorOrganization;
+            repairs++;
+        }
+        if (TravelerDoorAccessMode.ORGANIZATION.id().equals(
+                data.travelerDoorAccessMode)
+                && data.travelerDoorOrganization.isEmpty()) {
+            data.travelerDoorAccessMode =
+                    TravelerDoorAccessMode.PARTY.id();
             repairs++;
         }
         if (data.travelerDoorBlacklist == null) {

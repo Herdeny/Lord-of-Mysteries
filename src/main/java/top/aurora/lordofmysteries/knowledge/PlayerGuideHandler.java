@@ -110,6 +110,56 @@ public final class PlayerGuideHandler {
         return 1;
     }
 
+    public static int showM3TeamGuide(ServerPlayer player) {
+        String teamName = player.getTeam() == null
+                ? "" : player.getTeam().getName();
+        java.util.List<ServerPlayer> members =
+                player.serverLevel().getPlayers(candidate ->
+                        candidate.isAlive()
+                                && !candidate.isSpectator()
+                                && candidate.distanceToSqr(player)
+                                        <= 4_096d
+                                && (candidate == player
+                                        || (!teamName.isEmpty()
+                                        && candidate.getTeam() != null
+                                        && teamName.equals(
+                                                candidate.getTeam()
+                                                        .getName()))));
+        java.util.List<String> pathways = members.stream()
+                .map(MysteryCapability::get)
+                .map(data -> data.pathway == null
+                        ? "" : data.pathway.getPath())
+                .toList();
+        M3TeamCompositionAdvisor.Result result =
+                M3TeamCompositionAdvisor.evaluate(pathways);
+        player.sendSystemMessage(Component.translatable(
+                "guide.lord_of_mysteries.m3.team.summary",
+                members.size(),
+                result.distinctPathways(),
+                result.covered().size(),
+                M3TeamCompositionAdvisor.Role.values().length)
+                .withStyle(ChatFormatting.GOLD));
+        if (result.complete()) {
+            player.sendSystemMessage(Component.translatable(
+                    "guide.lord_of_mysteries.m3.team.complete")
+                    .withStyle(ChatFormatting.GREEN));
+            return result.covered().size();
+        }
+        result.missing().stream()
+                .sorted(java.util.Comparator.comparing(Enum::ordinal))
+                .forEach(role -> player.sendSystemMessage(
+                        Component.translatable(
+                                "guide.lord_of_mysteries.m3.team.missing",
+                                Component.translatable(
+                                        "guide.lord_of_mysteries.m3.team.role."
+                                                + role.translationSuffix()))
+                                .withStyle(ChatFormatting.YELLOW)));
+        player.sendSystemMessage(Component.translatable(
+                "guide.lord_of_mysteries.m3.team.privacy")
+                .withStyle(ChatFormatting.DARK_GRAY));
+        return result.covered().size();
+    }
+
     public static int restoreStarterKit(ServerPlayer player, boolean announce) {
         int restored = 0;
         restored += ensureItem(player, ModItems.INVESTIGATOR_NOTES.get());

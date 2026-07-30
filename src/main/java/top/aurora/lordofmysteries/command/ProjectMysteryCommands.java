@@ -97,9 +97,17 @@ public final class ProjectMysteryCommands {
                 .then(Commands.literal("next").executes(context ->
                         PlayerGuideHandler.showNextStep(
                                 context.getSource().getPlayerOrException())))
-                .then(Commands.literal("m3").executes(context ->
-                        PlayerGuideHandler.showM3Guide(
-                                context.getSource().getPlayerOrException())))
+                .then(Commands.literal("m3")
+                        .executes(context ->
+                                PlayerGuideHandler.showM3Guide(
+                                        context.getSource()
+                                                .getPlayerOrException()))
+                        .then(Commands.literal("team")
+                                .executes(context ->
+                                        PlayerGuideHandler
+                                                .showM3TeamGuide(
+                                                        context.getSource()
+                                                                .getPlayerOrException()))))
                 .then(Commands.literal("recover").executes(context ->
                         PlayerGuideHandler.restoreStarterKit(
                                 context.getSource().getPlayerOrException(), true)))
@@ -230,6 +238,20 @@ public final class ProjectMysteryCommands {
                                                                 context.getSource()
                                                                         .getPlayerOrException(),
                                                                 "party")))
+                                .then(Commands.literal("organization")
+                                        .then(Commands.argument(
+                                                        "organization",
+                                                        StringArgumentType
+                                                                .word())
+                                                .executes(context ->
+                                                        TravelMarkerService
+                                                                .setOrganizationAccess(
+                                                                        context.getSource()
+                                                                                .getPlayerOrException(),
+                                                                        StringArgumentType
+                                                                                .getString(
+                                                                                        context,
+                                                                                        "organization")))))
                                 .then(Commands.literal("public")
                                         .executes(context ->
                                                 TravelMarkerService
@@ -247,6 +269,44 @@ public final class ProjectMysteryCommands {
                                         MarionetteService.recall(
                                                 context.getSource()
                                                         .getPlayerOrException())))
+                        .then(Commands.literal("mode")
+                                .then(Commands.argument(
+                                                "slot",
+                                                IntegerArgumentType.integer(
+                                                        1,
+                                                        MarionettePolicy
+                                                                .MAX_MARIONETTES))
+                                        .then(Commands.argument(
+                                                        "mode",
+                                                        StringArgumentType
+                                                                .word())
+                                                .executes(context ->
+                                                        MarionetteService
+                                                                .setTacticalMode(
+                                                                        context.getSource()
+                                                                                .getPlayerOrException(),
+                                                                        IntegerArgumentType
+                                                                                .getInteger(
+                                                                                        context,
+                                                                                        "slot"),
+                                                                        StringArgumentType
+                                                                                .getString(
+                                                                                        context,
+                                                                                        "mode")))))
+                                .then(Commands.literal("all")
+                                        .then(Commands.argument(
+                                                        "mode",
+                                                        StringArgumentType
+                                                                .word())
+                                                .executes(context ->
+                                                        MarionetteService
+                                                                .setAllTacticalModes(
+                                                                        context.getSource()
+                                                                                .getPlayerOrException(),
+                                                                        StringArgumentType
+                                                                                .getString(
+                                                                                        context,
+                                                                                        "mode"))))))
                         .then(Commands.literal("release")
                                 .then(Commands.literal("all")
                                         .executes(context ->
