@@ -194,8 +194,8 @@ public final class ArtifactCustodySavedData extends SavedData {
         CustodyRecord record = records.get(instance);
         if (record == null || holder == null
                 || !holder.equals(record.holder())
-                || record.state() == ArtifactCustodyState.ABUSED
-                || record.state() == ArtifactCustodyState.RETURNED) {
+                || (record.state() != ArtifactCustodyState.BORROWED
+                && record.state() != ArtifactCustodyState.RECOVERED)) {
             return false;
         }
         records.put(instance, new CustodyRecord(

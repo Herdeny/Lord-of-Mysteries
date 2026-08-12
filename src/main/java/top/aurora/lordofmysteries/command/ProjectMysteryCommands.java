@@ -126,6 +126,12 @@ public final class ProjectMysteryCommands {
                                                 .showOrganizations(
                                                         context.getSource()
                                                                 .getPlayerOrException())))
+                        .then(Commands.literal("strategy")
+                                .executes(context ->
+                                        OrganizationActionService
+                                                .showStrategies(
+                                                        context.getSource()
+                                                                .getPlayerOrException())))
                         .then(Commands.literal("claim")
                                 .then(Commands.argument(
                                                 "slot",

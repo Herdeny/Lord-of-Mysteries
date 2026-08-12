@@ -1,0 +1,23 @@
+{
+  "id": "lord_of_mysteries:artifact_3_260_salvage_glove",
+  "type": "artifact",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/13.2", "REPO:M4_ARTIFACT_COMPLETE"],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+  "links": {"requires": ["lord_of_mysteries:organization/secret_reclaimer_guild"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "item": "lord_of_mysteries:artifact_3_260_salvage_glove",
+  "custody_organization": "lord_of_mysteries:organization/secret_reclaimer_guild",
+  "title_key": "item.lord_of_mysteries.artifact_3_260_salvage_glove",
+  "danger_level": 2,
+  "safe_uses": 8,
+  "loan_days": 4,
+  "leak_threshold": 18,
+  "effect_key": "artifact.lord_of_mysteries.artifact_3_260_salvage_glove.effect",
+  "cost_key": "artifact.lord_of_mysteries.artifact_3_260_salvage_glove.cost",
+  "incident_profile": "hunger",
+  "containment": ["clear hostile surroundings before use", "audit every third retrieval"]
+}

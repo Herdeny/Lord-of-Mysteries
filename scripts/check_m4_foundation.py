@@ -80,6 +80,8 @@ def main():
         JAVA / "organization" / "OrganizationActionSavedData.java")
     action_service = source(
         JAVA / "organization" / "OrganizationActionService.java")
+    strategy_policy = source(
+        JAVA / "organization" / "OrganizationStrategyPolicy.java")
     commands = source(JAVA / "command" / "ProjectMysteryCommands.java")
     require(
         f"DAILY_ACTION_COUNT = {organization_contract['daily_action_count']}"
@@ -96,6 +98,16 @@ def main():
     require("Map<UUID, Assignment>" in action_saved
             and "assignments.containsKey(player)" in action_saved,
             "player-isolated assignment guard is missing")
+    weekly = organization_contract["weekly_strategy"]
+    require(
+        f"WEEK_LENGTH_DAYS = {weekly['week_length_days']}"
+        in strategy_policy
+        and '"current_week"' in action_saved
+        and '"strategies"' in action_saved,
+        "weekly organization strategy persistence is missing")
+    require("autonomousSuccess" in strategy_policy
+            and "resolveAutonomousActions" in action_saved,
+            "unattended organization actions do not resolve autonomously")
     for token in organization_contract["commands"]:
         require(f'literal("{token}")' in commands,
                 f"organization command {token} is missing")
@@ -104,8 +116,9 @@ def main():
     artifact_contract = contract["artifacts"]
     require(len(artifacts) == artifact_contract["implemented"],
             "artifact definition count drifted")
-    require(artifact_contract["implemented"] < artifact_contract["m4_target"],
-            "contract must not claim the 24-artifact target is complete")
+    require(artifact_contract["implemented"]
+            == artifact_contract["m4_target"] == 24,
+            "M4 must contain exactly 24 verified playable artifacts")
     expected_artifacts = {
         f"lord_of_mysteries:{path}"
         for path in artifact_contract["definitions"]
@@ -113,6 +126,10 @@ def main():
     artifact_ids = {value["id"] for value in artifacts}
     require(artifact_ids == expected_artifacts,
             "implemented artifact ids drifted")
+    incident_profiles = set(artifact_contract["incident_profiles"])
+    require({value.get("incident_profile") for value in artifacts}
+            == incident_profiles,
+            "artifact incident profile coverage drifted")
     for value in artifacts:
         require(value.get("schema_version") == 4
                 and value.get("implementation_state") == "playable",
@@ -131,12 +148,24 @@ def main():
         require((ASSETS / "models" / "item" / f"{item_path}.json").exists(),
                 f"{value['id']} item model is missing")
 
+    managed_kinds = source(
+        JAVA / "artifact" / "ManagedArtifactKind.java")
+    managed_paths = set(re.findall(
+        r'\b[A-Z][A-Z0-9_]*\(\s*"([a-z0-9_]+)"\s*\)',
+        managed_kinds,
+    ))
+    require(managed_paths
+            == {value["id"].split(":", 1)[1] for value in artifacts},
+            "artifact definitions and managed runtime registrations drifted")
+
     custody_state = source(
         JAVA / "artifact" / "ArtifactCustodyState.java")
     custody_saved = source(
         JAVA / "artifact" / "ArtifactCustodySavedData.java")
     custody_service = source(
         JAVA / "artifact" / "SealedArtifactService.java")
+    extended_effects = source(
+        JAVA / "artifact" / "ExtendedSealedArtifactEffects.java")
     require(artifact_contract["persistent_data_name"] in custody_saved,
             "artifact SavedData name drifted")
     for state in artifact_contract["states"]:
@@ -165,12 +194,28 @@ def main():
     require("retireAbused" in custody_saved
             and "retireAbused" in custody_service,
             "operator abuse retirement is missing")
+    for behavior in artifact_contract["behavior_anchors"]:
+        require(behavior in custody_service or behavior in extended_effects,
+                f"artifact runtime behavior {behavior} is missing")
+    require("hasContainmentMaterials" in custody_service
+            and "profile.requirements()" in custody_service
+            and "consumeContainmentMaterials" in custody_service,
+            "profile-specific stabilization is missing")
+    require("unlockCustodyKnowledge" in action_service
+            and "hasCustodyKnowledge" in custody_service,
+            "artifact custody discovery chain is missing")
     require("record.responsible().equals(player.getUUID())" in custody_service
-            and "record.holder().equals(player.getUUID())" in custody_service
+            and "player.getUUID().equals(record.holder())" in custody_service
             and "visibleRecords" in custody_service,
             "normal artifact status can expose another player's custody record")
     require("player.hasPermissions(2)" in custody_service,
             "orphaned artifact diagnostics are not permission-gated")
+    liaison_service = source(
+        JAVA / "organization" / "OrganizationLiaisonService.java")
+    require("OrganizationLiaisonSchedulePolicy.position" in liaison_service
+            and "LIAISON_TAG" in liaison_service
+            and "OrganizationActionService.claim(player, slot)" in liaison_service,
+            "organization liaison rotation and direct claim loop is incomplete")
     require("grants no permissions" in source(
                 ASSETS / "lang" / "en_us.json")
             and "不授予任何权限" in source(

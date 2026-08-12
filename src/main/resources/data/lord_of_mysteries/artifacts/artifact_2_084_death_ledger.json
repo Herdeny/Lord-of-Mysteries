@@ -1,0 +1,23 @@
+{
+  "id": "lord_of_mysteries:artifact_2_084_death_ledger",
+  "type": "artifact",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/13.6", "REPO:M4_ARTIFACT_COMPLETE"],
+  "spoiler_level": 2,
+  "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+  "links": {"requires": ["lord_of_mysteries:organization/church_night_watch"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "item": "lord_of_mysteries:artifact_2_084_death_ledger",
+  "custody_organization": "lord_of_mysteries:organization/church_night_watch",
+  "title_key": "item.lord_of_mysteries.artifact_2_084_death_ledger",
+  "danger_level": 3,
+  "safe_uses": 5,
+  "loan_days": 3,
+  "leak_threshold": 15,
+  "effect_key": "artifact.lord_of_mysteries.artifact_2_084_death_ledger.effect",
+  "cost_key": "artifact.lord_of_mysteries.artifact_2_084_death_ledger.cost",
+  "incident_profile": "cognition",
+  "containment": ["close after reading", "perform mental review every ten records"]
+}

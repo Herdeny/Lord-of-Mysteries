@@ -107,14 +107,15 @@ def main() -> int:
     require(
         contains_all(
             html,
-            ("M4 首批闭环", "7 / 24 封印物", "/pm m4",
-             "组织行动与封印物保管", "12份组织定义", "7份封印物定义")),
-        "Pages must expose the current M4 playable loop and truthful scope", errors)
+            ("M4 机器范围", "24 / 24 已完成", "/pm m4",
+             "组织行动与封印物保管", "12份组织定义", "24份封印物定义",
+             "三席轮值联络员", "M5", "灵界与梦境")),
+        "Pages must expose completed M4 scope and current M5 planning", errors)
     require(
         contains_all(
             html,
             ("精确玩家皮肤/模型/声线", "具体领地 Mod 适配归入 M7",
-             "完整目标仍为24件逐件验证封印物")),
+             "M4机器合同已关闭", "高精美术")),
         "Pages must retain the M3 and M4 release boundaries", errors)
     require(
         "持久秘偶、完整梦境" not in html,
@@ -123,23 +124,25 @@ def main() -> int:
     require(
         contains_all(
             wiki_data,
-            ("Capability schema 30", "439 JUnit · 24 GameTest",
-             "389 JSON · 1741 双语键", "115 物品 · 7 方块 · 16 实体",
-             "147 节点 · 197 关系", "237 条图鉴")),
+            ("Capability schema 30", "447 JUnit · 24 GameTest",
+             "423 JSON · 1830 双语键", "132 物品 · 7 方块 · 16 实体",
+             "164 节点 · 214 关系", "254 条图鉴")),
         "Dynamic Pages cards do not match the current validation baseline", errors)
     require(
         contains_all(
             wiki_data,
-            ("M4 组织行动与封印物保管", "/pm organization",
-             "/pm artifact", "7 / 24", "普通玩家只能查看自己负责或持有")),
+            ("M4 组织行动与封印物保管", "/pm organization strategy",
+             "/pm artifact", "24 / 24", "普通玩家只能查看自己负责或持有",
+             "三席实体")),
         "Dynamic Pages cards are missing the M4 authority and privacy model", errors)
     require(
         contains_all(
             catalog_data,
-            ('"organizationDefinitions": 12', '"artifactDefinitions": 7',
-             '"registeredItems": 115',
+            ('"organizationDefinitions": 12', '"artifactDefinitions": 24',
+             '"registeredItems": 132',
              '"id": "lord_of_mysteries:organization/church_night_watch"',
-             '"id": "lord_of_mysteries:artifact_3_091_kindly_umbrella"')),
+             '"id": "lord_of_mysteries:artifact_3_091_kindly_umbrella"',
+             '"id": "lord_of_mysteries:artifact_1_026_ferryman_ticket"')),
         "Generated Pages catalog is missing M4 definitions or registrations", errors)
 
     stale_markers = (
@@ -149,6 +152,12 @@ def main() -> int:
         "126 节点 · 188 关系",
         "218 条图鉴",
         "Capability schema 29",
+        "439 JUnit · 24 GameTest",
+        "389 JSON · 1741 双语键",
+        "115 物品 · 7 方块 · 16 实体",
+        "147 节点 · 197 关系",
+        "237 条图鉴",
+        "7 / 24",
     )
     require(
         not any(marker in wiki_data for marker in stale_markers),
@@ -174,6 +183,9 @@ def main() -> int:
     require(
         "var PAGE_SIZE = 24;" in javascript,
         "Catalog page size must remain 24", errors)
+    require(
+        "index < 6" in javascript,
+        "Roadmap must keep current M5 visible before future disclosure", errors)
     require(
         "visibleLimit += PAGE_SIZE" in javascript,
         "Catalog is missing incremental loading", errors)

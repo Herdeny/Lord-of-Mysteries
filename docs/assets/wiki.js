@@ -243,7 +243,7 @@
   var roadmap = data.roadmap || [];
   var stateText = { done: "已完成", active: "进行中", planned: "规划", future: "远期" };
   roadmap.forEach(function (milestone, index) {
-    if (index < 5 && roadmapRoot) {
+    if (index < 6 && roadmapRoot) {
       var card = create("article", "rm-card " + milestone.state);
       var head = create("div", "rm-card-head");
       head.appendChild(create("span", "rm-badge", milestone.id));

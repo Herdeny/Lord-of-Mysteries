@@ -23,5 +23,6 @@
   "leak_threshold": 16,
   "effect_key": "artifact.lord_of_mysteries.artifact_2_203_merciful_chain.effect",
   "cost_key": "artifact.lord_of_mysteries.artifact_2_203_merciful_chain.cost",
+  "incident_profile": "void",
   "containment": ["coil around an inert iron ring", "never bind players or bosses"]
 }

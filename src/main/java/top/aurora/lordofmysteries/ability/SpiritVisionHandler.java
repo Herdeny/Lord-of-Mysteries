@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import org.joml.Vector3f;
 
@@ -20,6 +21,7 @@ import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.potion.M2PathwayPotionItem;
+import top.aurora.lordofmysteries.artifact.SealedArtifactService;
 
 /**
  * 灵视被动能力（批次1，设计文档 §6）。
@@ -118,6 +120,11 @@ public final class SpiritVisionHandler {
         List<EntityColor> results = new ArrayList<>(entities.size());
         ServerLevel level = (ServerLevel) sp.level();
         for (Entity e : entities) {
+            if (e instanceof LivingEntity living
+                    && SealedArtifactService.isWhiteNoiseProtected(
+                            living, level.getGameTime())) {
+                continue;
+            }
             SpiritFactionColor color = SpiritFactionColor.classify(e);
             results.add(new EntityColor(e.getId(), color));
             Vector3f rgb = new Vector3f(

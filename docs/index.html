@@ -12,7 +12,7 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/logo.png">
   <link rel="icon" href="assets/logo.png">
-  <link rel="stylesheet" href="assets/wiki.css?v=0.9.31">
+  <link rel="stylesheet" href="assets/wiki.css?v=0.9.32">
 </head>
 <body id="top">
   <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -46,7 +46,7 @@
         <p class="eyebrow">Project Mystery · 玩家资料站</p>
         <div class="release-chip">
           <span class="status-dot" aria-hidden="true"></span>
-          <span>当前里程碑 <b id="hero-milestone">M4</b></span>
+          <span>当前里程碑 <b id="hero-milestone">M5</b></span>
           <span class="release-chip-separator" aria-hidden="true"></span>
           <span id="hero-version">载入版本中</span>
         </div>
@@ -82,8 +82,8 @@
             <strong>机器范围完成</strong>
           </div>
           <div>
-            <span>M4 首批闭环</span>
-            <strong class="code-ready">7 / 24 封印物</strong>
+            <span>M4 机器范围</span>
+            <strong class="code-ready">24 / 24 已完成</strong>
           </div>
         </div>
       </aside>
@@ -125,7 +125,7 @@
           <span class="entry-index">04</span>
           <p class="entry-kicker">M4 玩家</p>
           <h3>组织行动与封印物保管</h3>
-          <p>用 <code>/pm m4</code> 查看每日行动；提升组织声望后在前哨借用首批7件封印物，并处理借期、泄漏、回收与归还。</p>
+          <p>用 <code>/pm m4</code> 查看每日行动，与三席轮值联络员交互，查询12组织周战略；完成行动解锁保管知识后，可借用24件封印物并处理六类事故。</p>
           <a href="https://github.com/Herdeny/Lord-of-Mysteries/wiki/M4-Organizations-and-Sealed-Artifacts" target="_blank" rel="noopener">打开 M4 玩家手册 ↗</a>
         </article>
         <article class="entry-card">
@@ -186,13 +186,25 @@
         <article class="progress-card active-progress">
           <div class="progress-card-head">
             <span class="milestone-mark">M4</span>
-            <span class="state-badge active">当前里程碑</span>
+            <span class="state-badge planned">机器范围完成</span>
           </div>
           <h3>组织与封印物</h3>
-          <p>七个教会、五个隐秘组织、六类自主行动和首批7件封印物已形成服务端权威闭环。世界台账覆盖唯一借出、责任人/持有人、离线逾期、污染与安全次数、换手回收、复制隔离、稳定、归还和管理员退役。</p>
+          <p>七个教会、五个隐秘组织、六类行动、12项独立周战略、跨日无人结算、三席轮值联络员和24件封印物已形成服务端权威闭环。世界台账覆盖唯一借出、知识门、责任人/持有人、离线逾期、污染与安全次数、六类事故、换手回收、复制隔离、稳定、归还和管理员退役。</p>
           <ul>
-            <li>Pages图鉴直接从12份组织定义、7份封印物定义、Forge注册表和双语资源生成</li>
-            <li>完整目标仍为24件逐件验证封印物；据点、NPC日程、跨周战略和真人长测继续实施</li>
+            <li>Pages图鉴直接从12份组织定义、24份封印物定义、Forge注册表和双语资源生成</li>
+            <li>M4机器合同已关闭；高精美术、更多专属建筑与真人多人长测继续作为发布质量工作</li>
+          </ul>
+        </article>
+        <article class="progress-card active-progress">
+          <div class="progress-card-head">
+            <span class="milestone-mark">M5</span>
+            <span class="state-badge active">当前里程碑</span>
+          </div>
+          <h3>灵界与梦境</h3>
+          <p>已开始冻结30分钟灵界远征的进入、导航、风险、收益、安全退出与断线恢复合同；尚未把规划内容误报为可玩。</p>
+          <ul>
+            <li>下一阶段优先实现单人可退出、多人不串档的最小航路</li>
+            <li>共享梦境、生态生物和异常天气按M5合同逐项进入门禁</li>
           </ul>
         </article>
       </div>
@@ -262,13 +274,13 @@
       </div>
       <div class="roadmap-overview">
         <div class="roadmap-progress" aria-label="当前路线位置">
-          <span style="--progress: 35%"></span>
+          <span style="--progress: 42%"></span>
         </div>
-        <p><b>M0–M3</b> 机器实施范围已完成并保留真人发布门禁 · <b>M4</b> 正在扩展12组织、每日自主行动与24件封印物，首批7件已接入完整保管/泄漏/回收闭环</p>
+        <p><b>M0–M4</b> 机器实施范围已完成并保留真人发布门禁 · <b>M5</b> 正在建立灵界航路、共享梦境、生态与异常天气的首个可退出闭环</p>
       </div>
       <div class="roadmap" id="roadmap-track"></div>
       <details class="future-roadmap">
-        <summary>查看 M5–M12 后续路线</summary>
+        <summary>查看 M6–M12 后续路线</summary>
         <div id="future-roadmap-track"></div>
       </details>
       <a class="button roadmap-link" href="https://github.com/Herdeny/Lord-of-Mysteries/blob/main/ROADMAP.md" target="_blank" rel="noopener">打开完整路线与验收条件 ↗</a>
@@ -342,10 +354,10 @@
     </article>
   </div>
 
-  <script src="assets/project-meta.js?v=0.9.31"></script>
-  <script src="assets/roadmap-data.js?v=0.9.31"></script>
-  <script src="assets/wiki-data.js?v=0.9.31"></script>
-  <script src="assets/catalog-data.js?v=0.9.31"></script>
-  <script src="assets/wiki.js?v=0.9.31"></script>
+  <script src="assets/project-meta.js?v=0.9.32"></script>
+  <script src="assets/roadmap-data.js?v=0.9.32"></script>
+  <script src="assets/wiki-data.js?v=0.9.32"></script>
+  <script src="assets/catalog-data.js?v=0.9.32"></script>
+  <script src="assets/wiki.js?v=0.9.32"></script>
 </body>
 </html>

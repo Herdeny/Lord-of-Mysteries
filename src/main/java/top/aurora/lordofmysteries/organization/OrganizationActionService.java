@@ -55,8 +55,7 @@ public final class OrganizationActionService {
         float exposure = actionExposure(level);
         OrganizationActionSavedData saved =
                 OrganizationActionSavedData.get(level);
-        if (!saved.refresh(
-                level.getSeed(), day, exposure,
+        if (!saved.refresh(level.getSeed(), day, exposure,
                 OrganizationDefinitionManager.all())) {
             return;
         }
@@ -136,6 +135,11 @@ public final class OrganizationActionService {
                         "command.lord_of_mysteries.organization.actions",
                         saved.currentDay(), saved.actions().size())
                 .withStyle(ChatFormatting.GOLD));
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.organization.strategy_summary",
+                        saved.currentWeek(), saved.lastWeekSuccesses(),
+                        saved.lastWeekFailures())
+                .withStyle(ChatFormatting.DARK_AQUA));
         for (OrganizationActionPolicy.PlannedAction action
                 : saved.actions()) {
             player.sendSystemMessage(Component.translatable(
@@ -161,6 +165,27 @@ public final class OrganizationActionService {
                     .withStyle(ChatFormatting.AQUA));
         }
         return saved.actions().size();
+    }
+
+    public static int showStrategies(ServerPlayer player) {
+        OrganizationActionSavedData saved = storage(player);
+        ensureCurrent(player, saved);
+        player.sendSystemMessage(Component.translatable(
+                        "command.lord_of_mysteries.organization.strategy_catalog",
+                        saved.currentWeek(), saved.strategies().size())
+                .withStyle(ChatFormatting.GOLD));
+        for (OrganizationStrategyPolicy.Directive directive
+                : saved.strategies()) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.organization.strategy_entry",
+                            organizationName(directive.organization()),
+                            Component.translatable(
+                                    directive.focus().translationKey()),
+                            directive.risk(), directive.successes(),
+                            directive.failures())
+                    .withStyle(ChatFormatting.GRAY));
+        }
+        return saved.strategies().size();
     }
 
     public static int claim(ServerPlayer player, int slot) {
@@ -241,6 +266,7 @@ public final class OrganizationActionService {
                 action.organization(), reputation, Integer::sum);
         data.moneyPence = saturatingAdd(data.moneyPence, reward);
         data.markDirty(PlayerDataSection.SOCIAL);
+        SealedArtifactService.unlockCustodyKnowledge(player);
         player.sendSystemMessage(Component.translatable(
                         "command.lord_of_mysteries.organization.completed",
                         organizationName(action.organization()),
@@ -279,7 +305,7 @@ public final class OrganizationActionService {
         };
     }
 
-    private static Component organizationName(ResourceLocation id) {
+    static Component organizationName(ResourceLocation id) {
         OrganizationDefinition definition =
                 OrganizationDefinitionManager.get(id);
         return definition == null
@@ -301,11 +327,16 @@ public final class OrganizationActionService {
     private static void ensureCurrent(
             ServerPlayer player,
             OrganizationActionSavedData saved) {
-        ServerLevel level = player.getServer().overworld();
-        saved.refresh(
-                level.getSeed(), currentDay(level),
+        refresh(player.getServer().overworld());
+    }
+
+    static OrganizationActionSavedData refresh(ServerLevel level) {
+        OrganizationActionSavedData saved =
+                OrganizationActionSavedData.get(level);
+        saved.refresh(level.getSeed(), currentDay(level),
                 actionExposure(level),
                 OrganizationDefinitionManager.all());
+        return saved;
     }
 
     private static long currentDay(ServerLevel level) {

@@ -25,6 +25,7 @@ public record SealedArtifactDefinition(
         String effectKey,
         String costKey,
         String knowledgeGate,
+        ArtifactIncidentProfile incidentProfile,
         List<String> containment) {
 
     public SealedArtifactDefinition {
@@ -57,6 +58,9 @@ public record SealedArtifactDefinition(
         String effectKey = requiredText(json, "effect_key");
         String costKey = requiredText(json, "cost_key");
         String knowledgeGate = requiredText(json, "knowledge_gate");
+        ArtifactIncidentProfile incidentProfile =
+                ArtifactIncidentProfile.fromId(
+                        GsonHelper.getAsString(json, "incident_profile"));
         JsonArray containmentJson =
                 GsonHelper.getAsJsonArray(json, "containment");
         List<String> containment = new ArrayList<>();
@@ -72,7 +76,26 @@ public record SealedArtifactDefinition(
         return new SealedArtifactDefinition(
                 id, item, organization, titleKey, dangerLevel,
                 safeUses, loanDays, leakThreshold, effectKey, costKey,
-                knowledgeGate, containment);
+                knowledgeGate, incidentProfile, containment);
+    }
+
+    public SealedArtifactDefinition(
+            ResourceLocation id,
+            ResourceLocation item,
+            ResourceLocation custodyOrganization,
+            String titleKey,
+            int dangerLevel,
+            int safeUses,
+            int loanDays,
+            int leakThreshold,
+            String effectKey,
+            String costKey,
+            String knowledgeGate,
+            List<String> containment) {
+        this(id, item, custodyOrganization, titleKey, dangerLevel,
+                safeUses, loanDays, leakThreshold, effectKey, costKey,
+                knowledgeGate, ArtifactIncidentProfile.COGNITION,
+                containment);
     }
 
     private static String requiredText(JsonObject json, String field) {

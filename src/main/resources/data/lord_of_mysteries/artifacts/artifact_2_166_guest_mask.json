@@ -23,5 +23,6 @@
   "leak_threshold": 18,
   "effect_key": "artifact.lord_of_mysteries.artifact_2_166_guest_mask.effect",
   "cost_key": "artifact.lord_of_mysteries.artifact_2_166_guest_mask.cost",
+  "incident_profile": "cognition",
   "containment": ["store facing a blank wall", "never treat disguise as authorization"]
 }

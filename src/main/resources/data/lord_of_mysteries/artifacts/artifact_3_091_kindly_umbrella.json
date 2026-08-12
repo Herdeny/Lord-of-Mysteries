@@ -23,5 +23,6 @@
   "leak_threshold": 18,
   "effect_key": "artifact.lord_of_mysteries.artifact_3_091_kindly_umbrella.effect",
   "cost_key": "artifact.lord_of_mysteries.artifact_3_091_kindly_umbrella.cost",
+  "incident_profile": "storm",
   "containment": ["dry fully before vault storage", "do not open beneath a solid roof"]
 }

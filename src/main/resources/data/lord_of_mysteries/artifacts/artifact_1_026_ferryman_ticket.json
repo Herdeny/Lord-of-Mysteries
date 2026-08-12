@@ -1,0 +1,23 @@
+{
+  "id": "lord_of_mysteries:artifact_1_026_ferryman_ticket",
+  "type": "artifact",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/13.6", "REPO:M4_ARTIFACT_COMPLETE"],
+  "spoiler_level": 3,
+  "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+  "links": {"requires": ["lord_of_mysteries:organization/secret_aurora_rite"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "item": "lord_of_mysteries:artifact_1_026_ferryman_ticket",
+  "custody_organization": "lord_of_mysteries:organization/secret_aurora_rite",
+  "title_key": "item.lord_of_mysteries.artifact_1_026_ferryman_ticket",
+  "danger_level": 5,
+  "safe_uses": 1,
+  "loan_days": 1,
+  "leak_threshold": 8,
+  "effect_key": "artifact.lord_of_mysteries.artifact_1_026_ferryman_ticket.effect",
+  "cost_key": "artifact.lord_of_mysteries.artifact_1_026_ferryman_ticket.cost",
+  "incident_profile": "void",
+  "containment": ["never promise a guaranteed revival", "observe the seven-day refusal interval"]
+}

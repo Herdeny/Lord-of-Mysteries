@@ -19,6 +19,14 @@ public final class OrganizationActionPolicy {
     public static List<PlannedAction> generate(
             long worldSeed, long day, float exposure,
             Map<ResourceLocation, OrganizationDefinition> definitions) {
+        return generate(worldSeed, day, exposure, definitions, Map.of());
+    }
+
+    public static List<PlannedAction> generate(
+            long worldSeed, long day, float exposure,
+            Map<ResourceLocation, OrganizationDefinition> definitions,
+            Map<ResourceLocation, OrganizationStrategyPolicy.Directive>
+                    directives) {
         if (day < 0L || definitions == null || definitions.isEmpty()) {
             return List.of();
         }
@@ -39,14 +47,26 @@ public final class OrganizationActionPolicy {
                 index = (index + 1) % organizations.size();
             }
             OrganizationDefinition organization = organizations.get(index);
-            OrganizationActionType type = selectType(
-                    organization, mix(base ^ organization.id().hashCode()
-                            ^ slot * 0x94D049BB133111EBL));
+            long actionSeed = mix(base ^ organization.id().hashCode()
+                    ^ slot * 0x94D049BB133111EBL);
+            OrganizationStrategyPolicy.Directive directive =
+                    directives == null ? null
+                            : directives.get(organization.id());
+            OrganizationActionType type = directive != null
+                    && organization.strategyWeights().containsKey(
+                            directive.focus())
+                    && unsignedUnit(actionSeed ^ 0xD1B54A32D192ED03L)
+                            < 0.7d
+                    ? directive.focus()
+                    : selectType(organization, actionSeed);
             int risk = Math.min(
                     5,
                     type.baseRisk()
                             + (exposure >= 40f ? 1 : 0)
                             + (exposure >= 70f ? 1 : 0));
+            if (directive != null && directive.focus() == type) {
+                risk = Math.max(risk, directive.risk());
+            }
             actions.add(new PlannedAction(
                     slot + 1, organization.id(), type, risk));
         }

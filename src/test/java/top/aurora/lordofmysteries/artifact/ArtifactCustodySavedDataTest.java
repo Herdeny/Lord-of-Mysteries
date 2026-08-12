@@ -62,6 +62,9 @@ class ArtifactCustodySavedDataTest {
                 contamination.recordUse(first, 4, 64, 8));
         assertEquals(ArtifactCustodyState.LEAKED,
                 contamination.recordUse(first, 4, 64, 8));
+        assertFalse(contamination.returnToVault(first, holder));
+        assertTrue(contamination.stabilize(first, holder));
+        assertTrue(contamination.returnToVault(first, holder));
 
         ArtifactCustodySavedData overdue =
                 new ArtifactCustodySavedData();
@@ -73,6 +76,7 @@ class ArtifactCustodySavedDataTest {
         assertEquals(1, overdue.expireOverdue(7L));
         assertEquals(ArtifactCustodyState.LEAKED,
                 overdue.record(second).state());
+        assertFalse(overdue.returnToVault(second, holder));
     }
 
     @Test

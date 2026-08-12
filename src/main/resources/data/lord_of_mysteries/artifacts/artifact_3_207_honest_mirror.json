@@ -23,5 +23,6 @@
   "leak_threshold": 14,
   "effect_key": "artifact.lord_of_mysteries.artifact_3_207_honest_mirror.effect",
   "cost_key": "artifact.lord_of_mysteries.artifact_3_207_honest_mirror.cost",
+  "incident_profile": "cognition",
   "containment": ["cover reflective face between questions", "record every revealed target"]
 }

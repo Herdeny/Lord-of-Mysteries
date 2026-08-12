@@ -1,0 +1,23 @@
+{
+  "id": "lord_of_mysteries:artifact_1_022_storm_anchor",
+  "type": "artifact",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/13.6", "REPO:M4_ARTIFACT_COMPLETE"],
+  "spoiler_level": 3,
+  "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+  "links": {"requires": ["lord_of_mysteries:organization/church_tempest_beacon"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "item": "lord_of_mysteries:artifact_1_022_storm_anchor",
+  "custody_organization": "lord_of_mysteries:organization/church_tempest_beacon",
+  "title_key": "item.lord_of_mysteries.artifact_1_022_storm_anchor",
+  "danger_level": 5,
+  "safe_uses": 2,
+  "loan_days": 1,
+  "leak_threshold": 12,
+  "effect_key": "artifact.lord_of_mysteries.artifact_1_022_storm_anchor.effect",
+  "cost_key": "artifact.lord_of_mysteries.artifact_1_022_storm_anchor.cost",
+  "incident_profile": "storm",
+  "containment": ["clear the strike point", "never activate beside a crowded outpost"]
+}

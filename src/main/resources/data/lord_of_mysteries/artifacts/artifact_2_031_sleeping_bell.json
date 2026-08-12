@@ -23,5 +23,6 @@
   "leak_threshold": 15,
   "effect_key": "artifact.lord_of_mysteries.artifact_2_031_sleeping_bell.effect",
   "cost_key": "artifact.lord_of_mysteries.artifact_2_031_sleeping_bell.cost",
+  "incident_profile": "echo",
   "containment": ["secure the clapper with black thread", "never ring beside a sleeping ally"]
 }

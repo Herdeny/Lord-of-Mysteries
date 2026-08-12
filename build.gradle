@@ -230,7 +230,7 @@ tasks.register('checkM3Foundation', Exec) {
 
 tasks.register('checkM4Foundation', Exec) {
     group = 'verification'
-    description = 'Checks the first playable M4 organization and sealed-artifact loop.'
+    description = 'Checks the complete machine-playable M4 organization and sealed-artifact loop.'
     dependsOn 'generatePagesCatalog'
     commandLine pythonExecutable, 'scripts/check_m4_foundation.py'
     inputs.files 'scripts/check_m4_foundation.py',

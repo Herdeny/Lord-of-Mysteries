@@ -18,6 +18,7 @@ import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.acting.ActingEvent;
 import top.aurora.lordofmysteries.acting.ActingEventHandler;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
+import top.aurora.lordofmysteries.artifact.SealedArtifactService;
 
 /**
  * 简易占卜主动能力（批次1，设计文档 §6 / §8）。
@@ -129,6 +130,8 @@ public final class SimpleDivinationHandler {
         double bestDist = Double.MAX_VALUE;
         for (LivingEntity e : player.level().getEntitiesOfClass(LivingEntity.class, box)) {
             if (!(e instanceof Enemy)) continue;
+            if (SealedArtifactService.isWhiteNoiseProtected(
+                    e, player.level().getGameTime())) continue;
             double d = e.distanceToSqr(player);
             if (d < bestDist) {
                 bestDist = d;

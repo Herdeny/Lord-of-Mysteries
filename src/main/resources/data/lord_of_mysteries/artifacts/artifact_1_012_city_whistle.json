@@ -23,5 +23,6 @@
   "leak_threshold": 15,
   "effect_key": "artifact.lord_of_mysteries.artifact_1_012_city_whistle.effect",
   "cost_key": "artifact.lord_of_mysteries.artifact_1_012_city_whistle.cost",
+  "incident_profile": "echo",
   "containment": ["use only inside the outpost response perimeter", "return before the next dawn"]
 }

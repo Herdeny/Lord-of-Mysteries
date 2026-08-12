@@ -23,5 +23,6 @@
   "leak_threshold": 16,
   "effect_key": "artifact.lord_of_mysteries.eternal_matchbox.effect",
   "cost_key": "artifact.lord_of_mysteries.eternal_matchbox.cost",
+  "incident_profile": "fire",
   "containment": ["keep sealed outside supervised use", "stabilize with calming incense and pure water"]
 }

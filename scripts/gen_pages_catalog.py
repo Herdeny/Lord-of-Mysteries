@@ -152,6 +152,7 @@ def artifact_entry(entry, definition, organizations, zh_cn, en_us):
             ["安全使用", f"{definition['safe_uses']} 次"],
             ["借用期限", f"{definition['loan_days']} 天"],
             ["泄漏阈值", str(definition["leak_threshold"])],
+            ["事故类型", definition["incident_profile"]],
             ["效果", zh_cn[effect_key]],
             ["代价", zh_cn[cost_key]],
         ],
@@ -159,7 +160,7 @@ def artifact_entry(entry, definition, organizations, zh_cn, en_us):
             "该封印物使用世界级保管台账记录唯一实例、责任人、当前持有人、"
             "最后维度与坐标、污染、使用次数、借出日、到期日和事故。"
             "逾期、超出安全使用次数、污染达到阈值、换手或复制会进入泄漏、"
-            "回收或滥用处理；来客面具不会绕过任何权限。"
+            "回收或滥用处理；六类事故使用不同稳定材料，来客面具不会绕过任何权限。"
         ),
     }
 
@@ -178,8 +179,8 @@ def organization_entry(definition, zh_cn, en_us):
         "id": definition["id"],
         "name": zh_cn[title_key],
         "en": en_us[title_key],
-        "summary": f"{kind}。每天按数据权重自主生成行动，并使用玩家独立的接取与结算状态。",
-        "tags": ["组织", kind, "自主行动", "M4"],
+        "summary": f"{kind}。每周独立制定战略，每天自主行动，并使用玩家隔离的接取与结算状态。",
+        "tags": ["组织", kind, "周战略", "自主行动", "M4"],
         "details": [
             ["类型", kind],
             ["公开身份", definition["public_front"]],
@@ -193,8 +194,8 @@ def organization_entry(definition, zh_cn, en_us):
         ],
         "long": (
             "组织定义覆盖公开身份、隐秘单位、教义、资源、领地、关系和行动策略"
-            "七个数据面。服务端按世界种子、游戏日和全服神秘暴露确定每日三项"
-            "行动；玩家只选择是否参与，不能决定组织是否行动或伪造奖励。"
+            "七个数据面。服务端按世界种子、战略周、游戏日和全服神秘暴露确定"
+            "每周重点与每日三项行动；无人参与的行动仍会自主结算，玩家不能伪造奖励。"
         ),
     }
 def render():

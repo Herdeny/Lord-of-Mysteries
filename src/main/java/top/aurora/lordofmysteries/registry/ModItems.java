@@ -1,5 +1,9 @@
 package top.aurora.lordofmysteries.registry;
 
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
+
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Rarity;
@@ -399,18 +403,20 @@ public final class ModItems {
     // —— 封印物（M4 组织保管与泄漏/追回纵切）——
     public static final RegistryObject<Item> ETERNAL_MATCHBOX = ITEMS.register("eternal_matchbox",
             () -> new EternalMatchboxItem(new Item.Properties().durability(16).rarity(Rarity.RARE)));
+    private static final Map<ManagedArtifactKind, RegistryObject<Item>>
+            MANAGED_ARTIFACTS = registerManagedArtifacts();
     public static final RegistryObject<Item> ARTIFACT_KINDLY_UMBRELLA =
-            managedArtifact(ManagedArtifactKind.KINDLY_UMBRELLA, Rarity.RARE);
+            managedArtifact(ManagedArtifactKind.KINDLY_UMBRELLA);
     public static final RegistryObject<Item> ARTIFACT_HONEST_MIRROR =
-            managedArtifact(ManagedArtifactKind.HONEST_MIRROR, Rarity.RARE);
+            managedArtifact(ManagedArtifactKind.HONEST_MIRROR);
     public static final RegistryObject<Item> ARTIFACT_SLEEPING_BELL =
-            managedArtifact(ManagedArtifactKind.SLEEPING_BELL, Rarity.EPIC);
+            managedArtifact(ManagedArtifactKind.SLEEPING_BELL);
     public static final RegistryObject<Item> ARTIFACT_GUEST_MASK =
-            managedArtifact(ManagedArtifactKind.GUEST_MASK, Rarity.EPIC);
+            managedArtifact(ManagedArtifactKind.GUEST_MASK);
     public static final RegistryObject<Item> ARTIFACT_MERCIFUL_CHAIN =
-            managedArtifact(ManagedArtifactKind.MERCIFUL_CHAIN, Rarity.EPIC);
+            managedArtifact(ManagedArtifactKind.MERCIFUL_CHAIN);
     public static final RegistryObject<Item> ARTIFACT_CITY_WHISTLE =
-            managedArtifact(ManagedArtifactKind.CITY_WHISTLE, Rarity.EPIC);
+            managedArtifact(ManagedArtifactKind.CITY_WHISTLE);
 
     // —— 方块物品 ——
     // BlockItem 让方块可以以物品形式存在于背包和创造模式标签中。
@@ -442,14 +448,32 @@ public final class ModItems {
                             ModBlocks.IMPRINT_WASHING_ALTAR.get(),
                             new Item.Properties().rarity(Rarity.RARE)));
 
-    private static RegistryObject<Item> managedArtifact(
-            ManagedArtifactKind kind, Rarity rarity) {
-        return ITEMS.register(
-                kind.path(),
-                () -> new ManagedSealedArtifactItem(
-                        kind,
-                        new Item.Properties()
-                                .stacksTo(1)
-                                .rarity(rarity)));
+    public static RegistryObject<Item> managedArtifact(
+            ManagedArtifactKind kind) {
+        RegistryObject<Item> artifact = MANAGED_ARTIFACTS.get(kind);
+        if (artifact == null) {
+            throw new IllegalArgumentException(
+                    "artifact uses a dedicated item: " + kind);
+        }
+        return artifact;
+    }
+
+    private static Map<ManagedArtifactKind, RegistryObject<Item>>
+            registerManagedArtifacts() {
+        Map<ManagedArtifactKind, RegistryObject<Item>> artifacts =
+                new EnumMap<>(ManagedArtifactKind.class);
+        for (ManagedArtifactKind kind : ManagedArtifactKind.values()) {
+            if (kind == ManagedArtifactKind.ETERNAL_MATCHBOX) continue;
+            Rarity rarity = kind.path().startsWith("artifact_3_")
+                    ? Rarity.RARE : Rarity.EPIC;
+            artifacts.put(kind, ITEMS.register(
+                    kind.path(),
+                    () -> new ManagedSealedArtifactItem(
+                            kind,
+                            new Item.Properties()
+                                    .stacksTo(1)
+                                    .rarity(rarity))));
+        }
+        return Collections.unmodifiableMap(artifacts);
     }
 }

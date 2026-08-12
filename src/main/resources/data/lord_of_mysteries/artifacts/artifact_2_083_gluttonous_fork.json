@@ -1,0 +1,23 @@
+{
+  "id": "lord_of_mysteries:artifact_2_083_gluttonous_fork",
+  "type": "artifact",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/13.6", "REPO:M4_ARTIFACT_COMPLETE"],
+  "spoiler_level": 2,
+  "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+  "links": {"requires": ["lord_of_mysteries:organization/secret_crimson_rose"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "item": "lord_of_mysteries:artifact_2_083_gluttonous_fork",
+  "custody_organization": "lord_of_mysteries:organization/secret_crimson_rose",
+  "title_key": "item.lord_of_mysteries.artifact_2_083_gluttonous_fork",
+  "danger_level": 3,
+  "safe_uses": 4,
+  "loan_days": 2,
+  "leak_threshold": 13,
+  "effect_key": "artifact.lord_of_mysteries.artifact_2_083_gluttonous_fork.effect",
+  "cost_key": "artifact.lord_of_mysteries.artifact_2_083_gluttonous_fork.cost",
+  "incident_profile": "hunger",
+  "containment": ["store apart from food", "record every consumed ration"]
+}

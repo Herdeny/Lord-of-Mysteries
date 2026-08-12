@@ -1,0 +1,23 @@
+{
+  "id": "lord_of_mysteries:artifact_2_085_hush_blade",
+  "type": "artifact",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/13.6", "REPO:M4_ARTIFACT_COMPLETE"],
+  "spoiler_level": 2,
+  "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+  "links": {"requires": ["lord_of_mysteries:organization/church_war_oath"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "item": "lord_of_mysteries:artifact_2_085_hush_blade",
+  "custody_organization": "lord_of_mysteries:organization/church_war_oath",
+  "title_key": "item.lord_of_mysteries.artifact_2_085_hush_blade",
+  "danger_level": 4,
+  "safe_uses": 3,
+  "loan_days": 2,
+  "leak_threshold": 14,
+  "effect_key": "artifact.lord_of_mysteries.artifact_2_085_hush_blade.effect",
+  "cost_key": "artifact.lord_of_mysteries.artifact_2_085_hush_blade.cost",
+  "incident_profile": "echo",
+  "containment": ["never target players", "return after three strikes"]
+}

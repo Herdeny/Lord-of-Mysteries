@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "milestone": "M4",
-  "status": "first_playable_loop",
+  "status": "machine_complete_playable",
   "organizations": {
     "count": 12,
     "churches": 7,
@@ -28,27 +28,95 @@
     "risk_uses_world_exposure": true,
     "actions_exist_without_players": true,
     "assignments_are_player_isolated": true,
+    "weekly_strategy": {
+      "week_length_days": 7,
+      "all_organizations_plan_independently": true,
+      "daily_actions_follow_strategy": true,
+      "unattended_actions_resolve_autonomously": true,
+      "weekly_outcomes_persist": true
+    },
+    "physical_liaisons": {
+      "count": 3,
+      "shifts": [
+        "briefing",
+        "service",
+        "watch"
+      ],
+      "direct_claim": true,
+      "persistent": true,
+      "command_fallback": true
+    },
     "persistent_data_name": "lord_of_mysteries_organization_actions",
     "commands": [
       "m4",
       "organization",
       "catalog",
+      "strategy",
       "claim",
       "submit",
       "abandon"
     ]
   },
   "artifacts": {
-    "implemented": 7,
+    "implemented": 24,
     "m4_target": 24,
     "definitions": [
       "eternal_matchbox",
       "artifact_3_091_kindly_umbrella",
       "artifact_3_207_honest_mirror",
+      "artifact_3_114_weathered_coin",
+      "artifact_3_148_pilgrim_chalk",
+      "artifact_3_221_hushglass_vial",
+      "artifact_3_233_wakeful_snuffbox",
+      "artifact_3_244_wayfinder_candle",
+      "artifact_3_260_salvage_glove",
       "artifact_2_031_sleeping_bell",
+      "artifact_2_081_reverse_watch",
+      "artifact_2_082_stringless_violin",
+      "artifact_2_083_gluttonous_fork",
+      "artifact_2_084_death_ledger",
+      "artifact_2_085_hush_blade",
       "artifact_2_166_guest_mask",
       "artifact_2_203_merciful_chain",
-      "artifact_1_012_city_whistle"
+      "artifact_1_012_city_whistle",
+      "artifact_1_021_thousand_face_mirror",
+      "artifact_1_022_storm_anchor",
+      "artifact_1_023_white_noise_candelabrum",
+      "artifact_1_024_penitent_iron_shoes",
+      "artifact_1_025_gambler_dice_cup",
+      "artifact_1_026_ferryman_ticket"
+    ],
+    "incident_profiles": [
+      "fire",
+      "echo",
+      "cognition",
+      "storm",
+      "hunger",
+      "void"
+    ],
+    "behavior_anchors": [
+      "useUmbrella",
+      "useMirror",
+      "useSleepingBell",
+      "useGuestMask",
+      "useCityWhistle",
+      "useWeatheredCoin",
+      "usePilgrimChalk",
+      "useHushglassVial",
+      "useWakefulSnuffbox",
+      "useWayfinderCandle",
+      "useSalvageGlove",
+      "useReverseWatch",
+      "useStringlessViolin",
+      "useGluttonousFork",
+      "useDeathLedger",
+      "useThousandFaceMirror",
+      "useStormAnchor",
+      "useWhiteNoiseCandelabrum",
+      "usePenitentIronShoes",
+      "useGamblerDiceCup",
+      "recordNearbyDeath",
+      "tryPreventDeath"
     ],
     "states": [
       "BORROWED",
@@ -83,10 +151,9 @@
     "same_player_duplicate_quarantine": true,
     "cross_player_duplicate_quarantine": true,
     "legacy_matchbox_adoption": true,
-    "stabilization": {
-      "calming_incense": 1,
-      "pure_water": 1
-    },
+    "profile_specific_stabilization": true,
+    "custody_knowledge_unlocks_from_organization_action": true,
+    "catalog_details_are_knowledge_gated": true,
     "operator_abuse_retirement": true,
     "player_status_is_private": true,
     "guest_mask_permission_bypass": false,
@@ -107,14 +174,15 @@
     "generated_from_organization_data": true,
     "generated_from_artifact_data": true,
     "organization_entries": 12,
-    "artifact_entries": 7
+    "artifact_entries": 24
   },
   "validation": {
-    "junit_tests": 439,
+    "junit_tests": 447,
     "game_tests": 24,
     "behavior_test_classes": [
       "OrganizationDefinitionTest",
       "OrganizationActionPolicyTest",
+      "OrganizationLiaisonSchedulePolicyTest",
       "SealedArtifactDefinitionTest",
       "ArtifactCustodySavedDataTest"
     ],

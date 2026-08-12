@@ -57,14 +57,14 @@ public final class ManagedSealedArtifactItem extends Item {
         tooltip.add(Component.translatable(
                         "tooltip.lord_of_mysteries.artifact.managed")
                 .withStyle(ChatFormatting.DARK_AQUA));
-        tooltip.add(Component.translatable(
-                        "tooltip.lord_of_mysteries.artifact."
-                                + kind.path() + ".effect")
-                .withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable(
-                        "tooltip.lord_of_mysteries.artifact."
-                                + kind.path() + ".cost")
-                .withStyle(ChatFormatting.RED));
+        SealedArtifactDefinition definition =
+                SealedArtifactDefinitionManager.get(kind.id());
+        if (definition != null) {
+            tooltip.add(Component.translatable(definition.effectKey())
+                    .withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable(definition.costKey())
+                    .withStyle(ChatFormatting.RED));
+        }
         if (stack.hasTag() && stack.getTag().hasUUID(
                 SealedArtifactService.INSTANCE_TAG)) {
             tooltip.add(Component.translatable(

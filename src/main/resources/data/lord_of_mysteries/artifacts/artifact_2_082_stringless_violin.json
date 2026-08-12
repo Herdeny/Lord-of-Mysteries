@@ -1,0 +1,23 @@
+{
+  "id": "lord_of_mysteries:artifact_2_082_stringless_violin",
+  "type": "artifact",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/13.6", "REPO:M4_ARTIFACT_COMPLETE"],
+  "spoiler_level": 2,
+  "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+  "links": {"requires": ["lord_of_mysteries:organization/secret_aurora_rite"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "item": "lord_of_mysteries:artifact_2_082_stringless_violin",
+  "custody_organization": "lord_of_mysteries:organization/secret_aurora_rite",
+  "title_key": "item.lord_of_mysteries.artifact_2_082_stringless_violin",
+  "danger_level": 3,
+  "safe_uses": 4,
+  "loan_days": 3,
+  "leak_threshold": 14,
+  "effect_key": "artifact.lord_of_mysteries.artifact_2_082_stringless_violin.effect",
+  "cost_key": "artifact.lord_of_mysteries.artifact_2_082_stringless_violin.cost",
+  "incident_profile": "echo",
+  "containment": ["perform only in a cleared sixteen-block radius", "observe silence interval before replay"]
+}

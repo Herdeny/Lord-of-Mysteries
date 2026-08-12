@@ -25,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -58,6 +59,7 @@ import top.aurora.lordofmysteries.organization.OrganizationActionPolicy;
 import top.aurora.lordofmysteries.organization.OrganizationActionSavedData;
 import top.aurora.lordofmysteries.organization.OrganizationActionType;
 import top.aurora.lordofmysteries.organization.OrganizationDefinition;
+import top.aurora.lordofmysteries.organization.OrganizationLiaisonService;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerCapabilityEvents;
 import top.aurora.lordofmysteries.player.PlayerDataSection;
@@ -1589,6 +1591,14 @@ public final class PlayerPersistenceGameTests {
         helper.assertTrue(
                 saved.actions().size()
                         == OrganizationActionPolicy.DAILY_ACTION_COUNT
+                        && saved.strategies().size()
+                        == organizations.size()
+                        && saved.currentWeek()
+                        == Math.floorDiv(
+                                day,
+                                top.aurora.lordofmysteries.organization
+                                        .OrganizationStrategyPolicy
+                                        .WEEK_LENGTH_DAYS)
                         && saved.actions().stream()
                         .map(OrganizationActionPolicy.PlannedAction
                                 ::organization)
@@ -1620,6 +1630,45 @@ public final class PlayerPersistenceGameTests {
                 restored.assignment(first.getUUID()).progress() == 3
                         && restored.assignment(second.getUUID()).progress() == 0,
                 "concurrent assignments must survive SavedData round-trip");
+        helper.assertTrue(
+                restored.strategies().equals(saved.strategies())
+                        && restored.currentWeek() == saved.currentWeek(),
+                "weekly organization strategy must survive SavedData round-trip");
+        BlockPos liaisonDesk = helper.absolutePos(
+                new BlockPos(8, 3, 8));
+        OrganizationLiaisonService.ensureLiaisons(
+                helper.getLevel(), liaisonDesk);
+        List<Villager> firstShift = helper.getLevel()
+                .getEntitiesOfClass(
+                        Villager.class,
+                        new AABB(liaisonDesk).inflate(20d),
+                        villager -> villager.getTags().contains(
+                                OrganizationLiaisonService.LIAISON_TAG));
+        helper.assertTrue(firstShift.size()
+                        == OrganizationActionPolicy.DAILY_ACTION_COUNT
+                        && firstShift.stream().allMatch(villager ->
+                        villager.isInvulnerable()
+                                && villager.isNoAi()
+                                && villager.getCustomName() != null),
+                "three physical liaisons must enter the server world with persistent safe state");
+        List<UUID> liaisonIds = firstShift.stream()
+                .map(Villager::getUUID)
+                .sorted()
+                .toList();
+        OrganizationLiaisonService.ensureLiaisons(
+                helper.getLevel(), liaisonDesk);
+        List<UUID> maintainedIds = helper.getLevel()
+                .getEntitiesOfClass(
+                        Villager.class,
+                        new AABB(liaisonDesk).inflate(20d),
+                        villager -> villager.getTags().contains(
+                                OrganizationLiaisonService.LIAISON_TAG))
+                .stream()
+                .map(Villager::getUUID)
+                .sorted()
+                .toList();
+        helper.assertTrue(liaisonIds.equals(maintainedIds),
+                "liaison maintenance must remain idempotent without duplicate NPCs");
         helper.succeed();
     }
 

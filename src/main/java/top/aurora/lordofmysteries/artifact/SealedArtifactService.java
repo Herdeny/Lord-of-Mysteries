@@ -28,8 +28,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.commission.CommissionCurrency;
@@ -54,6 +56,10 @@ public final class SealedArtifactService {
     public static final int TRUSTED_REPUTATION = 8;
     public static final int STABILIZE_INCENSE_COST = 1;
     public static final int STABILIZE_WATER_COST = 1;
+    public static final ResourceLocation CUSTODY_KNOWLEDGE =
+            ResourceLocation.fromNamespaceAndPath(
+                    ProjectMystery.MOD_ID,
+                    "knowledge/artifact_custody");
     private static final double SERVICE_DISTANCE_SQUARED = 100d;
 
     private SealedArtifactService() {}
@@ -91,6 +97,8 @@ public final class SealedArtifactService {
             case GUEST_MASK -> useGuestMask(serverPlayer, stack);
             case CITY_WHISTLE -> useCityWhistle(serverPlayer, stack);
             case MERCIFUL_CHAIN, ETERNAL_MATCHBOX -> false;
+            default -> ExtendedSealedArtifactEffects.use(
+                    serverPlayer, stack, kind);
         };
         if (!applied) return InteractionResultHolder.fail(stack);
         recordUse(serverPlayer, stack, kind);
@@ -105,10 +113,17 @@ public final class SealedArtifactService {
             return InteractionResult.SUCCESS;
         }
         if (!(player instanceof ServerPlayer serverPlayer)
-                || kind != ManagedArtifactKind.MERCIFUL_CHAIN
                 || target instanceof Player
                 || !allowUse(serverPlayer, stack, kind)) {
             return InteractionResult.FAIL;
+        }
+        if (kind != ManagedArtifactKind.MERCIFUL_CHAIN) {
+            if (!ExtendedSealedArtifactEffects.interact(
+                    serverPlayer, stack, target, kind)) {
+                return InteractionResult.FAIL;
+            }
+            recordUse(serverPlayer, stack, kind);
+            return InteractionResult.SUCCESS;
         }
         target.addEffect(new MobEffectInstance(
                 MobEffects.MOVEMENT_SLOWDOWN, 240, 4));
@@ -184,6 +199,10 @@ public final class SealedArtifactService {
                 .RETURNED) {
             stack.getOrCreateTag().putBoolean(
                     QUARANTINED_TAG, true);
+        } else if (isUsableBoundStack(player, stack, kind)) {
+            unlockArtifactKnowledge(player, kind);
+            ExtendedSealedArtifactEffects.observePassive(
+                    player, stack, kind);
         }
     }
 
@@ -235,6 +254,7 @@ public final class SealedArtifactService {
                     .withStyle(ChatFormatting.RED));
             return false;
         }
+        unlockArtifactKnowledge(player, kind);
         return true;
     }
 
@@ -283,15 +303,28 @@ public final class SealedArtifactService {
                             definition.dangerLevel(),
                             definition.loanDays())
                     .withStyle(ChatFormatting.GRAY));
-            player.sendSystemMessage(Component.translatable(
-                            "command.lord_of_mysteries.artifact.catalog.detail",
-                            Component.translatable(
-                                    definition.effectKey()),
-                            Component.translatable(
-                                    definition.costKey()),
-                            definition.safeUses(),
-                            definition.leakThreshold())
-                    .withStyle(ChatFormatting.DARK_GRAY));
+            if (hasCustodyKnowledge(player)) {
+                player.sendSystemMessage(Component.translatable(
+                                "command.lord_of_mysteries.artifact.catalog.detail",
+                                Component.translatable(
+                                        definition.effectKey()),
+                                Component.translatable(
+                                        definition.costKey()),
+                                definition.safeUses(),
+                                definition.leakThreshold())
+                        .withStyle(ChatFormatting.DARK_GRAY));
+                player.sendSystemMessage(Component.translatable(
+                                "command.lord_of_mysteries.artifact.catalog.containment",
+                                Component.translatable(
+                                        definition.incidentProfile()
+                                                .translationKey()),
+                                containmentCost(definition.incidentProfile()))
+                        .withStyle(ChatFormatting.DARK_AQUA));
+            } else {
+                player.sendSystemMessage(Component.translatable(
+                                "command.lord_of_mysteries.artifact.catalog.rumor")
+                        .withStyle(ChatFormatting.DARK_GRAY));
+            }
         }
         return definitions.size();
     }
@@ -301,7 +334,7 @@ public final class SealedArtifactService {
         var visibleRecords = ledger.records().stream()
                 .filter(record ->
                         record.responsible().equals(player.getUUID())
-                        || record.holder().equals(player.getUUID()))
+                        || player.getUUID().equals(record.holder()))
                 .toList();
         long active = visibleRecords.stream()
                 .filter(record -> record.state().active())
@@ -346,6 +379,12 @@ public final class SealedArtifactService {
             player.sendSystemMessage(Component.translatable(
                             "command.lord_of_mysteries.artifact.unknown",
                             rawArtifactId)
+                    .withStyle(ChatFormatting.RED));
+            return 0;
+        }
+        if (!hasCustodyKnowledge(player)) {
+            player.sendSystemMessage(Component.translatable(
+                            "command.lord_of_mysteries.artifact.knowledge_required")
                     .withStyle(ChatFormatting.RED));
             return 0;
         }
@@ -409,22 +448,29 @@ public final class SealedArtifactService {
                     .withStyle(ChatFormatting.YELLOW));
             return 0;
         }
-        if (player.getInventory().countItem(
-                ModItems.CALMING_INCENSE.get())
-                < STABILIZE_INCENSE_COST
-                || player.getInventory().countItem(
-                ModItems.PURE_WATER.get()) < STABILIZE_WATER_COST) {
+        SealedArtifactDefinition definition =
+                SealedArtifactDefinitionManager.get(record.artifactId());
+        if (definition == null
+                || !hasContainmentMaterials(
+                        player, definition.incidentProfile())) {
             player.sendSystemMessage(Component.translatable(
-                            "command.lord_of_mysteries.artifact.stabilize_cost")
+                            "command.lord_of_mysteries.artifact.stabilize_profile_cost",
+                            definition == null
+                                    ? Component.literal("unknown")
+                                    : Component.translatable(
+                                            definition.incidentProfile()
+                                                    .translationKey()),
+                            definition == null
+                                    ? Component.literal("—")
+                                    : containmentCost(
+                                            definition.incidentProfile()))
                     .withStyle(ChatFormatting.RED));
             return 0;
         }
         if (!ledger.stabilize(
                 bound.instance(), player.getUUID())) return 0;
-        consume(player, ModItems.CALMING_INCENSE.get(),
-                STABILIZE_INCENSE_COST);
-        consume(player, ModItems.PURE_WATER.get(),
-                STABILIZE_WATER_COST);
+        consumeContainmentMaterials(
+                player, definition.incidentProfile());
         bound.stack().getOrCreateTag().putBoolean("sealed", true);
         bound.stack().getOrCreateTag().remove(QUARANTINED_TAG);
         player.sendSystemMessage(Component.translatable(
@@ -569,6 +615,10 @@ public final class SealedArtifactService {
     public static void onItemToss(ItemTossEvent event) {
         if (!(event.getPlayer() instanceof ServerPlayer player)) return;
         ItemStack stack = event.getEntity().getItem();
+        if (ExtendedSealedArtifactEffects.denyToss(player, stack)) {
+            event.setCanceled(true);
+            return;
+        }
         UUID instance = instanceId(stack);
         if (instance == null) return;
         ledger(player).markDropped(
@@ -576,6 +626,16 @@ public final class SealedArtifactService {
                 player.level().dimension().location(),
                 event.getEntity().blockPosition(),
                 player.serverLevel().getGameTime());
+    }
+
+    @SubscribeEvent
+    public static void onLivingDeath(LivingDeathEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player
+                && ExtendedSealedArtifactEffects.tryPreventDeath(player)) {
+            event.setCanceled(true);
+            return;
+        }
+        ExtendedSealedArtifactEffects.recordNearbyDeath(event.getEntity());
     }
 
     private static boolean useUmbrella(
@@ -721,7 +781,7 @@ public final class SealedArtifactService {
         return true;
     }
 
-    private static void applyCost(
+    static void applyCost(
             ServerPlayer player, Item sourceItem,
             float pressure, float exposure) {
         PlayerMysteryData data = MysteryCapability.get(player);
@@ -742,11 +802,48 @@ public final class SealedArtifactService {
         int danger = definition == null ? 3
                 : definition.dangerLevel();
         applyCost(player, null, danger * 3f, danger);
-        player.addEffect(new MobEffectInstance(
-                MobEffects.CONFUSION, 200, 0));
+        ArtifactIncidentProfile profile = definition == null
+                ? ArtifactIncidentProfile.COGNITION
+                : definition.incidentProfile();
+        switch (profile) {
+            case FIRE -> {
+                player.setSecondsOnFire(Math.max(4, danger * 2));
+                player.addEffect(new MobEffectInstance(
+                        MobEffects.WEAKNESS, 300, 0));
+            }
+            case ECHO -> {
+                player.addEffect(new MobEffectInstance(
+                        MobEffects.DARKNESS, 300, 0));
+                player.addEffect(new MobEffectInstance(
+                        MobEffects.CONFUSION, 300, 0));
+            }
+            case COGNITION -> {
+                player.addEffect(new MobEffectInstance(
+                        MobEffects.BLINDNESS, 240, 0));
+                player.addEffect(new MobEffectInstance(
+                        MobEffects.CONFUSION, 400, 0));
+            }
+            case STORM -> {
+                player.addEffect(new MobEffectInstance(
+                        MobEffects.WEAKNESS, 400, 1));
+                player.hurt(player.damageSources().magic(), danger);
+            }
+            case HUNGER -> {
+                player.addEffect(new MobEffectInstance(
+                        MobEffects.HUNGER, 600, 2));
+                player.causeFoodExhaustion(danger * 2f);
+            }
+            case VOID -> {
+                player.addEffect(new MobEffectInstance(
+                        MobEffects.WITHER, 160, 0));
+                player.addEffect(new MobEffectInstance(
+                        MobEffects.LEVITATION, 80, 0));
+            }
+        }
         player.sendSystemMessage(Component.translatable(
                         "message.lord_of_mysteries.artifact.leaked",
-                        danger)
+                        danger,
+                        Component.translatable(profile.translationKey()))
                 .withStyle(ChatFormatting.DARK_RED));
     }
 
@@ -783,7 +880,7 @@ public final class SealedArtifactService {
                 player.getServer().overworld());
     }
 
-    private static long currentDay(ServerPlayer player) {
+    static long currentDay(ServerPlayer player) {
         return Math.max(0L, Math.floorDiv(
                 player.getServer().overworld().getDayTime(), 24_000L));
     }
@@ -797,7 +894,7 @@ public final class SealedArtifactService {
                 player.blockPosition()) <= SERVICE_DISTANCE_SQUARED;
     }
 
-    private static UUID instanceId(ItemStack stack) {
+    static UUID instanceId(ItemStack stack) {
         return stack.hasTag()
                 && stack.getTag().hasUUID(INSTANCE_TAG)
                 ? stack.getTag().getUUID(INSTANCE_TAG)
@@ -896,22 +993,102 @@ public final class SealedArtifactService {
     private static Item itemFor(ResourceLocation artifactId) {
         for (ManagedArtifactKind kind : ManagedArtifactKind.values()) {
             if (!kind.id().equals(artifactId)) continue;
-            return switch (kind) {
-                case ETERNAL_MATCHBOX -> ModItems.ETERNAL_MATCHBOX.get();
-                case KINDLY_UMBRELLA ->
-                        ModItems.ARTIFACT_KINDLY_UMBRELLA.get();
-                case HONEST_MIRROR ->
-                        ModItems.ARTIFACT_HONEST_MIRROR.get();
-                case SLEEPING_BELL ->
-                        ModItems.ARTIFACT_SLEEPING_BELL.get();
-                case GUEST_MASK -> ModItems.ARTIFACT_GUEST_MASK.get();
-                case MERCIFUL_CHAIN ->
-                        ModItems.ARTIFACT_MERCIFUL_CHAIN.get();
-                case CITY_WHISTLE ->
-                        ModItems.ARTIFACT_CITY_WHISTLE.get();
-            };
+            return ForgeRegistries.ITEMS.getValue(artifactId);
         }
         return null;
+    }
+
+    public static void unlockCustodyKnowledge(ServerPlayer player) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        if (!data.knownKnowledge.add(CUSTODY_KNOWLEDGE)) return;
+        data.markDirty(PlayerDataSection.KNOWLEDGE);
+        player.sendSystemMessage(Component.translatable(
+                        "message.lord_of_mysteries.artifact.custody_unlocked")
+                .withStyle(ChatFormatting.GOLD));
+    }
+
+    public static boolean isWhiteNoiseProtected(
+            LivingEntity entity, long gameTime) {
+        return ExtendedSealedArtifactEffects.isWhiteNoiseProtected(
+                entity, gameTime);
+    }
+
+    static boolean isUsableBoundStack(
+            ServerPlayer player, ItemStack stack,
+            ManagedArtifactKind kind) {
+        if (stack.isEmpty() || stack.hasTag()
+                && (stack.getTag().getBoolean(QUARANTINED_TAG)
+                || stack.getTag().getBoolean("sealed"))) {
+            return false;
+        }
+        UUID instance = instanceId(stack);
+        ResourceLocation artifact = stack.hasTag()
+                ? ResourceLocation.tryParse(
+                        stack.getTag().getString(ARTIFACT_TAG))
+                : null;
+        if (instance == null || !kind.id().equals(artifact)) return false;
+        ArtifactCustodySavedData.CustodyRecord record =
+                ledger(player).record(instance);
+        return record != null
+                && record.state() == ArtifactCustodyState.BORROWED
+                && player.getUUID().equals(record.holder())
+                && kind.id().equals(record.artifactId());
+    }
+
+    private static boolean hasCustodyKnowledge(ServerPlayer player) {
+        return player.hasPermissions(2)
+                || MysteryCapability.get(player).knownKnowledge.contains(
+                        CUSTODY_KNOWLEDGE);
+    }
+
+    private static void unlockArtifactKnowledge(
+            ServerPlayer player, ManagedArtifactKind kind) {
+        PlayerMysteryData data = MysteryCapability.get(player);
+        boolean changed = data.knownKnowledge.add(CUSTODY_KNOWLEDGE);
+        changed |= data.knownKnowledge.add(
+                ResourceLocation.fromNamespaceAndPath(
+                        ProjectMystery.MOD_ID,
+                        "knowledge/artifact/" + kind.path()));
+        if (changed) data.markDirty(PlayerDataSection.KNOWLEDGE);
+    }
+
+    private static boolean hasContainmentMaterials(
+            ServerPlayer player, ArtifactIncidentProfile profile) {
+        for (ArtifactIncidentProfile.Requirement requirement
+                : profile.requirements()) {
+            Item item = ForgeRegistries.ITEMS.getValue(requirement.item());
+            if (item == null || player.getInventory().countItem(item)
+                    < requirement.count()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static void consumeContainmentMaterials(
+            ServerPlayer player, ArtifactIncidentProfile profile) {
+        for (ArtifactIncidentProfile.Requirement requirement
+                : profile.requirements()) {
+            Item item = ForgeRegistries.ITEMS.getValue(requirement.item());
+            if (item != null) consume(player, item, requirement.count());
+        }
+    }
+
+    private static Component containmentCost(
+            ArtifactIncidentProfile profile) {
+        Component result = Component.empty();
+        boolean first = true;
+        for (ArtifactIncidentProfile.Requirement requirement
+                : profile.requirements()) {
+            Item item = ForgeRegistries.ITEMS.getValue(requirement.item());
+            if (!first) result = result.copy().append(" + ");
+            first = false;
+            result = result.copy().append(item == null
+                    ? Component.literal(requirement.item().toString())
+                    : item.getDescription()).append(
+                    Component.literal(" x" + requirement.count()));
+        }
+        return result;
     }
 
     private static void consume(

@@ -9,6 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 import top.aurora.lordofmysteries.ProjectMystery;
+import top.aurora.lordofmysteries.artifact.ManagedArtifactKind;
 
 /**
  * 创造模式物品栏（Forge 1.20.1）。收纳本 Mod 当前可用物品，便于开发与验收。
@@ -141,12 +142,14 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.HUNTER_SNARE_ITEM.get());
                         output.accept(ModItems.COMMISSION_BOARD_ITEM.get());
                         output.accept(ModItems.ETERNAL_MATCHBOX.get());
-                        output.accept(ModItems.ARTIFACT_KINDLY_UMBRELLA.get());
-                        output.accept(ModItems.ARTIFACT_HONEST_MIRROR.get());
-                        output.accept(ModItems.ARTIFACT_SLEEPING_BELL.get());
-                        output.accept(ModItems.ARTIFACT_GUEST_MASK.get());
-                        output.accept(ModItems.ARTIFACT_MERCIFUL_CHAIN.get());
-                        output.accept(ModItems.ARTIFACT_CITY_WHISTLE.get());
+                        for (ManagedArtifactKind kind
+                                : ManagedArtifactKind.values()) {
+                            if (kind == ManagedArtifactKind.ETERNAL_MATCHBOX) {
+                                continue;
+                            }
+                            output.accept(
+                                    ModItems.managedArtifact(kind).get());
+                        }
                         output.accept(ModItems.RITUAL_ALTAR_ITEM.get());
                         output.accept(ModItems.RITUAL_CHALK_MARK_ITEM.get());
                         output.accept(ModItems.CRUCIBLE_ITEM.get());

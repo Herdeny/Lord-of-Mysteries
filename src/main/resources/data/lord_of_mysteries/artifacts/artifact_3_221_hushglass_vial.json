@@ -1,0 +1,23 @@
+{
+  "id": "lord_of_mysteries:artifact_3_221_hushglass_vial",
+  "type": "artifact",
+  "schema_version": 4,
+  "canon_status": "original",
+  "source_tier": "D",
+  "source_refs": ["GDD:v0.9/13.6", "REPO:M4_ARTIFACT_COMPLETE"],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/artifact_custody",
+  "links": {"requires": ["lord_of_mysteries:organization/church_night_watch"], "produces": [], "used_by": [], "countered_by": []},
+  "implementation_state": "playable",
+  "item": "lord_of_mysteries:artifact_3_221_hushglass_vial",
+  "custody_organization": "lord_of_mysteries:organization/church_night_watch",
+  "title_key": "item.lord_of_mysteries.artifact_3_221_hushglass_vial",
+  "danger_level": 2,
+  "safe_uses": 7,
+  "loan_days": 4,
+  "leak_threshold": 16,
+  "effect_key": "artifact.lord_of_mysteries.artifact_3_221_hushglass_vial.effect",
+  "cost_key": "artifact.lord_of_mysteries.artifact_3_221_hushglass_vial.cost",
+  "incident_profile": "echo",
+  "containment": ["open only under direct supervision", "reseal before invisibility expires"]
+}

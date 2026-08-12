@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "version": "0.9.31-1.20.1",
-  "stage": "v0.9 M4 组织与封印物首批可玩闭环",
-  "milestone": "M4",
+  "version": "0.9.32-1.20.1",
+  "stage": "v0.9 M4 机器可玩范围完成，M5 灵界与梦境启动",
+  "milestone": "M5",
   "minecraft_version": "1.20.1",
   "forge_version": "47.4.20",
   "java_version": "17",
-  "last_updated": "2026-07-30T07:38:09+01:00",
-  "last_updated_utc": "2026-07-30T06:38:09Z"
+  "last_updated": "2026-08-12T21:19:59+01:00",
+  "last_updated_utc": "2026-08-12T20:19:59Z"
 }
