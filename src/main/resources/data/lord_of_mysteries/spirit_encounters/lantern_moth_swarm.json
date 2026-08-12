@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "lantern_moth_swarm",
+  "implementation_state": "playable_route_profile",
+  "preferred_action": "observe",
+  "risk": 1,
+  "ecology_role": "route_indicator",
+  "reward": "route_afterglow"
+}

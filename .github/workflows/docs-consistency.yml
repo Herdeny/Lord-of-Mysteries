@@ -25,6 +25,10 @@ on:
       - "scripts/check_release_timestamp.py"
       - "scripts/check_m3_foundation.py"
       - "scripts/check_m4_foundation.py"
+      - "scripts/check_m5_foundation.py"
+      - "src/main/java/top/aurora/lordofmysteries/spirit/**"
+      - "src/main/resources/data/lord_of_mysteries/spirit_weather/**"
+      - "src/main/resources/data/lord_of_mysteries/spirit_encounters/**"
       - "src/main/java/top/aurora/lordofmysteries/artifact/ManagedArtifactKind.java"
       - "src/main/resources/data/lord_of_mysteries/organizations/**"
       - "src/main/resources/data/lord_of_mysteries/artifacts/**"
@@ -55,6 +59,10 @@ on:
       - "scripts/check_release_timestamp.py"
       - "scripts/check_m3_foundation.py"
       - "scripts/check_m4_foundation.py"
+      - "scripts/check_m5_foundation.py"
+      - "src/main/java/top/aurora/lordofmysteries/spirit/**"
+      - "src/main/resources/data/lord_of_mysteries/spirit_weather/**"
+      - "src/main/resources/data/lord_of_mysteries/spirit_encounters/**"
       - "src/main/java/top/aurora/lordofmysteries/artifact/ManagedArtifactKind.java"
       - "src/main/resources/data/lord_of_mysteries/organizations/**"
       - "src/main/resources/data/lord_of_mysteries/artifacts/**"
@@ -105,6 +113,9 @@ jobs:
 
       - name: Verify M4 foundation contract
         run: python3 scripts/check_m4_foundation.py
+
+      - name: Verify M5 Spirit World expedition contract
+        run: python3 scripts/check_m5_foundation.py
 
       - name: Verify generated datapack
         run: python3 scripts/gen_datapack.py --check

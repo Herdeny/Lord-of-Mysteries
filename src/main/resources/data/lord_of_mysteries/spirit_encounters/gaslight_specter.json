@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "gaslight_specter",
+  "implementation_state": "playable_route_profile",
+  "preferred_action": "avoid",
+  "risk": 3,
+  "ecology_role": "urban_hunter",
+  "reward": "route_afterglow"
+}

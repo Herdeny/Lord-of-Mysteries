@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "milestone": "M5",
+  "status": "first_playable_spirit_expedition",
+  "expedition": {
+    "duration_ticks": 36000,
+    "route_legs": 6,
+    "starting_stability": 70,
+    "max_stability": 100,
+    "max_drift": 100,
+    "persistent_data_name": "lord_of_mysteries_spirit_expeditions",
+    "schema_version": 1,
+    "dimension": "lord_of_mysteries:spirit_world",
+    "projections": [
+      "church",
+      "cemetery",
+      "theatre",
+      "harbor",
+      "manor"
+    ],
+    "directions": [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "weather": [
+      "spirit_mist",
+      "starless_night",
+      "whispering_rain",
+      "spiritual_storm",
+      "memory_snow",
+      "doorlight_aurora"
+    ],
+    "encounters": {
+      "lantern_moth_swarm": "observe",
+      "memory_leech": "avoid",
+      "prayer_echo": "aid",
+      "spirit_ferryman": "bargain",
+      "color_eater": "avoid",
+      "door_wisp": "observe",
+      "whisper_crow": "bargain",
+      "compass_bird": "aid",
+      "archive_spider": "observe",
+      "gaslight_specter": "avoid",
+      "theatre_maskling": "bargain",
+      "grave_lantern": "aid"
+    },
+    "commands": [
+      "m5",
+      "spirit",
+      "enter",
+      "status",
+      "compass",
+      "navigate",
+      "encounter",
+      "stabilize",
+      "exit",
+      "recover"
+    ],
+    "items": [
+      "spirit_route_lantern",
+      "spirit_compass",
+      "emergency_return_charm",
+      "spirit_route_residue",
+      "memory_fragment",
+      "spirit_orchid_petals"
+    ],
+    "recipes": [
+      "spirit_route_lantern",
+      "spirit_compass",
+      "emergency_return_charm"
+    ],
+    "reward_recycling_recipes": [
+      "spirit_route_residue_to_salt",
+      "memory_fragment_to_divination_crystal",
+      "spirit_orchid_moonwater"
+    ]
+  },
+  "safety": {
+    "server_authoritative": true,
+    "player_isolated_lanes": true,
+    "destination_validated_before_state_change": true,
+    "entry_failure_has_no_cost": true,
+    "stabilize_failure_has_no_cost": true,
+    "exit_removes_state_after_teleport": true,
+    "timeout_safe_return": true,
+    "login_resume": true,
+    "void_recovery": true,
+    "spirit_death_is_not_real_death": true,
+    "orphaned_nbt_quarantine": true,
+    "overflow_saturation": true,
+    "incorrect_navigation_does_not_advance": true,
+    "future_schema_read_only": true,
+    "capacity_exhaustion_safe_failure": true,
+    "origin_validated_before_chunk_load": true,
+    "wrong_dimension_cannot_complete": true
+  },
+  "validation": {
+    "junit_tests": 454,
+    "game_tests": 26,
+    "behavior_test_classes": [
+      "SpiritExpeditionPolicyTest",
+      "SpiritExpeditionSavedDataTest"
+    ],
+    "game_test_methods": [
+      "m5SpiritDimensionBuildsIsolatedSafeRoutes",
+      "m5SpiritRouteCompletesWithRecoverableRisk"
+    ],
+    "pages_weather_entries": 6,
+    "pages_encounter_entries": 12
+  },
+  "deferred": [
+    "consent-gated shared organization dreams",
+    "physical entity implementations for all encounter profiles",
+    "additional weather variants beyond the six current profiles",
+    "long-form multiplayer balance evidence"
+  ]
+}

@@ -12,6 +12,7 @@ import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
@@ -73,6 +74,12 @@ import top.aurora.lordofmysteries.commission.InvestigationBoardService;
 import top.aurora.lordofmysteries.registry.ModBlocks;
 import top.aurora.lordofmysteries.registry.ModEntities;
 import top.aurora.lordofmysteries.registry.ModItems;
+import top.aurora.lordofmysteries.spirit.SpiritDirection;
+import top.aurora.lordofmysteries.spirit.SpiritExpeditionPolicy;
+import top.aurora.lordofmysteries.spirit.SpiritExpeditionSavedData;
+import top.aurora.lordofmysteries.spirit.SpiritExpeditionService;
+import top.aurora.lordofmysteries.spirit.SpiritExpeditionWorldBuilder;
+import top.aurora.lordofmysteries.spirit.SpiritProjection;
 import top.aurora.lordofmysteries.ritual.RitualStructureLogic;
 import top.aurora.lordofmysteries.ritual.SequenceFiveAdvancementRitual;
 
@@ -1749,6 +1756,136 @@ public final class PlayerPersistenceGameTests {
                         && restored.record(duplicate).state()
                         == ArtifactCustodyState.RETURNED,
                 "safe return and abuse retirement must survive server SavedData");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void m5SpiritDimensionBuildsIsolatedSafeRoutes(
+            GameTestHelper helper) {
+        ServerLevel spirit = helper.getLevel().getServer().getLevel(
+                SpiritExpeditionService.SPIRIT_WORLD);
+        helper.assertTrue(spirit != null,
+                "M5 Spirit World dimension must load on the dedicated server");
+        if (spirit == null) return;
+
+        SpiritExpeditionSavedData saved =
+                SpiritExpeditionSavedData.get(helper.getLevel());
+        UUID first = UUID.randomUUID();
+        UUID second = UUID.randomUUID();
+        SpiritExpeditionSavedData.Expedition firstRoute = saved.start(
+                first,
+                helper.getLevel().dimension().location(),
+                helper.absolutePos(new BlockPos(2, 2, 2)),
+                SpiritProjection.CHURCH,
+                helper.getLevel().getSeed() ^ 71L,
+                helper.getLevel().getGameTime());
+        SpiritExpeditionSavedData.Expedition secondRoute = saved.start(
+                second,
+                helper.getLevel().dimension().location(),
+                helper.absolutePos(new BlockPos(3, 2, 3)),
+                SpiritProjection.HARBOR,
+                helper.getLevel().getSeed() ^ 93L,
+                helper.getLevel().getGameTime());
+        helper.assertTrue(firstRoute != null && secondRoute != null,
+                "two players must be able to own concurrent expeditions");
+        if (firstRoute == null || secondRoute == null) return;
+        helper.assertTrue(firstRoute.lane() != secondRoute.lane()
+                        && !firstRoute.currentPad().equals(
+                        secondRoute.currentPad()),
+                "concurrent route pads must remain spatially isolated");
+
+        Vec3 arrival = SpiritExpeditionWorldBuilder.build(
+                spirit, firstRoute.currentPad(),
+                firstRoute.projection(), firstRoute.weather());
+        helper.assertTrue(arrival != null
+                        && spirit.getBlockState(firstRoute.currentPad())
+                        .isFaceSturdy(
+                                spirit, firstRoute.currentPad(),
+                                net.minecraft.core.Direction.UP)
+                        && spirit.getBlockState(
+                        firstRoute.currentPad().above()).isAir()
+                        && spirit.getBlockState(
+                        firstRoute.currentPad().above(2)).isAir(),
+                "generated route node must provide solid floor and clear body space");
+        helper.assertTrue(
+                SpiritExpeditionWorldBuilder.build(
+                        spirit,
+                        new BlockPos(0, spirit.getMinBuildHeight() - 1, 0),
+                        firstRoute.projection(), firstRoute.weather()) == null,
+                "out-of-bounds route generation must fail without mutation");
+
+        SpiritExpeditionSavedData restored =
+                SpiritExpeditionSavedData.load(
+                        saved.save(new CompoundTag()));
+        helper.assertTrue(restored.get(first).equals(firstRoute)
+                        && restored.get(second).equals(secondRoute),
+                "isolated route anchors must survive server SavedData restart");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void m5SpiritRouteCompletesWithRecoverableRisk(
+            GameTestHelper helper) {
+        SpiritExpeditionSavedData saved =
+                new SpiritExpeditionSavedData();
+        UUID player = UUID.randomUUID();
+        SpiritExpeditionSavedData.Expedition route = saved.start(
+                player,
+                helper.getLevel().dimension().location(),
+                helper.absolutePos(new BlockPos(5, 2, 5)),
+                SpiritProjection.THEATRE,
+                helper.getLevel().getSeed() ^ 0x5A17L,
+                helper.getLevel().getGameTime());
+        helper.assertTrue(route != null,
+                "a valid M5 expedition must start without operator state");
+        if (route == null) return;
+
+        for (int leg = 0;
+             leg < SpiritExpeditionPolicy.ROUTE_LEGS; leg++) {
+            long navigationTime = helper.getLevel().getGameTime()
+                    + leg * 2L;
+            long encounterTime = navigationTime + 1L;
+            SpiritExpeditionSavedData.Expedition current = saved.get(player);
+            SpiritDirection expected =
+                    SpiritExpeditionPolicy.expectedDirection(
+                            current.routeSeed(), current.step(), current.tide(),
+                            current.projection(), current.weather());
+            SpiritExpeditionPolicy.NavigationOutcome navigation =
+                    SpiritExpeditionPolicy.navigate(
+                            current.routeSeed(), current.step(), current.tide(),
+                            current.projection(), current.weather(), expected);
+            saved.update(player, value -> value.afterNavigation(
+                    navigation,
+                    SpiritExpeditionWorldBuilder.nextPad(value, expected),
+                    navigationTime));
+            SpiritExpeditionSavedData.Expedition pending = saved.get(player);
+            SpiritExpeditionPolicy.EncounterOutcome encounter =
+                    SpiritExpeditionPolicy.resolve(
+                            pending.pendingEncounter(),
+                            pending.pendingEncounter().preferredAction());
+            saved.update(player, value -> value.afterEncounter(
+                    encounter,
+                    encounterTime));
+        }
+
+        SpiritExpeditionSavedData.Expedition complete = saved.get(player);
+        helper.assertTrue(complete.extractionReady()
+                        && complete.pendingEncounter() == null
+                        && !complete.failed()
+                        && complete.resolvedEncounters()
+                        == SpiritExpeditionPolicy.ROUTE_LEGS
+                        && complete.rewardScore()
+                        >= SpiritExpeditionPolicy.EXTRACTION_REWARD_THRESHOLD,
+                "six navigation and encounter legs must produce a safe extractable reward state");
+        saved.update(player, value -> value.stabilized(
+                helper.getLevel().getGameTime() + 20L));
+        helper.assertTrue(saved.get(player).stability()
+                        <= SpiritExpeditionPolicy.MAX_STABILITY
+                        && saved.get(player).drift() >= 0,
+                "stabilization must clamp all values before persistence");
+        helper.assertTrue(saved.remove(player) != null
+                        && saved.get(player) == null,
+                "successful settlement must atomically release the expedition slot");
         helper.succeed();
     }
 

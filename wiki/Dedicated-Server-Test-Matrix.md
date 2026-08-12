@@ -1,11 +1,12 @@
 # 专用服务器与多人一致性验证
 
-> 当前版本：0.9.32-1.20.1 · Capability schema 30 · 内容 schema v4 · 网络协议 13
+> 当前版本：0.9.33-1.20.1 · Capability schema 30 · 内容 schema v4 · 网络协议 13
 
 ## 自动冒烟
 
 ```bash
 python scripts/check_save_rollback.py
+python scripts/check_m5_foundation.py
 python scripts/run_server_restart_matrix.py --timeout 180
 ```
 
@@ -15,7 +16,7 @@ python scripts/run_server_restart_matrix.py --timeout 180
 
 `./gradlew check` 还会运行 `scripts/check_m1_playability.py`，核对 120 分钟、9 项核心目标、7 个里程碑、三份 M1 魔药、
 十二项保底补给、十个关键命令入口和中英文本地化；M2 合同保护调查板、真假配方、三解、持久队伍恢复、动态案件相关人/受影响者/可视物证/封存样本/证物袋/NPC/报纸交互与旧 13 步索引；
-统一门禁保护 v0.9 设计源、164 节点/214 关系内容图、423 JSON、1830 对双语键、139 模型、132 物品/7 方块/16 实体与全部注册资源；当前基线为 447 项 JUnit、24 项真实 Forge GameTest，并验证 schema 30、协议 13、M1/M2/M3/M4 合同、既有多人/权限/守恒路径，以及 M4 两玩家组织行动/周战略隔离、三席实体联络员幂等、24件封印物、六事故材料、唯一保管、离线泄漏、恢复、复制滥用、退役和 SavedData 往返。
+统一门禁保护v0.9设计源、164节点/214关系内容图、457 JSON、1922对双语键、145模型、138物品/7方块/16实体与全部注册资源；当前基线为454项JUnit、26项真实Forge GameTest，并验证schema30、协议13、M1–M5合同、既有多人/权限/守恒路径、M4组织/封印物与M5独立灵界维度/多人航线/安全恢复。
 
 ## M2 证据推理与恢复必测项
 
@@ -87,6 +88,15 @@ python scripts/run_server_restart_matrix.py --timeout 180
 - 普通 `/pm artifact` 只显示本人负责或持有的记录；完整位置账本与滥用退役只允许权限等级 2。
 - 来客面具不得绕过旅行家组织门、领地或其他权限；转运提交不得与直接归还重复发奖。
 - 24/24件封印物都必须验证收益、代价、知识门、借期和对应事故材料；泄漏不得直接归还。高精美术、更多专属建筑和长期真人多人平衡继续使用人工矩阵。
+
+## M5 灵界远征
+
+- 独立维度必须真实加载、保存并重启；五类投影平台需在世界边界内、有坚实地面且无碰撞。
+- 六段导航覆盖正确/错误方向和六种天气；12类遭遇逐一覆盖四种应对，失败保持可恢复。
+- 主动退出、返航符、超时、虚空、死亡、错维与重连都必须返回原锚点或主世界安全出生点；传送失败时保留记录。
+- 2–4人并发使用独立SavedData和相隔640格航线，方向、遭遇、稳定、漂移、奖励与返航点不得串档。
+- 坏档、重复条目、未知状态和极端数值进入孤儿/钳制路径，不能覆盖合法玩家状态。
+- 当前自动化为454项JUnit与26项真实Forge GameTest；共享梦境和遭遇实体化仍需后续机器合同与真人矩阵。
 
 完整场景、网络重放检查和证据模板见
 [`docs/DEDICATED_SERVER_TEST_MATRIX.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/DEDICATED_SERVER_TEST_MATRIX.md)。

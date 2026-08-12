@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "grave_lantern",
+  "implementation_state": "playable_route_profile",
+  "preferred_action": "aid",
+  "risk": 2,
+  "ecology_role": "funerary_guide",
+  "reward": "spirit_orchid_petals"
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "whispering_rain",
+  "implementation_state": "playable",
+  "risk": 2,
+  "runtime_effect": "confusion",
+  "navigation_rule": "voice_cues_are_untrusted",
+  "degradation": "replace_audio_cues_with_bilingual_text"
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "memory_snow",
+  "implementation_state": "playable",
+  "risk": 2,
+  "runtime_effect": "mining_fatigue",
+  "navigation_rule": "previous_footprints_are_not_route_evidence",
+  "degradation": "preserve_status_text_when_tracks_are_hidden"
+}

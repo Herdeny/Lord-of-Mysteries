@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "lord_of_mysteries:spirit_orchid_petals" },
+    { "item": "lord_of_mysteries:pure_water" }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:moonwater",
+    "count": 2
+  }
+}

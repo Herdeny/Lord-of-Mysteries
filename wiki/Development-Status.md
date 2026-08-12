@@ -1,10 +1,10 @@
 # 开发状态
 
 <!-- project-status:start -->
-- 当前版本：**`0.9.32-1.20.1`**
-- 开发阶段：**v0.9 M4 机器可玩范围完成，M5 灵界与梦境启动**（M5）
+- 当前版本：**`0.9.33-1.20.1`**
+- 开发阶段：**v0.9 M5 首个灵界远征闭环可玩，共享梦境准备中**（M5）
 - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-- 最后更新：**2026-08-12 21:19:59 UTC+01:00**（`2026-08-12T20:19:59Z`）
+- 最后更新：**2026-08-12 23:26:00 UTC+01:00**（`2026-08-12T22:26:00Z`）
 <!-- project-status:end -->
 
 ## 里程碑
@@ -19,7 +19,7 @@
 | M2 | Investigation and life | 已完成 | 正式报社、事务所、警局、三职业经济、神秘暴露、世界事件与动态案件的自动化实施范围已闭环，保留四人八小时真人验收。 |
 | M3 | Five launch pathways | 已完成 | 占卜家、观众、猎人、偷盗者和学徒序列 9–5 已形成机器可验证的生存、调查、战斗、晋升与资源闭环，进入可玩候选和真人互补验收。 |
 | M4 | Organizations and artifacts | 已完成 | 12个组织、周战略与每日自主行动、三席轮值联络员及24/24件封印物形成机器可玩闭环。 |
-| M5 | Spirit world and dreams | 进行中 | 灵界航路、共享梦境、12 种生态生物和 6 种异常天气。 |
+| M5 | Spirit world and dreams | 进行中 | 首个30分钟灵界远征闭环已可玩：独立维度、五类投影、六段航路、12类生态遭遇档案与6种异常天气；共享梦境继续实施。 |
 | M6 | Second pathway wave | 规划 | 水手、不眠者、收尸人和歌颂者序列 9–5。 |
 | M7 | Production and compatibility | 规划 | 十个工位及 JEI、EMI、Curios、Create、Farmer's Delight 和 Jade 兼容。 |
 | M8 | Third pathway wave | 远期 | 战士、秘祈人、阅读者、刺客、耕种者和药师序列 9–5。 |
@@ -40,7 +40,7 @@
 | 内容图 | 164 节点、214 关系、6 类报告；含 12 组织、24 封印物与两类 M4 知识门 | verified |
 | 玩家迁移 | schema 0/15–29→30 DataFix、世界快照、精确恢复、原始 NBT 备份、远门组织 ID/无面人记录清洗与孤儿保留 | verified |
 | 状态同步 | 四区 dirty mask、生命周期核心摘要、5 秒校正、协议 13、额外负载与调查/证据/推理/假说快照 | code_ready |
-| 生命周期回归 | 447 JUnit、24 Forge GameTest、隔离回滚与两次专服启动矩阵 | verified automation |
+| 生命周期回归 | 454 JUnit、26 Forge GameTest、隔离回滚与两次专服启动矩阵 | verified automation |
 | M2 调查板 | 分页案件、四案证据档案、19 条稳定关系、三阶段推理、下一步、关键物品恢复与服务端邻近校验 | code_ready |
 | M2 动态案件 | 三类日轮换、七日组织轮值、12 项周指令、八案历史、三类后续、五档组织立场、24 条事件账本、实体响应、八槽位、6 类主体关系/四段日程、案件角色/物证、替代入口、误判复议与持久队伍共享 | code_ready |
 | M2 玩家假说 | 160 字有界说明、三种立场、误判压力/负担、纠正/复议恢复与 schema 30 持久化 | code_ready |
@@ -52,6 +52,7 @@
 | 既有玩法 | 五途径 9–7、4 委托、4 任务链、持久队伍 | playable migration assets |
 | M3 可玩候选 | 五途径序列 6–5、10 瓶魔药、10 种最终材料、7 种材料生物、20 项服务端能力、20 项扮演事件、五种专属仪式、无面人八槽形体、旅行家四档双向门/组织实时准入、三槽秘偶/三种战术/离线休眠、队伍职责顾问、特性加工及24项真实GameTest共享回归 | done / release evidence pending |
 | M4 机器完成 | 12 个组织、周战略、每日 3 项/6 类行动、无人行动结算、三席实体联络员、玩家独立任务、24/24 件封印物、六类事故、知识发现与完整保管状态机 | done / machine playable |
+| M5 首个远征闭环 | 独立灵界维度、五类投影、六段航路、6种天气、12类遭遇档案、多人独立SavedData和安全返航 | playable / dream work pending |
 | 构建门禁 | 设计源、生成器、内容图、合同、资源、Gradle、回滚与双启动专服 | verified automation |
 
 ## M0/M1 完成结论
@@ -67,7 +68,7 @@
 - M2：自动化实施范围已完成正式街区、调查闭环、动态案件扩展、组织立场、三职业经济、神秘暴露和六种世界事件；四人八小时真人无锁死、跨日经济与事件切换继续作为发布质量证据。
 - M3：机器实施范围完成；精确视觉身份、完整原典能力穷举、复杂阵型、高精美术和多人互补长测仍是发布边界。
 - M4：机器可玩范围完成。12 组织、跨周战略、6 类行动、三席实体联络员、24 件封印物、六类事故、知识发现与多人/重启负向路径进入门禁；高精美术和真人多人平衡继续作为发布质量证据。
-- M5：当前正式里程碑，灵界航路、共享梦境、生态生物与异常天气按合同先行推进。
+- M5：首个30分钟灵界远征已可玩；共享梦境、12类遭遇实体化与真人多人平衡按合同继续推进。
 - M7：JEI、EMI、Jade 与 FTB Chunks/Teams 等具体适配器目前仅为计划，没有运行时集成。
 - M12：实验终局保持默认关闭，不进入当前版本承诺。
 
@@ -81,6 +82,7 @@ python scripts/check_m1_playability.py
 python scripts/check_m2_investigation.py
 python scripts/check_m3_foundation.py
 python scripts/check_m4_foundation.py
+python scripts/check_m5_foundation.py
 python scripts/gen_pages_catalog.py --check
 python scripts/check_pages_layout.py
 python scripts/check_resource_integrity.py
@@ -97,6 +99,7 @@ python scripts/run_server_restart_matrix.py --timeout 180
 - [M0 内容图与迁移](V0.9-M0-Content-Graph-and-Migration)
 - [M3 五途径序列 6–5](M3-Launch-Pathways)
 - [M4 组织与封印物](M4-Organizations-and-Sealed-Artifacts)
+- [M5 灵界远征](M5-Spirit-Expeditions)
 - [M3 专属材料生态与无面人形体](M3-Material-Ecology-and-Faceless-Forms)
 - [M3 序列 5 专属晋升仪式](M3-Sequence-5-Advancement-Rituals)
 - [M3 旅行家空间标记与同行远门](M3-Traveler-Spatial-Relay)

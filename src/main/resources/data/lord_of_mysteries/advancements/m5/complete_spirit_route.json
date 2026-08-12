@@ -1,0 +1,34 @@
+{
+  "parent": "lord_of_mysteries:m5/enter_spirit_world",
+  "criteria": {
+    "reward_received": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["lord_of_mysteries:memory_fragment"]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.lord_of_mysteries.m5.complete_spirit_route.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "lord_of_mysteries:memory_fragment"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.lord_of_mysteries.m5.complete_spirit_route.title"
+    }
+  },
+  "requirements": [
+    ["reward_received"]
+  ],
+  "sends_telemetry_event": false
+}

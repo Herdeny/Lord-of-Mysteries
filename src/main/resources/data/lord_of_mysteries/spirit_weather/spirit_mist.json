@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "spirit_mist",
+  "implementation_state": "playable",
+  "risk": 1,
+  "runtime_effect": "blindness",
+  "navigation_rule": "nearby_echoes_remain_reliable",
+  "degradation": "reduce_particle_density_before_route_logic"
+}

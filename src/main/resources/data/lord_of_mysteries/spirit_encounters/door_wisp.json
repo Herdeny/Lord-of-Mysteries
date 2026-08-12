@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "door_wisp",
+  "implementation_state": "playable_route_profile",
+  "preferred_action": "observe",
+  "risk": 1,
+  "ecology_role": "boundary_indicator",
+  "reward": "route_afterglow"
+}

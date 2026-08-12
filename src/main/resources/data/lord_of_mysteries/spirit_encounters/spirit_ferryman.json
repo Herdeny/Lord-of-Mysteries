@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "spirit_ferryman",
+  "implementation_state": "playable_route_profile",
+  "preferred_action": "bargain",
+  "risk": 2,
+  "ecology_role": "neutral_transit_keeper",
+  "reward": "route_afterglow"
+}

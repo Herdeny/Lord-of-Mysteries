@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " A ",
+    "SCS",
+    " A "
+  ],
+  "key": {
+    "A": { "item": "minecraft:amethyst_shard" },
+    "C": { "item": "minecraft:compass" },
+    "S": { "item": "lord_of_mysteries:spirit_salt" }
+  },
+  "result": {
+    "item": "lord_of_mysteries:spirit_compass"
+  }
+}

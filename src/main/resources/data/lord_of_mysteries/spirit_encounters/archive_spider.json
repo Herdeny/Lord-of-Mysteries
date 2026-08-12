@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "archive_spider",
+  "implementation_state": "playable_route_profile",
+  "preferred_action": "observe",
+  "risk": 2,
+  "ecology_role": "knowledge_weaver",
+  "reward": "memory_fragment"
+}

@@ -47,6 +47,7 @@ import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.registry.ModItems;
 import top.aurora.lordofmysteries.ritual.SequenceFiveAdvancementRitual;
+import top.aurora.lordofmysteries.spirit.SpiritExpeditionService;
 import top.aurora.lordofmysteries.commission.CaseAnalysisService;
 import top.aurora.lordofmysteries.commission.CaseHypothesisService;
 import top.aurora.lordofmysteries.commission.CaseHypothesisStance;
@@ -115,6 +116,79 @@ public final class ProjectMysteryCommands {
                                 OrganizationActionService.showGuide(
                                         context.getSource()
                                                 .getPlayerOrException())))
+                .then(Commands.literal("m5")
+                        .executes(context ->
+                                SpiritExpeditionService.showGuide(
+                                        context.getSource()
+                                                .getPlayerOrException())))
+                .then(Commands.literal("spirit")
+                        .executes(context ->
+                                SpiritExpeditionService.showGuide(
+                                        context.getSource()
+                                                .getPlayerOrException()))
+                        .then(Commands.literal("enter")
+                                .then(Commands.argument(
+                                                "projection",
+                                                StringArgumentType.word())
+                                        .executes(context ->
+                                                SpiritExpeditionService.start(
+                                                        context.getSource()
+                                                                .getPlayerOrException(),
+                                                        StringArgumentType
+                                                                .getString(
+                                                                        context,
+                                                                        "projection")))))
+                        .then(Commands.literal("status")
+                                .executes(context ->
+                                        SpiritExpeditionService.status(
+                                                context.getSource()
+                                                        .getPlayerOrException())))
+                        .then(Commands.literal("compass")
+                                .executes(context ->
+                                        SpiritExpeditionService.compass(
+                                                context.getSource()
+                                                        .getPlayerOrException())))
+                        .then(Commands.literal("navigate")
+                                .then(Commands.argument(
+                                                "direction",
+                                                StringArgumentType.word())
+                                        .executes(context ->
+                                                SpiritExpeditionService.navigate(
+                                                        context.getSource()
+                                                                .getPlayerOrException(),
+                                                        StringArgumentType
+                                                                .getString(
+                                                                        context,
+                                                                        "direction")))))
+                        .then(Commands.literal("encounter")
+                                .then(Commands.argument(
+                                                "action",
+                                                StringArgumentType.word())
+                                        .executes(context ->
+                                                SpiritExpeditionService
+                                                        .resolveEncounter(
+                                                                context.getSource()
+                                                                        .getPlayerOrException(),
+                                                                StringArgumentType
+                                                                        .getString(
+                                                                                context,
+                                                                                "action")))))
+                        .then(Commands.literal("stabilize")
+                                .executes(context ->
+                                        SpiritExpeditionService.stabilize(
+                                                context.getSource()
+                                                        .getPlayerOrException())))
+                        .then(Commands.literal("exit")
+                                .executes(context ->
+                                        SpiritExpeditionService.exit(
+                                                context.getSource()
+                                                        .getPlayerOrException(),
+                                                false)))
+                        .then(Commands.literal("recover")
+                                .executes(context ->
+                                        SpiritExpeditionService.recover(
+                                                context.getSource()
+                                                        .getPlayerOrException()))))
                 .then(Commands.literal("organization")
                         .executes(context ->
                                 OrganizationActionService.showActions(

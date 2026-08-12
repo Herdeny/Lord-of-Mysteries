@@ -1810,6 +1810,450 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "entity",
+    "id": "lord_of_mysteries:spirit_encounter/archive_spider",
+    "name": "档案蛛",
+    "en": "Archive Spider",
+    "summary": "灵界航路生态遭遇；推荐以“观察”处理，错误应对会增加漂移。",
+    "tags": [
+      "灵界",
+      "生态遭遇",
+      "风险2",
+      "M5",
+      "航路档案"
+    ],
+    "details": [
+      [
+        "生态角色",
+        "knowledge_weaver"
+      ],
+      [
+        "推荐应对",
+        "观察"
+      ],
+      [
+        "风险",
+        "2"
+      ],
+      [
+        "收益类型",
+        "memory_fragment"
+      ],
+      [
+        "实现形态",
+        "服务端航路遭遇档案"
+      ]
+    ],
+    "long": "当前实现为确定性航路遭遇档案，而不是独立可生成实体。服务端按世界种子、路线、步数和天气选择遭遇，并原子结算稳定度、漂移与收益；未来实体化不能改变既有存档 ID 或安全退出合同。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:spirit_encounter/color_eater",
+    "name": "食色者",
+    "en": "Color Eater",
+    "summary": "灵界航路生态遭遇；推荐以“避让”处理，错误应对会增加漂移。",
+    "tags": [
+      "灵界",
+      "生态遭遇",
+      "风险2",
+      "M5",
+      "航路档案"
+    ],
+    "details": [
+      [
+        "生态角色",
+        "sensory_scavenger"
+      ],
+      [
+        "推荐应对",
+        "避让"
+      ],
+      [
+        "风险",
+        "2"
+      ],
+      [
+        "收益类型",
+        "stability"
+      ],
+      [
+        "实现形态",
+        "服务端航路遭遇档案"
+      ]
+    ],
+    "long": "当前实现为确定性航路遭遇档案，而不是独立可生成实体。服务端按世界种子、路线、步数和天气选择遭遇，并原子结算稳定度、漂移与收益；未来实体化不能改变既有存档 ID 或安全退出合同。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:spirit_encounter/compass_bird",
+    "name": "罗盘鸟",
+    "en": "Compass Bird",
+    "summary": "灵界航路生态遭遇；推荐以“援助”处理，错误应对会增加漂移。",
+    "tags": [
+      "灵界",
+      "生态遭遇",
+      "风险1",
+      "M5",
+      "航路档案"
+    ],
+    "details": [
+      [
+        "生态角色",
+        "route_guide"
+      ],
+      [
+        "推荐应对",
+        "援助"
+      ],
+      [
+        "风险",
+        "1"
+      ],
+      [
+        "收益类型",
+        "stability"
+      ],
+      [
+        "实现形态",
+        "服务端航路遭遇档案"
+      ]
+    ],
+    "long": "当前实现为确定性航路遭遇档案，而不是独立可生成实体。服务端按世界种子、路线、步数和天气选择遭遇，并原子结算稳定度、漂移与收益；未来实体化不能改变既有存档 ID 或安全退出合同。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:spirit_encounter/door_wisp",
+    "name": "门隙微光",
+    "en": "Door Wisp",
+    "summary": "灵界航路生态遭遇；推荐以“观察”处理，错误应对会增加漂移。",
+    "tags": [
+      "灵界",
+      "生态遭遇",
+      "风险1",
+      "M5",
+      "航路档案"
+    ],
+    "details": [
+      [
+        "生态角色",
+        "boundary_indicator"
+      ],
+      [
+        "推荐应对",
+        "观察"
+      ],
+      [
+        "风险",
+        "1"
+      ],
+      [
+        "收益类型",
+        "route_afterglow"
+      ],
+      [
+        "实现形态",
+        "服务端航路遭遇档案"
+      ]
+    ],
+    "long": "当前实现为确定性航路遭遇档案，而不是独立可生成实体。服务端按世界种子、路线、步数和天气选择遭遇，并原子结算稳定度、漂移与收益；未来实体化不能改变既有存档 ID 或安全退出合同。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:spirit_encounter/gaslight_specter",
+    "name": "煤气灯幽影",
+    "en": "Gaslight Specter",
+    "summary": "灵界航路生态遭遇；推荐以“避让”处理，错误应对会增加漂移。",
+    "tags": [
+      "灵界",
+      "生态遭遇",
+      "风险3",
+      "M5",
+      "航路档案"
+    ],
+    "details": [
+      [
+        "生态角色",
+        "urban_hunter"
+      ],
+      [
+        "推荐应对",
+        "避让"
+      ],
+      [
+        "风险",
+        "3"
+      ],
+      [
+        "收益类型",
+        "route_afterglow"
+      ],
+      [
+        "实现形态",
+        "服务端航路遭遇档案"
+      ]
+    ],
+    "long": "当前实现为确定性航路遭遇档案，而不是独立可生成实体。服务端按世界种子、路线、步数和天气选择遭遇，并原子结算稳定度、漂移与收益；未来实体化不能改变既有存档 ID 或安全退出合同。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:spirit_encounter/grave_lantern",
+    "name": "墓灯",
+    "en": "Grave Lantern",
+    "summary": "灵界航路生态遭遇；推荐以“援助”处理，错误应对会增加漂移。",
+    "tags": [
+      "灵界",
+      "生态遭遇",
+      "风险2",
+      "M5",
+      "航路档案"
+    ],
+    "details": [
+      [
+        "生态角色",
+        "funerary_guide"
+      ],
+      [
+        "推荐应对",
+        "援助"
+      ],
+      [
+        "风险",
+        "2"
+      ],
+      [
+        "收益类型",
+        "spirit_orchid_petals"
+      ],
+      [
+        "实现形态",
+        "服务端航路遭遇档案"
+      ]
+    ],
+    "long": "当前实现为确定性航路遭遇档案，而不是独立可生成实体。服务端按世界种子、路线、步数和天气选择遭遇，并原子结算稳定度、漂移与收益；未来实体化不能改变既有存档 ID 或安全退出合同。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:spirit_encounter/lantern_moth_swarm",
+    "name": "提灯蛾群",
+    "en": "Lantern Moth Swarm",
+    "summary": "灵界航路生态遭遇；推荐以“观察”处理，错误应对会增加漂移。",
+    "tags": [
+      "灵界",
+      "生态遭遇",
+      "风险1",
+      "M5",
+      "航路档案"
+    ],
+    "details": [
+      [
+        "生态角色",
+        "route_indicator"
+      ],
+      [
+        "推荐应对",
+        "观察"
+      ],
+      [
+        "风险",
+        "1"
+      ],
+      [
+        "收益类型",
+        "route_afterglow"
+      ],
+      [
+        "实现形态",
+        "服务端航路遭遇档案"
+      ]
+    ],
+    "long": "当前实现为确定性航路遭遇档案，而不是独立可生成实体。服务端按世界种子、路线、步数和天气选择遭遇，并原子结算稳定度、漂移与收益；未来实体化不能改变既有存档 ID 或安全退出合同。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:spirit_encounter/memory_leech",
+    "name": "记忆水蛭",
+    "en": "Memory Leech",
+    "summary": "灵界航路生态遭遇；推荐以“避让”处理，错误应对会增加漂移。",
+    "tags": [
+      "灵界",
+      "生态遭遇",
+      "风险3",
+      "M5",
+      "航路档案"
+    ],
+    "details": [
+      [
+        "生态角色",
+        "memory_predator"
+      ],
+      [
+        "推荐应对",
+        "避让"
+      ],
+      [
+        "风险",
+        "3"
+      ],
+      [
+        "收益类型",
+        "memory_fragment"
+      ],
+      [
+        "实现形态",
+        "服务端航路遭遇档案"
+      ]
+    ],
+    "long": "当前实现为确定性航路遭遇档案，而不是独立可生成实体。服务端按世界种子、路线、步数和天气选择遭遇，并原子结算稳定度、漂移与收益；未来实体化不能改变既有存档 ID 或安全退出合同。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:spirit_encounter/prayer_echo",
+    "name": "祈祷回声",
+    "en": "Prayer Echo",
+    "summary": "灵界航路生态遭遇；推荐以“援助”处理，错误应对会增加漂移。",
+    "tags": [
+      "灵界",
+      "生态遭遇",
+      "风险1",
+      "M5",
+      "航路档案"
+    ],
+    "details": [
+      [
+        "生态角色",
+        "stranded_memory"
+      ],
+      [
+        "推荐应对",
+        "援助"
+      ],
+      [
+        "风险",
+        "1"
+      ],
+      [
+        "收益类型",
+        "stability"
+      ],
+      [
+        "实现形态",
+        "服务端航路遭遇档案"
+      ]
+    ],
+    "long": "当前实现为确定性航路遭遇档案，而不是独立可生成实体。服务端按世界种子、路线、步数和天气选择遭遇，并原子结算稳定度、漂移与收益；未来实体化不能改变既有存档 ID 或安全退出合同。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:spirit_encounter/spirit_ferryman",
+    "name": "灵界摆渡人",
+    "en": "Spirit Ferryman",
+    "summary": "灵界航路生态遭遇；推荐以“交涉”处理，错误应对会增加漂移。",
+    "tags": [
+      "灵界",
+      "生态遭遇",
+      "风险2",
+      "M5",
+      "航路档案"
+    ],
+    "details": [
+      [
+        "生态角色",
+        "neutral_transit_keeper"
+      ],
+      [
+        "推荐应对",
+        "交涉"
+      ],
+      [
+        "风险",
+        "2"
+      ],
+      [
+        "收益类型",
+        "route_afterglow"
+      ],
+      [
+        "实现形态",
+        "服务端航路遭遇档案"
+      ]
+    ],
+    "long": "当前实现为确定性航路遭遇档案，而不是独立可生成实体。服务端按世界种子、路线、步数和天气选择遭遇，并原子结算稳定度、漂移与收益；未来实体化不能改变既有存档 ID 或安全退出合同。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:spirit_encounter/theatre_maskling",
+    "name": "剧院面灵",
+    "en": "Theatre Maskling",
+    "summary": "灵界航路生态遭遇；推荐以“交涉”处理，错误应对会增加漂移。",
+    "tags": [
+      "灵界",
+      "生态遭遇",
+      "风险2",
+      "M5",
+      "航路档案"
+    ],
+    "details": [
+      [
+        "生态角色",
+        "identity_mimic"
+      ],
+      [
+        "推荐应对",
+        "交涉"
+      ],
+      [
+        "风险",
+        "2"
+      ],
+      [
+        "收益类型",
+        "memory_fragment"
+      ],
+      [
+        "实现形态",
+        "服务端航路遭遇档案"
+      ]
+    ],
+    "long": "当前实现为确定性航路遭遇档案，而不是独立可生成实体。服务端按世界种子、路线、步数和天气选择遭遇，并原子结算稳定度、漂移与收益；未来实体化不能改变既有存档 ID 或安全退出合同。"
+  },
+  {
+    "type": "entity",
+    "id": "lord_of_mysteries:spirit_encounter/whisper_crow",
+    "name": "低语鸦",
+    "en": "Whisper Crow",
+    "summary": "灵界航路生态遭遇；推荐以“交涉”处理，错误应对会增加漂移。",
+    "tags": [
+      "灵界",
+      "生态遭遇",
+      "风险2",
+      "M5",
+      "航路档案"
+    ],
+    "details": [
+      [
+        "生态角色",
+        "rumor_carrier"
+      ],
+      [
+        "推荐应对",
+        "交涉"
+      ],
+      [
+        "风险",
+        "2"
+      ],
+      [
+        "收益类型",
+        "memory_fragment"
+      ],
+      [
+        "实现形态",
+        "服务端航路遭遇档案"
+      ]
+    ],
+    "long": "当前实现为确定性航路遭遇档案，而不是独立可生成实体。服务端按世界种子、路线、步数和天气选择遭遇，并原子结算稳定度、漂移与收益；未来实体化不能改变既有存档 ID 或安全退出合同。"
+  },
+  {
+    "type": "entity",
     "id": "lord_of_mysteries:spirit_wisp",
     "name": "灵体微光",
     "en": "Spirit Wisp",
@@ -2864,6 +3308,37 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "id": "lord_of_mysteries:emergency_return_charm",
+    "name": "紧急返航符",
+    "en": "Emergency Return Charm",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:emergency_return_charm"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
     "id": "lord_of_mysteries:formula_fragment",
     "name": "配方残页",
     "en": "Formula Fragment",
@@ -3222,6 +3697,37 @@ window.LOM = window.LOM || {};
       [
         "注册 ID",
         "lord_of_mysteries:marionette_vine_spawn_egg"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:memory_fragment",
+    "name": "记忆碎片",
+    "en": "Memory Fragment",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:memory_fragment"
       ],
       [
         "代码来源",
@@ -4011,6 +4517,37 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "id": "lord_of_mysteries:spirit_compass",
+    "name": "灵界罗盘",
+    "en": "Spirit Compass",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:spirit_compass"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
     "id": "lord_of_mysteries:spirit_herb",
     "name": "灵性草药",
     "en": "Spirit Herb",
@@ -4059,6 +4596,99 @@ window.LOM = window.LOM || {};
       [
         "注册 ID",
         "lord_of_mysteries:spirit_lantern"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:spirit_orchid_petals",
+    "name": "灵兰花瓣",
+    "en": "Spirit Orchid Petals",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:spirit_orchid_petals"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:spirit_route_lantern",
+    "name": "灵界航路灯",
+    "en": "Spirit Route Lantern",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:spirit_route_lantern"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "id": "lord_of_mysteries:spirit_route_residue",
+    "name": "航路余辉",
+    "en": "Route Afterglow",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:spirit_route_residue"
       ],
       [
         "代码来源",
@@ -5729,6 +6359,204 @@ window.LOM = window.LOM || {};
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "world",
+    "id": "lord_of_mysteries:spirit_weather/doorlight_aurora",
+    "name": "门光极夜",
+    "en": "Doorlight Aurora",
+    "summary": "每扇发光门都可能只是倒影。",
+    "tags": [
+      "灵界",
+      "异常天气",
+      "风险1",
+      "M5",
+      "playable"
+    ],
+    "details": [
+      [
+        "风险",
+        "1"
+      ],
+      [
+        "运行时效果",
+        "glowing"
+      ],
+      [
+        "导航规则",
+        "visible_doors_are_not_automatic_exits"
+      ],
+      [
+        "低配降级",
+        "use_compass_text_if_aurora_rendering_is_disabled"
+      ]
+    ],
+    "long": "该天气已进入服务端权威的 M5 灵界远征状态机。视觉或声音效果可以按性能设置降级，但罗盘方向、稳定度、漂移、遭遇与安全撤离规则保持一致。"
+  },
+  {
+    "type": "world",
+    "id": "lord_of_mysteries:spirit_weather/memory_snow",
+    "name": "记忆之雪",
+    "en": "Memory Snow",
+    "summary": "脚印会重排，切勿凭来路倒推。",
+    "tags": [
+      "灵界",
+      "异常天气",
+      "风险2",
+      "M5",
+      "playable"
+    ],
+    "details": [
+      [
+        "风险",
+        "2"
+      ],
+      [
+        "运行时效果",
+        "mining_fatigue"
+      ],
+      [
+        "导航规则",
+        "previous_footprints_are_not_route_evidence"
+      ],
+      [
+        "低配降级",
+        "preserve_status_text_when_tracks_are_hidden"
+      ]
+    ],
+    "long": "该天气已进入服务端权威的 M5 灵界远征状态机。视觉或声音效果可以按性能设置降级，但罗盘方向、稳定度、漂移、遭遇与安全撤离规则保持一致。"
+  },
+  {
+    "type": "world",
+    "id": "lord_of_mysteries:spirit_weather/spirit_mist",
+    "name": "灵性迷雾",
+    "en": "Spirit Mist",
+    "summary": "轮廓被吞没，但近处回声仍可信。",
+    "tags": [
+      "灵界",
+      "异常天气",
+      "风险1",
+      "M5",
+      "playable"
+    ],
+    "details": [
+      [
+        "风险",
+        "1"
+      ],
+      [
+        "运行时效果",
+        "blindness"
+      ],
+      [
+        "导航规则",
+        "nearby_echoes_remain_reliable"
+      ],
+      [
+        "低配降级",
+        "reduce_particle_density_before_route_logic"
+      ]
+    ],
+    "long": "该天气已进入服务端权威的 M5 灵界远征状态机。视觉或声音效果可以按性能设置降级，但罗盘方向、稳定度、漂移、遭遇与安全撤离规则保持一致。"
+  },
+  {
+    "type": "world",
+    "id": "lord_of_mysteries:spirit_weather/spiritual_storm",
+    "name": "灵性风暴",
+    "en": "Spiritual Storm",
+    "summary": "风暴改变路径，优先相信罗盘。",
+    "tags": [
+      "灵界",
+      "异常天气",
+      "风险3",
+      "M5",
+      "playable"
+    ],
+    "details": [
+      [
+        "风险",
+        "3"
+      ],
+      [
+        "运行时效果",
+        "slowness"
+      ],
+      [
+        "导航规则",
+        "route_drift_penalties_are_amplified"
+      ],
+      [
+        "低配降级",
+        "cap_visual_events_without_reducing_rule_risk"
+      ]
+    ],
+    "long": "该天气已进入服务端权威的 M5 灵界远征状态机。视觉或声音效果可以按性能设置降级，但罗盘方向、稳定度、漂移、遭遇与安全撤离规则保持一致。"
+  },
+  {
+    "type": "world",
+    "id": "lord_of_mysteries:spirit_weather/starless_night",
+    "name": "无星之夜",
+    "en": "Starless Night",
+    "summary": "不要追逐天幕中的假光。",
+    "tags": [
+      "灵界",
+      "异常天气",
+      "风险2",
+      "M5",
+      "playable"
+    ],
+    "details": [
+      [
+        "风险",
+        "2"
+      ],
+      [
+        "运行时效果",
+        "darkness"
+      ],
+      [
+        "导航规则",
+        "sky_lights_are_false_landmarks"
+      ],
+      [
+        "低配降级",
+        "preserve_compass_direction_when_sky_rendering_is_disabled"
+      ]
+    ],
+    "long": "该天气已进入服务端权威的 M5 灵界远征状态机。视觉或声音效果可以按性能设置降级，但罗盘方向、稳定度、漂移、遭遇与安全撤离规则保持一致。"
+  },
+  {
+    "type": "world",
+    "id": "lord_of_mysteries:spirit_weather/whispering_rain",
+    "name": "低语之雨",
+    "en": "Whispering Rain",
+    "summary": "雨声会伪造熟人的建议。",
+    "tags": [
+      "灵界",
+      "异常天气",
+      "风险2",
+      "M5",
+      "playable"
+    ],
+    "details": [
+      [
+        "风险",
+        "2"
+      ],
+      [
+        "运行时效果",
+        "confusion"
+      ],
+      [
+        "导航规则",
+        "voice_cues_are_untrusted"
+      ],
+      [
+        "低配降级",
+        "replace_audio_cues_with_bilingual_text"
+      ]
+    ],
+    "long": "该天气已进入服务端权威的 M5 灵界远征状态机。视觉或声音效果可以按性能设置降级，但罗盘方向、稳定度、漂移、遭遇与安全撤离规则保持一致。"
   }
 ];
   var manualEntries = Array.isArray(D.entries) ? D.entries : [];
@@ -5738,12 +6566,14 @@ window.LOM = window.LOM || {};
     return !manualIds[entry.id];
   }));
   D.catalogMeta = {
-  "registeredItems": 132,
+  "registeredItems": 138,
   "registeredBlocks": 7,
   "registeredEntities": 16,
   "organizationDefinitions": 12,
   "artifactDefinitions": 24,
-  "uniqueRegistryEntries": 160,
-  "source": "Forge registries + organization/artifact data + zh_cn/en_us"
+  "spiritWeatherDefinitions": 6,
+  "spiritEncounterDefinitions": 12,
+  "uniqueRegistryEntries": 184,
+  "source": "Forge registries + organization/artifact/spirit data + zh_cn/en_us"
 };
 })(window.LOM);

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "STS",
+    "PWP",
+    "STS"
+  ],
+  "key": {
+    "P": { "item": "minecraft:paper" },
+    "S": { "item": "lord_of_mysteries:spirit_salt" },
+    "T": { "item": "lord_of_mysteries:ashen_thread" },
+    "W": { "item": "lord_of_mysteries:white_candle" }
+  },
+  "result": {
+    "count": 2,
+    "item": "lord_of_mysteries:emergency_return_charm"
+  }
+}

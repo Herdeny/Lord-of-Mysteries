@@ -198,12 +198,74 @@ def organization_entry(definition, zh_cn, en_us):
             "每周重点与每日三项行动；无人参与的行动仍会自主结算，玩家不能伪造奖励。"
         ),
     }
+
+
+def spirit_weather_entry(definition, zh_cn, en_us):
+    weather_id = definition["id"]
+    key = f"spirit_weather.{MOD_ID}.{weather_id}"
+    hint_key = f"{key}.hint"
+    if key not in zh_cn or key not in en_us or hint_key not in zh_cn:
+        raise ValueError(f"spirit weather misses translations: {weather_id}")
+    return {
+        "type": "world",
+        "id": f"{MOD_ID}:spirit_weather/{weather_id}",
+        "name": zh_cn[key],
+        "en": en_us[key],
+        "summary": zh_cn[hint_key],
+        "tags": ["灵界", "异常天气", f"风险{definition['risk']}", "M5", "playable"],
+        "details": [
+            ["风险", str(definition["risk"])],
+            ["运行时效果", definition["runtime_effect"]],
+            ["导航规则", definition["navigation_rule"]],
+            ["低配降级", definition["degradation"]],
+        ],
+        "long": (
+            "该天气已进入服务端权威的 M5 灵界远征状态机。视觉或声音效果可以按"
+            "性能设置降级，但罗盘方向、稳定度、漂移、遭遇与安全撤离规则保持一致。"
+        ),
+    }
+
+
+def spirit_encounter_entry(definition, zh_cn, en_us):
+    encounter_id = definition["id"]
+    key = f"spirit_encounter.{MOD_ID}.{encounter_id}"
+    action_key = (
+        f"spirit_action.{MOD_ID}.{definition['preferred_action']}"
+    )
+    if key not in zh_cn or key not in en_us or action_key not in zh_cn:
+        raise ValueError(f"spirit encounter misses translations: {encounter_id}")
+    return {
+        "type": "entity",
+        "id": f"{MOD_ID}:spirit_encounter/{encounter_id}",
+        "name": zh_cn[key],
+        "en": en_us[key],
+        "summary": (
+            f"灵界航路生态遭遇；推荐以“{zh_cn[action_key]}”处理，错误应对会增加漂移。"
+        ),
+        "tags": ["灵界", "生态遭遇", f"风险{definition['risk']}", "M5", "航路档案"],
+        "details": [
+            ["生态角色", definition["ecology_role"]],
+            ["推荐应对", zh_cn[action_key]],
+            ["风险", str(definition["risk"])],
+            ["收益类型", definition["reward"]],
+            ["实现形态", "服务端航路遭遇档案"],
+        ],
+        "long": (
+            "当前实现为确定性航路遭遇档案，而不是独立可生成实体。服务端按世界种子、"
+            "路线、步数和天气选择遭遇，并原子结算稳定度、漂移与收益；未来实体化不能"
+            "改变既有存档 ID 或安全退出合同。"
+        ),
+    }
+
+
 def render():
     items, blocks, entities = load_registry_ids()
     zh_cn = load_language("zh_cn")
     en_us = load_language("en_us")
     organizations = load_definitions("organizations")
     artifacts = load_definitions("artifacts")
+    spirit_weather = load_definitions("spirit_weather")
+    spirit_encounters = load_definitions("spirit_encounters")
 
     block_ids = set(blocks)
     entries = [
@@ -227,6 +289,14 @@ def render():
         organization_entry(definition, zh_cn, en_us)
         for definition in organizations.values()
     )
+    entries.extend(
+        spirit_weather_entry(definition, zh_cn, en_us)
+        for definition in spirit_weather.values()
+    )
+    entries.extend(
+        spirit_encounter_entry(definition, zh_cn, en_us)
+        for definition in spirit_encounters.values()
+    )
     entries.sort(key=lambda entry: (entry["type"], entry["id"]))
 
     metadata = {
@@ -235,8 +305,10 @@ def render():
         "registeredEntities": len(entities),
         "organizationDefinitions": len(organizations),
         "artifactDefinitions": len(artifacts),
+        "spiritWeatherDefinitions": len(spirit_weather),
+        "spiritEncounterDefinitions": len(spirit_encounters),
         "uniqueRegistryEntries": len(entries),
-        "source": "Forge registries + organization/artifact data + zh_cn/en_us",
+        "source": "Forge registries + organization/artifact/spirit data + zh_cn/en_us",
     }
     encoded_entries = json.dumps(entries, ensure_ascii=False, indent=2)
     encoded_metadata = json.dumps(metadata, ensure_ascii=False, indent=2)

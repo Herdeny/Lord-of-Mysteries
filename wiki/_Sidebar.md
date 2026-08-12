@@ -8,6 +8,7 @@
 - [入门与占卜家 9–7](Getting-Started)
 - [精神风险与调查日志](Risk-and-Investigation)
 - [M1 两小时纵切追踪器](M1-Trial-Tracker)
+- [M5 灵界远征](M5-Spirit-Expeditions)
 
 ### 调查与多人
 
@@ -33,6 +34,11 @@
 - [M3 序列 5 专属晋升仪式](M3-Sequence-5-Advancement-Rituals)
 - [M3 旅行家空间标记与同行远门](M3-Traveler-Spatial-Relay)
 - [M3 非凡特性处理](M3-Characteristic-Processing)
+- [M4 组织与封印物](M4-Organizations-and-Sealed-Artifacts)
+
+### 灵界与梦境
+
+- [M5 灵界远征玩家与服务器手册](M5-Spirit-Expeditions)
 
 ### 开发与发布
 

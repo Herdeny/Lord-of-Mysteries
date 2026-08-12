@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "starless_night",
+  "implementation_state": "playable",
+  "risk": 2,
+  "runtime_effect": "darkness",
+  "navigation_rule": "sky_lights_are_false_landmarks",
+  "degradation": "preserve_compass_direction_when_sky_rendering_is_disabled"
+}

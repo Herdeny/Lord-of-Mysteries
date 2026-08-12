@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "CLC",
+    " T "
+  ],
+  "key": {
+    "C": { "item": "minecraft:copper_ingot" },
+    "L": { "item": "lord_of_mysteries:spirit_lantern" },
+    "S": { "item": "lord_of_mysteries:spirit_salt" },
+    "T": { "item": "lord_of_mysteries:ashen_thread" }
+  },
+  "result": {
+    "item": "lord_of_mysteries:spirit_route_lantern"
+  }
+}

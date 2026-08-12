@@ -113,6 +113,12 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.INVESTIGATOR_COMPASS.get());
                         output.accept(ModItems.CALMING_INCENSE.get());
                         output.accept(ModItems.SPIRIT_LANTERN.get());
+                        output.accept(ModItems.SPIRIT_ROUTE_LANTERN.get());
+                        output.accept(ModItems.SPIRIT_COMPASS.get());
+                        output.accept(ModItems.EMERGENCY_RETURN_CHARM.get());
+                        output.accept(ModItems.SPIRIT_ROUTE_RESIDUE.get());
+                        output.accept(ModItems.MEMORY_FRAGMENT.get());
+                        output.accept(ModItems.SPIRIT_ORCHID_PETALS.get());
                         output.accept(ModItems.PROTECTIVE_CHARM.get());
                         output.accept(ModItems.SEER_POTION_9.get());
                         output.accept(ModItems.SEER_POTION_8.get());

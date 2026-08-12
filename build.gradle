@@ -240,10 +240,34 @@ tasks.register('checkM4Foundation', Exec) {
             fileTree('src/main/java/top/aurora/lordofmysteries/command'),
             fileTree('src/main/resources/data/lord_of_mysteries/organizations'),
             fileTree('src/main/resources/data/lord_of_mysteries/artifacts'),
+            fileTree('src/main/resources/data/lord_of_mysteries/spirit_weather'),
+            fileTree('src/main/resources/data/lord_of_mysteries/spirit_encounters'),
             fileTree('src/main/resources/assets/lord_of_mysteries/lang'),
             fileTree('src/main/resources/assets/lord_of_mysteries/models/item'),
             fileTree('src/test/java/top/aurora/lordofmysteries/organization'),
             fileTree('src/test/java/top/aurora/lordofmysteries/artifact'),
+            'src/main/java/top/aurora/lordofmysteries/gametest/PlayerPersistenceGameTests.java',
+            'docs/assets/catalog-data.js'
+}
+
+tasks.register('checkM5Foundation', Exec) {
+    group = 'verification'
+    description = 'Checks the first playable M5 Spirit World expedition loop.'
+    dependsOn 'generatePagesCatalog'
+    commandLine pythonExecutable, 'scripts/check_m5_foundation.py'
+    inputs.files 'scripts/check_m5_foundation.py',
+            'docs/m5-foundation-contract.json',
+            fileTree('src/main/java/top/aurora/lordofmysteries/spirit'),
+            fileTree('src/main/java/top/aurora/lordofmysteries/command'),
+            fileTree('src/main/java/top/aurora/lordofmysteries/registry'),
+            fileTree('src/main/resources/data/lord_of_mysteries/dimension'),
+            fileTree('src/main/resources/data/lord_of_mysteries/dimension_type'),
+            fileTree('src/main/resources/data/lord_of_mysteries/spirit_weather'),
+            fileTree('src/main/resources/data/lord_of_mysteries/spirit_encounters'),
+            fileTree('src/main/resources/data/lord_of_mysteries/recipes'),
+            fileTree('src/main/resources/assets/lord_of_mysteries/lang'),
+            fileTree('src/main/resources/assets/lord_of_mysteries/models/item'),
+            fileTree('src/test/java/top/aurora/lordofmysteries/spirit'),
             'src/main/java/top/aurora/lordofmysteries/gametest/PlayerPersistenceGameTests.java',
             'docs/assets/catalog-data.js'
 }
@@ -341,6 +365,7 @@ tasks.named('check').configure {
             'checkContentGraph', 'checkM1Playability',
             'checkM2Investigation', 'checkM3Foundation',
             'checkM4Foundation',
+            'checkM5Foundation',
             'checkResourceIntegrity',
             'checkPagesCatalog'
 }

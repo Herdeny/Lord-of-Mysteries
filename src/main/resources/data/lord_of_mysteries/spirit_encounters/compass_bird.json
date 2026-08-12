@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "compass_bird",
+  "implementation_state": "playable_route_profile",
+  "preferred_action": "aid",
+  "risk": 1,
+  "ecology_role": "route_guide",
+  "reward": "stability"
+}

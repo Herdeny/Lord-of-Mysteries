@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "spiritual_storm",
+  "implementation_state": "playable",
+  "risk": 3,
+  "runtime_effect": "slowness",
+  "navigation_rule": "route_drift_penalties_are_amplified",
+  "degradation": "cap_visual_events_without_reducing_rule_risk"
+}

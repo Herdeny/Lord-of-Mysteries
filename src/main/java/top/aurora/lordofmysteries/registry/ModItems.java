@@ -40,6 +40,9 @@ import top.aurora.lordofmysteries.acting.ActingReflectionJournalItem;
 import top.aurora.lordofmysteries.characteristic.BrokenCharacteristicItem;
 import top.aurora.lordofmysteries.characteristic.ImprintProbeItem;
 import top.aurora.lordofmysteries.ability.MarionetteScrollItem;
+import top.aurora.lordofmysteries.spirit.EmergencyReturnCharmItem;
+import top.aurora.lordofmysteries.spirit.SpiritCompassItem;
+import top.aurora.lordofmysteries.spirit.SpiritRouteLanternItem;
 
 /**
  * 物品注册（Forge 1.20.1）。包含材料、魔药、封印物和方块物品。
@@ -315,6 +318,27 @@ public final class ModItems {
             "spirit_lantern",
             () -> new SpiritLanternItem(
                     new Item.Properties().durability(64).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> SPIRIT_ROUTE_LANTERN = ITEMS.register(
+            "spirit_route_lantern",
+            () -> new SpiritRouteLanternItem(
+                    new Item.Properties().durability(16).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> SPIRIT_COMPASS = ITEMS.register(
+            "spirit_compass",
+            () -> new SpiritCompassItem(
+                    new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERGENCY_RETURN_CHARM = ITEMS.register(
+            "emergency_return_charm",
+            () -> new EmergencyReturnCharmItem(
+                    new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> SPIRIT_ROUTE_RESIDUE = ITEMS.register(
+            "spirit_route_residue",
+            () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> MEMORY_FRAGMENT = ITEMS.register(
+            "memory_fragment",
+            () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> SPIRIT_ORCHID_PETALS = ITEMS.register(
+            "spirit_orchid_petals",
+            () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> PROTECTIVE_CHARM = ITEMS.register(
             "protective_charm",
             () -> new ProtectiveCharmItem(

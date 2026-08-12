@@ -1,0 +1,30 @@
+{
+  "parent": "lord_of_mysteries:m1_vertical_slice",
+  "criteria": {
+    "entered": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "lord_of_mysteries:spirit_world"
+      }
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.lord_of_mysteries.m5.enter_spirit_world.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "lord_of_mysteries:spirit_route_lantern"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.lord_of_mysteries.m5.enter_spirit_world.title"
+    }
+  },
+  "requirements": [
+    ["entered"]
+  ],
+  "sends_telemetry_event": false
+}

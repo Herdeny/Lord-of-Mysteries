@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "version": "0.9.32-1.20.1",
-  "stage": "v0.9 M4 机器可玩范围完成，M5 灵界与梦境启动",
+  "version": "0.9.33-1.20.1",
+  "stage": "v0.9 M5 首个灵界远征闭环可玩，共享梦境准备中",
   "milestone": "M5",
   "minecraft_version": "1.20.1",
   "forge_version": "47.4.20",
   "java_version": "17",
-  "last_updated": "2026-08-12T21:19:59+01:00",
-  "last_updated_utc": "2026-08-12T20:19:59Z"
+  "last_updated": "2026-08-12T23:26:00+01:00",
+  "last_updated_utc": "2026-08-12T22:26:00Z"
 }
