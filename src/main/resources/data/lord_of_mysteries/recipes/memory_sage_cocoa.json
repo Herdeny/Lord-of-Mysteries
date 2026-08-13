@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:cocoa_beans" },
+    { "item": "minecraft:sugar" },
+    { "item": "lord_of_mysteries:memory_fragment" },
+    { "item": "lord_of_mysteries:moonwater" }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:memory_sage_cocoa",
+    "count": 2
+  }
+}

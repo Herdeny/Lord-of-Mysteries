@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [" M ", "SCS", " O "],
+  "key": {
+    "C": { "item": "minecraft:clock" },
+    "M": { "item": "lord_of_mysteries:memory_fragment" },
+    "S": { "item": "lord_of_mysteries:spirit_salt" },
+    "O": { "item": "lord_of_mysteries:spirit_orchid_petals" }
+  },
+  "result": { "item": "lord_of_mysteries:dream_anchor_clock" }
+}

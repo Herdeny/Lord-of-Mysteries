@@ -1,6 +1,6 @@
 # 仓库健康与资源完整性
 
-> 当前版本：0.9.33-1.20.1 · Capability schema 30 · 内容 schema v4 · 网络协议 13
+> 当前版本：0.9.34-1.20.1 · Capability schema 30 · 内容 schema v4 · 网络协议 13
 
 0.8.9 对现有代码、存档、资源和 CI 做了全面稳定性审计。重点修复换队/退队残留、队伍同步重复结算、
 超限成员污染进度、损坏账本恢复和任务计数溢出，并统一委托/任务链运行时与生成期校验。
@@ -12,13 +12,13 @@
 
 `python scripts/check_resource_integrity.py` 当前检查：
 
-- 457 个可解析 JSON；
-- 1922 个中英成对翻译键和 802 个静态引用键；
+- 485个可解析JSON；
+- 2011个中英成对翻译键和815个静态引用键；
 - 发布资源过滤与 Forge 开发运行配置固定使用 UTF-8，Mod 简介、控制台和 `latest.log` 不再受 Windows 系统代码页影响；专服冒烟严格拒绝解码错误与乱码；
-- 145 个模型；
-- 138 个物品、7 个方块、16 个实体的名称与资源；
+- 163个模型；
+- 156个物品、7个方块、28个实体的名称与资源；
 - 12份组织、24份封印物、6份灵界天气与12份灵界遭遇定义进入Pages生成；
-- 直接注册、`simple` 与 `ManagedArtifactKind` 辅助注册统一统计；
+- 直接注册、`simple`、`ManagedArtifactKind`、`spiritEcology`与`spiritEcologyEgg`辅助注册统一统计；
 - 所有有序配方必须在 3×3 内且每行宽度一致。
 
 模型/纹理断链、双语键漂移、注册资源缺失或 JSON 损坏都会令 Build 与 Documentation Consistency 失败。
@@ -36,7 +36,7 @@
 
 ## 验证
 
-自动化基线覆盖454项JUnit、26项Forge GameTest、164节点/214关系内容图、schema30迁移与精确回滚、M1–M5合同及既有多人/权限/守恒路径。M5新增真实独立维度、平台碰撞、边界拒绝、多人航线隔离、六段结算和SavedData往返验证。Pages现有284条图鉴并验证12个组织、24件封印物、6种天气、12类遭遇与普通玩家位置隐私；Forge clean build和两次真实专服启动—诊断—保存—停服矩阵保持。M2四人八小时、M3精确视觉/多人互补、M4长期平衡，以及M5共享梦境/实体化/真人30分钟多人平衡仍需人工验收；具体领地Mod联调归入M7。
+自动化基线覆盖464项JUnit、28项Forge GameTest、164节点/214关系内容图、schema30迁移与精确回滚、M1–M5合同及既有多人/权限/守恒路径。M5验证两种真实维度、十二实体构造/绑定、多人航线、全员同意/投票和逐人恢复。Pages现有310条图鉴并验证12个组织、24件封印物、6种天气、12类实体/遭遇与普通玩家位置隐私；Forge clean build和两次真实专服启动—诊断—保存—停服矩阵保持。M2四人八小时、M3精确视觉/多人互补、M4长期平衡，以及M5专属实体美术/更多途径梦境/真人30分钟多人平衡仍需人工验收；具体领地Mod联调归入M7。
 
 完整技术报告：
 [`docs/REPOSITORY_HEALTH_AND_RESOURCE_INTEGRITY.md`](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/REPOSITORY_HEALTH_AND_RESOURCE_INTEGRITY.md)。

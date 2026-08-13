@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "milestone": "M5",
-  "status": "first_playable_spirit_expedition",
+  "status": "machine_playable_scope_complete",
   "expedition": {
     "duration_ticks": 36000,
     "route_legs": 6,
@@ -77,6 +77,104 @@
       "spirit_orchid_moonwater"
     ]
   },
+  "physical_ecology": {
+    "entity_class": "SpiritEcologyEntity",
+    "entities": [
+      "lantern_moth_swarm",
+      "memory_leech",
+      "prayer_echo",
+      "spirit_ferryman",
+      "color_eater",
+      "door_wisp",
+      "whisper_crow",
+      "compass_bird",
+      "archive_spider",
+      "gaslight_specter",
+      "theatre_maskling",
+      "grave_lantern"
+    ],
+    "interaction_items": {
+      "spirit_compass": "observe",
+      "white_candle": "aid",
+      "spirit_salt": "aid",
+      "emerald": "bargain",
+      "gold_ingot": "bargain",
+      "crouch": "avoid"
+    },
+    "route_owner_isolated": true,
+    "spawn_eggs": true,
+    "persistent_binding": true
+  },
+  "shared_dream": {
+    "dimension": "lord_of_mysteries:shared_dream",
+    "persistent_data_name": "lord_of_mysteries_shared_dreams",
+    "schema_version": 1,
+    "max_participants": 4,
+    "trusted_reputation": 4,
+    "symbol_steps": 4,
+    "starting_coherence": 80,
+    "max_coherence": 100,
+    "max_trauma": 100,
+    "invite_ttl_ticks": 1200,
+    "session_ttl_ticks": 12000,
+    "scenarios": [
+      "missing_guest",
+      "repeating_theatre",
+      "drowned_archive",
+      "colorless_street"
+    ],
+    "symbols": [
+      "empty_chair",
+      "repeating_door",
+      "backward_clock",
+      "faceless_portrait",
+      "drowned_ledger",
+      "silent_bell",
+      "borrowed_voice",
+      "false_sunrise"
+    ],
+    "actions": [
+      "interpret",
+      "anchor",
+      "comfort",
+      "confront"
+    ],
+    "commands": [
+      "dream",
+      "invite",
+      "accept",
+      "decline",
+      "start",
+      "status",
+      "act",
+      "leave",
+      "recover"
+    ],
+    "ritual_items": [
+      "dream_entry_ribbon",
+      "dream_anchor_clock",
+      "witness_stone"
+    ],
+    "reward_and_recovery_items": [
+      "dream_memory",
+      "dream_trauma_shard",
+      "memory_sage_cocoa"
+    ],
+    "recipes": [
+      "dream_entry_ribbon",
+      "dream_anchor_clock",
+      "witness_stone",
+      "memory_sage_cocoa",
+      "dream_memory_to_divination_crystal",
+      "dream_trauma_recovery"
+    ],
+    "sleeping_bell_substitution": true,
+    "organization_reputation_reward": 1,
+    "organization_assignment_progress": [
+      "heresy_review",
+      "high_council"
+    ]
+  },
   "safety": {
     "server_authoritative": true,
     "player_isolated_lanes": true,
@@ -94,26 +192,44 @@
     "future_schema_read_only": true,
     "capacity_exhaustion_safe_failure": true,
     "origin_validated_before_chunk_load": true,
-    "wrong_dimension_cannot_complete": true
+    "wrong_dimension_cannot_complete": true,
+    "dream_explicit_consent": true,
+    "dream_decline_and_timeout_have_no_cost": true,
+    "dream_no_teleport_before_all_accept": true,
+    "dream_disconnect_fail_closed": true,
+    "dream_wrong_dimension_fail_closed": true,
+    "dream_death_is_not_real_death": true,
+    "dream_team_change_fail_closed": true,
+    "dream_organization_access_fail_closed": true,
+    "dream_per_player_origin_recovery": true,
+    "dream_duplicate_recovery_refused": true,
+    "dream_future_schema_read_only": true,
+    "dream_malformed_session_quarantine": true,
+    "dream_materials_consumed_after_activation": true
   },
   "validation": {
-    "junit_tests": 454,
-    "game_tests": 26,
+    "junit_tests": 464,
+    "game_tests": 28,
     "behavior_test_classes": [
       "SpiritExpeditionPolicyTest",
-      "SpiritExpeditionSavedDataTest"
+      "SpiritExpeditionSavedDataTest",
+      "SharedDreamPolicyTest",
+      "SharedDreamSavedDataTest"
     ],
     "game_test_methods": [
       "m5SpiritDimensionBuildsIsolatedSafeRoutes",
-      "m5SpiritRouteCompletesWithRecoverableRisk"
+      "m5SpiritRouteCompletesWithRecoverableRisk",
+      "m5SharedDreamDimensionAndEcologyEntitiesLoad",
+      "m5SharedDreamConsentVotesAndRecoveryPersist"
     ],
+    "pages_registered_items": 156,
+    "pages_registered_entities": 28,
     "pages_weather_entries": 6,
     "pages_encounter_entries": 12
   },
-  "deferred": [
-    "consent-gated shared organization dreams",
-    "physical entity implementations for all encounter profiles",
-    "additional weather variants beyond the six current profiles",
-    "long-form multiplayer balance evidence"
+  "deferred_release_evidence": [
+    "dedicated high-fidelity models, animations, and audio for the twelve ecology entities",
+    "human-observed thirty-minute multiplayer latency and balance session",
+    "additional pathway-exclusive authored dream scenes beyond the shared four-scenario system"
   ]
 }

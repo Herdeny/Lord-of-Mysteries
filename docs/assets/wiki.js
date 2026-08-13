@@ -73,7 +73,7 @@
 
   /* Release metadata */
   setText("#hero-version", meta.version);
-  setText("#hero-milestone", (window.LOM_PROJECT_META || {}).milestone || "M4");
+  setText("#hero-milestone", (window.LOM_PROJECT_META || {}).milestone || "M6");
   setText("#release-version", meta.version);
   setText("#release-stage", meta.stage);
   var metaDl = $("#meta-dl");

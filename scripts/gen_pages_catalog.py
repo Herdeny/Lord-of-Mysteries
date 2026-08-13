@@ -30,6 +30,14 @@ def load_registry_ids():
         REGISTRY_ROOT / "ModItems.java",
         r'\bsimple\(\s*"([a-z0-9_]+)"\s*\)|\bITEMS\.register\(\s*"([a-z0-9_]+)"',
     )
+    spirit_ecology_eggs = unique_matches(
+        REGISTRY_ROOT / "ModItems.java",
+        r'\bspiritEcologyEgg\(\s*"([a-z0-9_]+)"',
+    )
+    for registry_id in spirit_ecology_eggs:
+        spawn_egg_id = f"{registry_id}_spawn_egg"
+        if spawn_egg_id not in items:
+            items.append(spawn_egg_id)
     managed_artifacts = unique_matches(
         ROOT / "src" / "main" / "java" / "top" / "aurora"
         / "lordofmysteries" / "artifact" / "ManagedArtifactKind.java",
@@ -44,7 +52,7 @@ def load_registry_ids():
     )
     entities = unique_matches(
         REGISTRY_ROOT / "ModEntities.java",
-        r'\bENTITIES\.register\(\s*"([a-z0-9_]+)"',
+        r'\bENTITIES\.register\(\s*"([a-z0-9_]+)"|\bspiritEcology\(\s*"([a-z0-9_]+)"',
     )
     if not items or not blocks or not entities:
         raise ValueError("无法从 Forge 注册类读取完整物品、方块和实体 ID")

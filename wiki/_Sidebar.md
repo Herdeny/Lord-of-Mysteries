@@ -9,6 +9,7 @@
 - [精神风险与调查日志](Risk-and-Investigation)
 - [M1 两小时纵切追踪器](M1-Trial-Tracker)
 - [M5 灵界远征](M5-Spirit-Expeditions)
+- [M5 共享梦境与实体生态](M5-Shared-Dreams-and-Ecology)
 
 ### 调查与多人
 
@@ -39,6 +40,7 @@
 ### 灵界与梦境
 
 - [M5 灵界远征玩家与服务器手册](M5-Spirit-Expeditions)
+- [M5 共享梦境与实体生态](M5-Shared-Dreams-and-Ecology)
 
 ### 开发与发布
 

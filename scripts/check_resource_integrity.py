@@ -197,9 +197,17 @@ def managed_artifact_registrations():
 def check_registries(errors):
     languages = load_json(LANG / "en_us.json", errors) or {}
     items = registrations(REGISTRY / "ModItems.java", "ITEMS", "simple")
+    item_source = (REGISTRY / "ModItems.java").read_text(encoding="utf-8")
+    items.update(
+        f"{name}_spawn_egg" for name in re.findall(
+            r'\bspiritEcologyEgg\(\s*"([a-z0-9_]+)"', item_source,
+        )
+    )
     items.update(managed_artifact_registrations())
     blocks = registrations(REGISTRY / "ModBlocks.java", "BLOCKS")
-    entities = registrations(REGISTRY / "ModEntities.java", "ENTITIES")
+    entities = registrations(
+        REGISTRY / "ModEntities.java", "ENTITIES", "spiritEcology",
+    )
 
     for name in sorted(items):
         if name not in blocks and f"item.{NAMESPACE}.{name}" not in languages:

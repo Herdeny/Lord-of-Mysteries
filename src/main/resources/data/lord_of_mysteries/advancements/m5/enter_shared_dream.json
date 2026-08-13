@@ -1,0 +1,20 @@
+{
+  "parent": "lord_of_mysteries:m5/enter_spirit_world",
+  "criteria": {
+    "entered": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": { "to": "lord_of_mysteries:shared_dream" }
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": { "translate": "advancement.lord_of_mysteries.m5.enter_shared_dream.description" },
+    "frame": "task",
+    "hidden": false,
+    "icon": { "item": "lord_of_mysteries:dream_entry_ribbon" },
+    "show_toast": true,
+    "title": { "translate": "advancement.lord_of_mysteries.m5.enter_shared_dream.title" }
+  },
+  "requirements": [["entered"]],
+  "sends_telemetry_event": false
+}

@@ -43,6 +43,9 @@ import top.aurora.lordofmysteries.ability.MarionetteScrollItem;
 import top.aurora.lordofmysteries.spirit.EmergencyReturnCharmItem;
 import top.aurora.lordofmysteries.spirit.SpiritCompassItem;
 import top.aurora.lordofmysteries.spirit.SpiritRouteLanternItem;
+import top.aurora.lordofmysteries.dream.DreamAnchorClockItem;
+import top.aurora.lordofmysteries.dream.DreamEntryRibbonItem;
+import top.aurora.lordofmysteries.dream.MemorySageCocoaItem;
 
 /**
  * 物品注册（Forge 1.20.1）。包含材料、魔药、封印物和方块物品。
@@ -270,8 +273,44 @@ public final class ModItems {
     public static final RegistryObject<Item> PYROMANIAC_BREAKDOWN_SPAWN_EGG =
             ITEMS.register("pyromaniac_breakdown_spawn_egg",
                     () -> new ForgeSpawnEggItem(
-                            ModEntities.PYROMANIAC_BREAKDOWN,
-                            0x33130A, 0xFF6A00, new Item.Properties()));
+                             ModEntities.PYROMANIAC_BREAKDOWN,
+                             0x33130A, 0xFF6A00, new Item.Properties()));
+    public static final RegistryObject<Item> LANTERN_MOTH_SWARM_SPAWN_EGG =
+            spiritEcologyEgg("lantern_moth_swarm", ModEntities.LANTERN_MOTH_SWARM,
+                    0xE9C46A, 0xFFF3B0);
+    public static final RegistryObject<Item> MEMORY_LEECH_SPAWN_EGG =
+            spiritEcologyEgg("memory_leech", ModEntities.MEMORY_LEECH,
+                    0x263859, 0x8EA8C3);
+    public static final RegistryObject<Item> PRAYER_ECHO_SPAWN_EGG =
+            spiritEcologyEgg("prayer_echo", ModEntities.PRAYER_ECHO,
+                    0x6B728E, 0xD8E2DC);
+    public static final RegistryObject<Item> SPIRIT_FERRYMAN_SPAWN_EGG =
+            spiritEcologyEgg("spirit_ferryman", ModEntities.SPIRIT_FERRYMAN,
+                    0x2D3142, 0xBFC0C0);
+    public static final RegistryObject<Item> COLOR_EATER_SPAWN_EGG =
+            spiritEcologyEgg("color_eater", ModEntities.COLOR_EATER,
+                    0x5C5C5C, 0xF4A261);
+    public static final RegistryObject<Item> DOOR_WISP_SPAWN_EGG =
+            spiritEcologyEgg("door_wisp", ModEntities.DOOR_WISP,
+                    0x3A0CA3, 0x4CC9F0);
+    public static final RegistryObject<Item> WHISPER_CROW_SPAWN_EGG =
+            spiritEcologyEgg("whisper_crow", ModEntities.WHISPER_CROW,
+                    0x171717, 0x6D597A);
+    public static final RegistryObject<Item> COMPASS_BIRD_SPAWN_EGG =
+            spiritEcologyEgg("compass_bird", ModEntities.COMPASS_BIRD,
+                    0xA8DADC, 0xE63946);
+    public static final RegistryObject<Item> ARCHIVE_SPIDER_SPAWN_EGG =
+            spiritEcologyEgg("archive_spider", ModEntities.ARCHIVE_SPIDER,
+                    0x463F3A, 0xD4A373);
+    public static final RegistryObject<Item> GASLIGHT_SPECTER_SPAWN_EGG =
+            spiritEcologyEgg("gaslight_specter", ModEntities.GASLIGHT_SPECTER,
+                    0x354F52, 0xCAD2C5);
+    public static final RegistryObject<Item> THEATRE_MASKLING_SPAWN_EGG =
+            spiritEcologyEgg("theatre_maskling", ModEntities.THEATRE_MASKLING,
+                    0x7B2CBF, 0xF7B801);
+    public static final RegistryObject<Item> GRAVE_LANTERN_SPAWN_EGG =
+            spiritEcologyEgg("grave_lantern", ModEntities.GRAVE_LANTERN,
+                    0x415D43, 0xFFD166);
 
     // 制作失败或污染反应的产物，用于验证失败结果和污染系统链路。
     public static final RegistryObject<Item> CONTAMINATED_MIXTURE = simple("contaminated_mixture");
@@ -339,6 +378,30 @@ public final class ModItems {
     public static final RegistryObject<Item> SPIRIT_ORCHID_PETALS = ITEMS.register(
             "spirit_orchid_petals",
             () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> DREAM_ENTRY_RIBBON = ITEMS.register(
+            "dream_entry_ribbon",
+            () -> new DreamEntryRibbonItem(
+                    new Item.Properties().stacksTo(16).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> DREAM_ANCHOR_CLOCK = ITEMS.register(
+            "dream_anchor_clock",
+            () -> new DreamAnchorClockItem(
+                    new Item.Properties().durability(32).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> WITNESS_STONE = ITEMS.register(
+            "witness_stone",
+            () -> new Item(new Item.Properties()
+                    .durability(32).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> DREAM_MEMORY = ITEMS.register(
+            "dream_memory",
+            () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> DREAM_TRAUMA_SHARD = ITEMS.register(
+            "dream_trauma_shard",
+            () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> MEMORY_SAGE_COCOA = ITEMS.register(
+            "memory_sage_cocoa",
+            () -> new MemorySageCocoaItem(new Item.Properties().stacksTo(16)
+                    .rarity(Rarity.UNCOMMON)
+                    .food(new net.minecraft.world.food.FoodProperties.Builder()
+                            .nutrition(5).saturationMod(0.7f).alwaysEat().build())));
     public static final RegistryObject<Item> PROTECTIVE_CHARM = ITEMS.register(
             "protective_charm",
             () -> new ProtectiveCharmItem(
@@ -429,6 +492,14 @@ public final class ModItems {
             () -> new EternalMatchboxItem(new Item.Properties().durability(16).rarity(Rarity.RARE)));
     private static final Map<ManagedArtifactKind, RegistryObject<Item>>
             MANAGED_ARTIFACTS = registerManagedArtifacts();
+
+    private static RegistryObject<Item> spiritEcologyEgg(
+            String id,
+            RegistryObject<? extends net.minecraft.world.entity.EntityType<? extends net.minecraft.world.entity.Mob>> type,
+            int primary, int secondary) {
+        return ITEMS.register(id + "_spawn_egg", () -> new ForgeSpawnEggItem(
+                type, primary, secondary, new Item.Properties()));
+    }
     public static final RegistryObject<Item> ARTIFACT_KINDLY_UMBRELLA =
             managedArtifact(ManagedArtifactKind.KINDLY_UMBRELLA);
     public static final RegistryObject<Item> ARTIFACT_HONEST_MIRROR =

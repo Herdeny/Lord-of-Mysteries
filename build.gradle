@@ -252,13 +252,15 @@ tasks.register('checkM4Foundation', Exec) {
 
 tasks.register('checkM5Foundation', Exec) {
     group = 'verification'
-    description = 'Checks the first playable M5 Spirit World expedition loop.'
+    description = 'Checks the complete machine-playable M5 expedition and shared dream scope.'
     dependsOn 'generatePagesCatalog'
     commandLine pythonExecutable, 'scripts/check_m5_foundation.py'
     inputs.files 'scripts/check_m5_foundation.py',
-            'docs/m5-foundation-contract.json',
-            fileTree('src/main/java/top/aurora/lordofmysteries/spirit'),
-            fileTree('src/main/java/top/aurora/lordofmysteries/command'),
+             'docs/m5-foundation-contract.json',
+             fileTree('src/main/java/top/aurora/lordofmysteries/spirit'),
+             fileTree('src/main/java/top/aurora/lordofmysteries/dream'),
+             fileTree('src/main/java/top/aurora/lordofmysteries/artifact'),
+             fileTree('src/main/java/top/aurora/lordofmysteries/command'),
             fileTree('src/main/java/top/aurora/lordofmysteries/registry'),
             fileTree('src/main/resources/data/lord_of_mysteries/dimension'),
             fileTree('src/main/resources/data/lord_of_mysteries/dimension_type'),
@@ -267,7 +269,8 @@ tasks.register('checkM5Foundation', Exec) {
             fileTree('src/main/resources/data/lord_of_mysteries/recipes'),
             fileTree('src/main/resources/assets/lord_of_mysteries/lang'),
             fileTree('src/main/resources/assets/lord_of_mysteries/models/item'),
-            fileTree('src/test/java/top/aurora/lordofmysteries/spirit'),
+             fileTree('src/test/java/top/aurora/lordofmysteries/spirit'),
+             fileTree('src/test/java/top/aurora/lordofmysteries/dream'),
             'src/main/java/top/aurora/lordofmysteries/gametest/PlayerPersistenceGameTests.java',
             'docs/assets/catalog-data.js'
 }

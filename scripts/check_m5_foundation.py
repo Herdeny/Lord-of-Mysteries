@@ -43,6 +43,16 @@ def main():
     builder = source(spirit / "SpiritExpeditionWorldBuilder.java")
     commands = source(JAVA / "command" / "ProjectMysteryCommands.java")
     items = source(JAVA / "registry" / "ModItems.java")
+    entities = source(JAVA / "registry" / "ModEntities.java")
+    artifact_service = source(
+        JAVA / "artifact" / "SealedArtifactService.java")
+    dream = JAVA / "dream"
+    dream_policy = source(dream / "SharedDreamPolicy.java")
+    normalized_dream_policy = dream_policy.replace("_", "")
+    dream_saved = source(dream / "SharedDreamSavedData.java")
+    dream_service = source(dream / "SharedDreamService.java")
+    dream_builder = source(dream / "SharedDreamWorldBuilder.java")
+    ecology_entity = source(spirit / "SpiritEcologyEntity.java")
 
     constants = {
         "DURATION_TICKS": expedition["duration_ticks"],
@@ -161,6 +171,107 @@ def main():
                 and profile.get("reward"),
                 f"encounter profile {encounter} is incomplete")
 
+    ecology = contract["physical_ecology"]
+    require(enum_ids(spirit / "SpiritEcologyKind.java")
+            == set(ecology["entities"]),
+            "physical ecology ids drifted")
+    for entity in ecology["entities"]:
+        require(f'spiritEcology("{entity}")' in entities,
+                f"entity registration {entity} is missing")
+        require(f'spiritEcologyEgg("{entity}"' in items,
+                f"spawn egg {entity} is missing")
+        require((ASSETS / "models" / "item"
+                 / f"{entity}_spawn_egg.json").exists(),
+                f"spawn egg model {entity} is missing")
+        for locale, language in translations.items():
+            require(f"entity.lord_of_mysteries.{entity}" in language,
+                    f"{locale} misses ecology entity {entity}")
+            require(f"item.lord_of_mysteries.{entity}_spawn_egg" in language,
+                    f"{locale} misses ecology spawn egg {entity}")
+        require(f'"id": "lord_of_mysteries:{entity}"' in pages,
+                f"Pages catalog misses entity {entity}")
+        require(f'"id": "lord_of_mysteries:{entity}_spawn_egg"' in pages,
+                f"Pages catalog misses spawn egg {entity}")
+    require("belongsTo" in ecology_entity
+            and "resolveEncounter" in ecology_entity
+            and "routeOwner == null" in ecology_entity,
+            "owned and creative ecology behavior is incomplete")
+    require("spawnEncounterEntity" in service
+            and "removeEncounterEntities" in service
+            and "restrictTo" in service,
+            "route ecology lifecycle is incomplete")
+
+    shared_dream = contract["shared_dream"]
+    dream_constants = {
+        "MAX_PARTICIPANTS": shared_dream["max_participants"],
+        "TRUSTED_REPUTATION": shared_dream["trusted_reputation"],
+        "SYMBOL_STEPS": shared_dream["symbol_steps"],
+        "STARTING_COHERENCE": shared_dream["starting_coherence"],
+        "MAX_COHERENCE": shared_dream["max_coherence"],
+        "MAX_TRAUMA": shared_dream["max_trauma"],
+        "INVITE_TTL_TICKS": shared_dream["invite_ttl_ticks"],
+        "SESSION_TTL_TICKS": shared_dream["session_ttl_ticks"],
+    }
+    for name, value in dream_constants.items():
+        require(re.search(
+                    rf"{name.replace('_', '')}\s*=\s*{value}L?\s*;",
+                    normalized_dream_policy),
+                f"shared dream {name} drifted")
+    require(shared_dream["persistent_data_name"] in dream_saved,
+            "shared dream SavedData name drifted")
+    require(f'SCHEMA_VERSION = {shared_dream["schema_version"]}'
+            in dream_saved,
+            "shared dream SavedData schema drifted")
+    dream_enums = {
+        "DreamScenario.java": set(shared_dream["scenarios"]),
+        "DreamSymbol.java": set(shared_dream["symbols"]),
+        "DreamAction.java": set(shared_dream["actions"]),
+    }
+    for filename, expected in dream_enums.items():
+        require(enum_ids(dream / filename) == expected,
+                f"{filename} ids drifted")
+    dream_dimension = load(DATA / "dimension" / "shared_dream.json")
+    dream_dimension_type = load(
+        DATA / "dimension_type" / "shared_dream.json")
+    require(dream_dimension.get("type") == shared_dream["dimension"],
+            "shared dream dimension type binding drifted")
+    require(dream_dimension.get("generator", {}).get("type")
+            == "minecraft:flat"
+            and dream_dimension.get("generator", {}).get(
+                "settings", {}).get("biome") == "minecraft:the_void",
+            "shared dream must remain a semantic scene")
+    require(not dream_dimension_type.get("natural")
+            and not dream_dimension_type.get("bed_works")
+            and not dream_dimension_type.get("respawn_anchor_works"),
+            "shared dream respawn safety drifted")
+    require("isInWorldBounds" in dream_builder
+            and "getWorldBorder().isWithinBounds" in dream_builder
+            and "getChunkAt" in dream_builder,
+            "shared dream destination validation is incomplete")
+    for command in shared_dream["commands"]:
+        require(f'literal("{command}")' in commands,
+                f"shared dream command {command} is missing")
+    for item in (shared_dream["ritual_items"]
+                 + shared_dream["reward_and_recovery_items"]):
+        require(f'"{item}"' in items,
+                f"shared dream item {item} is missing")
+        require((ASSETS / "models" / "item" / f"{item}.json").exists(),
+                f"shared dream model {item} is missing")
+        for locale, language in translations.items():
+            require(f"item.lord_of_mysteries.{item}" in language,
+                    f"{locale} misses shared dream item {item}")
+        require(f'"id": "lord_of_mysteries:{item}"' in pages,
+                f"Pages catalog misses shared dream item {item}")
+    for recipe in shared_dream["recipes"]:
+        require((DATA / "recipes" / f"{recipe}.json").exists(),
+                f"shared dream recipe {recipe} is missing")
+    require("hasUsableSleepingBell" in artifact_service
+            and "useSleepingBellAsDreamAnchor" in artifact_service
+            and "OrganizationActionSavedData" in dream_service
+            and "OrganizationActionType.HERESY_REVIEW" in dream_service
+            and "OrganizationActionType.HIGH_COUNCIL" in dream_service,
+            "artifact or organization shared dream integration is incomplete")
+
     safety = contract["safety"]
     anchors = {
         "server_authoritative": "ServerPlayer",
@@ -184,8 +295,29 @@ def main():
             "origin.isInWorldBounds(expedition.origin())",
         "wrong_dimension_cannot_complete":
             "exitInternal(player, ExitReason.INTERRUPTED)",
+        "dream_explicit_consent": "allAccepted()",
+        "dream_decline_and_timeout_have_no_cost":
+            "DreamCloseReason.DECLINED",
+        "dream_no_teleport_before_all_accept": "!session.allAccepted()",
+        "dream_disconnect_fail_closed": "DreamCloseReason.DISCONNECTED",
+        "dream_wrong_dimension_fail_closed":
+            "DreamCloseReason.WRONG_DIMENSION",
+        "dream_death_is_not_real_death": "DreamCloseReason.DREAM_DEATH",
+        "dream_team_change_fail_closed": "DreamCloseReason.TEAM_CHANGED",
+        "dream_organization_access_fail_closed":
+            "DreamCloseReason.ORGANIZATION_ACCESS_LOST",
+        "dream_per_player_origin_recovery":
+            "Map<UUID, SharedDreamSavedData.Origin> origins",
+        "dream_duplicate_recovery_refused":
+            "recoveries.containsKey(player)",
+        "dream_future_schema_read_only": "futureSnapshot != null",
+        "dream_malformed_session_quarantine": "orphanedEntries.add",
+        "dream_materials_consumed_after_activation": "consumeRitualKit(host)",
     }
-    combined = "\n".join((policy, saved, service, builder))
+    combined = "\n".join((
+        policy, saved, service, builder,
+        dream_policy, dream_saved, dream_service, dream_builder,
+    ))
     for rule, enabled in safety.items():
         require(not enabled or anchors[rule] in combined,
                 f"safety rule {rule} is missing")
@@ -199,6 +331,14 @@ def main():
         f'"spiritEncounterDefinitions": {validation["pages_encounter_entries"]}'
         in pages,
         "Pages encounter metadata drifted")
+    require(
+        f'"registeredItems": {validation["pages_registered_items"]}'
+        in pages,
+        "Pages item metadata drifted")
+    require(
+        f'"registeredEntities": {validation["pages_registered_entities"]}'
+        in pages,
+        "Pages entity metadata drifted")
     for profile_id in expedition["weather"]:
         require(
             f'"id": "lord_of_mysteries:spirit_weather/{profile_id}"'
@@ -229,8 +369,10 @@ def main():
         f"{len(expedition['projections'])} projections, "
         f"{len(expedition['weather'])} weather profiles, "
         f"{len(expedition['encounters'])} encounter profiles, "
+        f"{len(ecology['entities'])} physical ecology entities, "
+        f"{len(shared_dream['scenarios'])} shared dream scenarios, "
         f"{expedition['route_legs']} route legs, persistent recovery, "
-        "bilingual resources, and synchronized Pages"
+        "explicit consent, bilingual resources, and synchronized Pages"
     )
 
 

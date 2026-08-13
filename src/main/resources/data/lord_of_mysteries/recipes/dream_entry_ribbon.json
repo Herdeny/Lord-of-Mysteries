@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["SMS", "TWT", "SMS"],
+  "key": {
+    "S": { "item": "minecraft:string" },
+    "M": { "item": "lord_of_mysteries:memory_fragment" },
+    "T": { "item": "lord_of_mysteries:ashen_thread" },
+    "W": { "item": "lord_of_mysteries:memory_seal_wax" }
+  },
+  "result": {
+    "item": "lord_of_mysteries:dream_entry_ribbon",
+    "count": 2
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [" R ", "WAW", " R "],
+  "key": {
+    "A": { "item": "minecraft:amethyst_shard" },
+    "R": { "item": "minecraft:redstone" },
+    "W": { "item": "lord_of_mysteries:memory_seal_wax" }
+  },
+  "result": { "item": "lord_of_mysteries:witness_stone" }
+}

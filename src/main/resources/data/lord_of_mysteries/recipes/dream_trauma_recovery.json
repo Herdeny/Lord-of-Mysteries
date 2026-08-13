@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "lord_of_mysteries:dream_trauma_shard" },
+    { "item": "lord_of_mysteries:calming_incense" },
+    { "item": "lord_of_mysteries:memory_sage_cocoa" }
+  ],
+  "result": { "item": "lord_of_mysteries:memory_fragment" }
+}

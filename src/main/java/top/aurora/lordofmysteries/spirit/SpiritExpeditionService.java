@@ -1,5 +1,6 @@
 package top.aurora.lordofmysteries.spirit;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import net.minecraft.ChatFormatting;
@@ -14,6 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.RelativeMovement;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -91,6 +93,7 @@ public final class SpiritExpeditionService {
             send(player, "message.lord_of_mysteries.spirit.resumed",
                     ChatFormatting.AQUA);
         }
+        ensureEncounterEntity(player, expedition);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -298,6 +301,7 @@ public final class SpiritExpeditionService {
                 "message.lord_of_mysteries.spirit.encounter.appeared",
                 Component.translatable(outcome.encounter().translationKey()))
                 .withStyle(ChatFormatting.YELLOW));
+        spawnEncounterEntity(player, changed);
         applyWeather(player, changed.weather());
         if (changed.failed()) {
             exitInternal(player, ExitReason.DRIFT);
@@ -327,6 +331,7 @@ public final class SpiritExpeditionService {
                 player.getUUID(), current -> current.afterEncounter(
                         outcome, player.level().getGameTime()));
         if (changed == null) return 0;
+        removeEncounterEntities(player.getServer(), player.getUUID());
         player.sendSystemMessage(Component.translatable(
                 outcome.correct()
                         ? "message.lord_of_mysteries.spirit.encounter.success"
@@ -465,6 +470,7 @@ public final class SpiritExpeditionService {
             return false;
         }
         data.remove(player.getUUID());
+        removeEncounterEntities(player.getServer(), player.getUUID());
         if (reason == ExitReason.COMPLETE) giveRewards(player, expedition);
         if (reason != ExitReason.COMPLETE) applyFailurePressure(player, reason);
         player.addEffect(new MobEffectInstance(
@@ -569,6 +575,73 @@ public final class SpiritExpeditionService {
                     MobEffects.GLOWING, 60, 0, false, false, true);
         };
         player.addEffect(effect);
+    }
+
+    private static void ensureEncounterEntity(
+            ServerPlayer player,
+            SpiritExpeditionSavedData.Expedition expedition) {
+        if (expedition.pendingEncounter() == null
+                || !(player.level() instanceof ServerLevel level)) {
+            return;
+        }
+        SpiritEcologyKind expected = SpiritEcologyKind.fromId(
+                expedition.pendingEncounter().id());
+        BlockPos pad = expedition.currentPad();
+        boolean present = false;
+        var stale = new ArrayList<SpiritEcologyEntity>();
+        for (Entity entity : level.getAllEntities()) {
+            if (entity instanceof SpiritEcologyEntity ecology
+                    && ecology.belongsTo(player.getUUID())) {
+                if (ecology.ecologyKind() == expected
+                        && ecology.distanceToSqr(
+                                pad.getX() + 0.5d,
+                                pad.getY() + 1d,
+                                pad.getZ() + 0.5d) <= 4096d) {
+                    present = true;
+                } else {
+                    stale.add(ecology);
+                }
+            }
+        }
+        stale.forEach(Entity::discard);
+        if (!present) spawnEncounterEntity(player, expedition);
+    }
+
+    private static void spawnEncounterEntity(
+            ServerPlayer player,
+            SpiritExpeditionSavedData.Expedition expedition) {
+        if (expedition == null || expedition.pendingEncounter() == null
+                || !(player.level() instanceof ServerLevel level)
+                || !SPIRIT_WORLD.equals(level.dimension())) {
+            return;
+        }
+        removeEncounterEntities(player.getServer(), player.getUUID());
+        SpiritEcologyKind kind = SpiritEcologyKind.fromId(
+                expedition.pendingEncounter().id());
+        if (kind == null) return;
+        SpiritEcologyEntity entity = kind.entityType().create(level);
+        if (entity == null) return;
+        entity.bind(player.getUUID(), kind);
+        BlockPos pad = expedition.currentPad();
+        entity.moveTo(
+                pad.getX() + 2.5d, pad.getY() + 1d,
+                pad.getZ() + 0.5d, 180f, 0f);
+        entity.restrictTo(pad.above(), 5);
+        level.addFreshEntity(entity);
+    }
+
+    private static void removeEncounterEntities(
+            MinecraftServer server, java.util.UUID owner) {
+        ServerLevel spirit = server.getLevel(SPIRIT_WORLD);
+        if (spirit == null) return;
+        var owned = new ArrayList<SpiritEcologyEntity>();
+        for (Entity entity : spirit.getAllEntities()) {
+            if (entity instanceof SpiritEcologyEntity ecology
+                    && ecology.belongsTo(owner)) {
+                owned.add(ecology);
+            }
+        }
+        owned.forEach(Entity::discard);
     }
 
     private static boolean teleport(

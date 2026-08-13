@@ -1,0 +1,22 @@
+{
+  "parent": "lord_of_mysteries:m5/enter_shared_dream",
+  "criteria": {
+    "memory": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "items": ["lord_of_mysteries:dream_memory"] }]
+      }
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": { "translate": "advancement.lord_of_mysteries.m5.complete_shared_dream.description" },
+    "frame": "goal",
+    "hidden": false,
+    "icon": { "item": "lord_of_mysteries:dream_memory" },
+    "show_toast": true,
+    "title": { "translate": "advancement.lord_of_mysteries.m5.complete_shared_dream.title" }
+  },
+  "requirements": [["memory"]],
+  "sends_telemetry_event": false
+}

@@ -48,6 +48,7 @@ import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.registry.ModItems;
 import top.aurora.lordofmysteries.ritual.SequenceFiveAdvancementRitual;
 import top.aurora.lordofmysteries.spirit.SpiritExpeditionService;
+import top.aurora.lordofmysteries.dream.SharedDreamService;
 import top.aurora.lordofmysteries.commission.CaseAnalysisService;
 import top.aurora.lordofmysteries.commission.CaseHypothesisService;
 import top.aurora.lordofmysteries.commission.CaseHypothesisStance;
@@ -189,6 +190,51 @@ public final class ProjectMysteryCommands {
                                         SpiritExpeditionService.recover(
                                                 context.getSource()
                                                         .getPlayerOrException()))))
+                .then(Commands.literal("dream")
+                        .executes(context -> SharedDreamService.showGuide(
+                                context.getSource().getPlayerOrException()))
+                        .then(Commands.literal("invite")
+                                .then(Commands.argument(
+                                                "player", EntityArgument.player())
+                                        .then(Commands.argument(
+                                                        "organization",
+                                                        StringArgumentType.word())
+                                                .executes(context ->
+                                                        SharedDreamService.invite(
+                                                                context.getSource()
+                                                                        .getPlayerOrException(),
+                                                                EntityArgument.getPlayer(
+                                                                        context, "player"),
+                                                                StringArgumentType.getString(
+                                                                        context,
+                                                                        "organization"))))))
+                        .then(Commands.literal("accept")
+                                .executes(context -> SharedDreamService.accept(
+                                        context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("decline")
+                                .executes(context -> SharedDreamService.decline(
+                                        context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("start")
+                                .executes(context -> SharedDreamService.start(
+                                        context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("status")
+                                .executes(context -> SharedDreamService.status(
+                                        context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("act")
+                                .then(Commands.argument(
+                                                "action",
+                                                StringArgumentType.word())
+                                        .executes(context -> SharedDreamService.act(
+                                                context.getSource()
+                                                        .getPlayerOrException(),
+                                                StringArgumentType.getString(
+                                                        context, "action")))))
+                        .then(Commands.literal("leave")
+                                .executes(context -> SharedDreamService.leave(
+                                        context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("recover")
+                                .executes(context -> SharedDreamService.recover(
+                                        context.getSource().getPlayerOrException()))))
                 .then(Commands.literal("organization")
                         .executes(context ->
                                 OrganizationActionService.showActions(

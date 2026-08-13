@@ -80,6 +80,13 @@ import top.aurora.lordofmysteries.spirit.SpiritExpeditionSavedData;
 import top.aurora.lordofmysteries.spirit.SpiritExpeditionService;
 import top.aurora.lordofmysteries.spirit.SpiritExpeditionWorldBuilder;
 import top.aurora.lordofmysteries.spirit.SpiritProjection;
+import top.aurora.lordofmysteries.spirit.SpiritEcologyEntity;
+import top.aurora.lordofmysteries.spirit.SpiritEcologyKind;
+import top.aurora.lordofmysteries.dream.DreamCloseReason;
+import top.aurora.lordofmysteries.dream.SharedDreamPolicy;
+import top.aurora.lordofmysteries.dream.SharedDreamSavedData;
+import top.aurora.lordofmysteries.dream.SharedDreamService;
+import top.aurora.lordofmysteries.dream.SharedDreamWorldBuilder;
 import top.aurora.lordofmysteries.ritual.RitualStructureLogic;
 import top.aurora.lordofmysteries.ritual.SequenceFiveAdvancementRitual;
 
@@ -1886,6 +1893,118 @@ public final class PlayerPersistenceGameTests {
         helper.assertTrue(saved.remove(player) != null
                         && saved.get(player) == null,
                 "successful settlement must atomically release the expedition slot");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void m5SharedDreamDimensionAndEcologyEntitiesLoad(
+            GameTestHelper helper) {
+        ServerLevel dream = helper.getLevel().getServer().getLevel(
+                SharedDreamService.DREAM_WORLD);
+        helper.assertTrue(dream != null,
+                "M5 shared dream dimension must load on the dedicated server");
+        if (dream == null) return;
+        Vec3 arrival = SharedDreamWorldBuilder.build(
+                dream, 9,
+                top.aurora.lordofmysteries.dream.DreamScenario.DROWNED_ARCHIVE);
+        BlockPos center = SharedDreamWorldBuilder.center(9);
+        helper.assertTrue(arrival != null
+                        && dream.getBlockState(center).isFaceSturdy(
+                        dream, center, net.minecraft.core.Direction.UP)
+                        && dream.getBlockState(center.above(2)).isAir(),
+                "shared dream semantic platform must have safe floor and body space");
+
+        UUID owner = UUID.randomUUID();
+        for (SpiritEcologyKind kind : SpiritEcologyKind.values()) {
+            SpiritEcologyEntity entity = kind.entityType().create(
+                    helper.getLevel());
+            helper.assertTrue(entity != null,
+                    "all twelve M5 ecology entity types must construct");
+            if (entity == null) return;
+            entity.bind(owner, kind);
+            CompoundTag savedEntity = new CompoundTag();
+            entity.addAdditionalSaveData(savedEntity);
+            SpiritEcologyEntity restored = kind.entityType().create(
+                    helper.getLevel());
+            helper.assertTrue(restored != null,
+                    "ecology entity must reconstruct for persistence");
+            if (restored == null) return;
+            restored.readAdditionalSaveData(savedEntity);
+            helper.assertTrue(restored.belongsTo(owner)
+                            && restored.ecologyKind() == kind,
+                    "ecology ownership and profile must survive NBT");
+            entity.discard();
+            restored.discard();
+        }
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void m5SharedDreamConsentVotesAndRecoveryPersist(
+            GameTestHelper helper) {
+        SharedDreamSavedData data = new SharedDreamSavedData();
+        UUID host = UUID.randomUUID();
+        UUID guest = UUID.randomUUID();
+        ResourceLocation organization = ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID,
+                "organization/secret_mind_alchemy");
+        var lobby = data.createLobby(
+                host, guest, organization, "gametest-team",
+                helper.getLevel().getSeed() ^ 0xD3EA4L,
+                helper.getLevel().getGameTime());
+        helper.assertTrue(lobby != null && !lobby.allAccepted(),
+                "shared dreams must begin as an unaccepted consent lobby");
+        if (lobby == null) return;
+        Map<UUID, SharedDreamSavedData.Origin> origins = Map.of(
+                host, new SharedDreamSavedData.Origin(
+                        helper.getLevel().dimension().location(),
+                        helper.absolutePos(new BlockPos(2, 2, 2))),
+                guest, new SharedDreamSavedData.Origin(
+                        helper.getLevel().dimension().location(),
+                        helper.absolutePos(new BlockPos(3, 2, 3))));
+        helper.assertTrue(data.activate(
+                        host, origins,
+                        helper.getLevel().getGameTime()) == null,
+                "no participant may be forced into an unaccepted dream");
+        helper.assertTrue(data.accept(
+                        guest, helper.getLevel().getGameTime()) != null,
+                "explicit guest consent must be recordable");
+        helper.assertTrue(data.activate(
+                        host, origins,
+                        helper.getLevel().getGameTime()) != null,
+                "fully accepted lobby must activate");
+
+        for (int step = 0; step < SharedDreamPolicy.SYMBOL_STEPS; step++) {
+            var session = data.forPlayer(host);
+            var action = session.pendingSymbol().preferredAction();
+            helper.assertTrue(!data.vote(
+                            host, action,
+                            helper.getLevel().getGameTime()).resolved(),
+                    "first participant vote must wait for consent peers");
+            helper.assertTrue(data.vote(
+                            guest, action,
+                            helper.getLevel().getGameTime()).resolved(),
+                    "final participant vote must resolve the shared symbol");
+        }
+        var completed = data.forPlayer(host);
+        helper.assertTrue(completed.state()
+                        == SharedDreamSavedData.DreamState.COMPLETE
+                        && completed.clueScore() > 0,
+                "four coordinated symbols must create extractable dream evidence");
+        data.close(completed.id());
+        helper.assertTrue(data.queueRecovery(
+                        guest, completed.id(), origins.get(guest),
+                        DreamCloseReason.COMPLETE, completed.clueScore(),
+                        organization, true,
+                        helper.getLevel().getGameTime()),
+                "offline participant reward and return must queue exactly once");
+        SharedDreamSavedData restored = SharedDreamSavedData.load(
+                data.save(new CompoundTag()));
+        helper.assertTrue(restored.recovery(guest) != null
+                        && restored.recovery(guest).completed()
+                        && restored.recovery(guest).clueScore()
+                        == completed.clueScore(),
+                "shared dream recovery must survive dedicated-server restart");
         helper.succeed();
     }
 

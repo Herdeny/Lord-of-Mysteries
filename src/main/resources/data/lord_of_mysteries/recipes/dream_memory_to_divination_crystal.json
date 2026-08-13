@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "lord_of_mysteries:dream_memory" },
+    { "item": "minecraft:amethyst_shard" },
+    { "item": "lord_of_mysteries:moonwater" }
+  ],
+  "result": {
+    "item": "lord_of_mysteries:divination_crystal",
+    "count": 2
+  }
+}

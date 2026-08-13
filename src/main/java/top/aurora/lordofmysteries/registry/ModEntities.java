@@ -36,6 +36,7 @@ import top.aurora.lordofmysteries.entity.PyromaniacBreakdownEntity;
 import top.aurora.lordofmysteries.entity.TravelerDoorEntity;
 import top.aurora.lordofmysteries.entity.TwinSerpentEntity;
 import top.aurora.lordofmysteries.entity.WarRoseHuskEntity;
+import top.aurora.lordofmysteries.spirit.SpiritEcologyEntity;
 
 @Mod.EventBusSubscriber(modid = ProjectMystery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModEntities {
@@ -44,6 +45,16 @@ public final class ModEntities {
 
     public static final DeferredRegister<EntityType<?>> ENTITIES =
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ProjectMystery.MOD_ID);
+
+    private static RegistryObject<EntityType<SpiritEcologyEntity>>
+            spiritEcology(String id) {
+        return ENTITIES.register(id, () -> EntityType.Builder.of(
+                        SpiritEcologyEntity::new, MobCategory.CREATURE)
+                .sized(0.65f, 1.45f)
+                .clientTrackingRange(10)
+                .updateInterval(3)
+                .build(ProjectMystery.MOD_ID + ":" + id));
+    }
 
     public static final RegistryObject<EntityType<SeerBreakdownEntity>> SEER_BREAKDOWN =
             ENTITIES.register("seer_breakdown", () ->
@@ -176,6 +187,31 @@ public final class ModEntities {
                             .updateInterval(2)
                             .build(ProjectMystery.MOD_ID + ":traveler_door"));
 
+    public static final RegistryObject<EntityType<SpiritEcologyEntity>>
+            LANTERN_MOTH_SWARM = spiritEcology("lantern_moth_swarm");
+    public static final RegistryObject<EntityType<SpiritEcologyEntity>>
+            MEMORY_LEECH = spiritEcology("memory_leech");
+    public static final RegistryObject<EntityType<SpiritEcologyEntity>>
+            PRAYER_ECHO = spiritEcology("prayer_echo");
+    public static final RegistryObject<EntityType<SpiritEcologyEntity>>
+            SPIRIT_FERRYMAN = spiritEcology("spirit_ferryman");
+    public static final RegistryObject<EntityType<SpiritEcologyEntity>>
+            COLOR_EATER = spiritEcology("color_eater");
+    public static final RegistryObject<EntityType<SpiritEcologyEntity>>
+            DOOR_WISP = spiritEcology("door_wisp");
+    public static final RegistryObject<EntityType<SpiritEcologyEntity>>
+            WHISPER_CROW = spiritEcology("whisper_crow");
+    public static final RegistryObject<EntityType<SpiritEcologyEntity>>
+            COMPASS_BIRD = spiritEcology("compass_bird");
+    public static final RegistryObject<EntityType<SpiritEcologyEntity>>
+            ARCHIVE_SPIDER = spiritEcology("archive_spider");
+    public static final RegistryObject<EntityType<SpiritEcologyEntity>>
+            GASLIGHT_SPECTER = spiritEcology("gaslight_specter");
+    public static final RegistryObject<EntityType<SpiritEcologyEntity>>
+            THEATRE_MASKLING = spiritEcology("theatre_maskling");
+    public static final RegistryObject<EntityType<SpiritEcologyEntity>>
+            GRAVE_LANTERN = spiritEcology("grave_lantern");
+
     @SubscribeEvent
     public static void onCreateAttributes(EntityAttributeCreationEvent event) {
         event.put(SEER_BREAKDOWN.get(), Zombie.createAttributes()
@@ -275,6 +311,25 @@ public final class ModEntities {
                 .add(Attributes.ARMOR, 6.0)
                 .add(Attributes.FOLLOW_RANGE, 30.0)
                 .build());
+        var spiritEcologyAttributes = Zombie.createAttributes()
+                .add(Attributes.MAX_HEALTH, 24.0)
+                .add(Attributes.ATTACK_DAMAGE, 0.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.22)
+                .add(Attributes.ARMOR, 4.0)
+                .add(Attributes.FOLLOW_RANGE, 20.0)
+                .build();
+        event.put(LANTERN_MOTH_SWARM.get(), spiritEcologyAttributes);
+        event.put(MEMORY_LEECH.get(), spiritEcologyAttributes);
+        event.put(PRAYER_ECHO.get(), spiritEcologyAttributes);
+        event.put(SPIRIT_FERRYMAN.get(), spiritEcologyAttributes);
+        event.put(COLOR_EATER.get(), spiritEcologyAttributes);
+        event.put(DOOR_WISP.get(), spiritEcologyAttributes);
+        event.put(WHISPER_CROW.get(), spiritEcologyAttributes);
+        event.put(COMPASS_BIRD.get(), spiritEcologyAttributes);
+        event.put(ARCHIVE_SPIDER.get(), spiritEcologyAttributes);
+        event.put(GASLIGHT_SPECTER.get(), spiritEcologyAttributes);
+        event.put(THEATRE_MASKLING.get(), spiritEcologyAttributes);
+        event.put(GRAVE_LANTERN.get(), spiritEcologyAttributes);
     }
 
     public static void registerSpawnPlacements() {

@@ -40,4 +40,12 @@ public enum SpiritEncounter {
     public String translationKey() {
         return "spirit_encounter.lord_of_mysteries." + id;
     }
+
+    public static SpiritEncounter fromId(String id) {
+        if (id == null) return null;
+        for (SpiritEncounter encounter : values()) {
+            if (encounter.id.equalsIgnoreCase(id)) return encounter;
+        }
+        return null;
+    }
 }

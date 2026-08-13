@@ -114,9 +114,13 @@ def main() -> int:
     require(
         contains_all(
             html,
-            ("/pm spirit", "五类语义投影", "六段航路", "12类生态遭遇",
-             "6种异常天气", "共享梦境")),
-        "Pages must expose the playable M5 loop and deferred dream boundary", errors)
+            ("以航路灯进入五类投影", "30分钟灵界远征", "12类真实生态实体",
+             "共享梦境", "明确接受邀请", "逐人安全结算")),
+        "Pages must expose the complete M5 expedition and dream loop", errors)
+    require(
+        '<span>M5 灵界与梦境</span>' in html
+        and '<strong class="code-ready">机器范围完成</strong>' in html,
+        "Pages release panel must mark M5 machine scope complete", errors)
     require(
         contains_all(
             html,
@@ -130,9 +134,9 @@ def main() -> int:
     require(
         contains_all(
             wiki_data,
-            ("Capability schema 30", "454 JUnit · 26 GameTest",
-             "457 JSON · 1922 双语键", "138 物品 · 7 方块 · 16 实体",
-             "164 节点 · 214 关系", "284 条图鉴")),
+            ("Capability schema 30", "464 JUnit · 28 GameTest",
+             "485 JSON · 2011 双语键", "156 物品 · 7 方块 · 28 实体",
+             "164 节点 · 214 关系", "310 条图鉴")),
         "Dynamic Pages cards do not match the current validation baseline", errors)
     require(
         contains_all(
@@ -145,7 +149,8 @@ def main() -> int:
         contains_all(
             wiki_data,
             ("M5 灵界远征", "lord_of_mysteries:spirit_world",
-             "30分钟", "12类档案", "独立SavedData", "共享梦境")),
+             "30分钟", "12实体", "实体所有者",
+             "M5 组织共享梦境", "逐人accept", "离线排队")),
         "Dynamic Pages cards are missing the M5 route and safety model", errors)
     require(
         contains_all(
@@ -153,12 +158,15 @@ def main() -> int:
             ('"organizationDefinitions": 12', '"artifactDefinitions": 24',
              '"spiritWeatherDefinitions": 6',
              '"spiritEncounterDefinitions": 12',
-             '"registeredItems": 138',
+             '"registeredItems": 156',
+             '"registeredEntities": 28',
              '"id": "lord_of_mysteries:organization/church_night_watch"',
              '"id": "lord_of_mysteries:artifact_3_091_kindly_umbrella"',
              '"id": "lord_of_mysteries:artifact_1_026_ferryman_ticket"',
              '"id": "lord_of_mysteries:spirit_weather/spiritual_storm"',
-             '"id": "lord_of_mysteries:spirit_encounter/memory_leech"')),
+             '"id": "lord_of_mysteries:spirit_encounter/memory_leech"',
+             '"id": "lord_of_mysteries:memory_leech"',
+             '"id": "lord_of_mysteries:dream_entry_ribbon"')),
         "Generated Pages catalog is missing M4/M5 definitions or registrations", errors)
 
     stale_markers = (
@@ -178,6 +186,10 @@ def main() -> int:
         "423 JSON · 1830 双语键",
         "132 物品 · 7 方块 · 16 实体",
         "254 条图鉴",
+        "454 JUnit · 26 GameTest",
+        "457 JSON · 1922 双语键",
+        "138 物品 · 7 方块 · 16 实体",
+        "284 条图鉴",
     )
     require(
         not any(marker in wiki_data for marker in stale_markers),
@@ -230,7 +242,7 @@ def main() -> int:
     print(
         "GitHub Pages layout contract passed: "
         f"{len(parser.sections)} sections, {len(parser.ids)} unique ids, "
-        f"asset cache v{asset_version}, M4/M5 overview, catalog batch 24."
+        f"asset cache v{asset_version}, M5/M6 overview, catalog batch 24."
     )
     return 0
 

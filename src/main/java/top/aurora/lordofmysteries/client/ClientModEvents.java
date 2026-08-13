@@ -62,5 +62,17 @@ public final class ClientModEvents {
                 ModEntities.WAR_ROSE_HUSK.get(), HuskRenderer::new);
         event.registerEntityRenderer(
                 ModEntities.TRAVELER_DOOR.get(), NoopRenderer::new);
+        event.registerEntityRenderer(ModEntities.LANTERN_MOTH_SWARM.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.MEMORY_LEECH.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.PRAYER_ECHO.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.SPIRIT_FERRYMAN.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.COLOR_EATER.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.DOOR_WISP.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.WHISPER_CROW.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.COMPASS_BIRD.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.ARCHIVE_SPIDER.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.GASLIGHT_SPECTER.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.THEATRE_MASKLING.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.GRAVE_LANTERN.get(), ZombieRenderer::new);
     }
 }

@@ -1013,6 +1013,43 @@ public final class SealedArtifactService {
                 entity, gameTime);
     }
 
+    public static boolean hasUsableSleepingBell(ServerPlayer player) {
+        for (int slot = 0;
+             slot < player.getInventory().getContainerSize(); slot++) {
+            ItemStack stack = player.getInventory().getItem(slot);
+            if (stack.is(ModItems.ARTIFACT_SLEEPING_BELL.get())
+                    && isUsableBoundStack(
+                            player, stack,
+                            ManagedArtifactKind.SLEEPING_BELL)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean useSleepingBellAsDreamAnchor(
+            ServerPlayer player) {
+        for (int slot = 0;
+             slot < player.getInventory().getContainerSize(); slot++) {
+            ItemStack stack = player.getInventory().getItem(slot);
+            if (!stack.is(ModItems.ARTIFACT_SLEEPING_BELL.get())
+                    || !isUsableBoundStack(
+                            player, stack,
+                            ManagedArtifactKind.SLEEPING_BELL)) {
+                continue;
+            }
+            applyCost(player, stack.getItem(), 5f, 1f);
+            recordUse(
+                    player, stack, ManagedArtifactKind.SLEEPING_BELL);
+            player.serverLevel().playSound(
+                    null, player.blockPosition(),
+                    SoundEvents.BELL_BLOCK, SoundSource.PLAYERS,
+                    0.8f, 0.7f);
+            return true;
+        }
+        return false;
+    }
+
     static boolean isUsableBoundStack(
             ServerPlayer player, ItemStack stack,
             ManagedArtifactKind kind) {
