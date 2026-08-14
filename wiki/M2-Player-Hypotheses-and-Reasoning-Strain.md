@@ -1,6 +1,6 @@
 # M2 玩家假说与误判恢复
 
-> 当前版本：0.9.34-1.20.1 · Capability schema 30 · 网络协议 13
+> 当前版本：0.9.35-1.20.1 · Capability schema 30 · 网络协议 13
 
 玩家现在可以把自己的解释绑定到**已经揭示**的证据关系，并通过调查板检验。错误会产生可见、可恢复的代价，不会复制奖励或永久锁死案件。
 
@@ -34,7 +34,7 @@
 - 未揭示关系不会进入快照，猜测 ID 也会被拒绝。
 - schema 18 旧档自动迁移到 19 并获得空假说工作区，无需清档。
 - 协议升至 12，但 14 个消息 ID 不重排；旧客户端会被严格拒绝。
-- 464项JUnit、28项Forge GameTest、M1–M5合同、M3权限守恒、M4组织/封印物、M5灵界/梦境、回滚与双启动专服矩阵保护该流程。
+- 476项JUnit、29项Forge GameTest、M1–M5合同、M3权限守恒、M4组织/封印物、M5灵界/梦境、跨系统独占活动原子拒绝、回滚与双启动专服矩阵保护该流程。
 
 完整关系 ID、迁移和验收说明见[开发者手册](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/M2_PLAYER_HYPOTHESES_AND_REASONING_STRAIN.md)。
 

@@ -134,9 +134,10 @@ def main() -> int:
     require(
         contains_all(
             wiki_data,
-            ("Capability schema 30", "464 JUnit · 28 GameTest",
-             "485 JSON · 2011 双语键", "156 物品 · 7 方块 · 28 实体",
-             "164 节点 · 214 关系", "310 条图鉴")),
+            ("Capability schema 30", "476 JUnit · 29 GameTest",
+             "485 JSON · 2031 双语键", "819静态引用",
+             "156 物品 · 7 方块 · 28 实体",
+             "164 节点 · 214 关系", "311 条图鉴")),
         "Dynamic Pages cards do not match the current validation baseline", errors)
     require(
         contains_all(
@@ -152,6 +153,13 @@ def main() -> int:
              "30分钟", "12实体", "实体所有者",
              "M5 组织共享梦境", "逐人accept", "离线排队")),
         "Dynamic Pages cards are missing the M5 route and safety model", errors)
+    require(
+        contains_all(
+            wiki_data,
+            ("M0–M5 跨系统独占活动安全", "/pm activity",
+             "shared_dream · spirit_world", "原子拒绝",
+             "离开12格", "29号真实Forge GameTest")),
+        "Dynamic Pages cards are missing cross-system atomic safety", errors)
     require(
         contains_all(
             catalog_data,

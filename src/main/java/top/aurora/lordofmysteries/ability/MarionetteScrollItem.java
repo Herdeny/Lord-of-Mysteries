@@ -33,6 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import top.aurora.lordofmysteries.player.MysteryCapability;
+import top.aurora.lordofmysteries.player.OccultActivityService;
 import top.aurora.lordofmysteries.player.PlayerFeedback;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
@@ -131,6 +132,9 @@ public final class MarionetteScrollItem extends Item {
                 || data.sequence != 5) {
             return CaptureResult.WRONG_SEQUENCE;
         }
+        if (!OccultActivityService.isAvailable(owner)) {
+            return CaptureResult.ACTIVITY_CONFLICT;
+        }
         UUID entityId = target.getUUID();
         if (!target.isAlive()
                 || target.isPassenger()
@@ -193,6 +197,9 @@ public final class MarionetteScrollItem extends Item {
         if (!SeerPotionItem.SEER_PATHWAY.equals(data.pathway)
                 || data.sequence != 5) {
             return DeployResult.WRONG_SEQUENCE;
+        }
+        if (!OccultActivityService.isAvailable(owner)) {
+            return DeployResult.ACTIVITY_CONFLICT;
         }
         if (!data.marionetteRoster.contains(voucher.entityId())) {
             return DeployResult.RELEASED;
@@ -379,6 +386,7 @@ public final class MarionetteScrollItem extends Item {
             case SUCCESS -> "captured";
             case INVALID_SCROLL -> "invalid_scroll";
             case WRONG_SEQUENCE -> "wrong_sequence";
+            case ACTIVITY_CONFLICT -> "activity_conflict";
             case NOT_OWNED -> "not_owned";
             case ALREADY_STORED -> "already_stored";
             case INSUFFICIENT_SPIRITUALITY -> "insufficient";
@@ -400,6 +408,7 @@ public final class MarionetteScrollItem extends Item {
             case INVALID_SCROLL -> "invalid_scroll";
             case WRONG_OWNER -> "wrong_owner";
             case WRONG_SEQUENCE -> "wrong_sequence";
+            case ACTIVITY_CONFLICT -> "activity_conflict";
             case RELEASED -> "released";
             case INVALID_TOKEN -> "invalid_token";
             case ALREADY_LOADED -> "already_loaded";
@@ -417,6 +426,7 @@ public final class MarionetteScrollItem extends Item {
         SUCCESS,
         INVALID_SCROLL,
         WRONG_SEQUENCE,
+        ACTIVITY_CONFLICT,
         NOT_OWNED,
         ALREADY_STORED,
         INSUFFICIENT_SPIRITUALITY
@@ -427,6 +437,7 @@ public final class MarionetteScrollItem extends Item {
         INVALID_SCROLL,
         WRONG_OWNER,
         WRONG_SEQUENCE,
+        ACTIVITY_CONFLICT,
         RELEASED,
         INVALID_TOKEN,
         ALREADY_LOADED,

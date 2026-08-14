@@ -31,6 +31,7 @@ import net.minecraftforge.fml.common.Mod;
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.ability.TravelMarkerService;
 import top.aurora.lordofmysteries.player.MysteryCapability;
+import top.aurora.lordofmysteries.player.OccultActivityService;
 import top.aurora.lordofmysteries.player.PlayerDataSection;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.registry.ModItems;
@@ -141,6 +142,10 @@ public final class SpiritExpeditionService {
                 || SPIRIT_WORLD.equals(player.level().dimension())) {
             send(player, "message.lord_of_mysteries.spirit.enter_denied",
                     ChatFormatting.RED);
+            return 0;
+        }
+        if (!OccultActivityService.isAvailable(player)) {
+            OccultActivityService.sendDenied(player);
             return 0;
         }
         SpiritExpeditionSavedData data = saved(player);

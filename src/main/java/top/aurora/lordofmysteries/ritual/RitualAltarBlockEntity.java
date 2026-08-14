@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import top.aurora.lordofmysteries.player.MysteryCapability;
+import top.aurora.lordofmysteries.player.OccultActivityService;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.world.MistCityWorldEvent;
 import top.aurora.lordofmysteries.world.MistCityWorldEventModifiers;
@@ -66,6 +67,13 @@ public final class RitualAltarBlockEntity extends BlockEntity {
     }
 
     public boolean start(ServerLevel level, Player player) {
+        if (!(player instanceof ServerPlayer serverPlayer)
+                || !OccultActivityService.isAvailable(serverPlayer)) {
+            if (player instanceof ServerPlayer blockedPlayer) {
+                OccultActivityService.sendDenied(blockedPlayer);
+            }
+            return false;
+        }
         if (machine.state() == RitualStateMachine.State.COMPLETE
                 || machine.state() == RitualStateMachine.State.FAILED
                 || machine.state() == RitualStateMachine.State.CANCELLED) {
@@ -133,9 +141,18 @@ public final class RitualAltarBlockEntity extends BlockEntity {
         }
         ServerPlayer leaderPlayer = altar.leader == null ? null
                 : serverLevel.getServer().getPlayerList().getPlayer(altar.leader);
+        boolean leaderEligible = leaderPlayer != null
+                && leaderPlayer.isAlive()
+                && !leaderPlayer.isSpectator()
+                && leaderPlayer.serverLevel() == serverLevel
+                && leaderPlayer.distanceToSqr(
+                        pos.getX() + 0.5d,
+                        pos.getY() + 0.5d,
+                        pos.getZ() + 0.5d) <= 144d
+                && OccultActivityService.isAvailable(leaderPlayer);
         int offlineTicks = leaderPlayer == null ? altar.leaderOfflineTicks + 1 : 0;
         RitualRecoveryLogic.Action recovery = RitualRecoveryLogic.decide(
-                true, leaderPlayer != null, offlineTicks);
+                true, leaderPlayer != null, leaderEligible, offlineTicks);
         if (recovery == RitualRecoveryLogic.Action.PAUSE) {
             altar.leaderOfflineTicks = offlineTicks;
             altar.setChanged();
@@ -144,6 +161,8 @@ public final class RitualAltarBlockEntity extends BlockEntity {
         if (recovery == RitualRecoveryLogic.Action.CANCEL) {
             altar.machine.cancel();
             altar.leaderOfflineTicks = 0;
+            altar.notifyLeader(serverLevel,
+                    "message.lord_of_mysteries.ritual.leader_ineligible");
             altar.setChanged();
             return;
         }

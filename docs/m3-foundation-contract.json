@@ -363,7 +363,7 @@
     }
   },
   "validation": {
-    "game_tests": 28,
+    "game_tests": 29,
     "requires_restart_matrix": true,
     "behavior_test_classes": [
       "CityEconomyPolicyTest",

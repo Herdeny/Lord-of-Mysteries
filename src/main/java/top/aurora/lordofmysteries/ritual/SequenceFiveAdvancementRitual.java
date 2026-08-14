@@ -29,6 +29,7 @@ import net.minecraft.world.phys.AABB;
 
 import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.player.MysteryCapability;
+import top.aurora.lordofmysteries.player.OccultActivityService;
 import top.aurora.lordofmysteries.player.PlayerFeedback;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.registry.ModEntities;
@@ -71,6 +72,7 @@ public final class SequenceFiveAdvancementRitual {
         WRONG_PATHWAY,
         WRONG_SEQUENCE,
         DIGESTION_INCOMPLETE,
+        ACTIVITY_CONFLICT,
         CIRCLE_INCOMPLETE,
         REQUIREMENTS_MISSING
     }
@@ -184,6 +186,9 @@ public final class SequenceFiveAdvancementRitual {
         if (data.digestion < 100f) {
             return new Inspection(type, Issue.DIGESTION_INCOMPLETE, 0, 0f);
         }
+        if (!OccultActivityService.isAvailable(player)) {
+            return new Inspection(type, Issue.ACTIVITY_CONFLICT, 0, 0f);
+        }
         if (!MultiBlockRitualDetector.inspect(level, altarPos).complete()) {
             return new Inspection(type, Issue.CIRCLE_INCOMPLETE, 0, 0f);
         }
@@ -216,6 +221,8 @@ public final class SequenceFiveAdvancementRitual {
                     "message.lord_of_mysteries.sequence_five_ritual.wrong_sequence";
             case DIGESTION_INCOMPLETE ->
                     "message.lord_of_mysteries.sequence_five_ritual.digestion";
+            case ACTIVITY_CONFLICT ->
+                    "message.lord_of_mysteries.sequence_five_ritual.activity_conflict";
             case CIRCLE_INCOMPLETE ->
                     "message.lord_of_mysteries.sequence_five_ritual.circle";
             case REQUIREMENTS_MISSING ->

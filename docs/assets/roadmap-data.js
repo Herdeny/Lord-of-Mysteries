@@ -16,7 +16,7 @@ window.LOM_ROADMAP_META = {
         "164 节点、214 关系内容图通过 orphan、spoiler、compat、localization 与 asset 审计，并纳入12个组织、24件封印物及其知识门",
         "Capability schema 30 与命名 DataFix 链保留原始 NBT、迁移历史、孤儿数据和未来 schema",
         "世界加载前原子快照、幂等 schema marker、受限路径恢复工具和恢复前安全备份",
-        "28 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒、M1 状态、调查板邻近、城市经济、五途径进阶、真实祭坛仪式、五途径能力世界行为、旅行家持续双向远门/组织门禁、持久秘偶/战术状态、无面人隐私记录、材料生物入世、特性处理、额外负载析出、全服来源重放拒绝、M4多人组织行动/封印物保管，以及M5两种真实维度/实体生态/共享梦境/逐人恢复",
+        "29 项 Forge GameTest 覆盖 Clone、旧档迁移、未来数据隔离、特性守恒、M1 状态、调查板邻近、城市经济、五途径进阶、真实祭坛仪式、五途径能力世界行为、旅行家持续双向远门/组织门禁、持久秘偶/战术状态、无面人隐私记录、材料生物入世、特性处理、额外负载析出、全服来源重放拒绝、M4多人组织行动/封印物保管、M5两种真实维度/实体生态/共享梦境/逐人恢复，以及M0-M5独占活动原子冲突",
         "专服双启动矩阵验证世界种子、schema 快照、保存和干净停服保持稳定"
       ]
     },
@@ -87,7 +87,7 @@ window.LOM_ROADMAP_META = {
         "已完成：秘偶大师三槽持久编队、跟随/守卫/被动三态、离线无 AI 休眠、同维召回/协战、玩家友军保护、5 灵性权威收纳卷轴、一次性防复制凭证和跨维安全部署",
         "已完成：特性分离、同途径重组、直接同源拒绝、记忆封存、洗涤、额外负载吸收/析出和全服来源原子消费审计",
         "已完成：/pm m3、/pm m3 team、/pm next、/pm items、/pm bestiary 与 /pm faceless 形成五途径阶段引导、附近同队互补职责、材料来源、生态图鉴和形体管理闭环",
-        "已完成：Capability schema 30、464 项 JUnit 与 28 项 Forge GameTest 覆盖旧档迁移、隐私隔离、重启持久化、真实世界生物注册、组织门准入/拒绝/黑名单覆盖、秘偶战术跨收纳部署、失败不扣费以及M4/M5完整服务器链路",
+        "已完成：Capability schema 30、476 项 JUnit 与 29 项 Forge GameTest 覆盖旧档迁移、隐私隔离、重启持久化、真实世界生物注册、组织门准入/拒绝/黑名单覆盖、秘偶战术跨收纳部署、失败不扣费、M4/M5完整服务器链路与跨系统独占活动原子拒绝",
         "发布边界：精确玩家皮肤/模型/声线、完整原典能力穷举、专属高精美术与真人无唯一最优途径长测继续单独跟踪；具体领地 Mod 适配按 v0.9 归入 M7，共享梦境归入 M5"
       ]
     },
@@ -105,7 +105,7 @@ window.LOM_ROADMAP_META = {
         "已完成：世界级唯一实例保管台账追踪责任人、持有人、位置、污染、使用、期限和事故；覆盖逾期、换手、复制、泄漏、稳定、归还与管理员退役",
         "已完成：24/24件封印物均有独立收益、同量级代价、六类事故档案、专属稳定材料、唯一保管、知识门、使用/逾期泄漏、回收和滥用隔离",
         "已完成：前哨三席轮值联络员按晨会、公开接洽与夜间值守换班，可展示周战略并直接接取当日行动；命令入口保留为无障碍回退",
-        "已完成：/pm m4、/pm organization strategy、/pm artifact、双语文案、M4机器合同、464项JUnit、28项Forge GameTest及310条Pages图鉴共享回归",
+        "已完成：/pm m4、/pm organization strategy、/pm artifact、双语文案、M4机器合同、476项JUnit、29项Forge GameTest及311条Pages图鉴共享回归",
         "发布边界：高精原创美术、长期真人多人风险收益平衡和更多专属组织建筑继续作为发布质量资产跟踪，不回退M4机器可玩结论"
       ]
     },
@@ -124,7 +124,7 @@ window.LOM_ROADMAP_META = {
         "已完成：航路灯、罗盘、返航符、三类收益及回流配方，失败不扣费、完成后才结算，物品/命令均有双语引导",
         "已完成：2–4人组织共享梦境、四类语义场景、八种符号、四轮全员投票、梦境记忆/创伤、组织声望与任务线索结算",
         "已完成：明确同意、拒绝/邀请超时不扣费、全员接受前不传送，以及断线/跨维/梦中死亡/退队/组织权限变化失败关闭",
-        "已完成：双SavedData、玩家独立航路、每人现实锚点、坏档孤儿隔离、未来schema只读、重复恢复拒绝和28项真实Forge GameTest",
+        "已完成：双SavedData、玩家独立航路、每人现实锚点、坏档孤儿隔离、未来schema只读、重复恢复拒绝、跨梦境/灵界/远门/仪式/秘偶互斥和29项真实Forge GameTest",
         "发布边界：12类实体使用共享降级渲染器与差异化粒子；专属高精模型/动画/声音、更多途径专属梦境及真人30分钟多人平衡继续单独跟踪"
       ]
     },
@@ -242,7 +242,7 @@ window.LOM_ROADMAP_META = {
       "structure_specs": 32,
       "weather_anomaly_specs": 18
     },
-    "repository_evidence_at_0.9.34": {
+    "repository_evidence_at_0.9.35": {
       "content_graph_nodes": 164,
       "content_graph_edges": 214,
       "schema4_sequence_definitions": 25,
@@ -250,8 +250,11 @@ window.LOM_ROADMAP_META = {
       "generated_recipes": 13,
       "playable_commissions": 4,
       "playable_quest_chains": 4,
-      "junit_tests": 464,
-      "forge_gametests": 28,
+      "junit_tests": 476,
+      "forge_gametests": 29,
+      "cross_system_activity_gametests": 1,
+      "exclusive_activity_states": 7,
+      "activity_diagnostic_commands": 1,
       "sequence_five_physical_ritual_gametests": 1,
       "traveler_spatial_relay_gametests": 4,
       "traveler_persistent_door_entities": 1,
@@ -301,10 +304,10 @@ window.LOM_ROADMAP_META = {
       "m4_artifacts": 24,
       "m4_incident_profiles": 6,
       "json_resources": 485,
-      "paired_translations": 2011,
-      "referenced_translation_keys": 815,
+      "paired_translations": 2031,
+      "referenced_translation_keys": 819,
       "item_and_block_models": 163,
-      "pages_catalog_entries": 310,
+      "pages_catalog_entries": 311,
       "m5_spirit_dimensions": 1,
       "m5_projection_types": 5,
       "m5_route_legs": 6,

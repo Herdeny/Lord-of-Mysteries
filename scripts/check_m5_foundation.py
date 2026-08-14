@@ -53,6 +53,15 @@ def main():
     dream_service = source(dream / "SharedDreamService.java")
     dream_builder = source(dream / "SharedDreamWorldBuilder.java")
     ecology_entity = source(spirit / "SpiritEcologyEntity.java")
+    activity_policy = source(JAVA / "player" / "OccultActivityPolicy.java")
+    activity_service = source(JAVA / "player" / "OccultActivityService.java")
+    travel_service = source(JAVA / "ability" / "TravelMarkerService.java")
+    door_entity = source(JAVA / "entity" / "TravelerDoorEntity.java")
+    ritual_altar = source(JAVA / "ritual" / "RitualAltarBlockEntity.java")
+    sequence_five_ritual = source(
+        JAVA / "ritual" / "SequenceFiveAdvancementRitual.java")
+    marionette_scroll = source(
+        JAVA / "ability" / "MarionetteScrollItem.java")
 
     constants = {
         "DURATION_TICKS": expedition["duration_ticks"],
@@ -313,10 +322,22 @@ def main():
         "dream_future_schema_read_only": "futureSnapshot != null",
         "dream_malformed_session_quarantine": "orphanedEntries.add",
         "dream_materials_consumed_after_activation": "consumeRitualKit(host)",
+        "cross_system_activity_mutual_exclusion":
+            "OccultActivityPolicy.classify",
+        "protected_dimensions_reject_traveler_doors":
+            "isProtectedDimension",
+        "ritual_leader_eligibility_rechecked":
+            "leaderPlayer.distanceToSqr",
+        "marionette_activity_conflicts_preserve_state":
+            "DeployResult.ACTIVITY_CONFLICT",
+        "player_activity_diagnostics": 'literal("activity")',
     }
     combined = "\n".join((
         policy, saved, service, builder,
         dream_policy, dream_saved, dream_service, dream_builder,
+        activity_policy, activity_service, commands, travel_service,
+        door_entity, ritual_altar, sequence_five_ritual,
+        marionette_scroll,
     ))
     for rule, enabled in safety.items():
         require(not enabled or anchors[rule] in combined,

@@ -205,22 +205,29 @@
     "dream_duplicate_recovery_refused": true,
     "dream_future_schema_read_only": true,
     "dream_malformed_session_quarantine": true,
-    "dream_materials_consumed_after_activation": true
+    "dream_materials_consumed_after_activation": true,
+    "cross_system_activity_mutual_exclusion": true,
+    "protected_dimensions_reject_traveler_doors": true,
+    "ritual_leader_eligibility_rechecked": true,
+    "marionette_activity_conflicts_preserve_state": true,
+    "player_activity_diagnostics": true
   },
   "validation": {
-    "junit_tests": 464,
-    "game_tests": 28,
+    "junit_tests": 476,
+    "game_tests": 29,
     "behavior_test_classes": [
       "SpiritExpeditionPolicyTest",
       "SpiritExpeditionSavedDataTest",
       "SharedDreamPolicyTest",
-      "SharedDreamSavedDataTest"
+      "SharedDreamSavedDataTest",
+      "OccultActivityPolicyTest"
     ],
     "game_test_methods": [
       "m5SpiritDimensionBuildsIsolatedSafeRoutes",
       "m5SpiritRouteCompletesWithRecoverableRisk",
       "m5SharedDreamDimensionAndEcologyEntitiesLoad",
-      "m5SharedDreamConsentVotesAndRecoveryPersist"
+      "m5SharedDreamConsentVotesAndRecoveryPersist",
+      "m0ToM5ExclusiveActivityConflictsFailAtomically"
     ],
     "pages_registered_items": 156,
     "pages_registered_entities": 28,

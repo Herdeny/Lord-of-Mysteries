@@ -39,6 +39,7 @@ import top.aurora.lordofmysteries.ability.TravelerDoorPolicy;
 import top.aurora.lordofmysteries.compat.TravelerDoorTerritoryEvent;
 import top.aurora.lordofmysteries.compat.TravelerDoorTerritoryService;
 import top.aurora.lordofmysteries.player.MysteryCapability;
+import top.aurora.lordofmysteries.player.OccultActivityService;
 import top.aurora.lordofmysteries.player.PlayerFeedback;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 
@@ -151,6 +152,16 @@ public final class TravelerDoorEntity extends Entity {
         if (!configured || player == null || !player.isAlive()
                 || player.isSpectator()) {
             return TransitResult.INVALID;
+        }
+        if (!OccultActivityService.isAvailable(player)) {
+            OccultActivityService.sendDenied(player);
+            return TransitResult.ACTIVITY_CONFLICT;
+        }
+        if (OccultActivityService.isProtectedDimension(targetDimension)) {
+            PlayerFeedback.send(player, Component.translatable(
+                    "message.lord_of_mysteries.travel.protected_dimension")
+                    .withStyle(ChatFormatting.RED));
+            return TransitResult.ACTIVITY_CONFLICT;
         }
         long now = player.serverLevel().getGameTime();
         if (player.getPersistentData().getLong(TRANSIT_COOLDOWN) > now) {
@@ -436,6 +447,7 @@ public final class TravelerDoorEntity extends Entity {
         BLOCKED,
         DENIED,
         TERRITORY_DENIED,
+        ACTIVITY_CONFLICT,
         COOLDOWN,
         UNSAFE,
         UNAVAILABLE,

@@ -9,7 +9,19 @@ class RitualRecoveryLogicTest {
     @Test
     void onlineLeaderContinuesInvocation() {
         assertEquals(RitualRecoveryLogic.Action.CONTINUE,
-                RitualRecoveryLogic.decide(true, true, 0));
+                RitualRecoveryLogic.decide(true, true, true, 0));
+    }
+
+    @Test
+    void onlineButIneligibleLeaderCancelsImmediately() {
+        assertEquals(RitualRecoveryLogic.Action.CANCEL,
+                RitualRecoveryLogic.decide(true, true, false, 0));
+    }
+
+    @Test
+    void inactiveRitualIgnoresIneligibleOnlineLeader() {
+        assertEquals(RitualRecoveryLogic.Action.IGNORE,
+                RitualRecoveryLogic.decide(false, true, false, 0));
     }
 
     @Test

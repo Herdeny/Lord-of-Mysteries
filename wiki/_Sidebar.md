@@ -10,6 +10,7 @@
 - [M1 两小时纵切追踪器](M1-Trial-Tracker)
 - [M5 灵界远征](M5-Spirit-Expeditions)
 - [M5 共享梦境与实体生态](M5-Shared-Dreams-and-Ecology)
+- [M0–M5 跨系统安全与恢复](M0-M5-Cross-System-Safety)
 
 ### 调查与多人
 
@@ -24,6 +25,7 @@
 - [神秘学家小屋、真假配方与三解救援](M2-Occultist-Hut-and-Rescue-Routes)
 - [持久化队伍调查与离线追赶](M2-Persistent-Party-Recovery)
 - [专用服务器与多人验证](Dedicated-Server-Test-Matrix)
+- [跨系统冲突、原子失败与恢复](M0-M5-Cross-System-Safety)
 
 ### 途径资料
 

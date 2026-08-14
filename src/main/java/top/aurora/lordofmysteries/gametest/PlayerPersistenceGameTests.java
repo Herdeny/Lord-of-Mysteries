@@ -25,6 +25,7 @@ import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -43,6 +44,7 @@ import top.aurora.lordofmysteries.ability.MarionetteService;
 import top.aurora.lordofmysteries.ability.MarionetteScrollItem;
 import top.aurora.lordofmysteries.ability.MarionetteTacticalMode;
 import top.aurora.lordofmysteries.ability.TravelMarkerService;
+import top.aurora.lordofmysteries.ability.TravelerDoorAccessMode;
 import top.aurora.lordofmysteries.ability.TravelerDoorOrganizationPolicy;
 import top.aurora.lordofmysteries.artifact.ArtifactCustodySavedData;
 import top.aurora.lordofmysteries.artifact.ArtifactCustodyState;
@@ -62,6 +64,8 @@ import top.aurora.lordofmysteries.organization.OrganizationActionType;
 import top.aurora.lordofmysteries.organization.OrganizationDefinition;
 import top.aurora.lordofmysteries.organization.OrganizationLiaisonService;
 import top.aurora.lordofmysteries.player.MysteryCapability;
+import top.aurora.lordofmysteries.player.OccultActivityPolicy;
+import top.aurora.lordofmysteries.player.OccultActivityService;
 import top.aurora.lordofmysteries.player.PlayerCapabilityEvents;
 import top.aurora.lordofmysteries.player.PlayerDataSection;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
@@ -2005,6 +2009,128 @@ public final class PlayerPersistenceGameTests {
                         && restored.recovery(guest).clueScore()
                         == completed.clueScore(),
                 "shared dream recovery must survive dedicated-server restart");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void m0ToM5ExclusiveActivityConflictsFailAtomically(
+            GameTestHelper helper) {
+        ServerPlayer player = createPlayer(helper, "exclusive-activity");
+        ServerPlayer guest = createPlayer(helper, "exclusive-guest");
+        BlockPos playerStart = helper.absolutePos(new BlockPos(3, 8, 3));
+        player.setPos(
+                playerStart.getX() + 0.5d,
+                playerStart.getY(),
+                playerStart.getZ() + 0.5d);
+
+        SharedDreamSavedData dreams = SharedDreamSavedData.get(
+                helper.getLevel());
+        var lobby = dreams.createLobby(
+                player.getUUID(), guest.getUUID(),
+                ResourceLocation.fromNamespaceAndPath(
+                        ProjectMystery.MOD_ID,
+                        "organization/secret_mind_alchemy"),
+                "exclusive-gametest",
+                helper.getLevel().getSeed() ^ player.getUUID().hashCode(),
+                helper.getLevel().getGameTime());
+        helper.assertTrue(lobby != null
+                        && OccultActivityService.inspect(player).activity()
+                        == OccultActivityPolicy.Activity.DREAM_LOBBY,
+                "accepted and pending dream members must both enter an exclusive lobby state");
+        if (lobby == null) return;
+
+        ItemStack lantern = new ItemStack(ModItems.SPIRIT_ROUTE_LANTERN.get());
+        player.getInventory().add(lantern);
+        player.getInventory().add(new ItemStack(ModItems.SPIRIT_COMPASS.get()));
+        int lanternDamage = lantern.getDamageValue();
+        helper.assertTrue(SpiritExpeditionService.start(player, "church") == 0
+                        && SpiritExpeditionSavedData.get(helper.getLevel())
+                        .get(player.getUUID()) == null
+                        && lantern.getDamageValue() == lanternDamage
+                        && player.serverLevel() == helper.getLevel(),
+                "dream lobby must reject spirit entry before route record, durability or teleport mutation");
+
+        BlockPos altar = helper.absolutePos(new BlockPos(7, 8, 7));
+        helper.getLevel().setBlockAndUpdate(
+                altar, ModBlocks.RITUAL_ALTAR.get().defaultBlockState());
+        for (RitualStructureLogic.Offset offset
+                : RitualStructureLogic.circleOffsets(3)) {
+            helper.getLevel().setBlockAndUpdate(
+                    altar.offset(offset.x(), 0, offset.z()),
+                    ModBlocks.RITUAL_CHALK_MARK.get().defaultBlockState());
+        }
+        helper.getLevel().setBlockAndUpdate(
+                altar.offset(0, 0, 2), Blocks.WHITE_BED.defaultBlockState());
+        player.getInventory().add(new ItemStack(
+                ModItems.WHITE_CANDLE.get(), 2));
+        player.getInventory().add(new ItemStack(
+                ModItems.DREAM_SCALE_FRAGMENT.get()));
+        PlayerMysteryData playerData = MysteryCapability.get(player);
+        playerData.pathway = ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID, "spectator");
+        playerData.sequence = 6;
+        playerData.digestion = 100f;
+        ResourceLocation ritualProof = ResourceLocation.fromNamespaceAndPath(
+                ProjectMystery.MOD_ID,
+                "knowledge/sequence_five_ritual/spectator");
+        SequenceFiveAdvancementRitual.interact(
+                helper.getLevel(), altar, player,
+                SeerPotionItem.create(
+                        ModItems.SPECTATOR_POTION_5.get(),
+                        PotionQuality.COMPLETE),
+                true);
+        helper.assertTrue(!playerData.knownKnowledge.contains(ritualProof)
+                        && player.getInventory().countItem(
+                        ModItems.WHITE_CANDLE.get()) == 2
+                        && player.getInventory().countItem(
+                        ModItems.DREAM_SCALE_FRAGMENT.get()) == 1,
+                "dream lobby must reject sequence-five commit before proof or material mutation");
+
+        TravelerDoorEntity ordinaryDoor =
+                ModEntities.TRAVELER_DOOR.get().create(helper.getLevel());
+        helper.assertTrue(ordinaryDoor != null,
+                "traveler door must construct for activity-conflict test");
+        if (ordinaryDoor == null) return;
+        ordinaryDoor.configure(
+                player.getUUID(), "", TravelerDoorAccessMode.PUBLIC,
+                "", 0, "activity-test", List.of(),
+                Level.OVERWORLD, playerStart, 200);
+        helper.assertTrue(ordinaryDoor.tryTransit(player)
+                        == TravelerDoorEntity.TransitResult.ACTIVITY_CONFLICT
+                        && player.serverLevel() == helper.getLevel(),
+                "traveler doors must not bypass a player's exclusive activity");
+
+        playerData.pathway = SeerPotionItem.SEER_PATHWAY;
+        playerData.sequence = 5;
+        playerData.spirituality = 50f;
+        ItemStack scroll = new ItemStack(ModItems.MARIONETTE_SCROLL.get());
+        Mob target = spawnMob(helper, player, 2d, 0d);
+        helper.assertTrue(MarionetteScrollItem.capture(player, scroll, target)
+                        == MarionetteScrollItem.CaptureResult.ACTIVITY_CONFLICT
+                        && target.isAlive()
+                        && !MarionetteScrollItem.isFilled(scroll)
+                        && playerData.marionetteStorageRecords.isEmpty()
+                        && playerData.spirituality == 50f,
+                "exclusive activity must reject marionette storage before entity, voucher, ledger or spirituality mutation");
+        target.discard();
+
+        dreams.close(lobby.id());
+        helper.assertTrue(OccultActivityService.isAvailable(player),
+                "closing the lobby must release the ordinary-operation gate");
+        TravelerDoorEntity protectedDoor =
+                ModEntities.TRAVELER_DOOR.get().create(helper.getLevel());
+        helper.assertTrue(protectedDoor != null,
+                "traveler door must construct for protected-dimension test");
+        if (protectedDoor == null) return;
+        protectedDoor.configure(
+                player.getUUID(), "", TravelerDoorAccessMode.PUBLIC,
+                "", 0, "protected-test", List.of(),
+                SharedDreamService.DREAM_WORLD,
+                BlockPos.ZERO, 200);
+        helper.assertTrue(protectedDoor.tryTransit(player)
+                        == TravelerDoorEntity.TransitResult.ACTIVITY_CONFLICT
+                        && player.serverLevel() == helper.getLevel(),
+                "ordinary players must not use forged traveler doors to enter protected dimensions");
         helper.succeed();
     }
 

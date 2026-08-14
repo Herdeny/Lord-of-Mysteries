@@ -43,6 +43,7 @@ import top.aurora.lordofmysteries.knowledge.PlayerGuideHandler;
 import top.aurora.lordofmysteries.network.NetworkProtocol;
 import top.aurora.lordofmysteries.organization.OrganizationActionService;
 import top.aurora.lordofmysteries.player.MysteryCapability;
+import top.aurora.lordofmysteries.player.OccultActivityService;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.potion.SeerPotionItem;
 import top.aurora.lordofmysteries.registry.ModItems;
@@ -100,6 +101,9 @@ public final class ProjectMysteryCommands {
                                         context.getSource().getPlayerOrException(), true))))
                 .then(Commands.literal("next").executes(context ->
                         PlayerGuideHandler.showNextStep(
+                                context.getSource().getPlayerOrException())))
+                .then(Commands.literal("activity").executes(context ->
+                        OccultActivityService.showStatus(
                                 context.getSource().getPlayerOrException())))
                 .then(Commands.literal("m3")
                         .executes(context ->

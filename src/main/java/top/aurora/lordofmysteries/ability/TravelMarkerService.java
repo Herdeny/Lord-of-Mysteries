@@ -29,6 +29,7 @@ import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.compat.TravelerDoorTerritoryEvent;
 import top.aurora.lordofmysteries.compat.TravelerDoorTerritoryService;
 import top.aurora.lordofmysteries.entity.TravelerDoorEntity;
+import top.aurora.lordofmysteries.player.OccultActivityService;
 import top.aurora.lordofmysteries.player.PlayerFeedback;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.registry.ModEntities;
@@ -370,6 +371,10 @@ public final class TravelMarkerService {
             ServerPlayer leader,
             PlayerMysteryData data,
             List<ServerPlayer> sourcePlayers) {
+        if (!OccultActivityService.isAvailable(leader)) {
+            OccultActivityService.sendDenied(leader);
+            return false;
+        }
         long now = leader.level().getGameTime();
         if (!AbilityCooldowns.ready(
                 data.apprenticeWardCooldownEndTick, now)) {
@@ -386,6 +391,13 @@ public final class TravelMarkerService {
             return false;
         }
         Marker destinationMarker = marker.get();
+        if (OccultActivityService.isProtectedDimension(
+                destinationMarker.dimension())) {
+            PlayerFeedback.send(leader, Component.translatable(
+                    "message.lord_of_mysteries.travel.protected_dimension")
+                    .withStyle(ChatFormatting.RED));
+            return false;
+        }
         ServerLevel destinationLevel = leader.getServer().getLevel(
                 destinationMarker.dimension());
         if (destinationLevel == null) {
@@ -435,6 +447,7 @@ public final class TravelMarkerService {
         }
 
         List<ServerPlayer> passengers = sourcePlayers.stream()
+                .filter(OccultActivityService::isAvailable)
                 .filter(candidate -> M3TravelNetworkLogic.canJoinRelay(
                         candidate == leader,
                         candidate.serverLevel() == leader.serverLevel(),
