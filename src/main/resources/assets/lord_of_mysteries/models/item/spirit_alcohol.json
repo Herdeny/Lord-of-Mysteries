@@ -1,4 +1,6 @@
 {
   "parent": "minecraft:item/generated",
-  "textures": { "layer0": "minecraft:item/honey_bottle" }
+  "textures": {
+    "layer0": "lord_of_mysteries:item/spirit_alcohol"
+  }
 }

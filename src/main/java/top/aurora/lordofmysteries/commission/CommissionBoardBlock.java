@@ -13,7 +13,14 @@ import net.minecraft.world.phys.BlockHitResult;
 public final class CommissionBoardBlock extends Block {
 
     public CommissionBoardBlock(Properties properties) {
-        super(properties);
+        super(properties.noOcclusion());
+    }
+
+    @Override
+    public net.minecraft.world.phys.shapes.VoxelShape getShape(
+            BlockState state, net.minecraft.world.level.BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext context) {
+        return top.aurora.lordofmysteries.core.WorkstationShapes.COMMISSION_BOARD;
     }
 
     @Override

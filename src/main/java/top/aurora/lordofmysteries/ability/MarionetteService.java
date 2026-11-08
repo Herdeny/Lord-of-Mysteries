@@ -8,7 +8,7 @@ import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
+import top.aurora.lordofmysteries.registry.ModParticles;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -159,7 +159,7 @@ public final class MarionetteService {
                         now, MarionettePolicy.CREATION_COOLDOWN_TICKS);
 
         owner.serverLevel().sendParticles(
-                ParticleTypes.ENCHANT,
+                ModParticles.MARIONETTE_THREAD.get(),
                 target.getX(),
                 target.getY() + target.getBbHeight() * 0.6d,
                 target.getZ(),

@@ -1,36 +1,7 @@
-# 原创美术待办
+# 视觉资源状态
 
-当前功能模型统一引用原版纹理作为可见性回退，不包含原作或其他游戏提取素材。
-公开测试前应按 `ASSET_LICENSE.md` 制作原创像素资源并记录作者与许可。
+0.9.36 为已注册内容提供123个原创生成物品图标、16个共享材质、27种生物模型与旅行门、7个工位几何、16类粒子。26个生成蛋保留Forge标准染色外观。
 
-## M1 物品
+来源和转换规范见 docs/art-source/manifest.json 与 docs/VISUAL_ASSETS.md。运行 python scripts/check_visual_assets.py 检查覆盖。
 
-- `spirit_herb.png`
-- `divination_crystal.png`
-- `moonwater.png`
-- `deep_gray_spirit_tear.png`
-- `heather.png`
-- `spirit_alcohol.png`
-- `shapeshifter_serpent_gland.png`
-- `ash_powder.png`
-- `silver_filings.png`
-- `mystic_playing_cards.png`
-- `paper_figurine.png`
-- `seer_potion_9.png`
-- `seer_potion_8.png`
-- `seer_potion_7.png`
-- `investigator_notes.png`
-
-## M1 方块
-
-- `ritual_altar.png`
-- `ritual_chalk_mark.png`
-- `crucible.png`
-- `hunter_snare.png`
-
-## M1 生物
-
-- 占卜家失控体“疯言先知”：当前使用僵尸渲染。
-- 幻形蛇：当前使用洞穴蜘蛛渲染。
-
-建议规格：物品与方块 16×16 或 32×32 PNG；生物贴图遵循原版模型 UV，禁止直接复用官方 IP 素材。
+仍需后续制作：高序列/未来途径神话形态、专属音效与音乐、更多招式动画、NPC独立造型及真人美术打磨。不得把未来设计数量填入已交付统计。

@@ -1,1 +1,6 @@
-{"parent":"minecraft:item/generated","textures":{"layer0":"minecraft:item/rabbit_hide"}}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lord_of_mysteries:item/artifact_3_260_salvage_glove"
+  }
+}

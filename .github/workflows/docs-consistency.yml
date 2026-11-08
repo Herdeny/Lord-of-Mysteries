@@ -19,6 +19,8 @@ on:
       - "scripts/import_v09_design.py"
       - "scripts/build_content_graph.py"
       - "scripts/check_resource_integrity.py"
+      - "scripts/check_visual_assets.py"
+      - "scripts/import_visual_atlases.py"
       - "scripts/check_github_text_encoding.py"
       - "scripts/gen_pages_catalog.py"
       - "scripts/check_pages_layout.py"
@@ -53,6 +55,8 @@ on:
       - "scripts/import_v09_design.py"
       - "scripts/build_content_graph.py"
       - "scripts/check_resource_integrity.py"
+      - "scripts/check_visual_assets.py"
+      - "scripts/import_visual_atlases.py"
       - "scripts/check_github_text_encoding.py"
       - "scripts/gen_pages_catalog.py"
       - "scripts/check_pages_layout.py"
@@ -128,6 +132,9 @@ jobs:
 
       - name: Verify resource integrity
         run: python3 scripts/check_resource_integrity.py
+
+      - name: Verify visual assets and Pages icons
+        run: python3 scripts/check_visual_assets.py
 
       - name: Verify GitHub Issue text encoding
         env:

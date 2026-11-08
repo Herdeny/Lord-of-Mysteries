@@ -29,6 +29,8 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            property 'org.lwjgl.system.SharedLibraryExtractPath',
+                    project.file('run/client-natives').absolutePath
             jvmArgs '-Dfile.encoding=UTF-8',
                     '-Dsun.stdout.encoding=UTF-8',
                     '-Dsun.stderr.encoding=UTF-8'
@@ -286,6 +288,17 @@ tasks.register('checkResourceIntegrity', Exec) {
             fileTree('src/main/java')
 }
 
+tasks.register('checkVisualAssets', Exec) {
+    group = 'verification'
+    description = 'Checks every registered renderer, original sprite, workstation, particle and Pages image.'
+    commandLine pythonExecutable, 'scripts/check_visual_assets.py'
+    inputs.files 'scripts/check_visual_assets.py',
+            'docs/art-source/manifest.json',
+            fileTree('src/main/resources/assets/lord_of_mysteries'),
+            fileTree('src/main/java/top/aurora/lordofmysteries/client'),
+            fileTree('docs/assets/item-icons')
+}
+
 tasks.register('generatePagesCatalog', Exec) {
     group = 'project mystery'
     description = 'Generates the GitHub Pages catalog from actual Forge registries and translations.'
@@ -370,6 +383,7 @@ tasks.named('check').configure {
             'checkM4Foundation',
             'checkM5Foundation',
             'checkResourceIntegrity',
+            'checkVisualAssets',
             'checkPagesCatalog'
 }
 

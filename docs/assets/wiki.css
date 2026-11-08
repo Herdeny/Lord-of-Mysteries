@@ -991,3 +991,11 @@ main {
   #fog-canvas { display: none; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+.icon img { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+.visual-preview { margin: 20px 0; padding: 16px; border: 1px solid var(--line); border-radius: 12px; }
+.visual-preview summary { cursor: pointer; font-weight: 700; }
+.visual-preview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; }
+.visual-preview figure { margin: 0; }
+.visual-preview img { display: block; width: 100%; height: auto; border-radius: 8px; }
+.visual-preview figcaption { padding-top: 8px; }

@@ -1,4 +1,6 @@
 {
   "parent": "minecraft:item/generated",
-  "textures": {"layer0": "minecraft:item/chain"}
+  "textures": {
+    "layer0": "lord_of_mysteries:item/artifact_2_203_merciful_chain"
+  }
 }

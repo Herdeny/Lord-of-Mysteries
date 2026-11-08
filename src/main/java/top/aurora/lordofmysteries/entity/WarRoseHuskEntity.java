@@ -1,6 +1,6 @@
 package top.aurora.lordofmysteries.entity;
 
-import net.minecraft.core.particles.ParticleTypes;
+import top.aurora.lordofmysteries.registry.ModParticles;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -25,7 +25,7 @@ public final class WarRoseHuskEntity extends Husk {
             living.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 0));
             if (level() instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(
-                        ParticleTypes.FLAME,
+                        ModParticles.PETAL_ROSE_SHADOW.get(),
                         living.getX(), living.getY() + 0.8d, living.getZ(),
                         16, 0.4d, 0.55d, 0.4d, 0.02d);
             }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
+import top.aurora.lordofmysteries.registry.ModParticles;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -153,7 +154,7 @@ public final class M2FoundationAbilityHandler {
         if (detected && target instanceof Mob mob) mob.setTarget(player);
 
         player.serverLevel().sendParticles(
-                detected ? ParticleTypes.ANGRY_VILLAGER : ParticleTypes.SMOKE,
+                detected ? ParticleTypes.ANGRY_VILLAGER : ModParticles.SHADOW_FLICKER.get(),
                 target.getX(), target.getY() + target.getBbHeight() * 0.7d, target.getZ(),
                 8, 0.25d, 0.35d, 0.25d, 0.01d);
         player.level().playSound(null, player.blockPosition(),
@@ -231,7 +232,7 @@ public final class M2FoundationAbilityHandler {
         player.setDeltaMovement(horizontal.x, 0.35d, horizontal.z);
         player.hurtMarked = true;
         player.invulnerableTime = Math.max(player.invulnerableTime, 10);
-        player.serverLevel().sendParticles(ParticleTypes.SMOKE,
+        player.serverLevel().sendParticles(ModParticles.SHADOW_FLICKER.get(),
                 player.getX(), player.getY() + 0.5d, player.getZ(),
                 16, 0.4d, 0.2d, 0.4d, 0.02d);
         player.level().playSound(null, player.blockPosition(),
@@ -263,7 +264,7 @@ public final class M2FoundationAbilityHandler {
                 AbilityCooldowns.start(now, SPACE_TRICK_COOLDOWN);
         target.teleportTo(player.getX(), player.getY() + 0.4d, player.getZ());
         target.setPickUpDelay(0);
-        player.serverLevel().sendParticles(ParticleTypes.PORTAL,
+        player.serverLevel().sendParticles(ModParticles.DOOR_SPARK.get(),
                 target.getX(), target.getY() + 0.2d, target.getZ(),
                 18, 0.3d, 0.3d, 0.3d, 0.05d);
         player.level().playSound(null, player.blockPosition(),

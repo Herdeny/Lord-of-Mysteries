@@ -8,7 +8,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
+import top.aurora.lordofmysteries.registry.ModParticles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -252,7 +252,7 @@ public final class SequenceFiveAdvancementRitual {
             grantAdvancement(player);
             level.sendParticles(
                     outcome == SequenceFiveRitualLogic.Outcome.STABLE_SUCCESS
-                            ? ParticleTypes.END_ROD : ParticleTypes.ENCHANT,
+                            ? ModParticles.RITUAL_RUNE.get() : ModParticles.RITUAL_RUNE.get(),
                     altarPos.getX() + 0.5,
                     altarPos.getY() + 1,
                     altarPos.getZ() + 0.5,
@@ -283,7 +283,7 @@ public final class SequenceFiveAdvancementRitual {
             data.pollution = Math.min(100f, data.pollution + 15f);
             spawnWraith(level, altarPos, player);
         }
-        level.sendParticles(ParticleTypes.LARGE_SMOKE,
+        level.sendParticles(ModParticles.POLLUTION_MOTE.get(),
                 altarPos.getX() + 0.5,
                 altarPos.getY() + 1,
                 altarPos.getZ() + 0.5,

@@ -8,6 +8,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import top.aurora.lordofmysteries.registry.ModParticles;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -156,7 +157,7 @@ public final class M3LaunchAbilityHandler {
             mob.getNavigation().stop();
         }
         data.stageIllusionCooldownEndTick = AbilityCooldowns.start(now, 400L);
-        particles(player.serverLevel(), target.position(), ParticleTypes.SMOKE, 24);
+        particles(player.serverLevel(), target.position(), ModParticles.SHADOW_FLICKER.get(), 24);
         success(player, "faceless_restraint", target.getDisplayName());
         ActingEventHandler.trigger(
                 player, ActingEvent.FACELESS6_RESTRAIN_WITHOUT_IDENTITY, target);
@@ -182,7 +183,7 @@ public final class M3LaunchAbilityHandler {
                     MobEffects.MOVEMENT_SLOWDOWN, 100, 0, false, false));
         });
         data.airBulletCooldownEndTick = AbilityCooldowns.start(now, 600L);
-        particles(player.serverLevel(), player.position(), ParticleTypes.END_ROD, 56);
+        particles(player.serverLevel(), player.position(), ModParticles.MARIONETTE_THREAD.get(), 56);
         PlayerFeedback.send(player, Component.translatable(
                 "message.lord_of_mysteries.m3.spirit_threads", targets.size()));
         ActingEventHandler.trigger(
@@ -240,7 +241,7 @@ public final class M3LaunchAbilityHandler {
         mob.addEffect(new MobEffectInstance(
                 MobEffects.WEAKNESS, 240, 2, false, true));
         data.psychPacifyCooldownEndTick = AbilityCooldowns.start(now, 900L);
-        particles(player.serverLevel(), mob.position(), ParticleTypes.ENCHANT, 34);
+        particles(player.serverLevel(), mob.position(), ModParticles.PAGE_GLYPH.get(), 34);
         success(player, "hypnotic_command", mob.getDisplayName());
         if (hostile) {
             ActingEventHandler.trigger(
@@ -267,7 +268,7 @@ public final class M3LaunchAbilityHandler {
             target.removeEffect(MobEffects.DARKNESS);
         });
         data.psychShockCooldownEndTick = AbilityCooldowns.start(now, 1200L);
-        particles(player.serverLevel(), player.position(), ParticleTypes.ENCHANT, 48);
+        particles(player.serverLevel(), player.position(), ModParticles.PAGE_GLYPH.get(), 48);
         success(player, "mind_barrier", protectedPlayers.size());
         if (protectedPlayers.size() > 1) {
             ActingEventHandler.trigger(
@@ -291,7 +292,7 @@ public final class M3LaunchAbilityHandler {
         player.removeEffect(MobEffects.CONFUSION);
         player.removeEffect(MobEffects.DARKNESS);
         data.psychPacifyCooldownEndTick = AbilityCooldowns.start(now, 12000L);
-        particles(player.serverLevel(), player.position(), ParticleTypes.PORTAL, 42);
+        particles(player.serverLevel(), player.position(), ModParticles.DOOR_SPARK.get(), 42);
         success(player, "lucid_rehearsal",
                 String.format(java.util.Locale.ROOT, "%.1f", data.insanityPressure));
         ActingEventHandler.trigger(
@@ -320,7 +321,7 @@ public final class M3LaunchAbilityHandler {
         mob.addEffect(new MobEffectInstance(
                 MobEffects.CONFUSION, 300, 0, false, true));
         data.psychShockCooldownEndTick = AbilityCooldowns.start(now, 800L);
-        particles(player.serverLevel(), mob.position(), ParticleTypes.PORTAL, 38);
+        particles(player.serverLevel(), mob.position(), ModParticles.DOOR_SPARK.get(), 38);
         success(player, "dream_lull", mob.getDisplayName());
         ActingEventHandler.trigger(
                 player, ActingEvent.DREAMWALKER5_LULL_THREAT, mob);
@@ -346,7 +347,7 @@ public final class M3LaunchAbilityHandler {
         player.addEffect(new MobEffectInstance(
                 MobEffects.MOVEMENT_SPEED, 600, 0, false, true, true));
         data.pyroSpearCooldownEndTick = AbilityCooldowns.start(now, 3600L);
-        particles(player.serverLevel(), player.position(), ParticleTypes.FLAME, 64);
+        particles(player.serverLevel(), player.position(), ModParticles.EMBER_BURST.get(), 64);
         success(player, "battlefield_layout", threats.size());
         ActingEventHandler.trigger(
                 player, ActingEvent.CONSPIRER6_PREPARE_BATTLEFIELD, null);
@@ -415,7 +416,7 @@ public final class M3LaunchAbilityHandler {
                     player.getX() - target.getX(), player.getZ() - target.getZ());
         });
         data.pyroSpearCooldownEndTick = AbilityCooldowns.start(now, 500L);
-        particles(player.serverLevel(), player.position(), ParticleTypes.FLAME, 72);
+        particles(player.serverLevel(), player.position(), ModParticles.EMBER_BURST.get(), 72);
         success(player, "flame_scythe", targets.size());
         ActingEventHandler.trigger(
                 player, ActingEvent.REAPER5_SWEEP_FLAMES, null);
@@ -438,7 +439,7 @@ public final class M3LaunchAbilityHandler {
         target.addEffect(new MobEffectInstance(
                 MobEffects.GLOWING, 1200, 0, false, true));
         data.pyroRingCooldownEndTick = AbilityCooldowns.start(now, 300L);
-        particles(player.serverLevel(), target.position(), ParticleTypes.FLAME, 28);
+        particles(player.serverLevel(), target.position(), ModParticles.EMBER_BURST.get(), 28);
         success(player, "harvest_mark", target.getDisplayName());
         return true;
     }
@@ -472,7 +473,7 @@ public final class M3LaunchAbilityHandler {
                     .withStyle(ChatFormatting.RED));
         }
         data.thiefRuneCooldownEndTick = AbilityCooldowns.start(now, 4800L);
-        particles(player.serverLevel(), target.position(), ParticleTypes.WITCH, 34);
+        particles(player.serverLevel(), target.position(), ModParticles.DREAM_BUBBLE.get(), 34);
         success(player, "effect_theft", stolen.getEffect().getDisplayName());
         ActingEventHandler.trigger(
                 player, ActingEvent.PROMETHEUS6_STEAL_POWER, target);
@@ -502,7 +503,7 @@ public final class M3LaunchAbilityHandler {
         item.teleportTo(player.getX(), player.getY() + 0.5d, player.getZ());
         item.setNoPickUpDelay();
         data.thiefLockpickCooldownEndTick = AbilityCooldowns.start(now, 200L);
-        particles(player.serverLevel(), player.position(), ParticleTypes.PORTAL, 24);
+        particles(player.serverLevel(), player.position(), ModParticles.DOOR_SPARK.get(), 24);
         success(player, "unowned_retrieval", item.getItem().getHoverName());
         ActingEventHandler.trigger(
                 player, ActingEvent.PROMETHEUS6_RECOVER_UNOWNED, item);
@@ -529,7 +530,7 @@ public final class M3LaunchAbilityHandler {
         ItemStack fragment = new ItemStack(ModItems.DREAM_SCALE_FRAGMENT.get());
         if (!player.getInventory().add(fragment)) player.drop(fragment, false);
         data.thiefRuneCooldownEndTick = AbilityCooldowns.start(now, 2400L);
-        particles(player.serverLevel(), villager.position(), ParticleTypes.PORTAL, 32);
+        particles(player.serverLevel(), villager.position(), ModParticles.DOOR_SPARK.get(), 32);
         success(player, "dream_theft");
         ActingEventHandler.trigger(
                 player, ActingEvent.DREAM_STEALER5_RETRIEVE_DREAM, villager);
@@ -551,8 +552,8 @@ public final class M3LaunchAbilityHandler {
         player.addEffect(new MobEffectInstance(
                 MobEffects.DAMAGE_RESISTANCE, 60, 1, false, false, true));
         data.thiefLockpickCooldownEndTick = AbilityCooldowns.start(now, 900L);
-        particles(player.serverLevel(), origin, ParticleTypes.PORTAL, 28);
-        particles(player.serverLevel(), destination, ParticleTypes.PORTAL, 28);
+        particles(player.serverLevel(), origin, ModParticles.DOOR_SPARK.get(), 28);
+        particles(player.serverLevel(), destination, ModParticles.DOOR_SPARK.get(), 28);
         success(player, "reality_dislocation");
         ActingEventHandler.trigger(
                 player, ActingEvent.DREAM_STEALER5_ESCAPE_REALITY, null);
@@ -583,7 +584,7 @@ public final class M3LaunchAbilityHandler {
         if (!player.getInventory().add(copy)) player.drop(copy, false);
         data.apprenticeRelocateCooldownEndTick =
                 AbilityCooldowns.start(now, 2400L);
-        particles(player.serverLevel(), player.position(), ParticleTypes.ENCHANT, 36);
+        particles(player.serverLevel(), player.position(), ModParticles.PAGE_GLYPH.get(), 36);
         success(player, "perfect_copy", copy.getHoverName());
         ActingEventHandler.trigger(
                 player, ActingEvent.SCRIBE6_COPY_KNOWLEDGE, null);
@@ -603,7 +604,7 @@ public final class M3LaunchAbilityHandler {
                 MobEffects.DIG_SPEED, 1200, 1, false, false, true));
         data.apprenticeWardCooldownEndTick =
                 AbilityCooldowns.start(now, 1200L);
-        particles(player.serverLevel(), player.position(), ParticleTypes.ENCHANT, 30);
+        particles(player.serverLevel(), player.position(), ModParticles.PAGE_GLYPH.get(), 30);
         success(player, "archive_focus");
         ActingEventHandler.trigger(
                 player, ActingEvent.SCRIBE6_ARCHIVE_FOCUS, null);
@@ -633,8 +634,8 @@ public final class M3LaunchAbilityHandler {
                 MobEffects.DAMAGE_RESISTANCE, 60, 1, false, false, true));
         data.apprenticeRelocateCooldownEndTick =
                 AbilityCooldowns.start(now, 120L);
-        particles(player.serverLevel(), origin, ParticleTypes.PORTAL, 36);
-        particles(player.serverLevel(), destination, ParticleTypes.PORTAL, 36);
+        particles(player.serverLevel(), origin, ModParticles.DOOR_SPARK.get(), 36);
+        particles(player.serverLevel(), destination, ModParticles.DOOR_SPARK.get(), 36);
         success(player, "traveler_door");
         ActingEventHandler.trigger(
                 player, ActingEvent.TRAVELER5_CROSS_DISTANCE, null);
@@ -670,8 +671,8 @@ public final class M3LaunchAbilityHandler {
                 MobEffects.DAMAGE_RESISTANCE, 100, 2, false, false, true));
         data.apprenticeWardCooldownEndTick =
                 AbilityCooldowns.start(now, 36000L);
-        particles(player.serverLevel(), origin, ParticleTypes.END_ROD, 48);
-        particles(player.serverLevel(), destination, ParticleTypes.END_ROD, 48);
+        particles(player.serverLevel(), origin, ModParticles.MARIONETTE_THREAD.get(), 48);
+        particles(player.serverLevel(), destination, ModParticles.MARIONETTE_THREAD.get(), 48);
         success(player, "outpost_return");
         ActingEventHandler.trigger(
                 player, ActingEvent.TRAVELER5_RETURN_OUTPOST, null);

@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
+import top.aurora.lordofmysteries.registry.ModParticles;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -276,7 +276,7 @@ public final class CharacteristicLoadService {
                 remaining).withStyle(style));
         level.sendParticles(
                 result.outcome().extracted()
-                        ? ParticleTypes.ENCHANT : ParticleTypes.SOUL,
+                        ? ModParticles.CHARACTERISTIC_GLOW.get() : ModParticles.POLLUTION_MOTE.get(),
                 separatorPos.getX() + 0.5d,
                 separatorPos.getY() + 1d,
                 separatorPos.getZ() + 0.5d,

@@ -1,4 +1,6 @@
 {
   "parent": "minecraft:item/generated",
-  "textures": { "layer0": "minecraft:item/bone" }
+  "textures": {
+    "layer0": "lord_of_mysteries:item/scribe_golem_finger_bone"
+  }
 }

@@ -1,4 +1,139 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": { "all": "minecraft:block/chiseled_deepslate" }
+  "parent": "minecraft:block/block",
+  "textures": {
+    "runestone": "lord_of_mysteries:block/runestone",
+    "iron": "lord_of_mysteries:block/iron",
+    "sigil": "lord_of_mysteries:block/sigil",
+    "particle": "lord_of_mysteries:block/runestone"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        3,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#runestone"
+        },
+        "south": {
+          "texture": "#runestone"
+        },
+        "east": {
+          "texture": "#runestone"
+        },
+        "west": {
+          "texture": "#runestone"
+        },
+        "up": {
+          "texture": "#runestone"
+        },
+        "down": {
+          "texture": "#runestone"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        3,
+        3
+      ],
+      "to": [
+        13,
+        12,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#runestone"
+        },
+        "south": {
+          "texture": "#runestone"
+        },
+        "east": {
+          "texture": "#runestone"
+        },
+        "west": {
+          "texture": "#runestone"
+        },
+        "up": {
+          "texture": "#runestone"
+        },
+        "down": {
+          "texture": "#runestone"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        12,
+        0
+      ],
+      "to": [
+        16,
+        15,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#iron"
+        },
+        "south": {
+          "texture": "#iron"
+        },
+        "east": {
+          "texture": "#iron"
+        },
+        "west": {
+          "texture": "#iron"
+        },
+        "up": {
+          "texture": "#iron"
+        },
+        "down": {
+          "texture": "#iron"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        15,
+        1
+      ],
+      "to": [
+        15,
+        16,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#sigil"
+        },
+        "south": {
+          "texture": "#sigil"
+        },
+        "east": {
+          "texture": "#sigil"
+        },
+        "west": {
+          "texture": "#sigil"
+        },
+        "up": {
+          "texture": "#sigil"
+        },
+        "down": {
+          "texture": "#sigil"
+        }
+      }
+    }
+  ]
 }

@@ -3,7 +3,7 @@ package top.aurora.lordofmysteries.spirit;
 import java.util.UUID;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.particles.ParticleTypes;
+import top.aurora.lordofmysteries.registry.ModParticles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -175,13 +175,13 @@ public final class SpiritEcologyEntity extends Zombie {
     private static net.minecraft.core.particles.ParticleOptions particle(
             SpiritEcologyKind kind) {
         return switch (kind) {
-            case LANTERN_MOTH_SWARM, GRAVE_LANTERN -> ParticleTypes.FLAME;
-            case MEMORY_LEECH, PRAYER_ECHO -> ParticleTypes.SCULK_SOUL;
-            case SPIRIT_FERRYMAN, GASLIGHT_SPECTER -> ParticleTypes.SOUL;
-            case COLOR_EATER, THEATRE_MASKLING -> ParticleTypes.WITCH;
-            case DOOR_WISP -> ParticleTypes.PORTAL;
-            case WHISPER_CROW, ARCHIVE_SPIDER -> ParticleTypes.ASH;
-            case COMPASS_BIRD -> ParticleTypes.END_ROD;
+            case LANTERN_MOTH_SWARM, GRAVE_LANTERN -> ModParticles.CHARACTERISTIC_GLOW.get();
+            case MEMORY_LEECH, PRAYER_ECHO -> ModParticles.DREAM_BUBBLE.get();
+            case SPIRIT_FERRYMAN, GASLIGHT_SPECTER -> ModParticles.SPIRIT_WISP.get();
+            case COLOR_EATER, THEATRE_MASKLING -> ModParticles.MIRROR_RIPPLE.get();
+            case DOOR_WISP -> ModParticles.DOOR_SPARK.get();
+            case WHISPER_CROW, ARCHIVE_SPIDER -> ModParticles.PAGE_GLYPH.get();
+            case COMPASS_BIRD -> ModParticles.DIVINATION_THREAD.get();
         };
     }
 

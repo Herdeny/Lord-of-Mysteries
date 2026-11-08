@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item:potion"
+    "layer0": "lord_of_mysteries:item/thief_potion_9"
   }
 }

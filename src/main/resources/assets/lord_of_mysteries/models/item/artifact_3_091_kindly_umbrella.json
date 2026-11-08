@@ -1,4 +1,6 @@
 {
   "parent": "minecraft:item/generated",
-  "textures": {"layer0": "minecraft:item/fishing_rod"}
+  "textures": {
+    "layer0": "lord_of_mysteries:item/artifact_3_091_kindly_umbrella"
+  }
 }

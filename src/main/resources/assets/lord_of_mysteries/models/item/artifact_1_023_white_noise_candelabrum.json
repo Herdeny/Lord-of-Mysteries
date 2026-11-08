@@ -1,1 +1,6 @@
-{"parent":"minecraft:item/generated","textures":{"layer0":"minecraft:item/soul_torch"}}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lord_of_mysteries:item/artifact_1_023_white_noise_candelabrum"
+  }
+}

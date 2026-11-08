@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/magma_cream"
+    "layer0": "lord_of_mysteries:item/ember_salamander_gland"
   }
 }

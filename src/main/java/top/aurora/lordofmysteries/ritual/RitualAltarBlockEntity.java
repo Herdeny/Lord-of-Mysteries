@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.particles.ParticleTypes;
+import top.aurora.lordofmysteries.registry.ModParticles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -244,7 +244,7 @@ public final class RitualAltarBlockEntity extends BlockEntity {
 
     private void completeSuccess(ServerLevel level) {
         boolean perfect = lastOutcome == RitualResolutionLogic.Outcome.PERFECT;
-        level.sendParticles(perfect ? ParticleTypes.END_ROD : ParticleTypes.ENCHANT,
+        level.sendParticles(perfect ? ModParticles.RITUAL_RUNE.get() : ModParticles.RITUAL_RUNE.get(),
                 worldPosition.getX() + 0.5,
                 worldPosition.getY() + 1,
                 worldPosition.getZ() + 0.5,
@@ -271,7 +271,7 @@ public final class RitualAltarBlockEntity extends BlockEntity {
             }
         }
 
-        level.sendParticles(ParticleTypes.LARGE_SMOKE,
+        level.sendParticles(ModParticles.POLLUTION_MOTE.get(),
                 worldPosition.getX() + 0.5,
                 worldPosition.getY() + 1,
                 worldPosition.getZ() + 0.5,

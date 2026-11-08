@@ -1,10 +1,10 @@
 # 开发状态
 
 <!-- project-status:start -->
-- 当前版本：**`0.9.35-1.20.1`**
-- 开发阶段：**v0.9 M0-M5 跨系统安全强化完成，M6 第二批途径准备中**（M6）
+- 当前版本：**`0.9.36-1.20.1`**
+- 开发阶段：**v0.9 M0-M5 现有内容视觉资源落地，M6 第二批途径准备中**（M6）
 - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-- 最后更新：**2026-08-14 23:42:50 UTC+01:00**（`2026-08-14T22:42:50Z`）
+- 最后更新：**2026-11-08 07:53:31 UTC+00:00**（`2026-11-08T07:53:31Z`）
 <!-- project-status:end -->
 
 ## 里程碑
@@ -109,3 +109,9 @@ python scripts/run_server_restart_matrix.py --timeout 180
 - [v0.9 差异报告](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/V0.9_DIFFERENCE_REPORT.md)
 - [代码审计表](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/code_audit.csv)
 - [完整路线](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/ROADMAP.md)
+
+## 0.9.36 视觉更新
+
+已为现有内容接入123个独立物品图标、27种生物模型、旅行门渲染和7种工位模型，16类粒子配有客户端限流。Pages图鉴使用相同游戏PNG。
+
+范围、来源、配置和未完成边界见 [模型、贴图与粒子](Visual-Assets)。这不等于所有v0.9未来形态或长期多人真人验收已经完成。

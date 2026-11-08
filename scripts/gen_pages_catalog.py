@@ -77,8 +77,7 @@ def load_definitions(directory):
 
 def resource_state(kind, registry_id):
     if kind == "entity":
-        texture = ASSET_ROOT / "textures" / "entity" / f"{registry_id}.png"
-        return "实体纹理已提供" if texture.exists() else "使用代码渲染或共用纹理"
+        return "原生分部模型、原创材质与动画；旅行门为双面门框"
     model_kind = "block" if kind == "block" else "item"
     model = ASSET_ROOT / "models" / model_kind / f"{registry_id}.json"
     if model.exists():
@@ -110,6 +109,11 @@ def entry_for(kind, registry_id, zh_cn, en_us):
     }
     return {
         "type": display_type,
+        "image": (
+            f"assets/item-icons/{registry_id}.png"
+            if (ASSET_ROOT / "textures/item" / f"{registry_id}.png").exists()
+            else None
+        ),
         "id": f"{MOD_ID}:{registry_id}",
         "name": zh_cn[translation_key],
         "en": en_us[translation_key],
@@ -327,6 +331,11 @@ def render():
         f"  var generatedEntries = {encoded_entries};\n"
         "  var manualEntries = Array.isArray(D.entries) ? D.entries : [];\n"
         "  var manualIds = {};\n"
+        "  var generatedById = {};\n"
+        "  generatedEntries.forEach(function (entry) { generatedById[entry.id] = entry; });\n"
+        "  manualEntries.forEach(function (entry) {\n"
+        "    if (generatedById[entry.id]) entry.image = generatedById[entry.id].image;\n"
+        "  });\n"
         "  manualEntries.forEach(function (entry) { manualIds[entry.id] = true; });\n"
         "  D.entries = manualEntries.concat(generatedEntries.filter(function (entry) {\n"
         "    return !manualIds[entry.id];\n"

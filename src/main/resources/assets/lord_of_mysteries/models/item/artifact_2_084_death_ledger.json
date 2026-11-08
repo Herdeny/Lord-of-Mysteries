@@ -1,1 +1,6 @@
-{"parent":"minecraft:item/generated","textures":{"layer0":"minecraft:item/book"}}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lord_of_mysteries:item/artifact_2_084_death_ledger"
+  }
+}

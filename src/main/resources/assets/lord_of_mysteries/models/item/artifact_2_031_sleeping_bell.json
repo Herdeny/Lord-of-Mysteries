@@ -1,4 +1,6 @@
 {
   "parent": "minecraft:item/generated",
-  "textures": {"layer0": "minecraft:item/bell"}
+  "textures": {
+    "layer0": "lord_of_mysteries:item/artifact_2_031_sleeping_bell"
+  }
 }

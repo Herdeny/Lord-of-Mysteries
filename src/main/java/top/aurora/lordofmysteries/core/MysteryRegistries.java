@@ -34,6 +34,7 @@ public final class MysteryRegistries {
         // M0 只有占位注册表，M1 会在这里承载坩埚等方块实体类型。
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
+        top.aurora.lordofmysteries.registry.ModParticles.PARTICLES.register(modEventBus);
         // 创造模式标签会引用物品图标和展示列表，因此放在物品注册之后阅读更顺手。
         ModCreativeTabs.CREATIVE_TABS.register(modEventBus);
     }

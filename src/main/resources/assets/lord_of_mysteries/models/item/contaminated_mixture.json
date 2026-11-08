@@ -1,4 +1,6 @@
 {
   "parent": "minecraft:item/generated",
-  "textures": { "layer0": "minecraft:item/slime_ball" }
+  "textures": {
+    "layer0": "lord_of_mysteries:item/contaminated_mixture"
+  }
 }

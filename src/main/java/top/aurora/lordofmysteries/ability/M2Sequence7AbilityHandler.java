@@ -3,7 +3,7 @@ package top.aurora.lordofmysteries.ability;
 import java.util.List;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.particles.ParticleTypes;
+import top.aurora.lordofmysteries.registry.ModParticles;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -93,7 +93,7 @@ public final class M2Sequence7AbilityHandler {
         data.psychPacifyCooldownEndTick =
                 AbilityCooldowns.start(now, PACIFY_COOLDOWN);
         ServerLevel level = player.serverLevel();
-        level.sendParticles(ParticleTypes.HAPPY_VILLAGER,
+        level.sendParticles(ModParticles.SPIRIT_WISP.get(),
                 player.getX(), player.getY() + 1d, player.getZ(),
                 28, 1.5d, 0.8d, 1.5d, 0.02d);
         level.playSound(null, player.blockPosition(),
@@ -147,7 +147,7 @@ public final class M2Sequence7AbilityHandler {
         }
         data.psychShockCooldownEndTick =
                 AbilityCooldowns.start(now, MIND_SHOCK_COOLDOWN);
-        player.serverLevel().sendParticles(ParticleTypes.WITCH,
+        player.serverLevel().sendParticles(ModParticles.DREAM_BUBBLE.get(),
                 target.getX(), target.getY() + target.getBbHeight() * 0.7d,
                 target.getZ(), 20, 0.35d, 0.5d, 0.35d, 0.02d);
         player.level().playSound(null, target.blockPosition(),
@@ -185,7 +185,7 @@ public final class M2Sequence7AbilityHandler {
         target.setSecondsOnFire(5);
         data.pyroSpearCooldownEndTick =
                 AbilityCooldowns.start(now, FLAME_SPEAR_COOLDOWN);
-        player.serverLevel().sendParticles(ParticleTypes.FLAME,
+        player.serverLevel().sendParticles(ModParticles.EMBER_BURST.get(),
                 target.getX(), target.getY() + target.getBbHeight() * 0.5d,
                 target.getZ(), 24, 0.25d, 0.4d, 0.25d, 0.05d);
         player.level().playSound(null, target.blockPosition(),
@@ -227,7 +227,7 @@ public final class M2Sequence7AbilityHandler {
         }
         data.pyroRingCooldownEndTick =
                 AbilityCooldowns.start(now, FIRE_RING_COOLDOWN);
-        player.serverLevel().sendParticles(ParticleTypes.FLAME,
+        player.serverLevel().sendParticles(ModParticles.EMBER_BURST.get(),
                 player.getX(), player.getY() + 0.4d, player.getZ(),
                 64, 2.2d, 0.2d, 2.2d, 0.04d);
         player.level().playSound(null, player.blockPosition(),

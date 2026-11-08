@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/handheld",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/amethyst_shard"
+    "layer0": "lord_of_mysteries:item/imprint_probe"
   }
 }

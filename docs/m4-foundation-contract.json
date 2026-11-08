@@ -177,7 +177,7 @@
     "artifact_entries": 24
   },
   "validation": {
-    "junit_tests": 476,
+    "junit_tests": 483,
     "game_tests": 29,
     "behavior_test_classes": [
       "OrganizationDefinitionTest",

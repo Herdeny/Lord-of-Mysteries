@@ -1,4 +1,6 @@
 {
   "parent": "minecraft:item/generated",
-  "textures": { "layer0": "minecraft:item/string" }
+  "textures": {
+    "layer0": "lord_of_mysteries:item/sleeping_giant_eyelash"
+  }
 }

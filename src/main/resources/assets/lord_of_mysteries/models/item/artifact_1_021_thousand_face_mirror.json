@@ -1,1 +1,6 @@
-{"parent":"minecraft:item/generated","textures":{"layer0":"minecraft:item/spyglass"}}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lord_of_mysteries:item/artifact_1_021_thousand_face_mirror"
+  }
+}

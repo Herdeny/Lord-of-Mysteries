@@ -1,3 +1,6 @@
 {
-  "parent": "minecraft:item/compass"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lord_of_mysteries:item/investigator_compass"
+  }
 }

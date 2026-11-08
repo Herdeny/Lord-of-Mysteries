@@ -324,7 +324,20 @@
       card.type = "button";
       card.setAttribute("aria-label", "查看 " + entry.name + " 详情");
       var head = create("div", "card-head");
-      head.appendChild(create("div", "icon " + entry.type, entryIcon(entry)));
+      var icon = create("div", "icon " + entry.type);
+      if (entry.image && /^assets\/item-icons\/[a-z0-9_]+\.png$/.test(entry.image)) {
+        var sprite = create("img");
+        sprite.src = entry.image;
+        sprite.alt = entry.name;
+        sprite.width = 64;
+        sprite.height = 64;
+        sprite.loading = "lazy";
+        sprite.addEventListener("error", function () { icon.textContent = entryIcon(entry); });
+        icon.appendChild(sprite);
+      } else {
+        icon.textContent = entryIcon(entry);
+      }
+      head.appendChild(icon);
       var title = create("div");
       title.appendChild(create("h3", null, entry.name));
       title.appendChild(create("p", "tagline", (entry.en ? entry.en + " · " : "") + entry.id));

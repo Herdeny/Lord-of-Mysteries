@@ -4,6 +4,7 @@ window.LOM = window.LOM || {};
   var generatedEntries = [
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_1_012_city_whistle.png",
     "id": "lord_of_mysteries:artifact_1_012_city_whistle",
     "name": "1-012 城市警哨",
     "en": "1-012 City Whistle",
@@ -56,6 +57,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_1_021_thousand_face_mirror.png",
     "id": "lord_of_mysteries:artifact_1_021_thousand_face_mirror",
     "name": "1-021 千面之镜",
     "en": "1-021 Thousand-Face Mirror",
@@ -108,6 +110,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_1_022_storm_anchor.png",
     "id": "lord_of_mysteries:artifact_1_022_storm_anchor",
     "name": "1-022 风暴之锚",
     "en": "1-022 Storm Anchor",
@@ -160,6 +163,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_1_023_white_noise_candelabrum.png",
     "id": "lord_of_mysteries:artifact_1_023_white_noise_candelabrum",
     "name": "1-023 白噪音烛台",
     "en": "1-023 White-Noise Candelabrum",
@@ -212,6 +216,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_1_024_penitent_iron_shoes.png",
     "id": "lord_of_mysteries:artifact_1_024_penitent_iron_shoes",
     "name": "1-024 悔罪者铁鞋",
     "en": "1-024 Penitent Iron Shoes",
@@ -264,6 +269,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_1_025_gambler_dice_cup.png",
     "id": "lord_of_mysteries:artifact_1_025_gambler_dice_cup",
     "name": "1-025 博弈骰盅",
     "en": "1-025 Gambler's Dice Cup",
@@ -316,6 +322,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_1_026_ferryman_ticket.png",
     "id": "lord_of_mysteries:artifact_1_026_ferryman_ticket",
     "name": "1-026 摆渡人船票",
     "en": "1-026 Ferryman Ticket",
@@ -368,6 +375,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_2_031_sleeping_bell.png",
     "id": "lord_of_mysteries:artifact_2_031_sleeping_bell",
     "name": "2-031 沉睡之铃",
     "en": "2-031 Sleeping Bell",
@@ -420,6 +428,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_2_081_reverse_watch.png",
     "id": "lord_of_mysteries:artifact_2_081_reverse_watch",
     "name": "2-081 逆走怀表",
     "en": "2-081 Reverse Watch",
@@ -472,6 +481,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_2_082_stringless_violin.png",
     "id": "lord_of_mysteries:artifact_2_082_stringless_violin",
     "name": "2-082 无弦提琴",
     "en": "2-082 Stringless Violin",
@@ -524,6 +534,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_2_083_gluttonous_fork.png",
     "id": "lord_of_mysteries:artifact_2_083_gluttonous_fork",
     "name": "2-083 饕餮餐叉",
     "en": "2-083 Gluttonous Fork",
@@ -576,6 +587,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_2_084_death_ledger.png",
     "id": "lord_of_mysteries:artifact_2_084_death_ledger",
     "name": "2-084 亡者名录",
     "en": "2-084 Death Ledger",
@@ -628,6 +640,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_2_085_hush_blade.png",
     "id": "lord_of_mysteries:artifact_2_085_hush_blade",
     "name": "2-085 缄默怀刃",
     "en": "2-085 Hush Blade",
@@ -680,6 +693,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_2_166_guest_mask.png",
     "id": "lord_of_mysteries:artifact_2_166_guest_mask",
     "name": "2-166 来客面具",
     "en": "2-166 Guest Mask",
@@ -732,6 +746,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_2_203_merciful_chain.png",
     "id": "lord_of_mysteries:artifact_2_203_merciful_chain",
     "name": "2-203 慈悲之链",
     "en": "2-203 Merciful Chain",
@@ -784,6 +799,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_3_091_kindly_umbrella.png",
     "id": "lord_of_mysteries:artifact_3_091_kindly_umbrella",
     "name": "3-091 善意之伞",
     "en": "3-091 Kindly Umbrella",
@@ -836,6 +852,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_3_114_weathered_coin.png",
     "id": "lord_of_mysteries:artifact_3_114_weathered_coin",
     "name": "3-114 风化硬币",
     "en": "3-114 Weathered Coin",
@@ -888,6 +905,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_3_148_pilgrim_chalk.png",
     "id": "lord_of_mysteries:artifact_3_148_pilgrim_chalk",
     "name": "3-148 朝圣者粉笔",
     "en": "3-148 Pilgrim Chalk",
@@ -940,6 +958,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_3_207_honest_mirror.png",
     "id": "lord_of_mysteries:artifact_3_207_honest_mirror",
     "name": "3-207 诚实之镜",
     "en": "3-207 Honest Mirror",
@@ -992,6 +1011,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_3_221_hushglass_vial.png",
     "id": "lord_of_mysteries:artifact_3_221_hushglass_vial",
     "name": "3-221 寂声玻璃瓶",
     "en": "3-221 Hushglass Vial",
@@ -1044,6 +1064,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_3_233_wakeful_snuffbox.png",
     "id": "lord_of_mysteries:artifact_3_233_wakeful_snuffbox",
     "name": "3-233 醒神鼻烟盒",
     "en": "3-233 Wakeful Snuffbox",
@@ -1096,6 +1117,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_3_244_wayfinder_candle.png",
     "id": "lord_of_mysteries:artifact_3_244_wayfinder_candle",
     "name": "3-244 引路烛",
     "en": "3-244 Wayfinder Candle",
@@ -1148,6 +1170,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/artifact_3_260_salvage_glove.png",
     "id": "lord_of_mysteries:artifact_3_260_salvage_glove",
     "name": "3-260 拾遗手套",
     "en": "3-260 Salvage Glove",
@@ -1200,6 +1223,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "artifact",
+    "image": "assets/item-icons/eternal_matchbox.png",
     "id": "lord_of_mysteries:eternal_matchbox",
     "name": "永燃火柴盒",
     "en": "Eternal Matchbox",
@@ -1252,6 +1276,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "block",
+    "image": null,
     "id": "lord_of_mysteries:characteristic_separator",
     "name": "特性分离台",
     "en": "Characteristic Separator",
@@ -1283,6 +1308,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "block",
+    "image": null,
     "id": "lord_of_mysteries:commission_board",
     "name": "雾都委托板",
     "en": "Mist City Commission Board",
@@ -1314,6 +1340,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "block",
+    "image": null,
     "id": "lord_of_mysteries:crucible",
     "name": "坩埚",
     "en": "Crucible",
@@ -1345,6 +1372,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "block",
+    "image": null,
     "id": "lord_of_mysteries:hunter_snare",
     "name": "猎人捕兽夹",
     "en": "Hunter Snare",
@@ -1376,6 +1404,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "block",
+    "image": null,
     "id": "lord_of_mysteries:imprint_washing_altar",
     "name": "烙印洗涤台",
     "en": "Imprint Washing Altar",
@@ -1407,6 +1436,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "block",
+    "image": null,
     "id": "lord_of_mysteries:ritual_altar",
     "name": "仪式祭坛",
     "en": "Ritual Altar",
@@ -1438,6 +1468,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "block",
+    "image": null,
     "id": "lord_of_mysteries:ritual_chalk_mark",
     "name": "仪式粉笔阵纹",
     "en": "Ritual Chalk Mark",
@@ -1469,6 +1500,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:ability_leech",
     "name": "窃能水蛭",
     "en": "Ability Leech",
@@ -1493,13 +1525,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:apprentice_breakdown",
     "name": "裂门失控体",
     "en": "Riven-Door Breakdown",
@@ -1524,13 +1557,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:archive_spider",
     "name": "档案蛛",
     "en": "Archive Spider",
@@ -1555,13 +1589,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:ashen_puppet",
     "name": "灰烬傀儡",
     "en": "Ashen Puppet",
@@ -1586,13 +1621,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:color_eater",
     "name": "噬色兽",
     "en": "Color Eater",
@@ -1617,13 +1653,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:compass_bird",
     "name": "罗盘鸟",
     "en": "Compass Bird",
@@ -1648,13 +1685,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:cradle_moth",
     "name": "摇篮蛾",
     "en": "Cradle Moth",
@@ -1679,13 +1717,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:door_wisp",
     "name": "门隙精",
     "en": "Door Wisp",
@@ -1710,13 +1749,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:gaslight_specter",
     "name": "煤气灯幽影",
     "en": "Gaslight Specter",
@@ -1741,13 +1781,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:grave_lantern",
     "name": "墓灯灵",
     "en": "Grave Lantern",
@@ -1772,13 +1813,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:lantern_moth_swarm",
     "name": "灯蛾群",
     "en": "Lantern Moth Swarm",
@@ -1803,13 +1845,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:marionette_vine",
     "name": "提线魔藤",
     "en": "Marionette Vine",
@@ -1834,13 +1877,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:memory_leech",
     "name": "记忆水蛭",
     "en": "Memory Leech",
@@ -1865,13 +1909,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:prayer_echo",
     "name": "祈祷回声",
     "en": "Prayer Echo",
@@ -1896,13 +1941,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:psychiatrist_breakdown",
     "name": "低语失控体",
     "en": "Whispering Breakdown",
@@ -1927,13 +1973,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:pyromaniac_breakdown",
     "name": "烬火失控体",
     "en": "Cinder Breakdown",
@@ -1958,13 +2005,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:riftling",
     "name": "裂隙灵",
     "en": "Riftling",
@@ -1989,13 +2037,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:scribe_golem",
     "name": "誊写魔像",
     "en": "Scribe Golem",
@@ -2020,13 +2069,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:seer_breakdown",
     "name": "占卜家失控体",
     "en": "Seer Breakdown",
@@ -2051,13 +2101,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:shapeshifter_serpent",
     "name": "幻形蛇",
     "en": "Shapeshifter Serpent",
@@ -2082,7 +2133,7 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
@@ -2533,6 +2584,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:spirit_ferryman",
     "name": "灵界摆渡人",
     "en": "Spirit Ferryman",
@@ -2557,13 +2609,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:spirit_wisp",
     "name": "灵体微光",
     "en": "Spirit Wisp",
@@ -2588,13 +2641,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:theatre_maskling",
     "name": "剧院面灵",
     "en": "Theatre Maskling",
@@ -2619,13 +2673,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:thief_breakdown",
     "name": "窃影失控体",
     "en": "Shadow-Pilfer Breakdown",
@@ -2650,13 +2705,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:traveler_door",
     "name": "旅行家远门",
     "en": "Traveler Far Door",
@@ -2681,13 +2737,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:twin_serpent",
     "name": "双头蛇",
     "en": "Twin-Headed Serpent",
@@ -2712,13 +2769,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:war_rose_husk",
     "name": "战蔷薇遗骸",
     "en": "War-Rose Husk",
@@ -2743,13 +2801,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:whisper_crow",
     "name": "低语鸦",
     "en": "Whisper Crow",
@@ -2774,13 +2833,14 @@ window.LOM = window.LOM || {};
       ],
       [
         "资源状态",
-        "使用代码渲染或共用纹理"
+        "原生分部模型、原创材质与动画；旅行门为双面门框"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
     "type": "item",
+    "image": "assets/item-icons/ability_leech_core.png",
     "id": "lord_of_mysteries:ability_leech_core",
     "name": "窃能水蛭之核",
     "en": "Ability Leech Core",
@@ -2812,6 +2872,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:ability_leech_spawn_egg",
     "name": "窃能水蛭刷怪蛋",
     "en": "Ability Leech Spawn Egg",
@@ -2843,6 +2904,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/acting_identity_card.png",
     "id": "lord_of_mysteries:acting_identity_card",
     "name": "扮演身份卡",
     "en": "Acting Identity Card",
@@ -2874,6 +2936,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/acting_reflection_journal.png",
     "id": "lord_of_mysteries:acting_reflection_journal",
     "name": "扮演反思日志",
     "en": "Acting Reflection Journal",
@@ -2905,6 +2968,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/ancient_tablet_spore_sac.png",
     "id": "lord_of_mysteries:ancient_tablet_spore_sac",
     "name": "古碑苔孢囊",
     "en": "Ancient Tablet Spore Sac",
@@ -2936,6 +3000,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:apprentice_breakdown_spawn_egg",
     "name": "学徒失控体刷怪蛋",
     "en": "Apprentice Breakdown Spawn Egg",
@@ -2967,6 +3032,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:archive_spider_spawn_egg",
     "name": "档案蛛刷怪蛋",
     "en": "Archive Spider Spawn Egg",
@@ -2998,6 +3064,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/ash_powder.png",
     "id": "lord_of_mysteries:ash_powder",
     "name": "灰烬粉",
     "en": "Ash Powder",
@@ -3029,6 +3096,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:ashen_puppet_spawn_egg",
     "name": "灰烬傀儡刷怪蛋",
     "en": "Ashen Puppet Spawn Egg",
@@ -3060,6 +3128,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/ashen_thread.png",
     "id": "lord_of_mysteries:ashen_thread",
     "name": "灰烬丝线",
     "en": "Ashen Thread",
@@ -3091,6 +3160,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/battlefield_iron_rose.png",
     "id": "lord_of_mysteries:battlefield_iron_rose",
     "name": "战场铁蔷薇",
     "en": "Battlefield Iron Rose",
@@ -3122,6 +3192,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/black_wax.png",
     "id": "lord_of_mysteries:black_wax",
     "name": "黑色仪式蜡",
     "en": "Black Ritual Wax",
@@ -3153,6 +3224,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/blank_manuscript.png",
     "id": "lord_of_mysteries:blank_manuscript",
     "name": "空白手稿",
     "en": "Blank Manuscript",
@@ -3184,6 +3256,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/bloodstained_notebook.png",
     "id": "lord_of_mysteries:bloodstained_notebook",
     "name": "染血调查笔记",
     "en": "Bloodstained Investigation Notes",
@@ -3215,6 +3288,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/broken_characteristic.png",
     "id": "lord_of_mysteries:broken_characteristic",
     "name": "破碎特性",
     "en": "Broken Characteristic",
@@ -3246,6 +3320,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/burnt_list.png",
     "id": "lord_of_mysteries:burnt_list",
     "name": "烧焦的名单",
     "en": "Burnt List",
@@ -3277,6 +3352,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/calming_incense.png",
     "id": "lord_of_mysteries:calming_incense",
     "name": "镇静熏香",
     "en": "Calming Incense",
@@ -3308,6 +3384,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:color_eater_spawn_egg",
     "name": "噬色兽刷怪蛋",
     "en": "Color Eater Spawn Egg",
@@ -3339,6 +3416,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/commission_paper.png",
     "id": "lord_of_mysteries:commission_paper",
     "name": "调查委托书",
     "en": "Investigation Commission",
@@ -3370,6 +3448,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:compass_bird_spawn_egg",
     "name": "罗盘鸟刷怪蛋",
     "en": "Compass Bird Spawn Egg",
@@ -3401,6 +3480,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/contaminated_mixture.png",
     "id": "lord_of_mysteries:contaminated_mixture",
     "name": "污染混合物",
     "en": "Contaminated Mixture",
@@ -3432,6 +3512,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/cradle_moth_eye.png",
     "id": "lord_of_mysteries:cradle_moth_eye",
     "name": "摇篮蛾复眼",
     "en": "Cradle Moth Compound Eye",
@@ -3463,6 +3544,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:cradle_moth_spawn_egg",
     "name": "摇篮蛾刷怪蛋",
     "en": "Cradle Moth Spawn Egg",
@@ -3494,6 +3576,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/deep_gray_spirit_tear.png",
     "id": "lord_of_mysteries:deep_gray_spirit_tear",
     "name": "深灰灵体之泪",
     "en": "Deep-gray Spirit Tear",
@@ -3525,6 +3608,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/divination_crystal.png",
     "id": "lord_of_mysteries:divination_crystal",
     "name": "占卜水晶",
     "en": "Divination Crystal",
@@ -3556,6 +3640,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:door_wisp_spawn_egg",
     "name": "门隙精刷怪蛋",
     "en": "Door Wisp Spawn Egg",
@@ -3587,6 +3672,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/dream_anchor_clock.png",
     "id": "lord_of_mysteries:dream_anchor_clock",
     "name": "梦锚闹钟",
     "en": "Dream Anchor Clock",
@@ -3618,6 +3704,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/dream_entry_ribbon.png",
     "id": "lord_of_mysteries:dream_entry_ribbon",
     "name": "入梦缎带",
     "en": "Dream Entry Ribbon",
@@ -3649,6 +3736,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/dream_memory.png",
     "id": "lord_of_mysteries:dream_memory",
     "name": "共同梦忆",
     "en": "Shared Dream Memory",
@@ -3680,6 +3768,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/dream_scale_fragment.png",
     "id": "lord_of_mysteries:dream_scale_fragment",
     "name": "梦鳞碎片",
     "en": "Dream Scale Fragment",
@@ -3711,6 +3800,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/dream_trauma_shard.png",
     "id": "lord_of_mysteries:dream_trauma_shard",
     "name": "梦创碎片",
     "en": "Dream Trauma Shard",
@@ -3742,6 +3832,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/dynamic_case_brass_token.png",
     "id": "lord_of_mysteries:dynamic_case_brass_token",
     "name": "封存黄铜筹码",
     "en": "Sealed Brass Token",
@@ -3773,6 +3864,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/dynamic_case_candle_wax.png",
     "id": "lord_of_mysteries:dynamic_case_candle_wax",
     "name": "封存烛蜡样本",
     "en": "Sealed Candle Wax",
@@ -3804,6 +3896,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/dynamic_case_ink_trace.png",
     "id": "lord_of_mysteries:dynamic_case_ink_trace",
     "name": "封存墨迹样本",
     "en": "Sealed Ink Trace",
@@ -3835,6 +3928,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/dynamic_case_torn_schedule.png",
     "id": "lord_of_mysteries:dynamic_case_torn_schedule",
     "name": "封存残缺时刻表",
     "en": "Sealed Torn Schedule",
@@ -3866,6 +3960,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/dynamic_evidence_portfolio.png",
     "id": "lord_of_mysteries:dynamic_evidence_portfolio",
     "name": "轮换案件证物袋",
     "en": "Rotation Evidence Portfolio",
@@ -3897,6 +3992,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/ember_salamander_gland.png",
     "id": "lord_of_mysteries:ember_salamander_gland",
     "name": "烬火蝾螈腺体",
     "en": "Ember Salamander Gland",
@@ -3928,6 +4024,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/emergency_return_charm.png",
     "id": "lord_of_mysteries:emergency_return_charm",
     "name": "紧急返航符",
     "en": "Emergency Return Charm",
@@ -3959,6 +4056,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/formula_fragment.png",
     "id": "lord_of_mysteries:formula_fragment",
     "name": "配方残页",
     "en": "Formula Fragment",
@@ -3990,6 +4088,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:gaslight_specter_spawn_egg",
     "name": "煤气灯幽影刷怪蛋",
     "en": "Gaslight Specter Spawn Egg",
@@ -4021,6 +4120,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:grave_lantern_spawn_egg",
     "name": "墓灯灵刷怪蛋",
     "en": "Grave Lantern Spawn Egg",
@@ -4052,6 +4152,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/heather.png",
     "id": "lord_of_mysteries:heather",
     "name": "石楠",
     "en": "Heather",
@@ -4083,6 +4184,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/identity_salt_circle.png",
     "id": "lord_of_mysteries:identity_salt_circle",
     "name": "身份盐环",
     "en": "Identity Salt Circle",
@@ -4114,6 +4216,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/imprint_probe.png",
     "id": "lord_of_mysteries:imprint_probe",
     "name": "烙印探针",
     "en": "Imprint Probe",
@@ -4145,6 +4248,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/imprint_washing_incense.png",
     "id": "lord_of_mysteries:imprint_washing_incense",
     "name": "烙印洗涤香",
     "en": "Imprint Washing Incense",
@@ -4176,6 +4280,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/investigator_compass.png",
     "id": "lord_of_mysteries:investigator_compass",
     "name": "调查员罗盘",
     "en": "Investigator's Compass",
@@ -4207,6 +4312,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/investigator_notes.png",
     "id": "lord_of_mysteries:investigator_notes",
     "name": "神秘学手账",
     "en": "Occult Handbook",
@@ -4238,6 +4344,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/iridescent_trickbird_feather.png",
     "id": "lord_of_mysteries:iridescent_trickbird_feather",
     "name": "幻光鸟羽",
     "en": "Iridescent Trickbird Feather",
@@ -4269,6 +4376,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/knowledge_copy.png",
     "id": "lord_of_mysteries:knowledge_copy",
     "name": "灵墨知识副本",
     "en": "Spirit-Ink Knowledge Copy",
@@ -4300,6 +4408,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:lantern_moth_swarm_spawn_egg",
     "name": "灯蛾群刷怪蛋",
     "en": "Lantern Moth Swarm Spawn Egg",
@@ -4331,6 +4440,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/marionette_scroll.png",
     "id": "lord_of_mysteries:marionette_scroll",
     "name": "秘偶收纳卷轴",
     "en": "Marionette Storage Scroll",
@@ -4362,6 +4472,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/marionette_vine_core.png",
     "id": "lord_of_mysteries:marionette_vine_core",
     "name": "提线魔藤之芯",
     "en": "Marionette Vine Core",
@@ -4393,6 +4504,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:marionette_vine_spawn_egg",
     "name": "提线魔藤刷怪蛋",
     "en": "Marionette Vine Spawn Egg",
@@ -4424,6 +4536,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/memory_fragment.png",
     "id": "lord_of_mysteries:memory_fragment",
     "name": "记忆碎片",
     "en": "Memory Fragment",
@@ -4455,6 +4568,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:memory_leech_spawn_egg",
     "name": "记忆水蛭刷怪蛋",
     "en": "Memory Leech Spawn Egg",
@@ -4486,6 +4600,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/memory_sage_cocoa.png",
     "id": "lord_of_mysteries:memory_sage_cocoa",
     "name": "忆香可可",
     "en": "Memory Sage Cocoa",
@@ -4517,6 +4632,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/memory_seal_wax.png",
     "id": "lord_of_mysteries:memory_seal_wax",
     "name": "记忆封蜡",
     "en": "Memory Seal Wax",
@@ -4548,6 +4664,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/meteor_dust.png",
     "id": "lord_of_mysteries:meteor_dust",
     "name": "陨星尘",
     "en": "Meteor Dust",
@@ -4579,6 +4696,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/mirror_crab_shell.png",
     "id": "lord_of_mysteries:mirror_crab_shell",
     "name": "镜面蟹壳",
     "en": "Mirror Crab Shell",
@@ -4610,6 +4728,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/moonwater.png",
     "id": "lord_of_mysteries:moonwater",
     "name": "月华水",
     "en": "Moonwater",
@@ -4641,6 +4760,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/mystic_ink.png",
     "id": "lord_of_mysteries:mystic_ink",
     "name": "神秘墨水",
     "en": "Mystic Ink",
@@ -4672,6 +4792,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/mystic_playing_cards.png",
     "id": "lord_of_mysteries:mystic_playing_cards",
     "name": "秘术纸牌",
     "en": "Mystic Playing Cards",
@@ -4703,6 +4824,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/newspaper.png",
     "id": "lord_of_mysteries:newspaper",
     "name": "雾都晨报",
     "en": "Mist City Morning Post",
@@ -4734,6 +4856,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/paper_figurine.png",
     "id": "lord_of_mysteries:paper_figurine",
     "name": "替身纸人",
     "en": "Paper Substitute",
@@ -4765,6 +4888,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:prayer_echo_spawn_egg",
     "name": "祈祷回声刷怪蛋",
     "en": "Prayer Echo Spawn Egg",
@@ -4796,6 +4920,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/press_card.png",
     "id": "lord_of_mysteries:press_card",
     "name": "幸存记者证",
     "en": "Survivor's Press Card",
@@ -4827,6 +4952,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/protective_charm.png",
     "id": "lord_of_mysteries:protective_charm",
     "name": "精神守护符",
     "en": "Protective Charm",
@@ -4858,6 +4984,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:psychiatrist_breakdown_spawn_egg",
     "name": "心理医生失控体刷怪蛋",
     "en": "Psychiatrist Breakdown Spawn Egg",
@@ -4889,6 +5016,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/pure_water.png",
     "id": "lord_of_mysteries:pure_water",
     "name": "纯净水",
     "en": "Pure Water",
@@ -4920,6 +5048,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:pyromaniac_breakdown_spawn_egg",
     "name": "纵火家失控体刷怪蛋",
     "en": "Pyromaniac Breakdown Spawn Egg",
@@ -4951,6 +5080,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:riftling_spawn_egg",
     "name": "裂隙灵刷怪蛋",
     "en": "Riftling Spawn Egg",
@@ -4982,6 +5112,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/scribe_golem_finger_bone.png",
     "id": "lord_of_mysteries:scribe_golem_finger_bone",
     "name": "誊写魔像指骨",
     "en": "Scribe Golem Finger Bone",
@@ -5013,6 +5144,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:scribe_golem_spawn_egg",
     "name": "誊写魔像刷怪蛋",
     "en": "Scribe Golem Spawn Egg",
@@ -5044,6 +5176,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/sealed_formula_dossier.png",
     "id": "lord_of_mysteries:sealed_formula_dossier",
     "name": "密封配方卷宗",
     "en": "Sealed Formula Dossier",
@@ -5075,6 +5208,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/shadow_marten_claw.png",
     "id": "lord_of_mysteries:shadow_marten_claw",
     "name": "影栖鼬之爪",
     "en": "Shadow Marten Claw",
@@ -5106,6 +5240,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/shapeshifter_blood.png",
     "id": "lord_of_mysteries:shapeshifter_blood",
     "name": "变形怪之血",
     "en": "Shapeshifter Blood",
@@ -5137,6 +5272,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/shapeshifter_serpent_gland.png",
     "id": "lord_of_mysteries:shapeshifter_serpent_gland",
     "name": "幻形蛇毒腺",
     "en": "Shapeshifter Serpent Gland",
@@ -5168,6 +5304,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:shapeshifter_serpent_spawn_egg",
     "name": "幻形蛇刷怪蛋",
     "en": "Shapeshifter Serpent Spawn Egg",
@@ -5199,6 +5336,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/silver_filings.png",
     "id": "lord_of_mysteries:silver_filings",
     "name": "银屑",
     "en": "Silver Filings",
@@ -5230,6 +5368,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/sleeping_giant_eyelash.png",
     "id": "lord_of_mysteries:sleeping_giant_eyelash",
     "name": "睡巨人的睫毛",
     "en": "Sleeping Giant Eyelash",
@@ -5261,6 +5400,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/spatial_rift_crystal.png",
     "id": "lord_of_mysteries:spatial_rift_crystal",
     "name": "空间裂隙结晶",
     "en": "Spatial Rift Crystal",
@@ -5292,6 +5432,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/spirit_alcohol.png",
     "id": "lord_of_mysteries:spirit_alcohol",
     "name": "灵性酒精",
     "en": "Spirit Alcohol",
@@ -5323,6 +5464,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/spirit_compass.png",
     "id": "lord_of_mysteries:spirit_compass",
     "name": "灵界罗盘",
     "en": "Spirit Compass",
@@ -5354,6 +5496,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:spirit_ferryman_spawn_egg",
     "name": "灵界摆渡人刷怪蛋",
     "en": "Spirit Ferryman Spawn Egg",
@@ -5385,6 +5528,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/spirit_herb.png",
     "id": "lord_of_mysteries:spirit_herb",
     "name": "灵性草药",
     "en": "Spirit Herb",
@@ -5416,6 +5560,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/spirit_lantern.png",
     "id": "lord_of_mysteries:spirit_lantern",
     "name": "灵视提灯",
     "en": "Spirit Lantern",
@@ -5447,6 +5592,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/spirit_orchid_petals.png",
     "id": "lord_of_mysteries:spirit_orchid_petals",
     "name": "灵兰花瓣",
     "en": "Spirit Orchid Petals",
@@ -5478,6 +5624,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/spirit_route_lantern.png",
     "id": "lord_of_mysteries:spirit_route_lantern",
     "name": "灵界航路灯",
     "en": "Spirit Route Lantern",
@@ -5509,6 +5656,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/spirit_route_residue.png",
     "id": "lord_of_mysteries:spirit_route_residue",
     "name": "航路余辉",
     "en": "Route Afterglow",
@@ -5540,6 +5688,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/spirit_salt.png",
     "id": "lord_of_mysteries:spirit_salt",
     "name": "灵性盐",
     "en": "Spirit Salt",
@@ -5571,6 +5720,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:spirit_wisp_spawn_egg",
     "name": "灵体微光刷怪蛋",
     "en": "Spirit Wisp Spawn Egg",
@@ -5602,6 +5752,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/starlight_moss.png",
     "id": "lord_of_mysteries:starlight_moss",
     "name": "星辉苔藓",
     "en": "Starlight Moss",
@@ -5633,6 +5784,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:theatre_maskling_spawn_egg",
     "name": "剧院面灵刷怪蛋",
     "en": "Theatre Maskling Spawn Egg",
@@ -5664,6 +5816,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:thief_breakdown_spawn_egg",
     "name": "偷盗者失控体刷怪蛋",
     "en": "Thief Breakdown Spawn Egg",
@@ -5695,6 +5848,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:twin_serpent_spawn_egg",
     "name": "双头蛇刷怪蛋",
     "en": "Twin-Headed Serpent Spawn Egg",
@@ -5726,6 +5880,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/twin_serpent_tongue.png",
     "id": "lord_of_mysteries:twin_serpent_tongue",
     "name": "双头蛇信子",
     "en": "Twin-Headed Serpent Tongue",
@@ -5757,6 +5912,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:war_rose_husk_spawn_egg",
     "name": "战蔷薇遗骸刷怪蛋",
     "en": "War-Rose Husk Spawn Egg",
@@ -5788,6 +5944,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": null,
     "id": "lord_of_mysteries:whisper_crow_spawn_egg",
     "name": "低语鸦刷怪蛋",
     "en": "Whisper Crow Spawn Egg",
@@ -5819,6 +5976,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/white_candle.png",
     "id": "lord_of_mysteries:white_candle",
     "name": "白蜡烛",
     "en": "White Candle",
@@ -5850,6 +6008,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/witness_stone.png",
     "id": "lord_of_mysteries:witness_stone",
     "name": "见证石",
     "en": "Witness Stone",
@@ -6517,6 +6676,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/apprentice_potion_5.png",
     "id": "lord_of_mysteries:apprentice_potion_5",
     "name": "旅行家魔药",
     "en": "Traveler Potion",
@@ -6548,6 +6708,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/apprentice_potion_6.png",
     "id": "lord_of_mysteries:apprentice_potion_6",
     "name": "记录官魔药",
     "en": "Scribe Potion",
@@ -6579,6 +6740,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/apprentice_potion_7.png",
     "id": "lord_of_mysteries:apprentice_potion_7",
     "name": "占星人魔药",
     "en": "Astrologer Potion",
@@ -6610,6 +6772,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/apprentice_potion_8.png",
     "id": "lord_of_mysteries:apprentice_potion_8",
     "name": "戏法大师魔药",
     "en": "Trickmaster Potion",
@@ -6641,6 +6804,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/apprentice_potion_9.png",
     "id": "lord_of_mysteries:apprentice_potion_9",
     "name": "学徒魔药",
     "en": "Apprentice Potion",
@@ -6672,6 +6836,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/hunter_potion_5.png",
     "id": "lord_of_mysteries:hunter_potion_5",
     "name": "收割者魔药",
     "en": "Reaper Potion",
@@ -6703,6 +6868,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/hunter_potion_6.png",
     "id": "lord_of_mysteries:hunter_potion_6",
     "name": "阴谋家魔药",
     "en": "Conspirer Potion",
@@ -6734,6 +6900,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/hunter_potion_7.png",
     "id": "lord_of_mysteries:hunter_potion_7",
     "name": "纵火家魔药",
     "en": "Pyromaniac Potion",
@@ -6765,6 +6932,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/hunter_potion_8.png",
     "id": "lord_of_mysteries:hunter_potion_8",
     "name": "挑衅者魔药",
     "en": "Provoker Potion",
@@ -6796,6 +6964,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/hunter_potion_9.png",
     "id": "lord_of_mysteries:hunter_potion_9",
     "name": "猎人魔药",
     "en": "Hunter Potion",
@@ -6827,6 +6996,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/seer_potion_5.png",
     "id": "lord_of_mysteries:seer_potion_5",
     "name": "秘偶大师魔药",
     "en": "Marionettist Potion",
@@ -6858,6 +7028,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/seer_potion_6.png",
     "id": "lord_of_mysteries:seer_potion_6",
     "name": "无面人魔药",
     "en": "Faceless Potion",
@@ -6889,6 +7060,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/seer_potion_7.png",
     "id": "lord_of_mysteries:seer_potion_7",
     "name": "魔术师魔药",
     "en": "Magician Potion",
@@ -6920,6 +7092,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/seer_potion_8.png",
     "id": "lord_of_mysteries:seer_potion_8",
     "name": "小丑魔药",
     "en": "Clown Potion",
@@ -6951,6 +7124,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/seer_potion_9.png",
     "id": "lord_of_mysteries:seer_potion_9",
     "name": "占卜家魔药",
     "en": "Seer Potion",
@@ -6982,6 +7156,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/spectator_potion_5.png",
     "id": "lord_of_mysteries:spectator_potion_5",
     "name": "梦境行者魔药",
     "en": "Dreamwalker Potion",
@@ -7013,6 +7188,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/spectator_potion_6.png",
     "id": "lord_of_mysteries:spectator_potion_6",
     "name": "催眠师魔药",
     "en": "Hypnotist Potion",
@@ -7044,6 +7220,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/spectator_potion_7.png",
     "id": "lord_of_mysteries:spectator_potion_7",
     "name": "心理医生魔药",
     "en": "Psychiatrist Potion",
@@ -7075,6 +7252,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/spectator_potion_8.png",
     "id": "lord_of_mysteries:spectator_potion_8",
     "name": "读心者魔药",
     "en": "Telepathist Potion",
@@ -7106,6 +7284,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/spectator_potion_9.png",
     "id": "lord_of_mysteries:spectator_potion_9",
     "name": "观众魔药",
     "en": "Spectator Potion",
@@ -7137,6 +7316,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/thief_potion_5.png",
     "id": "lord_of_mysteries:thief_potion_5",
     "name": "窃梦家魔药",
     "en": "Dream Stealer Potion",
@@ -7168,6 +7348,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/thief_potion_6.png",
     "id": "lord_of_mysteries:thief_potion_6",
     "name": "盗火人魔药",
     "en": "Prometheus Potion",
@@ -7199,6 +7380,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/thief_potion_7.png",
     "id": "lord_of_mysteries:thief_potion_7",
     "name": "解密学者魔药",
     "en": "Cryptologist Potion",
@@ -7230,6 +7412,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/thief_potion_8.png",
     "id": "lord_of_mysteries:thief_potion_8",
     "name": "诈骗师魔药",
     "en": "Swindler Potion",
@@ -7261,6 +7444,7 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/thief_potion_9.png",
     "id": "lord_of_mysteries:thief_potion_9",
     "name": "偷盗者魔药",
     "en": "Thief Potion",
@@ -7491,6 +7675,11 @@ window.LOM = window.LOM || {};
 ];
   var manualEntries = Array.isArray(D.entries) ? D.entries : [];
   var manualIds = {};
+  var generatedById = {};
+  generatedEntries.forEach(function (entry) { generatedById[entry.id] = entry; });
+  manualEntries.forEach(function (entry) {
+    if (generatedById[entry.id]) entry.image = generatedById[entry.id].image;
+  });
   manualEntries.forEach(function (entry) { manualIds[entry.id] = true; });
   D.entries = manualEntries.concat(generatedEntries.filter(function (entry) {
     return !manualIds[entry.id];

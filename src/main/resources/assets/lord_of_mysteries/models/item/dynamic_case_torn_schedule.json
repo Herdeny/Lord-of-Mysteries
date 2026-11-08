@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/paper"
+    "layer0": "lord_of_mysteries:item/dynamic_case_torn_schedule"
   }
 }

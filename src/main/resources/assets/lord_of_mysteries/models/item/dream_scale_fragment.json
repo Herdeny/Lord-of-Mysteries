@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/phantom_membrane"
+    "layer0": "lord_of_mysteries:item/dream_scale_fragment"
   }
 }

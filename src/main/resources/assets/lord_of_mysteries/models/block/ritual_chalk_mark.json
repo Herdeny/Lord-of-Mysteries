@@ -1,6 +1,41 @@
 {
-  "parent": "minecraft:block/carpet",
+  "parent": "minecraft:block/block",
   "textures": {
-    "wool": "minecraft:block/calcite"
-  }
+    "sigil": "lord_of_mysteries:block/sigil",
+    "particle": "lord_of_mysteries:block/sigil"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        1,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#sigil"
+        },
+        "south": {
+          "texture": "#sigil"
+        },
+        "east": {
+          "texture": "#sigil"
+        },
+        "west": {
+          "texture": "#sigil"
+        },
+        "up": {
+          "texture": "#sigil"
+        },
+        "down": {
+          "texture": "#sigil"
+        }
+      }
+    }
+  ]
 }

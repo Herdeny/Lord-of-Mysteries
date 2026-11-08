@@ -17,7 +17,14 @@ import top.aurora.lordofmysteries.registry.ModItems;
 public final class CharacteristicSeparatorBlock extends Block {
 
     public CharacteristicSeparatorBlock(Properties properties) {
-        super(properties);
+        super(properties.noOcclusion());
+    }
+
+    @Override
+    public net.minecraft.world.phys.shapes.VoxelShape getShape(
+            BlockState state, net.minecraft.world.level.BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext context) {
+        return top.aurora.lordofmysteries.core.WorkstationShapes.CHARACTERISTIC_SEPARATOR;
     }
 
     @Override

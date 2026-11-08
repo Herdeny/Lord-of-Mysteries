@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
+import top.aurora.lordofmysteries.registry.ModParticles;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -169,8 +169,8 @@ public final class M2AdvancedAbilityHandler {
         player.teleportTo(targetPos.x, targetPos.y, targetPos.z);
         data.thiefSwapCooldownEndTick = AbilityCooldowns.start(now, SWAP_COOLDOWN);
         markDirty(data);
-        particles(player.serverLevel(), playerPos, ParticleTypes.REVERSE_PORTAL, 24);
-        particles(player.serverLevel(), targetPos, ParticleTypes.REVERSE_PORTAL, 24);
+        particles(player.serverLevel(), playerPos, ModParticles.DOOR_SPARK.get(), 24);
+        particles(player.serverLevel(), targetPos, ModParticles.DOOR_SPARK.get(), 24);
         player.level().playSound(null, player.blockPosition(),
                 SoundEvents.ILLUSIONER_MIRROR_MOVE,
                 SoundSource.PLAYERS, 0.8f, 1.2f);
@@ -207,7 +207,7 @@ public final class M2AdvancedAbilityHandler {
         data.thiefDecoyCooldownEndTick =
                 AbilityCooldowns.start(now, DECOY_COOLDOWN);
         markDirty(data);
-        particles(player.serverLevel(), player.position(), ParticleTypes.SMOKE, 30);
+        particles(player.serverLevel(), player.position(), ModParticles.SHADOW_FLICKER.get(), 30);
         player.level().playSound(null, player.blockPosition(),
                 SoundEvents.ARMOR_EQUIP_LEATHER,
                 SoundSource.PLAYERS, 0.8f, 0.7f);
@@ -242,7 +242,7 @@ public final class M2AdvancedAbilityHandler {
                 ProjectMystery.MOD_ID, "knowledge/cryptologist/rune_analysis"));
         data.thiefRuneCooldownEndTick =
                 AbilityCooldowns.start(now, RUNE_ANALYSIS_COOLDOWN);
-        player.serverLevel().sendParticles(ParticleTypes.ENCHANT,
+        player.serverLevel().sendParticles(ModParticles.PAGE_GLYPH.get(),
                 hit.getBlockPos().getX() + 0.5d,
                 hit.getBlockPos().getY() + 0.7d,
                 hit.getBlockPos().getZ() + 0.5d,
@@ -326,7 +326,7 @@ public final class M2AdvancedAbilityHandler {
                 MobEffects.INVISIBILITY, 200, 0, false, false, true));
         data.thiefEraseCooldownEndTick =
                 AbilityCooldowns.start(now, TRACE_ERASURE_COOLDOWN);
-        particles(player.serverLevel(), player.position(), ParticleTypes.CLOUD, 32);
+        particles(player.serverLevel(), player.position(), ModParticles.MIRROR_RIPPLE.get(), 32);
         player.sendSystemMessage(Component.translatable(
                 "message.lord_of_mysteries.cryptologist.erased"));
         long lastLockpick = data.actingHistory.getOrDefault(LAST_LOCKPICK, 0L);
@@ -363,8 +363,8 @@ public final class M2AdvancedAbilityHandler {
         if (target instanceof ItemEntity item) item.setPickUpDelay(0);
         data.apprenticeRelocateCooldownEndTick =
                 AbilityCooldowns.start(now, SPATIAL_RELAY_COOLDOWN);
-        particles(player.serverLevel(), origin, ParticleTypes.PORTAL, 24);
-        particles(player.serverLevel(), destination, ParticleTypes.PORTAL, 24);
+        particles(player.serverLevel(), origin, ModParticles.DOOR_SPARK.get(), 24);
+        particles(player.serverLevel(), destination, ModParticles.DOOR_SPARK.get(), 24);
         player.level().playSound(null, player.blockPosition(),
                 SoundEvents.ENDERMAN_TELEPORT,
                 SoundSource.PLAYERS, 0.7f, 1.6f);
@@ -447,8 +447,8 @@ public final class M2AdvancedAbilityHandler {
         player.teleportTo(destination.x, destination.y, destination.z);
         data.apprenticeMirrorCooldownEndTick =
                 AbilityCooldowns.start(now, MIRROR_DOOR_COOLDOWN);
-        particles(player.serverLevel(), origin, ParticleTypes.REVERSE_PORTAL, 36);
-        particles(player.serverLevel(), destination, ParticleTypes.REVERSE_PORTAL, 36);
+        particles(player.serverLevel(), origin, ModParticles.DOOR_SPARK.get(), 36);
+        particles(player.serverLevel(), destination, ModParticles.DOOR_SPARK.get(), 36);
         player.level().playSound(null, player.blockPosition(),
                 SoundEvents.ILLUSIONER_MIRROR_MOVE,
                 SoundSource.PLAYERS, 0.9f, 1.4f);
@@ -483,7 +483,7 @@ public final class M2AdvancedAbilityHandler {
                 day, player.level().getMoonPhase());
         data.apprenticeDivinationCooldownEndTick =
                 AbilityCooldowns.start(now, STELLAR_DIVINATION_COOLDOWN);
-        player.serverLevel().sendParticles(ParticleTypes.END_ROD,
+        player.serverLevel().sendParticles(ModParticles.MARIONETTE_THREAD.get(),
                 player.getX(), player.getY() + 2d, player.getZ(),
                 48, 2d, 1.2d, 2d, 0.02d);
         player.level().playSound(null, player.blockPosition(),
@@ -524,7 +524,7 @@ public final class M2AdvancedAbilityHandler {
                 MobEffects.MOVEMENT_SLOWDOWN, 1200, 1, false, true)));
         data.apprenticeWardCooldownEndTick =
                 AbilityCooldowns.start(now, STARLIGHT_WARD_COOLDOWN);
-        player.serverLevel().sendParticles(ParticleTypes.END_ROD,
+        player.serverLevel().sendParticles(ModParticles.MARIONETTE_THREAD.get(),
                 player.getX(), player.getY() + 0.8d, player.getZ(),
                 80, 2.5d, 0.8d, 2.5d, 0.03d);
         player.level().playSound(null, player.blockPosition(),

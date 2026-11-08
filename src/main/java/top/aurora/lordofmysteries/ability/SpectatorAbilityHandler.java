@@ -1,7 +1,7 @@
 package top.aurora.lordofmysteries.ability;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.particles.ParticleTypes;
+import top.aurora.lordofmysteries.registry.ModParticles;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -138,7 +138,7 @@ public final class SpectatorAbilityHandler {
         }
 
         ServerLevel level = player.serverLevel();
-        level.sendParticles(ParticleTypes.WITCH,
+        level.sendParticles(ModParticles.DREAM_BUBBLE.get(),
                 target.getX(), target.getY() + target.getBbHeight() * 0.7, target.getZ(),
                 18, 0.35, 0.5, 0.35, 0.02);
         level.playSound(null, target.blockPosition(),

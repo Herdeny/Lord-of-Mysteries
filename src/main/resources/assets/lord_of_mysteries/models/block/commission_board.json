@@ -1,4 +1,234 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": {"all": "minecraft:block/dark_oak_planks"}
+  "parent": "minecraft:block/block",
+  "textures": {
+    "wood": "lord_of_mysteries:block/wood",
+    "parchment": "lord_of_mysteries:block/parchment",
+    "particle": "lord_of_mysteries:block/wood"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        3
+      ],
+      "to": [
+        14,
+        2,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wood"
+        },
+        "south": {
+          "texture": "#wood"
+        },
+        "east": {
+          "texture": "#wood"
+        },
+        "west": {
+          "texture": "#wood"
+        },
+        "up": {
+          "texture": "#wood"
+        },
+        "down": {
+          "texture": "#wood"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        2,
+        6
+      ],
+      "to": [
+        5,
+        8,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wood"
+        },
+        "south": {
+          "texture": "#wood"
+        },
+        "east": {
+          "texture": "#wood"
+        },
+        "west": {
+          "texture": "#wood"
+        },
+        "up": {
+          "texture": "#wood"
+        },
+        "down": {
+          "texture": "#wood"
+        }
+      }
+    },
+    {
+      "from": [
+        11,
+        2,
+        6
+      ],
+      "to": [
+        13,
+        8,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wood"
+        },
+        "south": {
+          "texture": "#wood"
+        },
+        "east": {
+          "texture": "#wood"
+        },
+        "west": {
+          "texture": "#wood"
+        },
+        "up": {
+          "texture": "#wood"
+        },
+        "down": {
+          "texture": "#wood"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        7,
+        6
+      ],
+      "to": [
+        16,
+        16,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wood"
+        },
+        "south": {
+          "texture": "#wood"
+        },
+        "east": {
+          "texture": "#wood"
+        },
+        "west": {
+          "texture": "#wood"
+        },
+        "up": {
+          "texture": "#wood"
+        },
+        "down": {
+          "texture": "#wood"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        8,
+        5.8
+      ],
+      "to": [
+        7,
+        14,
+        6
+      ],
+      "faces": {
+        "north": {
+          "texture": "#parchment"
+        },
+        "south": {
+          "texture": "#parchment"
+        },
+        "east": {
+          "texture": "#parchment"
+        },
+        "west": {
+          "texture": "#parchment"
+        },
+        "up": {
+          "texture": "#parchment"
+        },
+        "down": {
+          "texture": "#parchment"
+        }
+      }
+    },
+    {
+      "from": [
+        8,
+        9,
+        5.8
+      ],
+      "to": [
+        14,
+        15,
+        6
+      ],
+      "faces": {
+        "north": {
+          "texture": "#parchment"
+        },
+        "south": {
+          "texture": "#parchment"
+        },
+        "east": {
+          "texture": "#parchment"
+        },
+        "west": {
+          "texture": "#parchment"
+        },
+        "up": {
+          "texture": "#parchment"
+        },
+        "down": {
+          "texture": "#parchment"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        8,
+        10
+      ],
+      "to": [
+        14,
+        15,
+        10.2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#parchment"
+        },
+        "south": {
+          "texture": "#parchment"
+        },
+        "east": {
+          "texture": "#parchment"
+        },
+        "west": {
+          "texture": "#parchment"
+        },
+        "up": {
+          "texture": "#parchment"
+        },
+        "down": {
+          "texture": "#parchment"
+        }
+      }
+    }
+  ]
 }

@@ -7,6 +7,7 @@ import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import top.aurora.lordofmysteries.registry.ModParticles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -136,7 +137,7 @@ public final class HunterAbilityHandler {
 
         data.enrageCooldownEndTick = AbilityCooldowns.start(now, ENRAGE_COOLDOWN);
         applyEnrage(target, now + ENRAGE_DURATION);
-        player.serverLevel().sendParticles(ParticleTypes.FLAME,
+        player.serverLevel().sendParticles(ModParticles.EMBER_BURST.get(),
                 target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(),
                 24, 0.4, 0.5, 0.4, 0.03);
         player.level().playSound(null, target.blockPosition(),
@@ -334,7 +335,7 @@ public final class HunterAbilityHandler {
         }
         data.battleWillEndTick = now + BATTLE_WILL_DURATION;
         data.battleWillCooldownEndTick = now + BATTLE_WILL_COOLDOWN;
-        hunter.serverLevel().sendParticles(ParticleTypes.CRIT,
+        hunter.serverLevel().sendParticles(ModParticles.EMBER_BURST.get(),
                 hunter.getX(), hunter.getY() + 1d, hunter.getZ(),
                 24, 0.5, 0.7, 0.5, 0.05);
         hunter.level().playSound(null, hunter.blockPosition(),

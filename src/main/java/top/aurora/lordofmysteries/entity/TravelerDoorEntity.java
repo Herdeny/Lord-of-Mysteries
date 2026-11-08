@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
+import top.aurora.lordofmysteries.registry.ModParticles;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -119,7 +119,7 @@ public final class TravelerDoorEntity extends Entity {
         if (level().isClientSide()) {
             if (tickCount % 2 == 0) {
                 level().addParticle(
-                        ParticleTypes.REVERSE_PORTAL,
+                        ModParticles.DOOR_SPARK.get(),
                         getX() + (random.nextDouble() - 0.5d) * 0.8d,
                         getY() + random.nextDouble() * 2.2d,
                         getZ() + (random.nextDouble() - 0.5d) * 0.8d,
@@ -134,7 +134,7 @@ public final class TravelerDoorEntity extends Entity {
         if (!(level() instanceof ServerLevel serverLevel)) return;
         if (tickCount % 5 == 0) {
             serverLevel.sendParticles(
-                    ParticleTypes.REVERSE_PORTAL,
+                    ModParticles.DOOR_SPARK.get(),
                     getX(), getY() + 1.1d, getZ(),
                     16, 0.45d, 0.9d, 0.45d, 0.05d);
         }

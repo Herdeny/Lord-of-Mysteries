@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/honeycomb"
+    "layer0": "lord_of_mysteries:item/dynamic_case_candle_wax"
   }
 }

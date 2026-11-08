@@ -89,6 +89,7 @@ public final class ClientForgeEvents {
     @SubscribeEvent
     public static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) {
         ClientMysteryState.clear();
+        top.aurora.lordofmysteries.client.visual.OccultParticle.clearBudget();
     }
 
     private static void sendSeer(SeerAbilityHandler.Ability ability) {

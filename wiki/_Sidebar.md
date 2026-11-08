@@ -11,6 +11,7 @@
 - [M5 灵界远征](M5-Spirit-Expeditions)
 - [M5 共享梦境与实体生态](M5-Shared-Dreams-and-Ecology)
 - [M0–M5 跨系统安全与恢复](M0-M5-Cross-System-Safety)
+- [模型、贴图与粒子](Visual-Assets)
 
 ### 调查与多人
 

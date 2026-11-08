@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "version": "0.9.35-1.20.1",
-  "stage": "v0.9 M0-M5 跨系统安全强化完成，M6 第二批途径准备中",
+  "version": "0.9.36-1.20.1",
+  "stage": "v0.9 M0-M5 现有内容视觉资源落地，M6 第二批途径准备中",
   "milestone": "M6",
   "minecraft_version": "1.20.1",
   "forge_version": "47.4.20",
   "java_version": "17",
-  "last_updated": "2026-08-14T23:42:50+01:00",
-  "last_updated_utc": "2026-08-14T22:42:50Z"
+  "last_updated": "2026-11-08T07:53:31+00:00",
+  "last_updated_utc": "2026-11-08T07:53:31Z"
 }

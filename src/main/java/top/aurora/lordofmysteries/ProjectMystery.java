@@ -71,6 +71,8 @@ public class ProjectMystery {
 
         // 服务端配置会生成在 serverconfig 或 world/serverconfig 中，随存档/服务器生效。
         loadingContext.registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
+        loadingContext.registerConfig(ModConfig.Type.CLIENT,
+                top.aurora.lordofmysteries.client.visual.VisualClientConfig.SPEC);
 
         // 把入口实例注册到游戏期事件总线。当前类暂未声明 @SubscribeEvent 方法，
         // 保留这行是为了后续需要入口级游戏事件时无需调整加载结构。

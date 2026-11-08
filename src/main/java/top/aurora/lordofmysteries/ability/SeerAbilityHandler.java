@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
+import top.aurora.lordofmysteries.registry.ModParticles;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -116,7 +116,7 @@ public final class SeerAbilityHandler {
         target.hurt(player.damageSources().playerAttack(player),
                 SeerAbilityLogic.cardVolleyDamage(spiritBurning));
         if (spiritBurning) target.setSecondsOnFire(4);
-        player.serverLevel().sendParticles(ParticleTypes.CRIT,
+        player.serverLevel().sendParticles(ModParticles.CARD_TRACE.get(),
                 target.getX(), target.getY() + target.getBbHeight() * 0.55d, target.getZ(),
                 18, 0.35d, 0.45d, 0.35d, 0.12d);
         player.level().playSound(null, target.blockPosition(),
@@ -153,12 +153,12 @@ public final class SeerAbilityHandler {
         }
 
         ServerLevel level = player.serverLevel();
-        level.sendParticles(ParticleTypes.FLAME,
+        level.sendParticles(ModParticles.EMBER_BURST.get(),
                 player.getX(), player.getY() + 0.8d, player.getZ(),
                 28, 0.35d, 0.65d, 0.35d, 0.08d);
         player.teleportTo(destination.x, destination.y, destination.z);
         player.fallDistance = 0f;
-        level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
+        level.sendParticles(ModParticles.EMBER_BURST.get(),
                 player.getX(), player.getY() + 0.7d, player.getZ(),
                 36, 0.8d, 0.35d, 0.8d, 0.05d);
         level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(2.5d),
@@ -220,7 +220,7 @@ public final class SeerAbilityHandler {
         data.airBulletCooldownEndTick = AbilityCooldowns.start(now, AIR_BULLET_COOLDOWN);
         target.hurt(player.damageSources().playerAttack(player), 4f);
         target.knockback(0.35d, player.getX() - target.getX(), player.getZ() - target.getZ());
-        player.serverLevel().sendParticles(ParticleTypes.CLOUD,
+        player.serverLevel().sendParticles(ModParticles.AIR_RING.get(),
                 target.getX(), target.getY() + target.getBbHeight() * 0.5d, target.getZ(),
                 12, 0.18d, 0.25d, 0.18d, 0.08d);
         player.level().playSound(null, target.blockPosition(),
@@ -256,7 +256,7 @@ public final class SeerAbilityHandler {
             mob.getPersistentData().putDouble(ILLUSION_Z_TAG, point.z);
             mob.getNavigation().moveTo(point.x, point.y, point.z, 1.15d);
         }
-        player.serverLevel().sendParticles(ParticleTypes.WITCH,
+        player.serverLevel().sendParticles(ModParticles.MIRROR_RIPPLE.get(),
                 point.x, point.y + 1d, point.z,
                 54, 1.5d, 1d, 1.5d, 0.02d);
         player.level().playSound(null, BlockPos.containing(point),
@@ -286,7 +286,7 @@ public final class SeerAbilityHandler {
         event.setCanceled(true);
         data.clownDodgeCooldownEndTick = AbilityCooldowns.start(now, DODGE_COOLDOWN);
         data.clownDodgeCount++;
-        player.serverLevel().sendParticles(ParticleTypes.CLOUD,
+        player.serverLevel().sendParticles(ModParticles.AIR_RING.get(),
                 player.getX(), player.getY() + 0.8d, player.getZ(),
                 18, 0.4d, 0.7d, 0.4d, 0.06d);
         player.level().playSound(null, player.blockPosition(),
@@ -321,7 +321,7 @@ public final class SeerAbilityHandler {
         data.paperSubstituteDimension = "";
         player.setHealth(Math.max(1f, player.getHealth()));
         player.invulnerableTime = 30;
-        player.serverLevel().sendParticles(ParticleTypes.POOF,
+        player.serverLevel().sendParticles(ModParticles.PAGE_GLYPH.get(),
                 player.getX(), player.getY() + 0.8d, player.getZ(),
                 36, 0.5d, 0.7d, 0.5d, 0.08d);
         player.level().playSound(null, player.blockPosition(),
