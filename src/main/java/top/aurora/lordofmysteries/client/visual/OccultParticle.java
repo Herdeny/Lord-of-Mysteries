@@ -58,7 +58,7 @@ public final class OccultParticle extends TextureSheetParticle {
                 budgetLevel = level;
                 BUDGET.reset();
             }
-            if (!BUDGET.allow(level.getGameTime(), VisualClientConfig.PARTICLE_DENSITY.get())) return null;
+            if (!BUDGET.allow(level.getGameTime(), VisualClientConfig.PARTICLE_DENSITY.get(), duration)) return null;
             return new OccultParticle(level, x, y, z, speedX, speedY, speedZ,
                     sprites, color, duration, size);
         }

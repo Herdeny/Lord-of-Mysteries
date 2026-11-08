@@ -12,6 +12,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.RelativeMovement;
@@ -32,6 +34,7 @@ import top.aurora.lordofmysteries.ProjectMystery;
 import top.aurora.lordofmysteries.ability.TravelMarkerService;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.OccultActivityService;
+import top.aurora.lordofmysteries.player.OccultActivityPolicy;
 import top.aurora.lordofmysteries.player.PlayerDataSection;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.registry.ModItems;
@@ -127,6 +130,8 @@ public final class SpiritExpeditionService {
         send(player, "message.lord_of_mysteries.spirit.guide.route",
                 ChatFormatting.GRAY);
         send(player, "message.lord_of_mysteries.spirit.guide.safety",
+                ChatFormatting.GRAY);
+        send(player, "message.lord_of_mysteries.spirit.guide.research",
                 ChatFormatting.GRAY);
         return 1;
     }
@@ -314,6 +319,56 @@ public final class SpiritExpeditionService {
         return 1;
     }
 
+    public static int study(ServerPlayer player) {
+        SpiritExpeditionSavedData.Expedition expedition = active(player);
+        if (expedition == null) return 0;
+        SpiritEncounter encounter = expedition.pendingEncounter();
+        if (encounter == null) {
+            send(player, "message.lord_of_mysteries.spirit.no_encounter", ChatFormatting.RED);
+            return 0;
+        }
+        if (player.distanceToSqr(Vec3.atCenterOf(expedition.currentPad())) > 4096d) {
+            send(player, "message.lord_of_mysteries.spirit.entity.stale", ChatFormatting.RED);
+            return 0;
+        }
+        boolean fresh = SpiritFieldJournal.get(player.serverLevel())
+                .record(player.getUUID(), encounter, false);
+        player.sendSystemMessage(Component.translatable(
+                "message.lord_of_mysteries.spirit.study",
+                Component.translatable(encounter.translationKey()), encounter.risk())
+                .withStyle(ChatFormatting.GOLD));
+        send(player, "spirit_research.lord_of_mysteries." + encounter.id() + ".clue",
+                ChatFormatting.AQUA);
+        send(player, "message.lord_of_mysteries.spirit.study.controls", ChatFormatting.GRAY);
+        if (fresh) player.playNotifySound(SoundEvents.BOOK_PAGE_TURN, SoundSource.PLAYERS, 0.4f, 1f);
+        return 1;
+    }
+
+    public static int journal(ServerPlayer player) {
+        SpiritFieldJournal.Entry entry = SpiritFieldJournal.get(player.serverLevel()).entry(player.getUUID());
+        player.sendSystemMessage(Component.translatable(
+                "message.lord_of_mysteries.spirit.journal", entry.observedCount(),
+                entry.masteredCount(), SpiritEncounter.values().length).withStyle(ChatFormatting.GOLD));
+        for (SpiritEncounter encounter : SpiritEncounter.values()) {
+            if (!entry.observed(encounter)) continue;
+            player.sendSystemMessage(Component.translatable(
+                    entry.mastered(encounter) ? "message.lord_of_mysteries.spirit.journal.mastered"
+                            : "message.lord_of_mysteries.spirit.journal.observed",
+                    Component.translatable(encounter.translationKey())).withStyle(ChatFormatting.AQUA));
+            send(player, "spirit_research.lord_of_mysteries." + encounter.id() + ".clue", ChatFormatting.GRAY);
+        }
+        return 1;
+    }
+
+    public static int interactEncounter(ServerPlayer player, SpiritEcologyEntity entity,
+                                       String actionId, boolean studying) {
+        if (!entity.isCurrentFor(player)) {
+            send(player, "message.lord_of_mysteries.spirit.entity.stale", ChatFormatting.RED);
+            return 0;
+        }
+        return studying ? study(player) : resolveEncounter(player, actionId);
+    }
+
     public static int resolveEncounter(ServerPlayer player, String actionId) {
         SpiritEncounterAction action = SpiritEncounterAction.fromId(actionId);
         if (action == null) {
@@ -337,6 +392,11 @@ public final class SpiritExpeditionService {
                         outcome, player.level().getGameTime()));
         if (changed == null) return 0;
         removeEncounterEntities(player.getServer(), player.getUUID());
+        SpiritFieldJournal.get(player.serverLevel()).record(player.getUUID(), encounter, outcome.correct());
+        send(player, "spirit_research.lord_of_mysteries." + encounter.id()
+                + (outcome.correct() ? ".success" : ".failure"), ChatFormatting.GRAY);
+        player.playNotifySound(outcome.correct() ? SoundEvents.AMETHYST_BLOCK_CHIME
+                : SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.PLAYERS, 0.45f, 1f);
         player.sendSystemMessage(Component.translatable(
                 outcome.correct()
                         ? "message.lord_of_mysteries.spirit.encounter.success"
@@ -442,6 +502,12 @@ public final class SpiritExpeditionService {
                     expedition.projection(), expedition.weather());
             if (safe != null) player.teleportTo(safe.x, safe.y, safe.z);
         }
+        if (player.getServer().getTickCount() % 80 == 0
+                && !expedition.failed()
+                && OccultActivityService.inspect(player).activity()
+                == OccultActivityPolicy.Activity.SPIRIT_EXPEDITION) {
+            ensureEncounterEntity(player, expedition);
+        }
         applyWeather(player, expedition.weather());
     }
 
@@ -457,6 +523,13 @@ public final class SpiritExpeditionService {
         if (!SPIRIT_WORLD.equals(player.level().dimension())) {
             send(player, "message.lord_of_mysteries.spirit.wrong_dimension",
                     ChatFormatting.RED);
+            return null;
+        }
+        if (!player.isAlive() || player.isSpectator() || expedition.failed()
+                || SpiritExpeditionPolicy.timedOut(player.level().getGameTime(), expedition.expiresAt())
+                || OccultActivityService.inspect(player).activity()
+                != OccultActivityPolicy.Activity.SPIRIT_EXPEDITION) {
+            send(player, "message.lord_of_mysteries.spirit.action_denied", ChatFormatting.RED);
             return null;
         }
         return expedition;
@@ -589,27 +662,10 @@ public final class SpiritExpeditionService {
                 || !(player.level() instanceof ServerLevel level)) {
             return;
         }
-        SpiritEcologyKind expected = SpiritEcologyKind.fromId(
-                expedition.pendingEncounter().id());
-        BlockPos pad = expedition.currentPad();
-        boolean present = false;
-        var stale = new ArrayList<SpiritEcologyEntity>();
-        for (Entity entity : level.getAllEntities()) {
-            if (entity instanceof SpiritEcologyEntity ecology
-                    && ecology.belongsTo(player.getUUID())) {
-                if (ecology.ecologyKind() == expected
-                        && ecology.distanceToSqr(
-                                pad.getX() + 0.5d,
-                                pad.getY() + 1d,
-                                pad.getZ() + 0.5d) <= 4096d) {
-                    present = true;
-                } else {
-                    stale.add(ecology);
-                }
-            }
-        }
-        stale.forEach(Entity::discard);
-        if (!present) spawnEncounterEntity(player, expedition);
+        java.util.UUID entityId = saved(player).encounterEntity(player.getUUID());
+        Entity entity = entityId == null ? null : level.getEntity(entityId);
+        if (entity instanceof SpiritEcologyEntity ecology && ecology.isCurrentEncounter()) return;
+        spawnEncounterEntity(player, expedition);
     }
 
     private static void spawnEncounterEntity(
@@ -632,7 +688,9 @@ public final class SpiritExpeditionService {
                 pad.getX() + 2.5d, pad.getY() + 1d,
                 pad.getZ() + 0.5d, 180f, 0f);
         entity.restrictTo(pad.above(), 5);
-        level.addFreshEntity(entity);
+        if (level.addFreshEntity(entity)) {
+            saved(player).bindEncounterEntity(player.getUUID(), entity.getUUID());
+        }
     }
 
     private static void removeEncounterEntities(

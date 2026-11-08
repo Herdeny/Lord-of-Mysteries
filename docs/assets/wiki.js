@@ -300,12 +300,30 @@
     return (entry.name || "?").slice(0, 1);
   }
 
+  function renderEntryIcon(icon, entry) {
+    icon.textContent = "";
+    if (entry.image && /^assets\/item-icons\/[a-z0-9_]+\.png$/.test(entry.image)) {
+      var sprite = create("img");
+      sprite.src = entry.image;
+      sprite.alt = entry.name;
+      sprite.width = 64;
+      sprite.height = 64;
+      sprite.loading = "lazy";
+      sprite.addEventListener("error", function () { icon.textContent = entryIcon(entry); });
+      icon.appendChild(sprite);
+    } else {
+      icon.textContent = entryIcon(entry);
+    }
+  }
+
   function normalizedSearchText(entry) {
     return [
       entry.id,
       entry.name,
       entry.en,
       entry.summary,
+      entry.long,
+      (entry.details || []).map(function (detail) { return detail.join(" "); }).join(" "),
       (entry.tags || []).join(" ")
     ].join(" ").toLowerCase();
   }
@@ -325,18 +343,7 @@
       card.setAttribute("aria-label", "查看 " + entry.name + " 详情");
       var head = create("div", "card-head");
       var icon = create("div", "icon " + entry.type);
-      if (entry.image && /^assets\/item-icons\/[a-z0-9_]+\.png$/.test(entry.image)) {
-        var sprite = create("img");
-        sprite.src = entry.image;
-        sprite.alt = entry.name;
-        sprite.width = 64;
-        sprite.height = 64;
-        sprite.loading = "lazy";
-        sprite.addEventListener("error", function () { icon.textContent = entryIcon(entry); });
-        icon.appendChild(sprite);
-      } else {
-        icon.textContent = entryIcon(entry);
-      }
+      renderEntryIcon(icon, entry);
       head.appendChild(icon);
       var title = create("div");
       title.appendChild(create("h3", null, entry.name));
@@ -427,7 +434,7 @@
     modalTrigger = trigger;
     var icon = $("#modal-icon");
     icon.className = "icon lg " + entry.type;
-    icon.textContent = entryIcon(entry);
+    renderEntryIcon(icon, entry);
     setText("#modal-title", entry.name + (entry.en ? " · " + entry.en : ""));
     setText("#modal-id", entry.id);
     var tags = $("#modal-tags");

@@ -213,11 +213,14 @@
     "player_activity_diagnostics": true
   },
   "validation": {
-    "junit_tests": 483,
-    "game_tests": 29,
+    "junit_tests": 495,
+    "game_tests": 31,
     "behavior_test_classes": [
       "SpiritExpeditionPolicyTest",
       "SpiritExpeditionSavedDataTest",
+      "SpiritFieldJournalTest",
+      "SpiritEncounterBindingTest",
+      "VisualBudgetTest",
       "SharedDreamPolicyTest",
       "SharedDreamSavedDataTest",
       "OccultActivityPolicyTest"
@@ -227,6 +230,8 @@
       "m5SpiritRouteCompletesWithRecoverableRisk",
       "m5SharedDreamDimensionAndEcologyEntitiesLoad",
       "m5SharedDreamConsentVotesAndRecoveryPersist",
+      "spiritFieldStudyAndEntityAuthorityAreIsolated",
+      "spiritActionsRejectExpiredFailedAndSpectatorRoutes",
       "m0ToM5ExclusiveActivityConflictsFailAtomically"
     ],
     "pages_registered_items": 156,

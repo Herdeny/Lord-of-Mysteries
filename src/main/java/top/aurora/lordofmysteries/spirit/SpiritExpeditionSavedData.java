@@ -22,6 +22,7 @@ public final class SpiritExpeditionSavedData extends SavedData {
     private static final int MAX_LANES = 4096;
 
     private final Map<UUID, Expedition> expeditions = new HashMap<>();
+    private final Map<UUID, UUID> encounterEntities = new HashMap<>();
     private final ListTag orphanedEntries = new ListTag();
     private CompoundTag futureSnapshot;
     private int nextLane;
@@ -53,6 +54,9 @@ public final class SpiritExpeditionSavedData extends SavedData {
                         expedition.player(), expedition) != null) {
                     throw new IllegalArgumentException(
                             "duplicate player expedition");
+                }
+                if (expedition.pendingEncounter() != null && entry.hasUUID("encounter_entity")) {
+                    data.encounterEntities.put(expedition.player(), entry.getUUID("encounter_entity"));
                 }
             } catch (RuntimeException exception) {
                 data.orphanedEntries.add(entry.copy());
@@ -102,6 +106,9 @@ public final class SpiritExpeditionSavedData extends SavedData {
         Expedition changed = update.apply(current);
         if (changed == null || !player.equals(changed.player())) return current;
         expeditions.put(player, changed);
+        if (changed.pendingEncounter() == null || current.pendingEncounter() == null) {
+            encounterEntities.remove(player);
+        }
         setDirty();
         return changed;
     }
@@ -109,12 +116,30 @@ public final class SpiritExpeditionSavedData extends SavedData {
     public Expedition remove(UUID player) {
         if (futureSnapshot != null) return null;
         Expedition removed = expeditions.remove(player);
+        encounterEntities.remove(player);
         if (removed != null) setDirty();
         return removed;
     }
 
     public int size() {
         return expeditions.size();
+    }
+
+    public boolean bindEncounterEntity(UUID player, UUID entity) {
+        Expedition expedition = get(player);
+        if (futureSnapshot != null || entity == null || expedition == null
+                || expedition.pendingEncounter() == null) return false;
+        encounterEntities.put(player, entity);
+        setDirty();
+        return true;
+    }
+
+    public boolean isEncounterEntity(UUID player, UUID entity) {
+        return entity != null && entity.equals(encounterEntities.get(player));
+    }
+
+    public UUID encounterEntity(UUID player) {
+        return encounterEntities.get(player);
     }
 
     public int orphanedCount() {
@@ -147,7 +172,12 @@ public final class SpiritExpeditionSavedData extends SavedData {
         expeditions.values().stream()
                 .sorted((left, right) -> left.player().toString()
                         .compareTo(right.player().toString()))
-                .map(SpiritExpeditionSavedData::writeExpedition)
+                .map(value -> {
+                    CompoundTag entry = writeExpedition(value);
+                    UUID entity = encounterEntities.get(value.player());
+                    if (entity != null) entry.putUUID("encounter_entity", entity);
+                    return entry;
+                })
                 .forEach(entries::add);
         tag.put("expeditions", entries);
         tag.put("orphaned_entries", orphanedEntries.copy());

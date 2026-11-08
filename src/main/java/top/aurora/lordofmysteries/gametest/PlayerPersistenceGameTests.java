@@ -2134,6 +2134,133 @@ public final class PlayerPersistenceGameTests {
         helper.succeed();
     }
 
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void spiritFieldStudyAndEntityAuthorityAreIsolated(GameTestHelper helper) {
+        ServerLevel spirit = helper.getLevel().getServer().getLevel(SpiritExpeditionService.SPIRIT_WORLD);
+        helper.assertTrue(spirit != null, "spirit dimension must be available");
+        if (spirit == null) return;
+        ServerPlayer player = spiritResearchPlayer(spirit, UUID.randomUUID());
+        ServerPlayer other = spiritResearchPlayer(spirit, UUID.randomUUID());
+        var saved = SpiritExpeditionSavedData.get(spirit);
+        var route = saved.start(player.getUUID(), helper.getLevel().dimension().location(),
+                BlockPos.ZERO, SpiritProjection.THEATRE, 735L, spirit.getGameTime());
+        helper.assertTrue(route != null, "a route must start");
+        if (route == null) return;
+        var direction = SpiritExpeditionPolicy.expectedDirection(route.routeSeed(), route.step(),
+                route.tide(), route.projection(), route.weather());
+        route = saved.update(player.getUUID(), current -> current.afterNavigation(
+                SpiritExpeditionPolicy.navigate(current.routeSeed(), current.step(), current.tide(),
+                        current.projection(), current.weather(), direction),
+                current.currentPad(), spirit.getGameTime()));
+        var kind = SpiritEcologyKind.fromId(route.pendingEncounter().id());
+        var entity = kind.entityType().create(spirit);
+        var stale = kind.entityType().create(spirit);
+        helper.assertTrue(entity != null && stale != null, "real entity types must construct");
+        if (entity == null || stale == null) return;
+        try {
+            Vec3 position = Vec3.atCenterOf(route.currentPad()).add(0, 1, 0);
+            player.setPos(position);
+            other.setPos(position);
+            entity.setPos(position);
+            stale.setPos(position);
+            entity.bind(player.getUUID(), kind);
+            stale.bind(player.getUUID(), kind);
+            saved.bindEncounterEntity(player.getUUID(), stale.getUUID());
+            stale.setHealth(0f);
+            helper.assertTrue(!stale.isCurrentFor(player), "dead bound encounters cannot authorize interaction");
+            stale.discard();
+            helper.assertTrue(!stale.isCurrentEncounter(), "removed bound encounters cannot authorize interaction");
+            saved.bindEncounterEntity(player.getUUID(), entity.getUUID());
+            helper.assertTrue(entity.isCurrentFor(player), "canonical encounter must accept its owner");
+            helper.assertTrue(!entity.isCurrentFor(other), "another player cannot use the encounter");
+            var crossDimension = spiritResearchPlayer(helper.getLevel(), player.getUUID());
+            crossDimension.setPos(position);
+            helper.assertTrue(!entity.isCurrentFor(crossDimension),
+                    "same coordinates and UUID in another dimension must never receive aura or interaction");
+            helper.assertTrue(SpiritExpeditionService.interactEncounter(player, stale, "observe", true) == 0,
+                    "a stale entity with the correct species cannot grant research");
+            var beforeStudy = saved.get(player.getUUID());
+            helper.assertTrue(SpiritExpeditionService.study(player) == 1, "field study must execute");
+            helper.assertTrue(saved.get(player.getUUID()).equals(beforeStudy),
+                    "study must not consume stability, drift, rewards, pending encounter or time");
+            var journal = top.aurora.lordofmysteries.spirit.SpiritFieldJournal.get(spirit);
+            helper.assertTrue(journal.entry(player.getUUID()).observedCount() == 1
+                            && journal.entry(player.getUUID()).masteredCount() == 0
+                            && journal.entry(other.getUUID()).observedCount() == 0,
+                    "field study must record only this player's observation");
+            helper.assertTrue(SpiritExpeditionService.interactEncounter(player, entity,
+                            route.pendingEncounter().preferredAction().id(), false) == 1,
+                    "canonical encounter must resolve");
+            helper.assertTrue(journal.entry(player.getUUID()).masteredCount() == 1
+                            && !entity.isCurrentEncounter(), "resolution grants mastery and revokes the entity");
+            var after = saved.get(player.getUUID());
+            helper.assertTrue(SpiritExpeditionService.interactEncounter(player, stale, "observe", false) == 0
+                            && after.equals(saved.get(player.getUUID())),
+                    "replay must not change route resources or rewards");
+        } finally {
+            entity.discard();
+            stale.discard();
+            saved.remove(player.getUUID());
+        }
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void spiritActionsRejectExpiredFailedAndSpectatorRoutes(GameTestHelper helper) {
+        ServerLevel spirit = helper.getLevel().getServer().getLevel(SpiritExpeditionService.SPIRIT_WORLD);
+        helper.assertTrue(spirit != null, "spirit dimension must be available");
+        if (spirit == null) return;
+        ServerPlayer player = spiritResearchPlayer(spirit, UUID.randomUUID());
+        var saved = SpiritExpeditionSavedData.get(spirit);
+        saved.start(player.getUUID(), helper.getLevel().dimension().location(),
+                BlockPos.ZERO, SpiritProjection.THEATRE, 731L, spirit.getGameTime());
+        try {
+            var before = saved.get(player.getUUID());
+            player.getPersistentData().putBoolean("research_test_spectator", true);
+            helper.assertTrue(SpiritExpeditionService.navigate(player, "north") == 0
+                            && before.equals(saved.get(player.getUUID())),
+                    "spectator navigation must be side-effect-free");
+            player.getPersistentData().putBoolean("research_test_spectator", false);
+            saved.update(player.getUUID(), current -> new SpiritExpeditionSavedData.Expedition(
+                    current.player(), current.originDimension(), current.origin(), current.projection(),
+                    current.weather(), current.routeSeed(), current.tide(), current.lane(), current.currentPad(),
+                    current.startedAt(), current.expiresAt(), current.lastActionAt(), current.step(),
+                    0, current.drift(), current.rewardScore(), current.pendingEncounter(),
+                    current.resolvedEncounters()));
+            var failed = saved.get(player.getUUID());
+            helper.assertTrue(SpiritExpeditionService.navigate(player, "north") == 0
+                            && failed.equals(saved.get(player.getUUID())),
+                    "failed route cannot grant another navigation reward");
+            saved.update(player.getUUID(), current -> new SpiritExpeditionSavedData.Expedition(
+                    current.player(), current.originDimension(), current.origin(), current.projection(),
+                    current.weather(), current.routeSeed(), current.tide(), current.lane(), current.currentPad(),
+                    current.startedAt(), current.startedAt(), current.lastActionAt(), current.step(),
+                    70, current.drift(), current.rewardScore(), current.pendingEncounter(),
+                    current.resolvedEncounters()));
+            var expired = saved.get(player.getUUID());
+            helper.assertTrue(SpiritExpeditionService.navigate(player, "north") == 0
+                            && expired.equals(saved.get(player.getUUID())),
+                    "expired route must not mutate before the next server recovery tick");
+        } finally {
+            saved.remove(player.getUUID());
+        }
+        helper.succeed();
+    }
+
+    private static ServerPlayer spiritResearchPlayer(ServerLevel level, UUID id) {
+        return new ServerPlayer(level.getServer(), level, new GameProfile(id, "ecology-test")) {
+            @Override
+            public void sendSystemMessage(net.minecraft.network.chat.Component message) {}
+            @Override
+            public boolean isSpectator() {
+                return getPersistentData().getBoolean("research_test_spectator");
+            }
+            @Override
+            public void playNotifySound(net.minecraft.sounds.SoundEvent sound,
+                                        net.minecraft.sounds.SoundSource source, float volume, float pitch) {}
+        };
+    }
+
     private static OrganizationDefinition m4Organization(String path) {
         return new OrganizationDefinition(
                 m4Id("organization/" + path),

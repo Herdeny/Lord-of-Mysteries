@@ -246,11 +246,17 @@ def spirit_encounter_entry(definition, zh_cn, en_us):
     )
     if key not in zh_cn or key not in en_us or action_key not in zh_cn:
         raise ValueError(f"spirit encounter misses translations: {encounter_id}")
+    research_keys = {
+        part: f"spirit_research.{MOD_ID}.{encounter_id}.{part}"
+        for part in ("clue", "success", "failure")
+    }
+    if any(value not in zh_cn or value not in en_us for value in research_keys.values()):
+        raise ValueError(f"spirit research misses translations: {encounter_id}")
     return {
         "type": "entity",
         "id": f"{MOD_ID}:spirit_encounter/{encounter_id}",
-        "name": zh_cn[key],
-        "en": en_us[key],
+        "name": zh_cn[key] + " · 遭遇档案",
+        "en": en_us[key] + " encounter",
         "summary": (
             f"灵界航路生态遭遇；推荐以“{zh_cn[action_key]}”处理，错误应对会增加漂移。"
         ),
@@ -260,12 +266,17 @@ def spirit_encounter_entry(definition, zh_cn, en_us):
             ["推荐应对", zh_cn[action_key]],
             ["风险", str(definition["risk"])],
             ["收益类型", definition["reward"]],
-            ["实现形态", "服务端航路遭遇档案"],
+            ["实现形态", "真实实体、原生模型、服务端权威遭遇"],
+            ["观察线索", zh_cn[research_keys["clue"]]],
+            ["成功反馈", zh_cn[research_keys["success"]]],
+            ["错误反馈", zh_cn[research_keys["failure"]]],
+            ["操作入口", "/pm spirit study · /pm spirit journal"],
         ],
         "long": (
-            "当前实现为确定性航路遭遇档案，而不是独立可生成实体。服务端按世界种子、"
-            "路线、步数和天气选择遭遇，并原子结算稳定度、漂移与收益；未来实体化不能"
-            "改变既有存档 ID 或安全退出合同。"
+            "这是已实体化的灵界生态，不是未来占位档案。先持调查员残缺手稿右键或执行"
+            "/pm spirit study 记录线索，再决定观察、回避、帮助或交易。手账按玩家和世界"
+            "保存已观察/成功应对进度，不发放重复奖励。实体必须属于本人当前有效遭遇；"
+            "旧实体、跨维度、旁观和过期状态不能结算。"
         ),
     }
 

@@ -202,7 +202,8 @@ def main():
         require(f'"id": "lord_of_mysteries:{entity}_spawn_egg"' in pages,
                 f"Pages catalog misses spawn egg {entity}")
     require("belongsTo" in ecology_entity
-            and "resolveEncounter" in ecology_entity
+            and "interactEncounter" in ecology_entity
+            and "isCurrentFor" in ecology_entity
             and "routeOwner == null" in ecology_entity,
             "owned and creative ecology behavior is incomplete")
     require("spawnEncounterEntity" in service

@@ -153,6 +153,12 @@ public final class ProjectMysteryCommands {
                                         SpiritExpeditionService.compass(
                                                 context.getSource()
                                                         .getPlayerOrException())))
+                        .then(Commands.literal("study")
+                                .executes(context -> SpiritExpeditionService.study(
+                                        context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("journal")
+                                .executes(context -> SpiritExpeditionService.journal(
+                                        context.getSource().getPlayerOrException())))
                         .then(Commands.literal("navigate")
                                 .then(Commands.argument(
                                                 "direction",

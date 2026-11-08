@@ -1,6 +1,6 @@
 # M5 灵界远征
 
-> 当前版本：`0.9.35-1.20.1` · 灵界远征与实体生态机器可玩范围完成
+> 当前版本：`0.9.37-1.20.1` · 灵界远征与实体生态机器可玩范围完成，增加个人生态手账
 
 ## 快速开始
 
@@ -11,7 +11,9 @@
 /pm spirit enter church
 /pm spirit compass
 /pm spirit navigate north
+/pm spirit study
 /pm spirit encounter observe
+/pm spirit journal
 /pm spirit stabilize
 /pm spirit status
 /pm spirit exit
@@ -65,4 +67,4 @@
 - [专用服务器与多人验证](Dedicated-Server-Test-Matrix)
 - [在线资料站与可搜索图鉴](Online-Encyclopedia)
 
-十二类实体当前使用共享降级渲染器和差异化粒子；专属模型/动画/声音与真人30分钟多人平衡仍作为发布质量证据单独跟踪。
+十二类实体已使用原生分部模型、独立材质与基础动画，不再借用僵尸外观。持调查员手稿右键或用 `/pm spirit study` 读线索；`/pm spirit journal` 保存个人观察/掌握进度。完整操作和安全边界见[生态观察手账](Spirit-Field-Research)。最终高精美术、完整招式动画、原创音频与真人30分钟多人平衡仍单独验收。

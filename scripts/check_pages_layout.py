@@ -134,8 +134,8 @@ def main() -> int:
     require(
         contains_all(
             wiki_data,
-            ("Capability schema 30", "483 JUnit · 29 GameTest",
-             "501 JSON · 2031 双语键", "819静态引用",
+            ("Capability schema 30", "495 JUnit · 31 GameTest",
+             "501 JSON · 2075 双语键", "821静态引用",
              "156 物品 · 7 方块 · 28 实体",
              "164 节点 · 214 关系", "311 条图鉴")),
         "Dynamic Pages cards do not match the current validation baseline", errors)
@@ -178,6 +178,7 @@ def main() -> int:
         "Generated Pages catalog is missing M4/M5 definitions or registrations", errors)
 
     stale_markers = (
+        "而不是独立可生成实体",
         "427 JUnit · 22 GameTest",
         "365 JSON · 1631 双语键",
         "109 物品 · 7 方块 · 16 实体",
@@ -202,6 +203,11 @@ def main() -> int:
     require(
         not any(marker in wiki_data for marker in stale_markers),
         "Dynamic Pages cards still contain a previous current baseline", errors)
+    require('entity: "生物 / 遭遇"' in wiki_data,
+            "Pages must expose the registered entity category", errors)
+    require("/pm spirit study" in catalog_data and "观察线索" in catalog_data
+            and "而不是独立可生成实体" not in catalog_data,
+            "Ecology catalog must describe real entities and current field research", errors)
 
     require(
         "[hidden] { display: none !important; }" in css,

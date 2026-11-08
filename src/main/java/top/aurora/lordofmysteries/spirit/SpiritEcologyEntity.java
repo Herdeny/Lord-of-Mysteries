@@ -8,6 +8,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -49,7 +51,7 @@ public final class SpiritEcologyEntity extends Zombie {
     }
 
     public void bind(UUID owner, SpiritEcologyKind kind) {
-        if (owner == null || kind == null) {
+        if (owner == null || kind == null || kind.entityType() != getType()) {
             throw new IllegalArgumentException("spirit ecology binding required");
         }
         routeOwner = owner;
@@ -61,6 +63,26 @@ public final class SpiritEcologyEntity extends Zombie {
 
     public boolean belongsTo(UUID owner) {
         return owner != null && owner.equals(routeOwner);
+    }
+
+    public boolean isCurrentEncounter() {
+        if (!isAlive() || isRemoved() || routeOwner == null || !(level() instanceof ServerLevel serverLevel)
+                || !SpiritExpeditionService.SPIRIT_WORLD.equals(level().dimension())) return false;
+        SpiritExpeditionSavedData saved = SpiritExpeditionSavedData.get(serverLevel);
+        SpiritExpeditionSavedData.Expedition expedition = saved.get(routeOwner);
+        return expedition != null && !expedition.failed() && ecologyKind() != null
+                && expedition.pendingEncounter() == ecologyKind().encounter()
+                && saved.isEncounterEntity(routeOwner, getUUID())
+                && !SpiritExpeditionPolicy.timedOut(level().getGameTime(), expedition.expiresAt())
+                && distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(expedition.currentPad())) <= 4096d;
+    }
+
+    public boolean isCurrentFor(ServerPlayer player) {
+        return player != null && player.isAlive() && !player.isSpectator()
+                && player.serverLevel() == level() && belongsTo(player.getUUID())
+                && distanceToSqr(player) <= 36d && isCurrentEncounter()
+                && top.aurora.lordofmysteries.player.OccultActivityService.inspect(player).activity()
+                == top.aurora.lordofmysteries.player.OccultActivityPolicy.Activity.SPIRIT_EXPEDITION;
     }
 
     public SpiritEcologyKind ecologyKind() {
@@ -80,13 +102,17 @@ public final class SpiritEcologyEntity extends Zombie {
         }
         SpiritEcologyKind kind = ecologyKind();
         if (kind == null) return;
+        if (routeOwner != null && !isCurrentEncounter()) {
+            discard();
+            return;
+        }
         serverLevel.sendParticles(particle(kind),
                 getX(), getY() + 0.8d, getZ(),
                 8, 0.35d, 0.45d, 0.35d, 0.01d);
         if (routeOwner == null) return;
         ServerPlayer owner = serverLevel.getServer()
                 .getPlayerList().getPlayer(routeOwner);
-        if (owner == null || owner.distanceToSqr(this) > 36d) return;
+        if (!isCurrentFor(owner)) return;
         applyAmbientEffect(owner, kind);
     }
 
@@ -109,9 +135,10 @@ public final class SpiritEcologyEntity extends Zombie {
         }
         SpiritEncounterAction action = actionFor(
                 serverPlayer.getItemInHand(hand), serverPlayer.isShiftKeyDown());
-        int result = SpiritExpeditionService.resolveEncounter(
-                serverPlayer, action.id());
-        if (result > 0) discard();
+        boolean studying = serverPlayer.getItemInHand(hand).is(ModItems.INVESTIGATOR_NOTES.get());
+        int result = SpiritExpeditionService.interactEncounter(
+                serverPlayer, this, action.id(), studying);
+        if (result > 0 && !studying) discard();
         return result > 0 ? InteractionResult.CONSUME : InteractionResult.FAIL;
     }
 
@@ -137,6 +164,21 @@ public final class SpiritEcologyEntity extends Zombie {
     }
 
     @Override
+    protected SoundEvent getAmbientSound() {
+        return null;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.AMETHYST_BLOCK_HIT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.AMETHYST_BLOCK_BREAK;
+    }
+
+    @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         if (routeOwner != null) tag.putUUID(OWNER_TAG, routeOwner);
@@ -148,7 +190,8 @@ public final class SpiritEcologyEntity extends Zombie {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         routeOwner = tag.hasUUID(OWNER_TAG) ? tag.getUUID(OWNER_TAG) : null;
-        ecologyKind = SpiritEcologyKind.fromId(tag.getString(ENCOUNTER_TAG));
+        ecologyKind = null;
+        ecologyKind = ecologyKind();
         if (ecologyKind != null) {
             setCustomName(Component.translatable(ecologyKind.translationKey()));
             setCustomNameVisible(true);

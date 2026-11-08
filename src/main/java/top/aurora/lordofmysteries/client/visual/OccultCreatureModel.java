@@ -196,6 +196,11 @@ public final class OccultCreatureModel<T extends Mob>
         float walk = Mth.cos(limbSwing * 0.6662f) * limbAmount;
         rotate("left_arm", walk - attackTime * 1.8f, 0, 0.08f);
         rotate("right_arm", -walk - attackTime * 1.8f, 0, -0.08f);
+        if (visual.shape == CreatureVisual.Shape.HUMANOID && entity.isAggressive()) {
+            float strike = Mth.sin(Mth.sqrt(attackTime) * Mth.PI);
+            rotate("left_arm", -0.95f - strike * 0.75f + walk * 0.3f, 0.12f, 0.08f);
+            rotate("right_arm", -0.95f - strike * 0.75f - walk * 0.3f, -0.12f, -0.08f);
+        }
         rotate("left_leg", -walk, 0, 0);
         rotate("right_leg", walk, 0, 0);
         float flap = Mth.sin(age * 0.55f) * (entity.onGround() ? 0.12f : 0.7f);
