@@ -1,0 +1,15 @@
+{
+  "name": "lord_of_mysteries:herbalist_ruin",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "lord_of_mysteries:herbalist_ruin",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

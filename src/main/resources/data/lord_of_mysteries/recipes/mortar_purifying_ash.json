@@ -1,0 +1,15 @@
+{
+  "type": "lord_of_mysteries:mystic_mortar",
+  "main": {
+    "item": "minecraft:charcoal"
+  },
+  "main_count": 1,
+  "reagent": {
+    "item": "minecraft:bone_meal"
+  },
+  "reagent_count": 1,
+  "result": {
+    "item": "lord_of_mysteries:ash_powder",
+    "count": 4
+  }
+}

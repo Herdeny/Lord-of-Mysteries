@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "lord_of_mysteries:deepslate_saltstone_ore"
+  },
+  "result": "lord_of_mysteries:spirit_salt",
+  "experience": 0.3,
+  "cookingtime": 100
+}

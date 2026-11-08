@@ -36,6 +36,43 @@ public final class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, ProjectMystery.MOD_ID);
 
+    public static final RegistryObject<Block> SALTSTONE_ORE = BLOCKS.register("saltstone_ore",
+            () -> new net.minecraft.world.level.block.DropExperienceBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE).strength(3.0f, 6f).requiresCorrectToolForDrops(),
+                    net.minecraft.util.valueproviders.UniformInt.of(1, 3)));
+    public static final RegistryObject<Block> DEEPSLATE_SALTSTONE_ORE = BLOCKS.register("deepslate_saltstone_ore",
+            () -> new net.minecraft.world.level.block.DropExperienceBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE).strength(4.5f, 6f).requiresCorrectToolForDrops(),
+                    net.minecraft.util.valueproviders.UniformInt.of(1, 3)));
+    public static final RegistryObject<Block> ARGENT_ORE = BLOCKS.register("argent_ore",
+            () -> new net.minecraft.world.level.block.DropExperienceBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE).strength(3.0f, 6f).requiresCorrectToolForDrops(),
+                    net.minecraft.util.valueproviders.UniformInt.of(1, 3)));
+    public static final RegistryObject<Block> DEEPSLATE_ARGENT_ORE = BLOCKS.register("deepslate_argent_ore",
+            () -> new net.minecraft.world.level.block.DropExperienceBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE).strength(4.5f, 6f).requiresCorrectToolForDrops(),
+                    net.minecraft.util.valueproviders.UniformInt.of(1, 3)));
+    public static final RegistryObject<Block> SPIRIT_HERB_CROP = BLOCKS.register("spirit_herb_crop",
+            () -> new top.aurora.lordofmysteries.survival.OccultCropBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.CROP),
+                    () -> ModItems.SPIRIT_HERB.get()));
+    public static final RegistryObject<Block> WILD_SPIRIT_HERB = BLOCKS.register("wild_spirit_herb",
+            () -> new top.aurora.lordofmysteries.survival.OccultHerbBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS),
+                    () -> ModItems.SPIRIT_HERB.get()));
+    public static final RegistryObject<Block> HEATHER_CROP = BLOCKS.register("heather_crop",
+            () -> new top.aurora.lordofmysteries.survival.OccultCropBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.CROP),
+                    () -> ModItems.HEATHER.get()));
+    public static final RegistryObject<Block> WILD_HEATHER = BLOCKS.register("wild_heather",
+            () -> new top.aurora.lordofmysteries.survival.OccultHerbBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS),
+                    () -> ModItems.HEATHER.get()));
+    public static final RegistryObject<Block> MYSTIC_MORTAR = BLOCKS.register("mystic_mortar",
+            () -> new top.aurora.lordofmysteries.survival.MysticMortarBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE).strength(2.5f, 6f).requiresCorrectToolForDrops().noOcclusion()));
+
+
     // 仪式祭坛：承载多方块阵列、材料、状态机和结算。
     public static final RegistryObject<Block> RITUAL_ALTAR = BLOCKS.register("ritual_altar",
             () -> new RitualAltarBlock(BlockBehaviour.Properties.of()

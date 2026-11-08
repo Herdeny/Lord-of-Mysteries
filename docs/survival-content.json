@@ -1,0 +1,176 @@
+{
+  "version": "0.9.38",
+  "scope": "M0-M5 survival resource integration; not completion of future pathways or biomes",
+  "ores": [
+    {
+      "id": "saltstone",
+      "drop": "spirit_salt",
+      "size": 6,
+      "attempts": 6,
+      "min_y": -32,
+      "max_y": 80
+    },
+    {
+      "id": "argent",
+      "drop": "silver_filings",
+      "size": 4,
+      "attempts": 4,
+      "min_y": -56,
+      "max_y": 40
+    }
+  ],
+  "plants": [
+    {
+      "id": "spirit_herb",
+      "biomes": [
+        "#minecraft:is_forest",
+        "minecraft:swamp",
+        "minecraft:plains"
+      ],
+      "rarity": 5
+    },
+    {
+      "id": "heather",
+      "biomes": [
+        "#minecraft:is_taiga",
+        "minecraft:windswept_hills",
+        "minecraft:meadow"
+      ],
+      "rarity": 4
+    }
+  ],
+  "mortar": [
+    {
+      "id": "purified_salt",
+      "main": "minecraft:bone_meal",
+      "main_count": 2,
+      "reagent": "minecraft:amethyst_shard",
+      "reagent_count": 1,
+      "result": "spirit_salt",
+      "count": 4
+    },
+    {
+      "id": "silver_grinding",
+      "main": "minecraft:iron_nugget",
+      "main_count": 1,
+      "reagent": "minecraft:quartz",
+      "reagent_count": 1,
+      "result": "silver_filings",
+      "count": 3
+    },
+    {
+      "id": "purifying_ash",
+      "main": "minecraft:charcoal",
+      "main_count": 1,
+      "reagent": "minecraft:bone_meal",
+      "reagent_count": 1,
+      "result": "ash_powder",
+      "count": 4
+    },
+    {
+      "id": "living_ink",
+      "main": "minecraft:ink_sac",
+      "main_count": 1,
+      "reagent": "lord_of_mysteries:spirit_herb",
+      "reagent_count": 1,
+      "result": "mystic_ink",
+      "count": 2
+    },
+    {
+      "id": "heather_infusion",
+      "main": "lord_of_mysteries:pure_water",
+      "main_count": 1,
+      "reagent": "lord_of_mysteries:heather",
+      "reagent_count": 2,
+      "result": "moonwater",
+      "count": 1
+    },
+    {
+      "id": "calming_blend",
+      "main": "lord_of_mysteries:heather",
+      "main_count": 2,
+      "reagent": "minecraft:charcoal",
+      "reagent_count": 1,
+      "result": "calming_incense",
+      "count": 2
+    },
+    {
+      "id": "ash_binding",
+      "main": "minecraft:string",
+      "main_count": 2,
+      "reagent": "lord_of_mysteries:ash_powder",
+      "reagent_count": 1,
+      "result": "ashen_thread",
+      "count": 2
+    },
+    {
+      "id": "honey_spirit",
+      "main": "minecraft:honey_bottle",
+      "main_count": 1,
+      "reagent": "lord_of_mysteries:spirit_herb",
+      "reagent_count": 2,
+      "result": "spirit_alcohol",
+      "count": 2
+    }
+  ],
+  "mob_drops": [
+    {
+      "entity": "zombie",
+      "item": "ash_powder",
+      "chance": 0.15
+    },
+    {
+      "entity": "spider",
+      "item": "ashen_thread",
+      "chance": 0.15
+    },
+    {
+      "entity": "husk",
+      "item": "spirit_salt",
+      "chance": 0.2
+    },
+    {
+      "entity": "witch",
+      "item": "black_wax",
+      "chance": 0.2
+    }
+  ],
+  "chest_supplies": [
+    {
+      "table": "abandoned_mineshaft",
+      "item": "silver_filings",
+      "count": 3
+    },
+    {
+      "table": "simple_dungeon",
+      "item": "spirit_salt",
+      "count": 3
+    },
+    {
+      "table": "woodland_mansion",
+      "item": "heather",
+      "count": 2
+    },
+    {
+      "table": "shipwreck_supply",
+      "item": "spirit_herb",
+      "count": 2
+    }
+  ],
+  "structures": [
+    {
+      "id": "occult_cellar",
+      "spacing": 40,
+      "separation": 16,
+      "salt": 1938401,
+      "hostile": true
+    },
+    {
+      "id": "herbalist_ruin",
+      "spacing": 32,
+      "separation": 12,
+      "salt": 1938402,
+      "hostile": false
+    }
+  ]
+}

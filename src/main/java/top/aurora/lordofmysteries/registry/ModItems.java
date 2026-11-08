@@ -77,7 +77,8 @@ public final class ModItems {
 
     // —— 基础材料（v0.8 长期材料池的当前可玩子集）——
     // 基础灵性材料。后续可作为采集、掉落、交易、魔药制作的共同输入。
-    public static final RegistryObject<Item> SPIRIT_HERB = simple("spirit_herb");
+    public static final RegistryObject<Item> SPIRIT_HERB = ITEMS.register("spirit_herb",
+            () -> new top.aurora.lordofmysteries.survival.OccultSeedItem(ModBlocks.SPIRIT_HERB_CROP.get(), new Item.Properties()));
 
     // 占卜和序列 9 魔药用材料。
     public static final RegistryObject<Item> DIVINATION_CRYSTAL = simple("divination_crystal");
@@ -89,7 +90,20 @@ public final class ModItems {
     public static final RegistryObject<Item> BLACK_WAX = simple("black_wax");
     public static final RegistryObject<Item> DEEP_GRAY_SPIRIT_TEAR =
             simple("deep_gray_spirit_tear");
-    public static final RegistryObject<Item> HEATHER = simple("heather");
+    public static final RegistryObject<Item> HEATHER = ITEMS.register("heather",
+            () -> new top.aurora.lordofmysteries.survival.OccultSeedItem(ModBlocks.HEATHER_CROP.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> SALTSTONE_ORE = ITEMS.register("saltstone_ore",
+            () -> new BlockItem(ModBlocks.SALTSTONE_ORE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> DEEPSLATE_SALTSTONE_ORE = ITEMS.register("deepslate_saltstone_ore",
+            () -> new BlockItem(ModBlocks.DEEPSLATE_SALTSTONE_ORE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> ARGENT_ORE = ITEMS.register("argent_ore",
+            () -> new BlockItem(ModBlocks.ARGENT_ORE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> DEEPSLATE_ARGENT_ORE = ITEMS.register("deepslate_argent_ore",
+            () -> new BlockItem(ModBlocks.DEEPSLATE_ARGENT_ORE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> MYSTIC_MORTAR = ITEMS.register("mystic_mortar",
+            () -> new BlockItem(ModBlocks.MYSTIC_MORTAR.get(), new Item.Properties()));
+
     public static final RegistryObject<Item> SPIRIT_ALCOHOL = simple("spirit_alcohol");
     public static final RegistryObject<Item> SHAPESHIFTER_SERPENT_GLAND =
             simple("shapeshifter_serpent_gland");

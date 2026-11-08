@@ -1,0 +1,8 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#lord_of_mysteries:has_spirit_herb",
+  "features": [
+    "lord_of_mysteries:wild_spirit_herb"
+  ],
+  "step": "vegetal_decoration"
+}

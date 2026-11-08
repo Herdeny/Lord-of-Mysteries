@@ -1,0 +1,15 @@
+{
+  "name": "lord_of_mysteries:occult_cellar",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "lord_of_mysteries:occult_cellar",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

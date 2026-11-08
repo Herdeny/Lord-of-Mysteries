@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "lord_of_mysteries:saltstone_ore"
+  },
+  "result": "lord_of_mysteries:spirit_salt",
+  "experience": 0.3,
+  "cookingtime": 200
+}

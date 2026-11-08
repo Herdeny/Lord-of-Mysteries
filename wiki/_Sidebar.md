@@ -6,6 +6,7 @@
 - [在线资料站与可搜索图鉴](Online-Encyclopedia)
 - [安装与构建](Installation-and-Build)
 - [入门与占卜家 9–7](Getting-Started)
+- [采矿、药圃、研钵与原生遗迹](Survival-Resource-Loop)
 - [精神风险与调查日志](Risk-and-Investigation)
 - [M1 两小时纵切追踪器](M1-Trial-Tracker)
 - [M5 灵界远征](M5-Spirit-Expeditions)

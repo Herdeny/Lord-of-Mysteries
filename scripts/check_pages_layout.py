@@ -134,10 +134,10 @@ def main() -> int:
     require(
         contains_all(
             wiki_data,
-            ("Capability schema 30", "495 JUnit · 31 GameTest",
-             "501 JSON · 2075 双语键", "821静态引用",
-             "156 物品 · 7 方块 · 28 实体",
-             "164 节点 · 214 关系", "311 条图鉴")),
+            ("Capability schema 30", "503 JUnit · 39 GameTest",
+             "601 JSON · 2093 双语键", "824静态引用",
+             "161 物品 · 16 方块 · 28 实体",
+             "164 节点 · 214 关系", "330 条图鉴")),
         "Dynamic Pages cards do not match the current validation baseline", errors)
     require(
         contains_all(
@@ -166,7 +166,7 @@ def main() -> int:
             ('"organizationDefinitions": 12', '"artifactDefinitions": 24',
              '"spiritWeatherDefinitions": 6',
              '"spiritEncounterDefinitions": 12',
-             '"registeredItems": 156',
+             '"registeredItems": 161',
              '"registeredEntities": 28',
              '"id": "lord_of_mysteries:organization/church_night_watch"',
              '"id": "lord_of_mysteries:artifact_3_091_kindly_umbrella"',
@@ -176,6 +176,15 @@ def main() -> int:
              '"id": "lord_of_mysteries:memory_leech"',
              '"id": "lord_of_mysteries:dream_entry_ribbon"')),
         "Generated Pages catalog is missing M4/M5 definitions or registrations", errors)
+
+    require(
+        contains_all(html, ("SURVIVAL · 0.9.38", "/pm survival recipes", "Survival-Resource-Loop"))
+        and contains_all(wiki_data, ('recipe: "加工配方"', 'structure: "遗迹 / 地牢"'))
+        and contains_all(catalog_data, ('"id": "lord_of_mysteries:recipe/mortar_honey_spirit"',
+                                       '"id": "lord_of_mysteries:structure/occult_cellar"',
+                                       '"id": "lord_of_mysteries:structure/herbalist_ruin"',
+                                       '"survivalDetails"', "蜂蜜瓶")),
+        "Survival guide, acquisition details, recipe and ruin filters must stay synchronized", errors)
 
     stale_markers = (
         "而不是独立可生成实体",

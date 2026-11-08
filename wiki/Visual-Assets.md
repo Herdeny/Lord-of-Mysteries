@@ -1,5 +1,13 @@
 # M0–M5 视觉资源与验收
 
+## 0.9.38 生存资源扩展
+
+新增4种矿石、野生药草与作物生长模型、带实际空腔碰撞的研钵。矿石引用原版宿主材质，植物复用仓库原创药草PNG；没有声称新增原作官方素材。当前16个方块模型、183个物品/方块模型通过检查。
+
+客户端实际定位并进入自然生成的草药师遗址，检查药圃、水源、研钵、宝箱与楼梯后保存退出。完整生成、掉落与交互回归见[生存资源循环](Survival-Resource-Loop)，39项Forge GameTest/503项JUnit不替代真人长测。
+
+![自然生成遗址实拍](https://raw.githubusercontent.com/Herdeny/Lord-of-Mysteries/main/docs/assets/visuals/survival-ruin-0.9.38.png)
+
 > 下方保留0.9.36的首次资产验收记录。0.9.37补充敌意/攻击姿态、350/1200/2200粒子寿命总量预算、生态研究反馈，以及桌面/390×844移动端图鉴实测；当前495项JUnit、31项GameTest与客户端交互/读档证据见[生态观察手册](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/SPIRIT_FIELD_RESEARCH.md)。基础模型并不代表最终高精美术与全套招式动画完成。
 
 ## 玩家能看到什么

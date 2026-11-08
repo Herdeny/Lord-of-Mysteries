@@ -1,0 +1,169 @@
+{
+  "textures": {
+    "host": "minecraft:block/stone",
+    "vein": "minecraft:block/raw_iron_block",
+    "particle": "minecraft:block/stone"
+  },
+  "elements": [
+    {
+      "from": [
+        0.05,
+        0.05,
+        0.05
+      ],
+      "to": [
+        15.95,
+        15.95,
+        15.95
+      ],
+      "faces": {
+        "down": {
+          "texture": "#host"
+        },
+        "up": {
+          "texture": "#host"
+        },
+        "north": {
+          "texture": "#host"
+        },
+        "south": {
+          "texture": "#host"
+        },
+        "west": {
+          "texture": "#host"
+        },
+        "east": {
+          "texture": "#host"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        5,
+        0
+      ],
+      "to": [
+        7,
+        9,
+        16
+      ],
+      "faces": {
+        "down": {
+          "texture": "#vein"
+        },
+        "up": {
+          "texture": "#vein"
+        },
+        "north": {
+          "texture": "#vein"
+        },
+        "south": {
+          "texture": "#vein"
+        },
+        "west": {
+          "texture": "#vein"
+        },
+        "east": {
+          "texture": "#vein"
+        }
+      }
+    },
+    {
+      "from": [
+        11,
+        10,
+        0
+      ],
+      "to": [
+        14,
+        13,
+        16
+      ],
+      "faces": {
+        "down": {
+          "texture": "#vein"
+        },
+        "up": {
+          "texture": "#vein"
+        },
+        "north": {
+          "texture": "#vein"
+        },
+        "south": {
+          "texture": "#vein"
+        },
+        "west": {
+          "texture": "#vein"
+        },
+        "east": {
+          "texture": "#vein"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        3,
+        4
+      ],
+      "to": [
+        16,
+        6,
+        8
+      ],
+      "faces": {
+        "down": {
+          "texture": "#vein"
+        },
+        "up": {
+          "texture": "#vein"
+        },
+        "north": {
+          "texture": "#vein"
+        },
+        "south": {
+          "texture": "#vein"
+        },
+        "west": {
+          "texture": "#vein"
+        },
+        "east": {
+          "texture": "#vein"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        0,
+        10
+      ],
+      "to": [
+        9,
+        16,
+        13
+      ],
+      "faces": {
+        "down": {
+          "texture": "#vein"
+        },
+        "up": {
+          "texture": "#vein"
+        },
+        "north": {
+          "texture": "#vein"
+        },
+        "south": {
+          "texture": "#vein"
+        },
+        "west": {
+          "texture": "#vein"
+        },
+        "east": {
+          "texture": "#vein"
+        }
+      }
+    }
+  ]
+}

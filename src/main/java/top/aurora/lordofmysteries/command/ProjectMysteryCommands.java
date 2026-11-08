@@ -87,6 +87,12 @@ public final class ProjectMysteryCommands {
 
     private static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("pm")
+                .then(Commands.literal("survival")
+                        .executes(context -> top.aurora.lordofmysteries.survival.SurvivalGuide.show(
+                                context.getSource().getPlayerOrException()))
+                        .then(Commands.literal("recipes").executes(context ->
+                                top.aurora.lordofmysteries.survival.SurvivalGuide.recipes(
+                                        context.getSource().getPlayerOrException()))))
                 .then(Commands.literal("guide")
                         .executes(context -> {
                             InvestigatorNotesItem.showGuide(

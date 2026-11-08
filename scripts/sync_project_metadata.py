@@ -19,6 +19,8 @@ WIKI_PATHS = [
     ROOT / "wiki" / "Home.md",
     ROOT / "wiki" / "Development-Status.md",
     ROOT / "wiki" / "Versioning-and-Releases.md",
+    ROOT / "wiki" / "Survival-Resource-Loop.md",
+    ROOT / "docs" / "SURVIVAL_RESOURCE_LOOP.md",
 ]
 
 

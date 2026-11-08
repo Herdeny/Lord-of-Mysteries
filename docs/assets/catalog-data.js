@@ -1277,6 +1277,66 @@ window.LOM = window.LOM || {};
   {
     "type": "block",
     "image": null,
+    "id": "lord_of_mysteries:argent_ore",
+    "name": "银辉矿",
+    "en": "Argent Ore",
+    "summary": "可开采的银屑来源，连接洞穴采矿与神秘学消耗品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge block registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:argent_ore"
+      ],
+      [
+        "代码来源",
+        "ModBlocks.java"
+      ],
+      [
+        "资源状态",
+        "block 模型已提供"
+      ],
+      [
+        "分布",
+        "主世界 Y=-56..40；每区块4次矿脉尝试，不保证实际数量"
+      ],
+      [
+        "工具",
+        "石镐及以上；时运增加材料，精准采集保留矿石"
+      ],
+      [
+        "加工",
+        "熔炉/高炉：每块矿石得到1份材料；熔炼不叠加时运"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
+    "survivalDetails": [
+      [
+        "分布",
+        "主世界 Y=-56..40；每区块4次矿脉尝试，不保证实际数量"
+      ],
+      [
+        "工具",
+        "石镐及以上；时运增加材料，精准采集保留矿石"
+      ],
+      [
+        "加工",
+        "熔炉/高炉：每块矿石得到1份材料；熔炼不叠加时运"
+      ]
+    ]
+  },
+  {
+    "type": "block",
+    "image": null,
     "id": "lord_of_mysteries:characteristic_separator",
     "name": "特性分离台",
     "en": "Characteristic Separator",
@@ -1373,6 +1433,194 @@ window.LOM = window.LOM || {};
   {
     "type": "block",
     "image": null,
+    "id": "lord_of_mysteries:deepslate_argent_ore",
+    "name": "深层银辉矿",
+    "en": "Deepslate Argent Ore",
+    "summary": "可开采的银屑来源，连接洞穴采矿与神秘学消耗品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge block registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:deepslate_argent_ore"
+      ],
+      [
+        "代码来源",
+        "ModBlocks.java"
+      ],
+      [
+        "资源状态",
+        "block 模型已提供"
+      ],
+      [
+        "分布",
+        "主世界 Y=-56..40；每区块4次矿脉尝试，不保证实际数量"
+      ],
+      [
+        "工具",
+        "石镐及以上；时运增加材料，精准采集保留矿石"
+      ],
+      [
+        "加工",
+        "熔炉/高炉：每块矿石得到1份材料；熔炼不叠加时运"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
+    "survivalDetails": [
+      [
+        "分布",
+        "主世界 Y=-56..40；每区块4次矿脉尝试，不保证实际数量"
+      ],
+      [
+        "工具",
+        "石镐及以上；时运增加材料，精准采集保留矿石"
+      ],
+      [
+        "加工",
+        "熔炉/高炉：每块矿石得到1份材料；熔炼不叠加时运"
+      ]
+    ]
+  },
+  {
+    "type": "block",
+    "image": null,
+    "id": "lord_of_mysteries:deepslate_saltstone_ore",
+    "name": "深层灵盐矿",
+    "en": "Deepslate Spirit Salt Ore",
+    "summary": "可开采的灵性盐来源，连接洞穴采矿与神秘学消耗品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge block registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:deepslate_saltstone_ore"
+      ],
+      [
+        "代码来源",
+        "ModBlocks.java"
+      ],
+      [
+        "资源状态",
+        "block 模型已提供"
+      ],
+      [
+        "分布",
+        "主世界 Y=-32..80；每区块6次矿脉尝试，不保证实际数量"
+      ],
+      [
+        "工具",
+        "石镐及以上；时运增加材料，精准采集保留矿石"
+      ],
+      [
+        "加工",
+        "熔炉/高炉：每块矿石得到1份材料；熔炼不叠加时运"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
+    "survivalDetails": [
+      [
+        "分布",
+        "主世界 Y=-32..80；每区块6次矿脉尝试，不保证实际数量"
+      ],
+      [
+        "工具",
+        "石镐及以上；时运增加材料，精准采集保留矿石"
+      ],
+      [
+        "加工",
+        "熔炉/高炉：每块矿石得到1份材料；熔炼不叠加时运"
+      ]
+    ]
+  },
+  {
+    "type": "block",
+    "image": null,
+    "id": "lord_of_mysteries:heather_crop",
+    "name": "石楠作物",
+    "en": "Heather Crop",
+    "summary": "野外采集后直接播种，兼作魔药与研钵材料；建立可持续药圃。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge block registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:heather_crop"
+      ],
+      [
+        "代码来源",
+        "ModBlocks.java"
+      ],
+      [
+        "资源状态",
+        "block 模型已提供"
+      ],
+      [
+        "生态",
+        "#minecraft:is_taiga、minecraft:windswept_hills、minecraft:meadow"
+      ],
+      [
+        "种植",
+        "材料本身即种子；耕地、光照、水分按原版作物规则"
+      ],
+      [
+        "成熟",
+        "年龄7；右键得到2份并留根，破坏成熟作物得到3份（其中1份可重种）"
+      ],
+      [
+        "保护",
+        "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
+    "survivalDetails": [
+      [
+        "生态",
+        "#minecraft:is_taiga、minecraft:windswept_hills、minecraft:meadow"
+      ],
+      [
+        "种植",
+        "材料本身即种子；耕地、光照、水分按原版作物规则"
+      ],
+      [
+        "成熟",
+        "年龄7；右键得到2份并留根，破坏成熟作物得到3份（其中1份可重种）"
+      ],
+      [
+        "保护",
+        "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ]
+    ]
+  },
+  {
+    "type": "block",
+    "image": null,
     "id": "lord_of_mysteries:hunter_snare",
     "name": "猎人捕兽夹",
     "en": "Hunter Snare",
@@ -1437,6 +1685,74 @@ window.LOM = window.LOM || {};
   {
     "type": "block",
     "image": null,
+    "id": "lord_of_mysteries:mystic_mortar",
+    "name": "神秘研钵",
+    "en": "Mystic Mortar",
+    "summary": "双手投料、右键加工的神秘学研钵，提供8种基础消耗品加工路线。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge block registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:mystic_mortar"
+      ],
+      [
+        "代码来源",
+        "ModBlocks.java"
+      ],
+      [
+        "资源状态",
+        "block 模型已提供"
+      ],
+      [
+        "制作",
+        "5石砖+1紫水晶碎片；工作台配方可解锁"
+      ],
+      [
+        "使用",
+        "主手原料、副手催化材料；每次右键处理一批"
+      ],
+      [
+        "查询",
+        "/pm survival recipes"
+      ],
+      [
+        "安全",
+        "缺料、顺序错误、权限/活动冲突不扣料；返还容器；满包在玩家位置掉落"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
+    "survivalDetails": [
+      [
+        "制作",
+        "5石砖+1紫水晶碎片；工作台配方可解锁"
+      ],
+      [
+        "使用",
+        "主手原料、副手催化材料；每次右键处理一批"
+      ],
+      [
+        "查询",
+        "/pm survival recipes"
+      ],
+      [
+        "安全",
+        "缺料、顺序错误、权限/活动冲突不扣料；返还容器；满包在玩家位置掉落"
+      ]
+    ]
+  },
+  {
+    "type": "block",
+    "image": null,
     "id": "lord_of_mysteries:ritual_altar",
     "name": "仪式祭坛",
     "en": "Ritual Altar",
@@ -1497,6 +1813,270 @@ window.LOM = window.LOM || {};
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "block",
+    "image": null,
+    "id": "lord_of_mysteries:saltstone_ore",
+    "name": "灵盐矿",
+    "en": "Spirit Salt Ore",
+    "summary": "可开采的灵性盐来源，连接洞穴采矿与神秘学消耗品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge block registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:saltstone_ore"
+      ],
+      [
+        "代码来源",
+        "ModBlocks.java"
+      ],
+      [
+        "资源状态",
+        "block 模型已提供"
+      ],
+      [
+        "分布",
+        "主世界 Y=-32..80；每区块6次矿脉尝试，不保证实际数量"
+      ],
+      [
+        "工具",
+        "石镐及以上；时运增加材料，精准采集保留矿石"
+      ],
+      [
+        "加工",
+        "熔炉/高炉：每块矿石得到1份材料；熔炼不叠加时运"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
+    "survivalDetails": [
+      [
+        "分布",
+        "主世界 Y=-32..80；每区块6次矿脉尝试，不保证实际数量"
+      ],
+      [
+        "工具",
+        "石镐及以上；时运增加材料，精准采集保留矿石"
+      ],
+      [
+        "加工",
+        "熔炉/高炉：每块矿石得到1份材料；熔炼不叠加时运"
+      ]
+    ]
+  },
+  {
+    "type": "block",
+    "image": null,
+    "id": "lord_of_mysteries:spirit_herb_crop",
+    "name": "灵性草作物",
+    "en": "Spirit Herb Crop",
+    "summary": "野外采集后直接播种，兼作魔药与研钵材料；建立可持续药圃。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge block registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:spirit_herb_crop"
+      ],
+      [
+        "代码来源",
+        "ModBlocks.java"
+      ],
+      [
+        "资源状态",
+        "block 模型已提供"
+      ],
+      [
+        "生态",
+        "#minecraft:is_forest、minecraft:swamp、minecraft:plains"
+      ],
+      [
+        "种植",
+        "材料本身即种子；耕地、光照、水分按原版作物规则"
+      ],
+      [
+        "成熟",
+        "年龄7；右键得到2份并留根，破坏成熟作物得到3份（其中1份可重种）"
+      ],
+      [
+        "保护",
+        "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
+    "survivalDetails": [
+      [
+        "生态",
+        "#minecraft:is_forest、minecraft:swamp、minecraft:plains"
+      ],
+      [
+        "种植",
+        "材料本身即种子；耕地、光照、水分按原版作物规则"
+      ],
+      [
+        "成熟",
+        "年龄7；右键得到2份并留根，破坏成熟作物得到3份（其中1份可重种）"
+      ],
+      [
+        "保护",
+        "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ]
+    ]
+  },
+  {
+    "type": "block",
+    "image": null,
+    "id": "lord_of_mysteries:wild_heather",
+    "name": "野生石楠",
+    "en": "Wild Heather",
+    "summary": "野外采集后直接播种，兼作魔药与研钵材料；建立可持续药圃。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge block registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:wild_heather"
+      ],
+      [
+        "代码来源",
+        "ModBlocks.java"
+      ],
+      [
+        "资源状态",
+        "block 模型已提供"
+      ],
+      [
+        "生态",
+        "#minecraft:is_taiga、minecraft:windswept_hills、minecraft:meadow"
+      ],
+      [
+        "种植",
+        "材料本身即种子；耕地、光照、水分按原版作物规则"
+      ],
+      [
+        "成熟",
+        "年龄7；右键得到2份并留根，破坏成熟作物得到3份（其中1份可重种）"
+      ],
+      [
+        "保护",
+        "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
+    "survivalDetails": [
+      [
+        "生态",
+        "#minecraft:is_taiga、minecraft:windswept_hills、minecraft:meadow"
+      ],
+      [
+        "种植",
+        "材料本身即种子；耕地、光照、水分按原版作物规则"
+      ],
+      [
+        "成熟",
+        "年龄7；右键得到2份并留根，破坏成熟作物得到3份（其中1份可重种）"
+      ],
+      [
+        "保护",
+        "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ]
+    ]
+  },
+  {
+    "type": "block",
+    "image": null,
+    "id": "lord_of_mysteries:wild_spirit_herb",
+    "name": "野生灵性草",
+    "en": "Wild Spirit Herb",
+    "summary": "野外采集后直接播种，兼作魔药与研钵材料；建立可持续药圃。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge block registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:wild_spirit_herb"
+      ],
+      [
+        "代码来源",
+        "ModBlocks.java"
+      ],
+      [
+        "资源状态",
+        "block 模型已提供"
+      ],
+      [
+        "生态",
+        "#minecraft:is_forest、minecraft:swamp、minecraft:plains"
+      ],
+      [
+        "种植",
+        "材料本身即种子；耕地、光照、水分按原版作物规则"
+      ],
+      [
+        "成熟",
+        "年龄7；右键得到2份并留根，破坏成熟作物得到3份（其中1份可重种）"
+      ],
+      [
+        "保护",
+        "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
+    "survivalDetails": [
+      [
+        "生态",
+        "#minecraft:is_forest、minecraft:swamp、minecraft:plains"
+      ],
+      [
+        "种植",
+        "材料本身即种子；耕地、光照、水分按原版作物规则"
+      ],
+      [
+        "成熟",
+        "年龄7；右键得到2份并留根，破坏成熟作物得到3份（其中1份可重种）"
+      ],
+      [
+        "保护",
+        "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ]
+    ]
   },
   {
     "type": "entity",
@@ -4348,11 +4928,13 @@ window.LOM = window.LOM || {};
     "id": "lord_of_mysteries:heather",
     "name": "石楠",
     "en": "Heather",
-    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "summary": "野外采集后直接播种，兼作魔药与研钵材料；建立可持续药圃。",
     "tags": [
       "已注册",
       "中英双语",
-      "自动同步"
+      "自动同步",
+      "生存资源",
+      "0.9.38"
     ],
     "details": [
       [
@@ -4370,9 +4952,43 @@ window.LOM = window.LOM || {};
       [
         "资源状态",
         "item 模型已提供"
+      ],
+      [
+        "生态",
+        "#minecraft:is_taiga、minecraft:windswept_hills、minecraft:meadow"
+      ],
+      [
+        "种植",
+        "材料本身即种子；耕地、光照、水分按原版作物规则"
+      ],
+      [
+        "成熟",
+        "年龄7；右键得到2份并留根，破坏成熟作物得到3份（其中1份可重种）"
+      ],
+      [
+        "保护",
+        "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
       ]
     ],
-    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
+    "survivalDetails": [
+      [
+        "生态",
+        "#minecraft:is_taiga、minecraft:windswept_hills、minecraft:meadow"
+      ],
+      [
+        "种植",
+        "材料本身即种子；耕地、光照、水分按原版作物规则"
+      ],
+      [
+        "成熟",
+        "年龄7；右键得到2份并留根，破坏成熟作物得到3份（其中1份可重种）"
+      ],
+      [
+        "保护",
+        "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ]
+    ]
   },
   {
     "type": "item",
@@ -5724,11 +6340,13 @@ window.LOM = window.LOM || {};
     "id": "lord_of_mysteries:spirit_herb",
     "name": "灵性草药",
     "en": "Spirit Herb",
-    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "summary": "野外采集后直接播种，兼作魔药与研钵材料；建立可持续药圃。",
     "tags": [
       "已注册",
       "中英双语",
-      "自动同步"
+      "自动同步",
+      "生存资源",
+      "0.9.38"
     ],
     "details": [
       [
@@ -5746,9 +6364,43 @@ window.LOM = window.LOM || {};
       [
         "资源状态",
         "item 模型已提供"
+      ],
+      [
+        "生态",
+        "#minecraft:is_forest、minecraft:swamp、minecraft:plains"
+      ],
+      [
+        "种植",
+        "材料本身即种子；耕地、光照、水分按原版作物规则"
+      ],
+      [
+        "成熟",
+        "年龄7；右键得到2份并留根，破坏成熟作物得到3份（其中1份可重种）"
+      ],
+      [
+        "保护",
+        "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
       ]
     ],
-    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
+    "survivalDetails": [
+      [
+        "生态",
+        "#minecraft:is_forest、minecraft:swamp、minecraft:plains"
+      ],
+      [
+        "种植",
+        "材料本身即种子；耕地、光照、水分按原版作物规则"
+      ],
+      [
+        "成熟",
+        "年龄7；右键得到2份并留根，破坏成熟作物得到3份（其中1份可重种）"
+      ],
+      [
+        "保护",
+        "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ]
+    ]
   },
   {
     "type": "item",
@@ -7667,6 +8319,316 @@ window.LOM = window.LOM || {};
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
   },
   {
+    "type": "recipe",
+    "id": "lord_of_mysteries:recipe/mortar_ash_binding",
+    "name": "灰烬丝线 · 研钵配方",
+    "en": "ash_binding",
+    "summary": "线 ×2 + 灰烬粉 ×1 → 灰烬丝线 ×2",
+    "tags": [
+      "研钵",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "主手",
+        "线 ×2"
+      ],
+      [
+        "副手",
+        "灰烬粉 ×1"
+      ],
+      [
+        "产物",
+        "灰烬丝线 ×2"
+      ],
+      [
+        "来源",
+        "recipes/mortar_ash_binding.json"
+      ]
+    ],
+    "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"
+  },
+  {
+    "type": "recipe",
+    "id": "lord_of_mysteries:recipe/mortar_calming_blend",
+    "name": "镇静熏香 · 研钵配方",
+    "en": "calming_blend",
+    "summary": "石楠 ×2 + 木炭 ×1 → 镇静熏香 ×2",
+    "tags": [
+      "研钵",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "主手",
+        "石楠 ×2"
+      ],
+      [
+        "副手",
+        "木炭 ×1"
+      ],
+      [
+        "产物",
+        "镇静熏香 ×2"
+      ],
+      [
+        "来源",
+        "recipes/mortar_calming_blend.json"
+      ]
+    ],
+    "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"
+  },
+  {
+    "type": "recipe",
+    "id": "lord_of_mysteries:recipe/mortar_heather_infusion",
+    "name": "月华水 · 研钵配方",
+    "en": "heather_infusion",
+    "summary": "纯净水 ×1 + 石楠 ×2 → 月华水 ×1",
+    "tags": [
+      "研钵",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "主手",
+        "纯净水 ×1"
+      ],
+      [
+        "副手",
+        "石楠 ×2"
+      ],
+      [
+        "产物",
+        "月华水 ×1"
+      ],
+      [
+        "来源",
+        "recipes/mortar_heather_infusion.json"
+      ]
+    ],
+    "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"
+  },
+  {
+    "type": "recipe",
+    "id": "lord_of_mysteries:recipe/mortar_honey_spirit",
+    "name": "灵性酒精 · 研钵配方",
+    "en": "honey_spirit",
+    "summary": "蜂蜜瓶 ×1 + 灵性草药 ×2 → 灵性酒精 ×2",
+    "tags": [
+      "研钵",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "主手",
+        "蜂蜜瓶 ×1"
+      ],
+      [
+        "副手",
+        "灵性草药 ×2"
+      ],
+      [
+        "产物",
+        "灵性酒精 ×2"
+      ],
+      [
+        "来源",
+        "recipes/mortar_honey_spirit.json"
+      ]
+    ],
+    "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"
+  },
+  {
+    "type": "recipe",
+    "id": "lord_of_mysteries:recipe/mortar_living_ink",
+    "name": "神秘墨水 · 研钵配方",
+    "en": "living_ink",
+    "summary": "墨囊 ×1 + 灵性草药 ×1 → 神秘墨水 ×2",
+    "tags": [
+      "研钵",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "主手",
+        "墨囊 ×1"
+      ],
+      [
+        "副手",
+        "灵性草药 ×1"
+      ],
+      [
+        "产物",
+        "神秘墨水 ×2"
+      ],
+      [
+        "来源",
+        "recipes/mortar_living_ink.json"
+      ]
+    ],
+    "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"
+  },
+  {
+    "type": "recipe",
+    "id": "lord_of_mysteries:recipe/mortar_purified_salt",
+    "name": "灵性盐 · 研钵配方",
+    "en": "purified_salt",
+    "summary": "骨粉 ×2 + 紫水晶碎片 ×1 → 灵性盐 ×4",
+    "tags": [
+      "研钵",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "主手",
+        "骨粉 ×2"
+      ],
+      [
+        "副手",
+        "紫水晶碎片 ×1"
+      ],
+      [
+        "产物",
+        "灵性盐 ×4"
+      ],
+      [
+        "来源",
+        "recipes/mortar_purified_salt.json"
+      ]
+    ],
+    "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"
+  },
+  {
+    "type": "recipe",
+    "id": "lord_of_mysteries:recipe/mortar_purifying_ash",
+    "name": "灰烬粉 · 研钵配方",
+    "en": "purifying_ash",
+    "summary": "木炭 ×1 + 骨粉 ×1 → 灰烬粉 ×4",
+    "tags": [
+      "研钵",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "主手",
+        "木炭 ×1"
+      ],
+      [
+        "副手",
+        "骨粉 ×1"
+      ],
+      [
+        "产物",
+        "灰烬粉 ×4"
+      ],
+      [
+        "来源",
+        "recipes/mortar_purifying_ash.json"
+      ]
+    ],
+    "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"
+  },
+  {
+    "type": "recipe",
+    "id": "lord_of_mysteries:recipe/mortar_silver_grinding",
+    "name": "银屑 · 研钵配方",
+    "en": "silver_grinding",
+    "summary": "铁粒 ×1 + 下界石英 ×1 → 银屑 ×3",
+    "tags": [
+      "研钵",
+      "生存资源",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "主手",
+        "铁粒 ×1"
+      ],
+      [
+        "副手",
+        "下界石英 ×1"
+      ],
+      [
+        "产物",
+        "银屑 ×3"
+      ],
+      [
+        "来源",
+        "recipes/mortar_silver_grinding.json"
+      ]
+    ],
+    "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"
+  },
+  {
+    "type": "structure",
+    "id": "lord_of_mysteries:structure/herbalist_ruin",
+    "name": "草药师遗址",
+    "en": "herbalist_ruin",
+    "summary": "带药圃、研钵与两箱补给的草药师遗迹。",
+    "tags": [
+      "原生世界生成",
+      "探索",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "地形",
+        "平原、向日葵平原、森林、桦木森林、针叶林的新区块"
+      ],
+      [
+        "分布",
+        "随机间距 32 区块 / 最小分隔参数 12 区块；不是每隔固定距离必有"
+      ],
+      [
+        "奖励",
+        "每箱保证灵性草2、石楠2、灵盐3，另加2–4次低阶随机补给"
+      ],
+      [
+        "定位",
+        "/locate structure lord_of_mysteries:herbalist_ruin（管理员命令）"
+      ]
+    ],
+    "long": "从石砖与提灯入口探索，备好食物、镐和照明。箱子只在首次打开生成物品；不掉完整非凡特性，不跳过知识或晋升门槛。不回填旧区块，也不覆盖既有建筑。"
+  },
+  {
+    "type": "structure",
+    "id": "lord_of_mysteries:structure/occult_cellar",
+    "name": "旧仪式地窖",
+    "en": "occult_cellar",
+    "summary": "带僵尸刷怪笼、研钵与两箱补给的地下遗迹。",
+    "tags": [
+      "原生世界生成",
+      "探索",
+      "0.9.38"
+    ],
+    "details": [
+      [
+        "地形",
+        "平原、向日葵平原、森林、桦木森林、针叶林的新区块"
+      ],
+      [
+        "分布",
+        "随机间距 40 区块 / 最小分隔参数 16 区块；不是每隔固定距离必有"
+      ],
+      [
+        "奖励",
+        "每箱保证灵性草2、石楠2、灵盐3，另加2–4次低阶随机补给"
+      ],
+      [
+        "定位",
+        "/locate structure lord_of_mysteries:occult_cellar（管理员命令）"
+      ]
+    ],
+    "long": "从石砖与提灯入口探索，备好食物、镐和照明。箱子只在首次打开生成物品；不掉完整非凡特性，不跳过知识或晋升门槛。不回填旧区块，也不覆盖既有建筑。"
+  },
+  {
     "type": "world",
     "id": "lord_of_mysteries:spirit_weather/doorlight_aurora",
     "name": "门光极夜",
@@ -7871,20 +8833,24 @@ window.LOM = window.LOM || {};
   generatedEntries.forEach(function (entry) { generatedById[entry.id] = entry; });
   manualEntries.forEach(function (entry) {
     if (generatedById[entry.id]) entry.image = generatedById[entry.id].image;
+    if (generatedById[entry.id] && generatedById[entry.id].survivalDetails) {
+      entry.details = (entry.details || []).concat(generatedById[entry.id].survivalDetails);
+      entry.tags = (entry.tags || []).concat(['生存资源', '0.9.38']);
+    }
   });
   manualEntries.forEach(function (entry) { manualIds[entry.id] = true; });
   D.entries = manualEntries.concat(generatedEntries.filter(function (entry) {
     return !manualIds[entry.id];
   }));
   D.catalogMeta = {
-  "registeredItems": 156,
-  "registeredBlocks": 7,
+  "registeredItems": 161,
+  "registeredBlocks": 16,
   "registeredEntities": 28,
   "organizationDefinitions": 12,
   "artifactDefinitions": 24,
   "spiritWeatherDefinitions": 6,
   "spiritEncounterDefinitions": 12,
-  "uniqueRegistryEntries": 214,
-  "source": "Forge registries + organization/artifact/spirit data + zh_cn/en_us"
+  "uniqueRegistryEntries": 233,
+  "source": "Forge registries + organization/artifact/spirit + survival manifest + zh_cn/en_us"
 };
 })(window.LOM);

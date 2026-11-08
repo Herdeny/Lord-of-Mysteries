@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "lord_of_mysteries:saltstone_ore",
+    "lord_of_mysteries:deepslate_saltstone_ore",
+    "lord_of_mysteries:argent_ore",
+    "lord_of_mysteries:deepslate_argent_ore",
+    "lord_of_mysteries:mystic_mortar",
+    "lord_of_mysteries:crucible",
+    "lord_of_mysteries:ritual_altar",
+    "lord_of_mysteries:characteristic_separator",
+    "lord_of_mysteries:imprint_washing_altar"
+  ]
+}

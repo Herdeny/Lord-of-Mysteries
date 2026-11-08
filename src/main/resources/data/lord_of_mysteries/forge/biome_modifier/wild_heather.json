@@ -1,0 +1,8 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#lord_of_mysteries:has_heather",
+  "features": [
+    "lord_of_mysteries:wild_heather"
+  ],
+  "step": "vegetal_decoration"
+}

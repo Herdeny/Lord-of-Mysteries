@@ -29,6 +29,7 @@ public final class MysteryRegistries {
     public static void registerAll(IEventBus modEventBus) {
         // 方块先于方块物品声明更直观；RegistryObject 会延迟解析，实际顺序由 Forge 管理。
         ModBlocks.BLOCKS.register(modEventBus);
+        top.aurora.lordofmysteries.registry.ModSurvival.register(modEventBus);
         // 物品包含普通材料，也包含引用 ModBlocks 的 BlockItem。
         ModItems.ITEMS.register(modEventBus);
         // M0 只有占位注册表，M1 会在这里承载坩埚等方块实体类型。

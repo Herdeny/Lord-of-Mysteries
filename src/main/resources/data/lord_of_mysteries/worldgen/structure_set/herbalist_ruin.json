@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "lord_of_mysteries:herbalist_ruin",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 32,
+    "separation": 12,
+    "salt": 1938402
+  }
+}

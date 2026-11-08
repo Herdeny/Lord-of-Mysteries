@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "lord_of_mysteries:deepslate_argent_ore"
+  },
+  "result": "lord_of_mysteries:silver_filings",
+  "experience": 0.3,
+  "cookingtime": 100
+}

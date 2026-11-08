@@ -1,0 +1,11 @@
+{
+  "type": "lord_of_mysteries:survival_supplies",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/shipwreck_supply"
+    }
+  ],
+  "item": "lord_of_mysteries:spirit_herb",
+  "count": 2
+}

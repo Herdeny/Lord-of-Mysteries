@@ -1,0 +1,18 @@
+{
+  "type": "lord_of_mysteries:survival_supplies",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:entities/witch"
+    },
+    {
+      "condition": "minecraft:killed_by_player"
+    },
+    {
+      "condition": "minecraft:random_chance",
+      "chance": 0.2
+    }
+  ],
+  "item": "lord_of_mysteries:black_wax",
+  "count": 1
+}

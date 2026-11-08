@@ -2261,6 +2261,263 @@ public final class PlayerPersistenceGameTests {
         };
     }
 
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void survivalMortarReturnsContainersAndConsumesOnce(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var position = helper.absolutePos(new BlockPos(3, 2, 3));
+        level.setBlock(position, ModBlocks.MYSTIC_MORTAR.get().defaultBlockState(), 3);
+        ServerPlayer player = survivalPlayer(level, position);
+        player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.HONEY_BOTTLE));
+        player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(ModItems.SPIRIT_HERB.get(), 2));
+        var state = level.getBlockState(position);
+        var hit = new net.minecraft.world.phys.BlockHitResult(Vec3.atCenterOf(position), net.minecraft.core.Direction.UP, position, false);
+        state.use(level, player, net.minecraft.world.InteractionHand.MAIN_HAND, hit);
+        helper.assertTrue(player.getInventory().countItem(ModItems.SPIRIT_ALCOHOL.get()) == 2,
+                "one honey infusion produces exactly two spirit alcohol");
+        helper.assertTrue(player.getInventory().countItem(Items.GLASS_BOTTLE) == 1, "consumed bottle returns its container");
+        helper.assertTrue(player.getInventory().countItem(ModItems.SPIRIT_HERB.get()) == 0, "two herbs are consumed");
+        state.use(level, player, net.minecraft.world.InteractionHand.MAIN_HAND, hit);
+        helper.assertTrue(player.getInventory().countItem(ModItems.SPIRIT_ALCOHOL.get()) == 2, "repeat without inputs cannot duplicate");
+        helper.assertTrue(state.getShape(level, position).toAabbs().stream().noneMatch(box -> box.contains(0.5, 0.5, 0.5)),
+                "the mortar bowl is a real collision cavity");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void survivalMortarDenialsPreserveBothHands(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var position = helper.absolutePos(new BlockPos(3, 2, 3));
+        level.setBlock(position, ModBlocks.MYSTIC_MORTAR.get().defaultBlockState(), 3);
+        ServerPlayer player = survivalPlayer(level, position);
+        player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.BONE_MEAL, 2));
+        player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.AMETHYST_SHARD));
+        var state = level.getBlockState(position);
+        var hit = new net.minecraft.world.phys.BlockHitResult(Vec3.atCenterOf(position), net.minecraft.core.Direction.UP, position, false);
+        player.getAbilities().mayBuild = false;
+        state.use(level, player, net.minecraft.world.InteractionHand.MAIN_HAND, hit);
+        player.getAbilities().mayBuild = true;
+        var routes = SpiritExpeditionSavedData.get(level);
+        routes.start(player.getUUID(), level.dimension().location(), position, SpiritProjection.THEATRE, 19L, level.getGameTime());
+        try {
+            state.use(level, player, net.minecraft.world.InteractionHand.MAIN_HAND, hit);
+            helper.assertTrue(player.getMainHandItem().getCount() == 2 && player.getOffhandItem().getCount() == 1
+                    && player.getInventory().countItem(ModItems.SPIRIT_SALT.get()) == 0, "permission/activity rejection preserves inputs and output");
+        } finally { routes.remove(player.getUUID()); }
+        player.setPos(Vec3.atCenterOf(position).add(20, 0, 0));
+        state.use(level, player, net.minecraft.world.InteractionHand.MAIN_HAND, hit);
+        helper.assertTrue(player.getMainHandItem().getCount() == 2 && player.getOffhandItem().getCount() == 1, "remote interaction rejected");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void survivalCropMaturityAndTwoPlayerHarvestAreAtomic(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var position = helper.absolutePos(new BlockPos(3, 2, 3));
+        level.setBlock(position.below(), Blocks.FARMLAND.defaultBlockState(), 3);
+        var crop = (net.minecraft.world.level.block.CropBlock) ModBlocks.SPIRIT_HERB_CROP.get();
+        level.setBlock(position, crop.getStateForAge(6), 3);
+        ServerPlayer first = survivalPlayer(level, position);
+        ServerPlayer second = survivalPlayer(level, position);
+        var hit = new net.minecraft.world.phys.BlockHitResult(Vec3.atCenterOf(position), net.minecraft.core.Direction.UP, position, false);
+        level.getBlockState(position).use(level, first, net.minecraft.world.InteractionHand.MAIN_HAND, hit);
+        helper.assertTrue(first.getInventory().countItem(ModItems.SPIRIT_HERB.get()) == 0, "age six is not ripe");
+        level.setBlock(position, crop.getStateForAge(7), 3);
+        var mature = level.getBlockState(position);
+        mature.use(level, first, net.minecraft.world.InteractionHand.MAIN_HAND, hit);
+        mature.use(level, second, net.minecraft.world.InteractionHand.MAIN_HAND, hit);
+        helper.assertTrue(first.getInventory().countItem(ModItems.SPIRIT_HERB.get()) == 2
+                && second.getInventory().countItem(ModItems.SPIRIT_HERB.get()) == 0, "only first mature harvest receives produce");
+        helper.assertTrue(crop.getAge(level.getBlockState(position)) == 0, "harvest retains immature crop");
+        crop.performBonemeal(level, level.getRandom(), position, level.getBlockState(position));
+        helper.assertTrue(crop.getAge(level.getBlockState(position)) > 0, "vanilla bone meal grows crop");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void survivalOreToolsSilkAndFortuneUseRealLoot(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var position = helper.absolutePos(new BlockPos(3, 2, 3));
+        var state = ModBlocks.SALTSTONE_ORE.get().defaultBlockState();
+        level.setBlock(position, state, 3);
+        ServerPlayer player = survivalPlayer(level, position);
+        player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.WOODEN_PICKAXE));
+        helper.assertTrue(!state.canHarvestBlock(level, position, player), "wood cannot harvest salt ore");
+        player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.STONE_PICKAXE));
+        helper.assertTrue(state.canHarvestBlock(level, position, player), "stone can harvest salt ore");
+        ItemStack silk = new ItemStack(Items.IRON_PICKAXE);
+        silk.enchant(net.minecraft.world.item.enchantment.Enchantments.SILK_TOUCH, 1);
+        var silkDrops = net.minecraft.world.level.block.Block.getDrops(state, level, position, null, player, silk);
+        helper.assertTrue(silkDrops.size() == 1 && silkDrops.get(0).is(ModItems.SALTSTONE_ORE.get()), "silk yields one ore block");
+        var table = level.getServer().getLootData().getLootTable(state.getBlock().getLootTable());
+        ItemStack fortune = new ItemStack(Items.DIAMOND_PICKAXE);
+        fortune.enchant(net.minecraft.world.item.enchantment.Enchantments.BLOCK_FORTUNE, 3);
+        var params = new net.minecraft.world.level.storage.loot.LootParams.Builder(level)
+                .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.ORIGIN, Vec3.atCenterOf(position))
+                .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.BLOCK_STATE, state)
+                .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.TOOL, fortune)
+                .create(net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.BLOCK);
+        int total = 0;
+        for (long seed = 1; seed <= 20; seed++) {
+            for (ItemStack stack : table.getRandomItems(params, seed)) {
+                helper.assertTrue(stack.is(ModItems.SPIRIT_SALT.get()), "fortune only yields the intended mineral");
+                total += stack.getCount();
+            }
+        }
+        helper.assertTrue(total > 20 && total <= 80, "fortune improves yield within vanilla bounds");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = ProjectMystery.MOD_ID, template = "occult_cellar")
+    public static void survivalNativeRuinAndLootLoadInWorld(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var chestPos = helper.absolutePos(new BlockPos(8, 2, 2));
+        helper.assertTrue(level.getBlockEntity(chestPos) instanceof net.minecraft.world.level.block.entity.ChestBlockEntity,
+                "native template creates a real chest");
+        var chest = (net.minecraft.world.level.block.entity.ChestBlockEntity) level.getBlockEntity(chestPos);
+        helper.assertTrue(chest.saveWithFullMetadata().getString("LootTable").equals("lord_of_mysteries:chests/occult_cellar"),
+                "loot remains lazily seeded until first use");
+        chest.unpackLootTable(null);
+        int salt = 0;
+        for (int slot = 0; slot < chest.getContainerSize(); slot++) {
+            if (chest.getItem(slot).is(ModItems.SPIRIT_SALT.get())) salt += chest.getItem(slot).getCount();
+        }
+        helper.assertTrue(salt == 3, "cellar chest supplies its guaranteed salt once");
+        chest.unpackLootTable(null);
+        helper.assertTrue(!chest.saveWithFullMetadata().contains("LootTable"), "opened chest cannot regenerate contents");
+        helper.assertTrue(level.getBlockEntity(helper.absolutePos(new BlockPos(5, 2, 4)))
+                instanceof net.minecraft.world.level.block.entity.SpawnerBlockEntity, "cellar has a real vanilla spawner");
+        var herbalist = level.getStructureManager().getOrCreate(ResourceLocation.parse("lord_of_mysteries:herbalist_ruin"));
+        helper.assertTrue(herbalist.getSize().equals(new net.minecraft.core.Vec3i(11, 9, 11)), "second native ruin loads");
+        helper.assertTrue(level.registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.STRUCTURE)
+                .containsKey(ResourceLocation.parse("lord_of_mysteries:occult_cellar")), "locatable jigsaw structure registered");
+        var generator = level.getChunkSource().getGenerator();
+        for (String ruinId : List.of("occult_cellar", "herbalist_ruin")) {
+            var structure = level.registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.STRUCTURE)
+                    .get(ResourceLocation.parse("lord_of_mysteries:" + ruinId));
+            var start = structure.generate(level.registryAccess(), generator, generator.getBiomeSource(),
+                    level.getChunkSource().randomState(), level.getStructureManager(), level.getSeed(),
+                    new net.minecraft.world.level.ChunkPos(chestPos), 0, level, biome -> true);
+            helper.assertTrue(start.isValid() && start.getPieces().size() == 1,
+                    "real jigsaw generation must produce one root piece, not merely load a template: " + ruinId);
+        }
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void survivalMortarRecipesRoundTripAndRejectInvalidCounts(GameTestHelper helper) {
+        var manager = helper.getLevel().getRecipeManager();
+        var recipes = manager.getAllRecipesFor(top.aurora.lordofmysteries.registry.ModSurvival.MORTAR_TYPE.get());
+        helper.assertTrue(recipes.size() == 8, "all eight datapack recipes load");
+        var serializer = new top.aurora.lordofmysteries.survival.MortarRecipe.Serializer();
+        for (var recipe : recipes) {
+            var buffer = new net.minecraft.network.FriendlyByteBuf(io.netty.buffer.Unpooled.buffer());
+            try {
+                serializer.toNetwork(buffer, recipe);
+                var copy = serializer.fromNetwork(recipe.getId(), buffer);
+                var first = recipe.getIngredients().get(0).getItems()[0].copy();
+                first.setCount(recipe.mainCount());
+                var second = recipe.getIngredients().get(1).getItems()[0].copy();
+                second.setCount(recipe.reagentCount());
+                var input = new net.minecraft.world.SimpleContainer(first, second);
+                helper.assertTrue(copy.matches(input, helper.getLevel()), "network codec preserves matching and counts");
+                first.shrink(1);
+                helper.assertTrue(!copy.matches(input, helper.getLevel()), "insufficient input is rejected");
+                var output = copy.getResultItem(helper.getLevel().registryAccess());
+                output.setCount(1);
+                helper.assertTrue(copy.getResultItem(helper.getLevel().registryAccess()).getCount()
+                        == recipe.getResultItem(helper.getLevel().registryAccess()).getCount(), "result copies cannot mutate recipe");
+            } finally { buffer.release(); }
+        }
+        boolean rejected = false;
+        try {
+            serializer.fromJson(ResourceLocation.parse("lord_of_mysteries:invalid"), com.google.gson.JsonParser.parseString(
+                    "{\"main\":{\"item\":\"minecraft:stone\"},\"main_count\":0,\"reagent\":{\"item\":\"minecraft:dirt\"},\"result\":{\"item\":\"minecraft:diamond\"}}").getAsJsonObject());
+        } catch (com.google.gson.JsonParseException expected) { rejected = true; }
+        helper.assertTrue(rejected, "malformed count must fail loading, not allow free crafting");
+        helper.succeed();
+    }
+
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void survivalLootModifiersPreserveVanillaAndRequirePlayerKill(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var origin = helper.absolutePos(new BlockPos(3, 2, 3));
+        var chestParams = new net.minecraft.world.level.storage.loot.LootParams.Builder(level)
+                .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.ORIGIN, Vec3.atCenterOf(origin))
+                .create(net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.CHEST);
+        var chestTable = level.getServer().getLootData().getLootTable(ResourceLocation.parse("minecraft:chests/abandoned_mineshaft"));
+        var chestLoot = chestTable.getRandomItems(chestParams, 1234L);
+        helper.assertTrue(chestLoot.stream().filter(stack -> stack.is(ModItems.SILVER_FILINGS.get()))
+                .mapToInt(ItemStack::getCount).sum() == 3, "real vanilla mineshaft loot receives exactly three filings");
+        helper.assertTrue(chestLoot.stream().anyMatch(stack -> ForgeRegistries.ITEMS.getKey(stack.getItem()).getNamespace().equals("minecraft")),
+                "vanilla chest contents remain present");
+        var zombie = EntityType.ZOMBIE.create(level);
+        ServerPlayer player = survivalPlayer(level, origin);
+        var mobTable = level.getServer().getLootData().getLootTable(ResourceLocation.parse("minecraft:entities/zombie"));
+        int playerBonus = 0;
+        int naturalBonus = 0;
+        for (long seed = 1; seed <= 120; seed++) {
+            var builder = new net.minecraft.world.level.storage.loot.LootParams.Builder(level)
+                    .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.ORIGIN, Vec3.atCenterOf(origin))
+                    .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.THIS_ENTITY, zombie)
+                    .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.DAMAGE_SOURCE, level.damageSources().generic());
+            naturalBonus += mobTable.getRandomItems(builder.create(net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.ENTITY), seed)
+                    .stream().filter(stack -> stack.is(ModItems.ASH_POWDER.get())).mapToInt(ItemStack::getCount).sum();
+            builder.withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.LAST_DAMAGE_PLAYER, player);
+            playerBonus += mobTable.getRandomItems(builder.create(net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.ENTITY), seed)
+                    .stream().filter(stack -> stack.is(ModItems.ASH_POWDER.get())).mapToInt(ItemStack::getCount).sum();
+        }
+        helper.assertTrue(naturalBonus == 0, "environmental kills cannot farm player-only occult bonus");
+        helper.assertTrue(playerBonus > 0 && playerBonus < 120, "eligible kills obey a probabilistic bonus, not guaranteed output");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void survivalMortarFullInventoryAndHandOrderPreserveItems(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var position = helper.absolutePos(new BlockPos(3, 2, 3));
+        level.setBlock(position, ModBlocks.MYSTIC_MORTAR.get().defaultBlockState(), 3);
+        var state = level.getBlockState(position);
+        ServerPlayer player = survivalPlayer(level, position);
+        for (int slot = 0; slot < player.getInventory().items.size(); slot++) {
+            player.getInventory().setItem(slot, new ItemStack(Items.COBBLESTONE, 64));
+        }
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.SPIRIT_HERB.get(), 4));
+        player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.HONEY_BOTTLE, 2));
+        var hit = new net.minecraft.world.phys.BlockHitResult(Vec3.atCenterOf(position), net.minecraft.core.Direction.UP, position, false);
+        state.use(level, player, InteractionHand.MAIN_HAND, hit);
+        helper.assertTrue(player.getMainHandItem().getCount() == 4 && player.getOffhandItem().getCount() == 2,
+                "reversed hands do not consume or craft");
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.HONEY_BOTTLE, 2));
+        player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(ModItems.SPIRIT_HERB.get(), 4));
+        state.use(level, player, InteractionHand.MAIN_HAND, hit);
+        helper.assertTrue(player.getMainHandItem().getCount() == 1 && player.getOffhandItem().getCount() == 2,
+                "full inventory still charges exactly one batch");
+        var drops = level.getEntitiesOfClass(ItemEntity.class, new AABB(position).inflate(2));
+        helper.assertTrue(drops.stream().filter(entity -> entity.getItem().is(Items.GLASS_BOTTLE))
+                .mapToInt(entity -> entity.getItem().getCount()).sum() == 1, "full inventory returns bottle as real item entity");
+        helper.assertTrue(drops.stream().filter(entity -> entity.getItem().is(ModItems.SPIRIT_ALCOHOL.get()))
+                .mapToInt(entity -> entity.getItem().getCount()).sum() == 2, "full inventory drops output without deleting it");
+        level.setBlock(position, Blocks.AIR.defaultBlockState(), 3);
+        state.use(level, player, InteractionHand.MAIN_HAND, hit);
+        helper.assertTrue(player.getMainHandItem().getCount() == 1 && player.getOffhandItem().getCount() == 2,
+                "stale destroyed workstation cannot process another batch");
+        helper.succeed();
+    }
+
+
+    private static ServerPlayer survivalPlayer(ServerLevel level, BlockPos position) {
+        ServerPlayer player = new ServerPlayer(level.getServer(), level, new GameProfile(UUID.randomUUID(), "survival-test")) {
+            @Override
+            public void sendSystemMessage(net.minecraft.network.chat.Component message) {}
+            @Override
+            public void displayClientMessage(net.minecraft.network.chat.Component message, boolean actionBar) {}
+        };
+        player.setPos(Vec3.atCenterOf(position));
+        player.getAbilities().mayBuild = true;
+        return player;
+    }
+
     private static OrganizationDefinition m4Organization(String path) {
         return new OrganizationDefinition(
                 m4Id("organization/" + path),

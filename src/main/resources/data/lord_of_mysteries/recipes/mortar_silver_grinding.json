@@ -1,0 +1,15 @@
+{
+  "type": "lord_of_mysteries:mystic_mortar",
+  "main": {
+    "item": "minecraft:iron_nugget"
+  },
+  "main_count": 1,
+  "reagent": {
+    "item": "minecraft:quartz"
+  },
+  "reagent_count": 1,
+  "result": {
+    "item": "lord_of_mysteries:silver_filings",
+    "count": 3
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "lord_of_mysteries:mystic_mortar",
+  "main": {
+    "item": "minecraft:honey_bottle"
+  },
+  "main_count": 1,
+  "reagent": {
+    "item": "lord_of_mysteries:spirit_herb"
+  },
+  "reagent_count": 2,
+  "result": {
+    "item": "lord_of_mysteries:spirit_alcohol",
+    "count": 2
+  }
+}

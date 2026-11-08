@@ -1,0 +1,15 @@
+{
+  "type": "lord_of_mysteries:mystic_mortar",
+  "main": {
+    "item": "lord_of_mysteries:heather"
+  },
+  "main_count": 2,
+  "reagent": {
+    "item": "minecraft:charcoal"
+  },
+  "reagent_count": 1,
+  "result": {
+    "item": "lord_of_mysteries:calming_incense",
+    "count": 2
+  }
+}

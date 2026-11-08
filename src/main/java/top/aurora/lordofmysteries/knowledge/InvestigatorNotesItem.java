@@ -39,6 +39,7 @@ public final class InvestigatorNotesItem extends Item {
     }
 
     public static void showGuide(ServerPlayer serverPlayer) {
+        send(serverPlayer, "guide.lord_of_mysteries.survival.entry");
         PlayerMysteryData data = MysteryCapability.get(serverPlayer);
         serverPlayer.sendSystemMessage(Component.translatable(
                 "guide.lord_of_mysteries.title").withStyle(ChatFormatting.LIGHT_PURPLE));

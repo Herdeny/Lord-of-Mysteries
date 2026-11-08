@@ -1,0 +1,15 @@
+{
+  "type": "lord_of_mysteries:mystic_mortar",
+  "main": {
+    "item": "minecraft:string"
+  },
+  "main_count": 2,
+  "reagent": {
+    "item": "lord_of_mysteries:ash_powder"
+  },
+  "reagent_count": 1,
+  "result": {
+    "item": "lord_of_mysteries:ashen_thread",
+    "count": 2
+  }
+}

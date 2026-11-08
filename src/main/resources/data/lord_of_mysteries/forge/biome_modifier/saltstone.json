@@ -1,0 +1,8 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "lord_of_mysteries:saltstone"
+  ],
+  "step": "underground_ores"
+}

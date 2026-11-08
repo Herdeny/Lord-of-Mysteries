@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "entries": [
+    "lord_of_mysteries:survival_zombie",
+    "lord_of_mysteries:survival_spider",
+    "lord_of_mysteries:survival_husk",
+    "lord_of_mysteries:survival_witch",
+    "lord_of_mysteries:survival_abandoned_mineshaft",
+    "lord_of_mysteries:survival_simple_dungeon",
+    "lord_of_mysteries:survival_woodland_mansion",
+    "lord_of_mysteries:survival_shipwreck_supply"
+  ]
+}

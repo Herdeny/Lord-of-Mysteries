@@ -377,6 +377,7 @@ test {
 }
 
 tasks.named('check').configure {
+    dependsOn 'checkSurvivalContent'
     dependsOn 'checkProjectMysteryData', 'checkV09Design',
             'checkContentGraph', 'checkM1Playability',
             'checkM2Investigation', 'checkM3Foundation',
@@ -418,4 +419,9 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+tasks.register('checkSurvivalContent', Exec) {
+    group = 'verification'
+    commandLine pythonExecutable, 'scripts/generate_survival_content.py', '--check'
 }

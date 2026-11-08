@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:is_taiga",
+    "minecraft:windswept_hills",
+    "minecraft:meadow"
+  ]
+}

@@ -82,7 +82,7 @@ def main():
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 1
-    print(f"Visual coverage passed: {entities} entity renderers, {sprites} sprites, {blocks} workstations, {particles} particle providers.")
+    print(f"Visual coverage passed: {entities} entity renderers, {sprites} sprites, {blocks} block models, {particles} particle providers.")
     return 0
 
 

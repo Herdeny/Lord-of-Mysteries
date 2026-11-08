@@ -671,6 +671,8 @@ main {
 .icon.world { background: linear-gradient(135deg, #6a6152, #b3aa9a); }
 .icon.status { background: linear-gradient(135deg, #74b86f, #6bcad0); }
 .icon.entity { color: #f2eaff; background: linear-gradient(135deg, #51416f, #826498); }
+.icon.recipe { color: #261d12; background: linear-gradient(135deg, #b79760, #ead9a6); }
+.icon.structure { color: #192119; background: linear-gradient(135deg, #79a380, #c4d4a0); }
 .card h3 { font-size: 16px; }
 .tagline {
   margin-top: 2px;

@@ -16,6 +16,8 @@ on:
       - "wiki/**"
       - "scripts/sync_project_metadata.py"
       - "scripts/gen_datapack.py"
+      - "scripts/generate_survival_content.py"
+      - "docs/survival-content.json"
       - "scripts/import_v09_design.py"
       - "scripts/build_content_graph.py"
       - "scripts/check_resource_integrity.py"
@@ -52,6 +54,8 @@ on:
       - "wiki/**"
       - "scripts/sync_project_metadata.py"
       - "scripts/gen_datapack.py"
+      - "scripts/generate_survival_content.py"
+      - "docs/survival-content.json"
       - "scripts/import_v09_design.py"
       - "scripts/build_content_graph.py"
       - "scripts/check_resource_integrity.py"
@@ -132,6 +136,9 @@ jobs:
 
       - name: Verify resource integrity
         run: python3 scripts/check_resource_integrity.py
+
+      - name: Verify survival datapack generation
+        run: python3 scripts/generate_survival_content.py --check
 
       - name: Verify visual assets and Pages icons
         run: python3 scripts/check_visual_assets.py

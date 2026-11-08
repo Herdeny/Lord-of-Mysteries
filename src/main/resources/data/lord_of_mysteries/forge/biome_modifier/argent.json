@@ -1,0 +1,8 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "lord_of_mysteries:argent"
+  ],
+  "step": "underground_ores"
+}

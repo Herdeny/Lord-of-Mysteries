@@ -1,0 +1,15 @@
+{
+  "type": "lord_of_mysteries:mystic_mortar",
+  "main": {
+    "item": "lord_of_mysteries:pure_water"
+  },
+  "main_count": 1,
+  "reagent": {
+    "item": "lord_of_mysteries:heather"
+  },
+  "reagent_count": 2,
+  "result": {
+    "item": "lord_of_mysteries:moonwater",
+    "count": 1
+  }
+}
