@@ -1,5 +1,11 @@
 ## Project Mystery
 
+### 当前实装与未来目标
+
+- [v0.9全章审计：哪些还没有做](V09-Completion-Audit)
+- [1.0大型模组实施指导书（设计）](1.0-Design-Guide)
+- [1.0验收矩阵（目标）](1.0-Acceptance-Matrix)
+
 ### 开始游玩
 
 - [首页](Home)

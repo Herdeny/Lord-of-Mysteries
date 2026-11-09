@@ -134,10 +134,10 @@ def main() -> int:
     require(
         contains_all(
             wiki_data,
-            ("Capability schema 30", "503 JUnit · 39 GameTest",
-             "601 JSON · 2093 双语键", "824静态引用",
+            ("Capability schema 30", "507 JUnit · 43 GameTest",
+             "616 JSON · 2115 双语键", "844静态引用",
              "161 物品 · 16 方块 · 28 实体",
-             "164 节点 · 214 关系", "330 条图鉴")),
+             "164 节点 · 214 关系", "334 条图鉴")),
         "Dynamic Pages cards do not match the current validation baseline", errors)
     require(
         contains_all(
@@ -178,7 +178,7 @@ def main() -> int:
         "Generated Pages catalog is missing M4/M5 definitions or registrations", errors)
 
     require(
-        contains_all(html, ("SURVIVAL · 0.9.38", "/pm survival recipes", "Survival-Resource-Loop"))
+        contains_all(html, ("SURVIVAL · 0.9.39", "/pm survival recipes", "Survival-Resource-Loop", "PROJECT_MYSTERY_1_0_GUIDE.md", "V09_COMPLETION_AUDIT.md"))
         and contains_all(wiki_data, ('recipe: "加工配方"', 'structure: "遗迹 / 地牢"'))
         and contains_all(catalog_data, ('"id": "lord_of_mysteries:recipe/mortar_honey_spirit"',
                                        '"id": "lord_of_mysteries:structure/occult_cellar"',

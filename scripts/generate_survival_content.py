@@ -257,7 +257,34 @@ def generate():
         data(f"loot_modifiers/{name}.json", {"type": f"{MOD}:survival_supplies", "conditions": [
             {"condition": "forge:loot_table_id", "loot_table_id": f"minecraft:chests/{chest['table']}"}],
             "item": f"{MOD}:{chest['item']}", "count": chest["count"]})
+    fishing = config["fishing"]
+    modifiers.append(f"{MOD}:survival_fishing")
+    data("loot_modifiers/survival_fishing.json", {"type": f"{MOD}:survival_supplies", "conditions": [
+        {"condition": "forge:loot_table_id", "loot_table_id": "minecraft:gameplay/fishing"},
+        {"condition": "minecraft:entity_properties", "entity": "this", "predicate": {
+            "type": "minecraft:fishing_bobber", "type_specific": {"type": "fishing_hook", "in_open_water": fishing["open_water"]}}},
+        {"condition": "minecraft:match_tool", "predicate": {"items": ["minecraft:fishing_rod"]}},
+        {"condition": "minecraft:random_chance", "chance": fishing["chance"]}],
+        "item": f"{MOD}:{fishing['item']}", "count": fishing["count"]})
     put(DATA / "forge/loot_modifiers/global_loot_modifiers.json", {"replace": False, "entries": modifiers})
+
+    for discovery in config["discoveries"]:
+        display = {"icon": {"item": f"{MOD}:{discovery['item']}"},
+                   "title": {"translate": f"advancement.{MOD}.survival.{discovery['id']}.title"},
+                   "description": {"translate": f"advancement.{MOD}.survival.{discovery['id']}.description"},
+                   "frame": "task", "show_toast": True, "announce_to_chat": False, "hidden": False}
+        if "loot_table" in discovery:
+            criterion = {"trigger": "minecraft:player_generates_container_loot", "conditions": {
+                "loot_table": f"{MOD}:chests/{discovery['loot_table']}"}}
+        else:
+            criterion = {"trigger": "minecraft:inventory_changed", "conditions": {
+                "items": [{"items": [f"{MOD}:{discovery['item']}"]}]}}
+        advancement = {"display": display, "criteria": {"discover": criterion}, "requirements": [["discover"]]}
+        if "parent" in discovery:
+            advancement["parent"] = f"{MOD}:survival/{discovery['parent']}"
+        else:
+            display["background"] = "minecraft:textures/block/deepslate_tiles.png"
+        data(f"advancements/survival/{discovery['id']}.json", advancement)
 
     for ruin in config["structures"]:
         name = ruin["id"]

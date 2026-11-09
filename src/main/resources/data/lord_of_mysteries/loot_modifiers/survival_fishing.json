@@ -1,0 +1,34 @@
+{
+  "type": "lord_of_mysteries:survival_supplies",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:gameplay/fishing"
+    },
+    {
+      "condition": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "type": "minecraft:fishing_bobber",
+        "type_specific": {
+          "type": "fishing_hook",
+          "in_open_water": true
+        }
+      }
+    },
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "items": [
+          "minecraft:fishing_rod"
+        ]
+      }
+    },
+    {
+      "condition": "minecraft:random_chance",
+      "chance": 0.2
+    }
+  ],
+  "item": "lord_of_mysteries:spirit_salt",
+  "count": 1
+}

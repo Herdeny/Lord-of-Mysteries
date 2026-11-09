@@ -13,6 +13,7 @@ on:
       - "scripts/sync_project_metadata.py"
       - "scripts/gen_datapack.py"
       - "scripts/generate_survival_content.py"
+      - "scripts/check_design_roadmap.py"
       - "docs/survival-content.json"
       - "scripts/import_v09_design.py"
       - "scripts/build_content_graph.py"
@@ -57,6 +58,7 @@ on:
       - "scripts/sync_project_metadata.py"
       - "scripts/gen_datapack.py"
       - "scripts/generate_survival_content.py"
+      - "scripts/check_design_roadmap.py"
       - "docs/survival-content.json"
       - "scripts/import_v09_design.py"
       - "scripts/build_content_graph.py"
@@ -127,6 +129,9 @@ jobs:
       - name: Verify generated datapack
         run: python3 scripts/gen_datapack.py --check
 
+      - name: Verify survival datapack generation
+        run: python3 scripts/generate_survival_content.py --check
+
       - name: Verify v0.9 design source set
         run: python3 scripts/import_v09_design.py --check
 
@@ -147,6 +152,9 @@ jobs:
 
       - name: Verify M5 Spirit World expedition contract
         run: python3 scripts/check_m5_foundation.py
+
+      - name: Verify design audit and implementation dependencies
+        run: python3 scripts/check_design_roadmap.py --check
 
       - name: Verify generated Pages catalog
         run: python3 scripts/gen_pages_catalog.py --check

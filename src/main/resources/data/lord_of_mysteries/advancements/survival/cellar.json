@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": {
+      "item": "lord_of_mysteries:black_wax"
+    },
+    "title": {
+      "translate": "advancement.lord_of_mysteries.survival.cellar.title"
+    },
+    "description": {
+      "translate": "advancement.lord_of_mysteries.survival.cellar.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "discover": {
+      "trigger": "minecraft:player_generates_container_loot",
+      "conditions": {
+        "loot_table": "lord_of_mysteries:chests/occult_cellar"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "discover"
+    ]
+  ],
+  "parent": "lord_of_mysteries:survival/salt"
+}

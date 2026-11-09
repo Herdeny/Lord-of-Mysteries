@@ -1,0 +1,15 @@
+{
+  "type": "lord_of_mysteries:mystic_mortar",
+  "main": {
+    "item": "minecraft:honeycomb"
+  },
+  "main_count": 1,
+  "reagent": {
+    "item": "minecraft:string"
+  },
+  "reagent_count": 1,
+  "result": {
+    "item": "lord_of_mysteries:white_candle",
+    "count": 2
+  }
+}

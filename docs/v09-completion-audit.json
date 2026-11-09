@@ -1,0 +1,1116 @@
+{
+  "schema_version": 1,
+  "design": "0.9",
+  "audit_date": "2026-11-09",
+  "baseline_commit": "25ffb92b2a6a3959068b99ead6b0a3a6cf1f12b2",
+  "scope": "Chapter-level coverage only; not atomic requirement completion or runtime proof.",
+  "complete": false,
+  "entries": [
+    {
+      "id": "V09-00",
+      "chapter": 0,
+      "title": "v0.5 → v0.6 变更摘要",
+      "state": "documented",
+      "area": "governance",
+      "evidence": [
+        "roadmap.json",
+        "docs/DESIGN_BASELINE.md"
+      ],
+      "gap": "文档/路线存在；需继续把表格行拆成行为需求，不能据此关闭玩法或发布验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-01",
+      "chapter": 1,
+      "title": "文档目的与授权声明",
+      "state": "partial",
+      "area": "canon_licensing",
+      "evidence": [
+        "LICENSE",
+        "ASSET_LICENSE.md",
+        "docs/ip_mapping.csv"
+      ],
+      "gap": "许可和映射已有；逐条正典审阅、全部第三方素材权利与原著授权/原创化方案未完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-02",
+      "chapter": 2,
+      "title": "产品概述与设计哲学",
+      "state": "partial",
+      "area": "onboarding",
+      "evidence": [
+        "docs/GETTING_STARTED.md",
+        "docs/M1_ACCEPTANCE_CHECKLIST.md"
+      ],
+      "gap": "已有入门纵切和指引；真实新手首两小时观察、全部途径入口与无障碍体验待验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-03",
+      "chapter": 3,
+      "title": "核心体验与循环",
+      "state": "partial",
+      "area": "onboarding",
+      "evidence": [
+        "docs/GETTING_STARTED.md",
+        "docs/M1_ACCEPTANCE_CHECKLIST.md"
+      ],
+      "gap": "已有入门纵切和指引；真实新手首两小时观察、全部途径入口与无障碍体验待验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-04",
+      "chapter": 4,
+      "title": "范围与路线图",
+      "state": "documented",
+      "area": "governance",
+      "evidence": [
+        "roadmap.json",
+        "docs/DESIGN_BASELINE.md"
+      ],
+      "gap": "文档/路线存在；需继续把表格行拆成行为需求，不能据此关闭玩法或发布验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-05",
+      "chapter": 5,
+      "title": "核心属性系统(Forge 1.20.1 · Capability 完整实现)",
+      "state": "partial",
+      "area": "runtime_quality",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/player",
+        "src/main/java/top/aurora/lordofmysteries/network",
+        "src/main/java/top/aurora/lordofmysteries/gametest",
+        "scripts/check_resource_integrity.py"
+      ],
+      "gap": "现有运行时和机器门禁已覆盖部分不变量；不能代替所有配置、长期多人、性能与未来内容验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-06",
+      "chapter": 6,
+      "title": "非凡特性系统(完整实现)",
+      "state": "partial",
+      "area": "characteristics_potions",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/characteristic",
+        "src/main/java/top/aurora/lordofmysteries/potion"
+      ],
+      "gap": "已有五途径药剂、bundle和来源审计；全途径、完整五阶段生产和高序列守恒仍待实现。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-07",
+      "chapter": 7,
+      "title": "途径与序列设计(全 22 条入册 · 9 条详设)",
+      "state": "partial",
+      "area": "pathways",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/ability",
+        "src/main/java/top/aurora/lordofmysteries/registry/ModItems.java"
+      ],
+      "gap": "五途径9–5为现有实现范围；M6四条、M8六条及完整能力表尚未实现，须逐途径纵切。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-08",
+      "chapter": 8,
+      "title": "扮演法与消化系统",
+      "state": "partial",
+      "area": "acting",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/acting"
+      ],
+      "gap": "身份/反思/反刷已有；全部新途径情境、长期反刷与真人节奏尚需扩展。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-09",
+      "chapter": 9,
+      "title": "魔药系统(25 配方 + 完整代码)",
+      "state": "partial",
+      "area": "characteristics_potions",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/characteristic",
+        "src/main/java/top/aurora/lordofmysteries/potion"
+      ],
+      "gap": "已有五途径药剂、bundle和来源审计；全途径、完整五阶段生产和高序列守恒仍待实现。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-10",
+      "chapter": 10,
+      "title": "灵视、灵体世界与会客法",
+      "state": "partial",
+      "area": "occult",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/ritual",
+        "src/main/java/top/aurora/lordofmysteries/spirit",
+        "src/main/java/top/aurora/lordofmysteries/dream"
+      ],
+      "gap": "仪式、灵界和梦境已有切片；全部占卜方法、仪式表、知识树、塔罗市场等需逐项核对补齐。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-11",
+      "chapter": 11,
+      "title": "占卜系统(七法 + 完整代码)",
+      "state": "partial",
+      "area": "occult",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/ritual",
+        "src/main/java/top/aurora/lordofmysteries/spirit",
+        "src/main/java/top/aurora/lordofmysteries/dream"
+      ],
+      "gap": "仪式、灵界和梦境已有切片；全部占卜方法、仪式表、知识树、塔罗市场等需逐项核对补齐。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-12",
+      "chapter": 12,
+      "title": "仪式魔法与尊名呼名(完整代码)",
+      "state": "partial",
+      "area": "occult",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/ritual",
+        "src/main/java/top/aurora/lordofmysteries/spirit",
+        "src/main/java/top/aurora/lordofmysteries/dream"
+      ],
+      "gap": "仪式、灵界和梦境已有切片；全部占卜方法、仪式表、知识树、塔罗市场等需逐项核对补齐。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-13",
+      "chapter": 13,
+      "title": "封印物系统(40 件 · 分级管控)",
+      "state": "partial",
+      "area": "organizations",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/artifact",
+        "src/main/java/top/aurora/lordofmysteries/organization"
+      ],
+      "gap": "12组织和24保管封印物不等于原文全部封印物/家族/NPC记忆；长期平衡和美术验收待完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-14",
+      "chapter": 14,
+      "title": "罗塞尔日记与知识手册(v0.6 新增)",
+      "state": "partial",
+      "area": "knowledge_narrative",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/knowledge",
+        "wiki",
+        "scripts/gen_pages_catalog.py"
+      ],
+      "gap": "已有知识、案件和资料页；全日记、任务链、文案池与原文覆盖须逐条拆解，不用图鉴总数替代。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-15",
+      "chapter": 15,
+      "title": "灰雾与塔罗会(完整代码)",
+      "state": "partial",
+      "area": "occult",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/ritual",
+        "src/main/java/top/aurora/lordofmysteries/spirit",
+        "src/main/java/top/aurora/lordofmysteries/dream"
+      ],
+      "gap": "仪式、灵界和梦境已有切片；全部占卜方法、仪式表、知识树、塔罗市场等需逐项核对补齐。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-16",
+      "chapter": 16,
+      "title": "七大教会与隐秘组织",
+      "state": "partial",
+      "area": "organizations",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/artifact",
+        "src/main/java/top/aurora/lordofmysteries/organization"
+      ],
+      "gap": "12组织和24保管封印物不等于原文全部封印物/家族/NPC记忆；长期平衡和美术验收待完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-17",
+      "chapter": 17,
+      "title": "金镑经济与雾都生活(v0.6 新增)",
+      "state": "partial",
+      "area": "city_economy",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/commission",
+        "src/main/java/top/aurora/lordofmysteries/survival/SurvivalEconomy.java"
+      ],
+      "gap": "调查/城市生活和生存交易已有；大学、剧院、完整物流、物价与长周期经济待扩展。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-18",
+      "chapter": 18,
+      "title": "世界事件系统(15 种 + 调度器代码)",
+      "state": "partial",
+      "area": "world_events",
+      "evidence": [
+        "src/main/resources/data/lord_of_mysteries",
+        "roadmap.json"
+      ],
+      "gap": "现有事件及原生遗迹仅为子集；48事件、40+结构类别、12周活历史/赛季模拟未完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-19",
+      "chapter": 19,
+      "title": "世界生成与结构(14 种)",
+      "state": "partial",
+      "area": "ecology",
+      "evidence": [
+        "docs/survival-content.json",
+        "src/main/java/top/aurora/lordofmysteries/entity",
+        "src/main/java/top/aurora/lordofmysteries/spirit"
+      ],
+      "gap": "已有材料生物、灵界生态、2草药和2原生遗迹；v0.9全部生物/植物/结构及新群系尚未逐项实装。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-20",
+      "chapter": 20,
+      "title": "生物图鉴与 Boss",
+      "state": "partial",
+      "area": "ecology",
+      "evidence": [
+        "docs/survival-content.json",
+        "src/main/java/top/aurora/lordofmysteries/entity",
+        "src/main/java/top/aurora/lordofmysteries/spirit"
+      ],
+      "gap": "已有材料生物、灵界生态、2草药和2原生遗迹；v0.9全部生物/植物/结构及新群系尚未逐项实装。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-21",
+      "chapter": 21,
+      "title": "任务链(3 条全步骤)",
+      "state": "partial",
+      "area": "knowledge_narrative",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/knowledge",
+        "wiki",
+        "scripts/gen_pages_catalog.py"
+      ],
+      "gap": "已有知识、案件和资料页；全日记、任务链、文案池与原文覆盖须逐条拆解，不用图鉴总数替代。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-22",
+      "chapter": 22,
+      "title": "疯狂、幻觉与恐怖呈现",
+      "state": "partial",
+      "area": "presentation",
+      "evidence": [
+        "src/main/resources/assets/lord_of_mysteries",
+        "docs/VISUAL_ASSETS.md"
+      ],
+      "gap": "存在可运行素材与本地客户端证据；不代表49+指定模型、全部动作/粒子/原创音乐和低配验收完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-23",
+      "chapter": 23,
+      "title": "UI/UX 与可访问性",
+      "state": "partial",
+      "area": "presentation",
+      "evidence": [
+        "src/main/resources/assets/lord_of_mysteries",
+        "docs/VISUAL_ASSETS.md"
+      ],
+      "gap": "存在可运行素材与本地客户端证据；不代表49+指定模型、全部动作/粒子/原创音乐和低配验收完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-24",
+      "chapter": 24,
+      "title": "多人与服务器生态",
+      "state": "partial",
+      "area": "runtime_quality",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/player",
+        "src/main/java/top/aurora/lordofmysteries/network",
+        "src/main/java/top/aurora/lordofmysteries/gametest",
+        "scripts/check_resource_integrity.py"
+      ],
+      "gap": "现有运行时和机器门禁已覆盖部分不变量；不能代替所有配置、长期多人、性能与未来内容验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-25",
+      "chapter": 25,
+      "title": "成就树(34 项选列)",
+      "state": "partial",
+      "area": "advancements",
+      "evidence": [
+        "src/main/resources/data/lord_of_mysteries/advancements"
+      ],
+      "gap": "现有进度与新增10节点生存引导；原文完整成就树和每个触发的真人体验仍需核对。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-26",
+      "chapter": 26,
+      "title": "指令与权限(17 条)",
+      "state": "partial",
+      "area": "runtime_quality",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/player",
+        "src/main/java/top/aurora/lordofmysteries/network",
+        "src/main/java/top/aurora/lordofmysteries/gametest",
+        "scripts/check_resource_integrity.py"
+      ],
+      "gap": "现有运行时和机器门禁已覆盖部分不变量；不能代替所有配置、长期多人、性能与未来内容验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-27",
+      "chapter": 27,
+      "title": "技术架构(F 分部)",
+      "state": "partial",
+      "area": "runtime_quality",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/player",
+        "src/main/java/top/aurora/lordofmysteries/network",
+        "src/main/java/top/aurora/lordofmysteries/gametest",
+        "scripts/check_resource_integrity.py"
+      ],
+      "gap": "现有运行时和机器门禁已覆盖部分不变量；不能代替所有配置、长期多人、性能与未来内容验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-28",
+      "chapter": 28,
+      "title": "目录结构",
+      "state": "partial",
+      "area": "runtime_quality",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/player",
+        "src/main/java/top/aurora/lordofmysteries/network",
+        "src/main/java/top/aurora/lordofmysteries/gametest",
+        "scripts/check_resource_integrity.py"
+      ],
+      "gap": "现有运行时和机器门禁已覆盖部分不变量；不能代替所有配置、长期多人、性能与未来内容验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-29",
+      "chapter": 29,
+      "title": "JSON Schema 速览(数据包驱动清单)",
+      "state": "partial",
+      "area": "runtime_quality",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/player",
+        "src/main/java/top/aurora/lordofmysteries/network",
+        "src/main/java/top/aurora/lordofmysteries/gametest",
+        "scripts/check_resource_integrity.py"
+      ],
+      "gap": "现有运行时和机器门禁已覆盖部分不变量；不能代替所有配置、长期多人、性能与未来内容验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-30",
+      "chapter": 30,
+      "title": "服务器配置全集(pm-server.toml 关键项)",
+      "state": "partial",
+      "area": "runtime_quality",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/player",
+        "src/main/java/top/aurora/lordofmysteries/network",
+        "src/main/java/top/aurora/lordofmysteries/gametest",
+        "scripts/check_resource_integrity.py"
+      ],
+      "gap": "现有运行时和机器门禁已覆盖部分不变量；不能代替所有配置、长期多人、性能与未来内容验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-31",
+      "chapter": 31,
+      "title": "本地化规范",
+      "state": "partial",
+      "area": "runtime_quality",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/player",
+        "src/main/java/top/aurora/lordofmysteries/network",
+        "src/main/java/top/aurora/lordofmysteries/gametest",
+        "scripts/check_resource_integrity.py"
+      ],
+      "gap": "现有运行时和机器门禁已覆盖部分不变量；不能代替所有配置、长期多人、性能与未来内容验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-32",
+      "chapter": 32,
+      "title": "音效与音乐",
+      "state": "partial",
+      "area": "presentation",
+      "evidence": [
+        "src/main/resources/assets/lord_of_mysteries",
+        "docs/VISUAL_ASSETS.md"
+      ],
+      "gap": "存在可运行素材与本地客户端证据；不代表49+指定模型、全部动作/粒子/原创音乐和低配验收完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-33",
+      "chapter": 33,
+      "title": "兼容性",
+      "state": "not_started",
+      "area": "compat_api",
+      "evidence": [
+        "roadmap.json",
+        "docs/DESIGN_BASELINE.md"
+      ],
+      "gap": "有边界计划但没有宣称完整运行时JEI/EMI/Curios/Create/FD/Jade集成；需要M7软依赖矩阵与Addon示例。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-34",
+      "chapter": 34,
+      "title": "开发者 API(Addon 生态,D8 配套)",
+      "state": "not_started",
+      "area": "compat_api",
+      "evidence": [
+        "roadmap.json",
+        "docs/DESIGN_BASELINE.md"
+      ],
+      "gap": "有边界计划但没有宣称完整运行时JEI/EMI/Curios/Create/FD/Jade集成；需要M7软依赖矩阵与Addon示例。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-35",
+      "chapter": 35,
+      "title": "里程碑(G 分部)",
+      "state": "documented",
+      "area": "governance",
+      "evidence": [
+        "roadmap.json",
+        "docs/DESIGN_BASELINE.md"
+      ],
+      "gap": "文档/路线存在；需继续把表格行拆成行为需求，不能据此关闭玩法或发布验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-36",
+      "chapter": 36,
+      "title": "测试与验收要点",
+      "state": "partial",
+      "area": "runtime_quality",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/player",
+        "src/main/java/top/aurora/lordofmysteries/network",
+        "src/main/java/top/aurora/lordofmysteries/gametest",
+        "scripts/check_resource_integrity.py"
+      ],
+      "gap": "现有运行时和机器门禁已覆盖部分不变量；不能代替所有配置、长期多人、性能与未来内容验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-37",
+      "chapter": 37,
+      "title": "风险登记册(Top8)",
+      "state": "documented",
+      "area": "governance",
+      "evidence": [
+        "roadmap.json",
+        "docs/DESIGN_BASELINE.md"
+      ],
+      "gap": "文档/路线存在；需继续把表格行拆成行为需求，不能据此关闭玩法或发布验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-38",
+      "chapter": 38,
+      "title": "决策记录",
+      "state": "documented",
+      "area": "governance",
+      "evidence": [
+        "roadmap.json",
+        "docs/DESIGN_BASELINE.md"
+      ],
+      "gap": "文档/路线存在；需继续把表格行拆成行为需求，不能据此关闭玩法或发布验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-39",
+      "chapter": 39,
+      "title": "下一步(本周可执行)",
+      "state": "documented",
+      "area": "governance",
+      "evidence": [
+        "roadmap.json",
+        "docs/DESIGN_BASELINE.md"
+      ],
+      "gap": "文档/路线存在；需继续把表格行拆成行为需求，不能据此关闭玩法或发布验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-40",
+      "chapter": 40,
+      "title": "非凡材料图鉴(v0.7 新增 · 80+ 材料 · 完整掉落修改器代码)",
+      "state": "partial",
+      "area": "ecology",
+      "evidence": [
+        "docs/survival-content.json",
+        "src/main/java/top/aurora/lordofmysteries/entity",
+        "src/main/java/top/aurora/lordofmysteries/spirit"
+      ],
+      "gap": "已有材料生物、灵界生态、2草药和2原生遗迹；v0.9全部生物/植物/结构及新群系尚未逐项实装。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-41",
+      "chapter": 41,
+      "title": "序列 3-1 后期玩法:圣者试炼、唯一性与神位战争(v0.7 新增 · 毕业延长核心)",
+      "state": "not_started",
+      "area": "later_pathways_endgame",
+      "evidence": [
+        "roadmap.json"
+      ],
+      "gap": "第四批七途径、高序列/锚/唯一性/可选赐福属于后续规划；不能用低阶共享组件算作这些玩法实现。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-42",
+      "chapter": 42,
+      "title": "雾都生活扩充:报社、大学、剧院与悬赏(v0.7 新增 · 完整代码)",
+      "state": "partial",
+      "area": "city_economy",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/commission",
+        "src/main/java/top/aurora/lordofmysteries/survival/SurvivalEconomy.java"
+      ],
+      "gap": "调查/城市生活和生存交易已有；大学、剧院、完整物流、物价与长周期经济待扩展。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-43",
+      "chapter": 43,
+      "title": "全物品注册总表(v0.8 新增 · 180+ 物品 · I 分部)",
+      "state": "partial",
+      "area": "content_production",
+      "evidence": [
+        "src/main/resources/data/lord_of_mysteries",
+        "scripts/generate_survival_content.py",
+        "docs/survival-content.json"
+      ],
+      "gap": "已注册内容、配方和状态只有原文子集；逐项比对ID、获得、用途、风险和状态，不以总数推断覆盖。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-44",
+      "chapter": 44,
+      "title": "合成配方附表(v0.8 新增 · 全量)",
+      "state": "partial",
+      "area": "content_production",
+      "evidence": [
+        "src/main/resources/data/lord_of_mysteries",
+        "scripts/generate_survival_content.py",
+        "docs/survival-content.json"
+      ],
+      "gap": "已注册内容、配方和状态只有原文子集；逐项比对ID、获得、用途、风险和状态，不以总数推断覆盖。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-45",
+      "chapter": 45,
+      "title": "数据包全量文件规范与整仓样例(v0.8 新增)",
+      "state": "partial",
+      "area": "content_production",
+      "evidence": [
+        "src/main/resources/data/lord_of_mysteries",
+        "scripts/generate_survival_content.py",
+        "docs/survival-content.json"
+      ],
+      "gap": "已注册内容、配方和状态只有原文子集；逐项比对ID、获得、用途、风险和状态，不以总数推断覆盖。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-46",
+      "chapter": 46,
+      "title": "GeckoLib 模型清单全册(v0.8 新增 · 21 → 49 模型)",
+      "state": "partial",
+      "area": "presentation",
+      "evidence": [
+        "src/main/resources/assets/lord_of_mysteries",
+        "docs/VISUAL_ASSETS.md"
+      ],
+      "gap": "存在可运行素材与本地客户端证据；不代表49+指定模型、全部动作/粒子/原创音乐和低配验收完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-47",
+      "chapter": 47,
+      "title": "粒子特效总表(v0.8 新增 · 34 种 + 完整代码)",
+      "state": "partial",
+      "area": "presentation",
+      "evidence": [
+        "src/main/resources/assets/lord_of_mysteries",
+        "docs/VISUAL_ASSETS.md"
+      ],
+      "gap": "存在可运行素材与本地客户端证据；不代表49+指定模型、全部动作/粒子/原创音乐和低配验收完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-48",
+      "chapter": 48,
+      "title": "技能能力全表(v0.8 新增 · 15 途径 × 序列 9-5 · 150+ 条)",
+      "state": "partial",
+      "area": "pathways",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/ability",
+        "src/main/java/top/aurora/lordofmysteries/registry/ModItems.java"
+      ],
+      "gap": "五途径9–5为现有实现范围；M6四条、M8六条及完整能力表尚未实现，须逐途径纵切。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-49",
+      "chapter": 49,
+      "title": "生物图鉴扩充(v0.8 新增 · 18 种新生物 · 完整实体代码)",
+      "state": "partial",
+      "area": "ecology",
+      "evidence": [
+        "docs/survival-content.json",
+        "src/main/java/top/aurora/lordofmysteries/entity",
+        "src/main/java/top/aurora/lordofmysteries/spirit"
+      ],
+      "gap": "已有材料生物、灵界生态、2草药和2原生遗迹；v0.9全部生物/植物/结构及新群系尚未逐项实装。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-50",
+      "chapter": 50,
+      "title": "文案库(v0.8 新增 · 全量文案规范与样本池)",
+      "state": "partial",
+      "area": "knowledge_narrative",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/knowledge",
+        "wiki",
+        "scripts/gen_pages_catalog.py"
+      ],
+      "gap": "已有知识、案件和资料页；全日记、任务链、文案池与原文覆盖须逐条拆解，不用图鉴总数替代。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-51",
+      "chapter": 51,
+      "title": "新手指引与引导系统(v0.8 新增)",
+      "state": "partial",
+      "area": "onboarding",
+      "evidence": [
+        "docs/GETTING_STARTED.md",
+        "docs/M1_ACCEPTANCE_CHECKLIST.md"
+      ],
+      "gap": "已有入门纵切和指引；真实新手首两小时观察、全部途径入口与无障碍体验待验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-52",
+      "chapter": 52,
+      "title": "指令树与任务数据结构全细化(v0.8 新增)",
+      "state": "partial",
+      "area": "knowledge_narrative",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/knowledge",
+        "wiki",
+        "scripts/gen_pages_catalog.py"
+      ],
+      "gap": "已有知识、案件和资料页；全日记、任务链、文案池与原文覆盖须逐条拆解，不用图鉴总数替代。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-53",
+      "chapter": 53,
+      "title": "极光之恋服务器整合方案(v0.8 新增 · 运营侧)",
+      "state": "partial",
+      "area": "server_privacy",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/network",
+        "roadmap.json"
+      ],
+      "gap": "已有服务端权威和同意边界；赛季、AI/QQ/直播桥接尚非完整交付，须保持可关闭并审计隐私。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-54",
+      "chapter": 54,
+      "title": "Wiki 覆盖对照表(v0.8 核对)",
+      "state": "partial",
+      "area": "knowledge_narrative",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/knowledge",
+        "wiki",
+        "scripts/gen_pages_catalog.py"
+      ],
+      "gap": "已有知识、案件和资料页；全日记、任务链、文案池与原文覆盖须逐条拆解，不用图鉴总数替代。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-55",
+      "chapter": 55,
+      "title": "宏大叙事与纪元史诗(v0.8 新增)",
+      "state": "partial",
+      "area": "world_events",
+      "evidence": [
+        "src/main/resources/data/lord_of_mysteries",
+        "roadmap.json"
+      ],
+      "gap": "现有事件及原生遗迹仅为子集；48事件、40+结构类别、12周活历史/赛季模拟未完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-56",
+      "chapter": 56,
+      "title": "v0.8 收束:总账与下一步",
+      "state": "documented",
+      "area": "governance",
+      "evidence": [
+        "roadmap.json",
+        "docs/DESIGN_BASELINE.md"
+      ],
+      "gap": "文档/路线存在；需继续把表格行拆成行为需求，不能据此关闭玩法或发布验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-57",
+      "chapter": 57,
+      "title": "v0.9 更新治理、来源分级与冲突处理",
+      "state": "documented",
+      "area": "governance",
+      "evidence": [
+        "roadmap.json",
+        "docs/DESIGN_BASELINE.md"
+      ],
+      "gap": "文档/路线存在；需继续把表格行拆成行为需求，不能据此关闭玩法或发布验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-58",
+      "chapter": 58,
+      "title": "原著机制一致性审计与补齐矩阵",
+      "state": "partial",
+      "area": "canon_licensing",
+      "evidence": [
+        "LICENSE",
+        "ASSET_LICENSE.md",
+        "docs/ip_mapping.csv"
+      ],
+      "gap": "许可和映射已有；逐条正典审阅、全部第三方素材权利与原著授权/原创化方案未完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-59",
+      "chapter": 59,
+      "title": "内容关系图、注册规范与互链验收",
+      "state": "partial",
+      "area": "runtime_quality",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/player",
+        "src/main/java/top/aurora/lordofmysteries/network",
+        "src/main/java/top/aurora/lordofmysteries/gametest",
+        "scripts/check_resource_integrity.py"
+      ],
+      "gap": "现有运行时和机器门禁已覆盖部分不变量；不能代替所有配置、长期多人、性能与未来内容验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-60",
+      "chapter": 60,
+      "title": "第四批七途径：序列 9–5 全详设",
+      "state": "not_started",
+      "area": "later_pathways_endgame",
+      "evidence": [
+        "roadmap.json"
+      ],
+      "gap": "第四批七途径、高序列/锚/唯一性/可选赐福属于后续规划；不能用低阶共享组件算作这些玩法实现。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-61",
+      "chapter": 61,
+      "title": "高序列、相邻途径、神话形态、祈祷与锚 v2",
+      "state": "not_started",
+      "area": "later_pathways_endgame",
+      "evidence": [
+        "roadmap.json"
+      ],
+      "gap": "第四批七途径、高序列/锚/唯一性/可选赐福属于后续规划；不能用低阶共享组件算作这些玩法实现。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-62",
+      "chapter": 62,
+      "title": "《宿命之环》与非标准途径的可选扩展框架",
+      "state": "not_started",
+      "area": "later_pathways_endgame",
+      "evidence": [
+        "roadmap.json"
+      ],
+      "gap": "第四批七途径、高序列/锚/唯一性/可选赐福属于后续规划；不能用低阶共享组件算作这些玩法实现。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-63",
+      "chapter": 63,
+      "title": "魔药与非凡特性 v2：多层特性、精神烙印、替代材料与析出",
+      "state": "partial",
+      "area": "characteristics_potions",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/characteristic",
+        "src/main/java/top/aurora/lordofmysteries/potion"
+      ],
+      "gap": "已有五途径药剂、bundle和来源审计；全途径、完整五阶段生产和高序列守恒仍待实现。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-64",
+      "chapter": 64,
+      "title": "扮演法 v2：准则理解、身份锚、过度扮演与反刷",
+      "state": "partial",
+      "area": "acting",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/acting"
+      ],
+      "gap": "身份/反思/反刷已有；全部新途径情境、长期反刷与真人节奏尚需扩展。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-65",
+      "chapter": 65,
+      "title": "神秘学知识树、仪式、占卜、梦境与灵界航路",
+      "state": "partial",
+      "area": "occult",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/ritual",
+        "src/main/java/top/aurora/lordofmysteries/spirit",
+        "src/main/java/top/aurora/lordofmysteries/dream"
+      ],
+      "gap": "仪式、灵界和梦境已有切片；全部占卜方法、仪式表、知识树、塔罗市场等需逐项核对补齐。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-66",
+      "chapter": 66,
+      "title": "教会、隐秘组织、家族与城市神秘暴露系统",
+      "state": "partial",
+      "area": "organizations",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/artifact",
+        "src/main/java/top/aurora/lordofmysteries/organization"
+      ],
+      "gap": "12组织和24保管封印物不等于原文全部封印物/家族/NPC记忆；长期平衡和美术验收待完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-67",
+      "chapter": 67,
+      "title": "世界生成、地点、结构、天气与纪元考古",
+      "state": "partial",
+      "area": "world_events",
+      "evidence": [
+        "src/main/resources/data/lord_of_mysteries",
+        "roadmap.json"
+      ],
+      "gap": "现有事件及原生遗迹仅为子集；48事件、40+结构类别、12周活历史/赛季模拟未完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-68",
+      "chapter": 68,
+      "title": "生物、植物与神秘生态 v2",
+      "state": "partial",
+      "area": "ecology",
+      "evidence": [
+        "docs/survival-content.json",
+        "src/main/java/top/aurora/lordofmysteries/entity",
+        "src/main/java/top/aurora/lordofmysteries/spirit"
+      ],
+      "gap": "已有材料生物、灵界生态、2草药和2原生遗迹；v0.9全部生物/植物/结构及新群系尚未逐项实装。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-69",
+      "chapter": 69,
+      "title": "全物品增量注册表 v0.9",
+      "state": "partial",
+      "area": "content_production",
+      "evidence": [
+        "src/main/resources/data/lord_of_mysteries",
+        "scripts/generate_survival_content.py",
+        "docs/survival-content.json"
+      ],
+      "gap": "已注册内容、配方和状态只有原文子集；逐项比对ID、获得、用途、风险和状态，不以总数推断覆盖。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-70",
+      "chapter": 70,
+      "title": "合成表、加工链与知识门控 v2",
+      "state": "partial",
+      "area": "content_production",
+      "evidence": [
+        "src/main/resources/data/lord_of_mysteries",
+        "scripts/generate_survival_content.py",
+        "docs/survival-content.json"
+      ],
+      "gap": "已注册内容、配方和状态只有原文子集；逐项比对ID、获得、用途、风险和状态，不以总数推断覆盖。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-71",
+      "chapter": 71,
+      "title": "状态 Buff/Debuff 全表 v0.9",
+      "state": "partial",
+      "area": "content_production",
+      "evidence": [
+        "src/main/resources/data/lord_of_mysteries",
+        "scripts/generate_survival_content.py",
+        "docs/survival-content.json"
+      ],
+      "gap": "已注册内容、配方和状态只有原文子集；逐项比对ID、获得、用途、风险和状态，不以总数推断覆盖。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-72",
+      "chapter": 72,
+      "title": "粒子、材质、模型、音效、天气渲染与 UI 规范 v2",
+      "state": "partial",
+      "area": "presentation",
+      "evidence": [
+        "src/main/resources/assets/lord_of_mysteries",
+        "docs/VISUAL_ASSETS.md"
+      ],
+      "gap": "存在可运行素材与本地客户端证据；不代表49+指定模型、全部动作/粒子/原创音乐和低配验收完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-73",
+      "chapter": 73,
+      "title": "世界事件、周期活动、调查任务与可重复玩法",
+      "state": "partial",
+      "area": "world_events",
+      "evidence": [
+        "src/main/resources/data/lord_of_mysteries",
+        "roadmap.json"
+      ],
+      "gap": "现有事件及原生遗迹仅为子集；48事件、40+结构类别、12周活历史/赛季模拟未完成。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-74",
+      "chapter": 74,
+      "title": "新手指引、知识手账、任务提示与可访问性 v2",
+      "state": "partial",
+      "area": "onboarding",
+      "evidence": [
+        "docs/GETTING_STARTED.md",
+        "docs/M1_ACCEPTANCE_CHECKLIST.md"
+      ],
+      "gap": "已有入门纵切和指引；真实新手首两小时观察、全部途径入口与无障碍体验待验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-75",
+      "chapter": 75,
+      "title": "Mod 兼容矩阵与软依赖架构",
+      "state": "not_started",
+      "area": "compat_api",
+      "evidence": [
+        "roadmap.json",
+        "docs/DESIGN_BASELINE.md"
+      ],
+      "gap": "有边界计划但没有宣称完整运行时JEI/EMI/Curios/Create/FD/Jade集成；需要M7软依赖矩阵与Addon示例。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-76",
+      "chapter": 76,
+      "title": "多人、服务器赛季、AI/QQ/直播桥接与隐私边界 v2",
+      "state": "partial",
+      "area": "server_privacy",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/network",
+        "roadmap.json"
+      ],
+      "gap": "已有服务端权威和同意边界；赛季、AI/QQ/直播桥接尚非完整交付，须保持可关闭并审计隐私。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-77",
+      "chapter": 77,
+      "title": "Forge 1.20.1 技术架构 v2、数据迁移与性能预算",
+      "state": "partial",
+      "area": "runtime_quality",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/player",
+        "src/main/java/top/aurora/lordofmysteries/network",
+        "src/main/java/top/aurora/lordofmysteries/gametest",
+        "scripts/check_resource_integrity.py"
+      ],
+      "gap": "现有运行时和机器门禁已覆盖部分不变量；不能代替所有配置、长期多人、性能与未来内容验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-78",
+      "chapter": 78,
+      "title": "开发路线图 v0.9：从文档到可玩版本",
+      "state": "documented",
+      "area": "governance",
+      "evidence": [
+        "roadmap.json",
+        "docs/DESIGN_BASELINE.md"
+      ],
+      "gap": "文档/路线存在；需继续把表格行拆成行为需求，不能据此关闭玩法或发布验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-79",
+      "chapter": 79,
+      "title": "测试、平衡、正典与发布验收",
+      "state": "partial",
+      "area": "runtime_quality",
+      "evidence": [
+        "src/main/java/top/aurora/lordofmysteries/player",
+        "src/main/java/top/aurora/lordofmysteries/network",
+        "src/main/java/top/aurora/lordofmysteries/gametest",
+        "scripts/check_resource_integrity.py"
+      ],
+      "gap": "现有运行时和机器门禁已覆盖部分不变量；不能代替所有配置、长期多人、性能与未来内容验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-80",
+      "chapter": 80,
+      "title": "研究来源索引与使用边界",
+      "state": "documented",
+      "area": "governance",
+      "evidence": [
+        "roadmap.json",
+        "docs/DESIGN_BASELINE.md"
+      ],
+      "gap": "文档/路线存在；需继续把表格行拆成行为需求，不能据此关闭玩法或发布验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    },
+    {
+      "id": "V09-81",
+      "chapter": 81,
+      "title": "v0.9 总账、保留校验与下一步",
+      "state": "documented",
+      "area": "governance",
+      "evidence": [
+        "roadmap.json",
+        "docs/DESIGN_BASELINE.md"
+      ],
+      "gap": "文档/路线存在；需继续把表格行拆成行为需求，不能据此关闭玩法或发布验收。",
+      "next_action": "将本章表格行和行为逐项拆分；记录获得/执行/恢复/多人与证据，再推进对应里程碑。"
+    }
+  ]
+}

@@ -9,7 +9,7 @@ public final class SurvivalGuide {
     private SurvivalGuide() {}
 
     public static int show(ServerPlayer player) {
-        for (String section : new String[]{"intro", "mining", "farming", "mortar", "exploration"}) {
+        for (String section : new String[]{"intro", "mining", "farming", "mortar", "exploration", "economy", "discovery"}) {
             player.sendSystemMessage(Component.translatable("guide.lord_of_mysteries.survival." + section)
                     .withStyle(ChatFormatting.AQUA));
         }

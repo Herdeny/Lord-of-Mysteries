@@ -2407,7 +2407,7 @@ public final class PlayerPersistenceGameTests {
     public static void survivalMortarRecipesRoundTripAndRejectInvalidCounts(GameTestHelper helper) {
         var manager = helper.getLevel().getRecipeManager();
         var recipes = manager.getAllRecipesFor(top.aurora.lordofmysteries.registry.ModSurvival.MORTAR_TYPE.get());
-        helper.assertTrue(recipes.size() == 8, "all eight datapack recipes load");
+        helper.assertTrue(recipes.size() == 12, "all twelve datapack recipes load");
         var serializer = new top.aurora.lordofmysteries.survival.MortarRecipe.Serializer();
         for (var recipe : recipes) {
             var buffer = new net.minecraft.network.FriendlyByteBuf(io.netty.buffer.Unpooled.buffer());
@@ -2505,6 +2505,159 @@ public final class PlayerPersistenceGameTests {
         helper.succeed();
     }
 
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void survivalEconomyPreservesTradesAndCapsStock(GameTestHelper helper) {
+        var trades = new it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap<List<net.minecraft.world.entity.npc.VillagerTrades.ItemListing>>();
+        for (int tier = 1; tier <= 5; tier++) trades.put(tier, new java.util.ArrayList<>());
+        net.minecraft.world.entity.npc.VillagerTrades.ItemListing sentinel = (trader, random) -> null;
+        trades.get(2).add(sentinel);
+        top.aurora.lordofmysteries.survival.SurvivalEconomy.villagers(new net.minecraftforge.event.village.VillagerTradesEvent(
+                trades, net.minecraft.world.entity.npc.VillagerProfession.FARMER));
+        helper.assertTrue(trades.get(2).get(0) == sentinel && trades.get(2).size() == 3,
+                "existing trades survive additive integration");
+        var farmer = EntityType.VILLAGER.create(helper.getLevel());
+        var sale = trades.get(2).get(1).getOffer(farmer, helper.getLevel().random);
+        var purchase = trades.get(3).get(0).getOffer(farmer, helper.getLevel().random);
+        helper.assertTrue(sale.getResult().is(ModItems.SPIRIT_HERB.get()) && sale.getResult().getCount() == 4,
+                "apprentice farmer sells four plantable herbs");
+        helper.assertTrue(purchase.getBaseCostA().getCount() == 24 && purchase.getResult().is(Items.EMERALD),
+                "base buy/sell prices do not create a circular emerald profit");
+        for (int use = 0; use < 8; use++) sale.increaseUses();
+        helper.assertTrue(sale.isOutOfStock(), "eight purchases exhaust stock");
+        sale.resetUses();
+        helper.assertTrue(!sale.isOutOfStock() && sale.getMaxUses() == 8, "normal restock restores only the bounded stock");
+        helper.assertTrue(net.minecraft.world.level.block.ComposterBlock.COMPOSTABLES.getFloat(ModItems.SPIRIT_HERB.get()) == 0.65f
+                && net.minecraft.world.level.block.ComposterBlock.COMPOSTABLES.getFloat(ModItems.HEATHER.get()) == 0.65f,
+                "both herbs participate in actual vanilla composting registry");
+        var clericTrades = new it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap<List<net.minecraft.world.entity.npc.VillagerTrades.ItemListing>>();
+        for (int tier = 1; tier <= 5; tier++) clericTrades.put(tier, new java.util.ArrayList<>());
+        top.aurora.lordofmysteries.survival.SurvivalEconomy.villagers(new net.minecraftforge.event.village.VillagerTradesEvent(
+                clericTrades, net.minecraft.world.entity.npc.VillagerProfession.CLERIC));
+        var salt = clericTrades.get(2).get(0).getOffer(farmer, helper.getLevel().random);
+        var ink = clericTrades.get(3).get(0).getOffer(farmer, helper.getLevel().random);
+        helper.assertTrue(salt.getResult().is(ModItems.SPIRIT_SALT.get()) && salt.getResult().getCount() == 3
+                && ink.getBaseCostA().getCount() == 3 && ink.getMaxUses() == 4, "cleric material prices and stock match the guide");
+        var wandering = new java.util.ArrayList<net.minecraft.world.entity.npc.VillagerTrades.ItemListing>();
+        top.aurora.lordofmysteries.survival.SurvivalEconomy.wanderers(
+                new net.minecraftforge.event.village.WandererTradesEvent(wandering, new java.util.ArrayList<>()));
+        helper.assertTrue(wandering.size() == 2 && wandering.get(0).getOffer(farmer, helper.getLevel().random).getMaxUses() == 4,
+                "wandering traders offer bounded seed alternatives");
+        BlockPos compostPosition = helper.absolutePos(new BlockPos(3, 2, 3));
+        var compostState = Blocks.COMPOSTER.defaultBlockState();
+        helper.getLevel().setBlock(compostPosition, compostState, 3);
+        ServerPlayer gardener = survivalPlayer(helper.getLevel(), compostPosition);
+        gardener.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.SPIRIT_HERB.get(), 3));
+        compostState.use(helper.getLevel(), gardener, InteractionHand.MAIN_HAND,
+                new net.minecraft.world.phys.BlockHitResult(Vec3.atCenterOf(compostPosition),
+                        net.minecraft.core.Direction.UP, compostPosition, false));
+        helper.assertTrue(gardener.getMainHandItem().getCount() == 2
+                && helper.getLevel().getBlockState(compostPosition).getValue(net.minecraft.world.level.block.ComposterBlock.LEVEL) == 1,
+                "actual vanilla composter interaction consumes one herb and fills its first layer");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void survivalFishingUsesRealLootAndRejectsClosedWater(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var table = level.getServer().getLootData().getLootTable(ResourceLocation.parse("minecraft:gameplay/fishing"));
+        int eligibleBonus = 0;
+        for (boolean open : new boolean[]{false, true}) {
+            for (Item tool : new Item[]{Items.FISHING_ROD, Items.STICK}) {
+                var hook = new net.minecraft.world.entity.projectile.FishingHook(EntityType.FISHING_BOBBER, level) {
+                    @Override
+                    public boolean isOpenWaterFishing() { return open; }
+                };
+                for (int trial = 1; trial <= 200; trial++) {
+                    var params = new net.minecraft.world.level.storage.loot.LootParams.Builder(level)
+                            .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.ORIGIN,
+                                    Vec3.atCenterOf(helper.absolutePos(new BlockPos(3, 2, 3))))
+                            .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.TOOL, new ItemStack(tool))
+                            .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.THIS_ENTITY, hook)
+                            .create(net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.FISHING);
+                    var loot = table.getRandomItems(params, trial);
+                    int bonus = loot.stream().filter(stack -> stack.is(ModItems.SPIRIT_SALT.get())).mapToInt(ItemStack::getCount).sum();
+                    helper.assertTrue(loot.stream().anyMatch(stack -> !stack.is(ModItems.SPIRIT_SALT.get())), "vanilla catch is never replaced");
+                    helper.assertTrue(bonus <= 1, "one roll cannot multiply bonus salt through nested fishing tables");
+                    if (!open || tool != Items.FISHING_ROD) helper.assertTrue(bonus == 0, "closed water or a non-rod tool receives no supplies");
+                    else eligibleBonus += bonus;
+                }
+            }
+        }
+        helper.assertTrue(eligibleBonus > 10 && eligibleBonus < 80, "fixed-seed fishing bonus remains probabilistic");
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void survivalDiscoveryAdvancementsLoadWithParents(GameTestHelper helper) {
+        var manager = helper.getLevel().getServer().getAdvancements();
+        for (String id : new String[]{"root", "heather", "salt", "silver", "mortar", "ink", "candle", "incense", "cellar", "herbalist"}) {
+            var advancement = manager.getAdvancement(m4Id("survival/" + id));
+            helper.assertTrue(advancement != null && advancement.getCriteria().containsKey("discover"),
+                    "runtime must parse the discovery trigger: " + id);
+            if (!id.equals("root")) helper.assertTrue(advancement.getParent() != null, "discovery tree has a real parent");
+        }
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
+    public static void pilferDenialsNeverRemoveVictimItems(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var position = helper.absolutePos(new BlockPos(3, 2, 3));
+        ServerPlayer thief = survivalPlayer(level, position);
+        ServerPlayer victim = survivalPlayer(level, position.offset(0, 0, 2));
+        victim.connection = new net.minecraft.server.network.ServerGamePacketListenerImpl(level.getServer(),
+                new net.minecraft.network.Connection(net.minecraft.network.protocol.PacketFlow.SERVERBOUND), victim);
+        var data = MysteryCapability.get(thief);
+        data.pathway = m4Id("thief");
+        data.sequence = 9;
+        data.spirituality = 0f;
+        data.spiritualityMax = 100f;
+        thief.setYRot(0f);
+        thief.setXRot(0f);
+        victim.getInventory().setItem(1, new ItemStack(Items.DIAMOND, 2));
+        boolean previous = top.aurora.lordofmysteries.core.config.ServerConfig.PVP_THEFT_ENABLED.get();
+        boolean previousPvp = level.getServer().isPvpAllowed();
+        level.addNewPlayer(victim);
+        try {
+            level.getServer().setPvpAllowed(true);
+            top.aurora.lordofmysteries.core.config.ServerConfig.PVP_THEFT_ENABLED.set(true);
+            helper.assertTrue(top.aurora.lordofmysteries.ability.AbilityTargeting.findLookTarget(thief, 3d) == victim,
+                    "the real ray must resolve the victim before checking transaction behavior");
+            helper.assertTrue(!M2FoundationAbilityHandler.use(thief, M2FoundationAbilityHandler.AbilitySlot.PRIMARY),
+                    "insufficient spirituality rejects theft");
+            helper.assertTrue(victim.getInventory().getItem(1).getCount() == 2 && data.thiefPilferCooldownEndTick == 0,
+                    "rejected theft must not destroy the victim item or set cooldown");
+            data.spirituality = 100f;
+            level.getServer().setPvpAllowed(false);
+            helper.assertTrue(!M2FoundationAbilityHandler.use(thief, M2FoundationAbilityHandler.AbilitySlot.PRIMARY)
+                    && victim.getInventory().getItem(1).getCount() == 2 && data.spirituality == 100f,
+                    "server PvP denial preserves both inventories and spirituality");
+            level.getServer().setPvpAllowed(true);
+            BlockPos obstruction = BlockPos.containing(thief.getEyePosition().add(0, 0, 1));
+            var beforeObstruction = level.getBlockState(obstruction);
+            level.setBlock(obstruction, Blocks.STONE.defaultBlockState(), 3);
+            try {
+                helper.assertTrue(!M2FoundationAbilityHandler.use(thief, M2FoundationAbilityHandler.AbilitySlot.PRIMARY)
+                        && victim.getInventory().getItem(1).getCount() == 2 && data.spirituality == 100f,
+                        "a solid wall blocks targeting without consuming resources");
+            } finally {
+                level.setBlock(obstruction, beforeObstruction, 3);
+            }
+            helper.assertTrue(M2FoundationAbilityHandler.use(thief, M2FoundationAbilityHandler.AbilitySlot.PRIMARY),
+                    "same target and aim succeed when sufficient spirituality exists");
+            helper.assertTrue(victim.getInventory().getItem(1).getCount() == 1 && data.spirituality == 88f,
+                    "successful transfer charges exactly once");
+            helper.assertTrue(thief.getInventory().countItem(Items.DIAMOND) == 1, "stolen item arrives intact");
+            helper.assertTrue(!M2FoundationAbilityHandler.use(thief, M2FoundationAbilityHandler.AbilitySlot.PRIMARY)
+                    && victim.getInventory().getItem(1).getCount() == 1, "cooldown retries cannot steal twice");
+        } finally {
+            top.aurora.lordofmysteries.core.config.ServerConfig.PVP_THEFT_ENABLED.set(previous);
+            level.getServer().setPvpAllowed(previousPvp);
+            victim.discard();
+        }
+        helper.succeed();
+    }
 
     private static ServerPlayer survivalPlayer(ServerLevel level, BlockPos position) {
         ServerPlayer player = new ServerPlayer(level.getServer(), level, new GameProfile(UUID.randomUUID(), "survival-test")) {

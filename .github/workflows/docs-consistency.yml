@@ -17,6 +17,7 @@ on:
       - "scripts/sync_project_metadata.py"
       - "scripts/gen_datapack.py"
       - "scripts/generate_survival_content.py"
+      - "scripts/check_design_roadmap.py"
       - "docs/survival-content.json"
       - "scripts/import_v09_design.py"
       - "scripts/build_content_graph.py"
@@ -55,6 +56,7 @@ on:
       - "scripts/sync_project_metadata.py"
       - "scripts/gen_datapack.py"
       - "scripts/generate_survival_content.py"
+      - "scripts/check_design_roadmap.py"
       - "docs/survival-content.json"
       - "scripts/import_v09_design.py"
       - "scripts/build_content_graph.py"
@@ -109,6 +111,9 @@ jobs:
       - name: Require metadata in final push commit
         if: github.event_name == 'push' && github.actor != 'dependabot[bot]'
         run: python3 scripts/check_release_timestamp.py --require-head
+
+      - name: Verify design audit and implementation dependencies
+        run: python3 scripts/check_design_roadmap.py --check
 
       - name: Verify generated Pages catalog
         run: python3 scripts/gen_pages_catalog.py --check

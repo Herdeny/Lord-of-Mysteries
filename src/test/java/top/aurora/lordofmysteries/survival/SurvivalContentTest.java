@@ -66,7 +66,7 @@ class SurvivalContentTest {
     void mobLootIsAdditivePlayerGatedAndNotGuaranteed() throws Exception {
         var list = read(DATA.getParent().resolve("forge/loot_modifiers/global_loot_modifiers.json"));
         assertFalse(list.get("replace").getAsBoolean());
-        assertEquals(8, list.getAsJsonArray("entries").size());
+        assertEquals(9, list.getAsJsonArray("entries").size());
         for (String entity : new String[]{"zombie", "husk", "spider", "witch"}) {
             var modifier = read(DATA.resolve("loot_modifiers/survival_" + entity + ".json"));
             var conditions = modifier.getAsJsonArray("conditions");
@@ -122,7 +122,7 @@ class SurvivalContentTest {
     void mortarRecipesHaveBoundedCostsAndNoProgressionBypassOutputs() throws Exception {
         var manifest = read(Path.of("docs/survival-content.json"));
         var recipes = manifest.getAsJsonArray("mortar");
-        assertEquals(8, recipes.size());
+        assertEquals(12, recipes.size());
         for (var raw : recipes) {
             var spec = raw.getAsJsonObject();
             var actual = read(DATA.resolve("recipes/mortar_" + spec.get("id").getAsString() + ".json"));
@@ -134,6 +134,63 @@ class SurvivalContentTest {
             assertFalse(result.contains("characteristic"));
             assertFalse(result.contains("formula"));
             assertTrue(actual.getAsJsonObject("result").get("count").getAsInt() <= 4);
+        }
+    }
+
+    @Test
+    void fishingBonusRequiresRootTableOpenWaterAndRealRod() throws Exception {
+        var modifier = read(DATA.resolve("loot_modifiers/survival_fishing.json"));
+        var conditions = modifier.getAsJsonArray("conditions");
+        assertEquals("minecraft:gameplay/fishing", conditions.get(0).getAsJsonObject().get("loot_table_id").getAsString());
+        var predicate = conditions.get(1).getAsJsonObject().getAsJsonObject("predicate");
+        assertEquals("minecraft:fishing_bobber", predicate.get("type").getAsString());
+        assertTrue(predicate.getAsJsonObject("type_specific").get("in_open_water").getAsBoolean());
+        assertEquals("minecraft:fishing_rod", conditions.get(2).getAsJsonObject().getAsJsonObject("predicate")
+                .getAsJsonArray("items").get(0).getAsString());
+        assertEquals(0.2, conditions.get(3).getAsJsonObject().get("chance").getAsDouble(), 0.00001);
+        assertEquals(1, modifier.get("count").getAsInt());
+    }
+
+    @Test
+    void discoveryTreeHasTenReachableNodesWithoutRepeatableRewards() throws Exception {
+        var nodes = read(Path.of("docs/survival-content.json")).getAsJsonArray("discoveries");
+        var seen = new HashSet<String>();
+        assertEquals(10, nodes.size());
+        for (var raw : nodes) {
+            var node = raw.getAsJsonObject();
+            String id = node.get("id").getAsString();
+            if (node.has("parent")) assertTrue(seen.contains(node.get("parent").getAsString()));
+            assertTrue(seen.add(id));
+            var advancement = read(DATA.resolve("advancements/survival/" + id + ".json"));
+            assertFalse(advancement.has("rewards"));
+            assertFalse(advancement.getAsJsonObject("display").get("announce_to_chat").getAsBoolean());
+            if (node.has("loot_table")) {
+                assertEquals("minecraft:player_generates_container_loot", advancement.getAsJsonObject("criteria")
+                        .getAsJsonObject("discover").get("trigger").getAsString());
+            }
+        }
+    }
+
+    @Test
+    void discoveryTranslationsExplainAcquisitionInBothLanguages() throws Exception {
+        var nodes = read(Path.of("docs/survival-content.json")).getAsJsonArray("discoveries");
+        for (String language : new String[]{"zh_cn", "en_us"}) {
+            var translated = read(ASSETS.resolve("lang/" + language + ".json"));
+            for (var raw : nodes) {
+                var node = raw.getAsJsonObject();
+                String key = "advancement.lord_of_mysteries.survival." + node.get("id").getAsString();
+                assertEquals(node.get(language.equals("zh_cn") ? "title" : "en"), translated.get(key + ".title"));
+                assertEquals(node.get(language.equals("zh_cn") ? "description" : "description_en"), translated.get(key + ".description"));
+            }
+        }
+    }
+
+    @Test
+    void mortarAlternativesDoNotShadowExistingHandPairs() throws Exception {
+        var pairs = new HashSet<String>();
+        for (var raw : read(Path.of("docs/survival-content.json")).getAsJsonArray("mortar")) {
+            var recipe = raw.getAsJsonObject();
+            assertTrue(pairs.add(recipe.get("main").getAsString() + "|" + recipe.get("reagent").getAsString()));
         }
     }
 

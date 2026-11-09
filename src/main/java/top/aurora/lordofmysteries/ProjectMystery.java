@@ -90,6 +90,7 @@ public class ProjectMystery {
         event.enqueueWork(() -> {
             PMNetwork.register();
             ModEntities.registerSpawnPlacements();
+            top.aurora.lordofmysteries.survival.SurvivalEconomy.registerComposting();
         });
         LOGGER.info("[Project Mystery] commonSetup 完成。MOD_ID={}", MOD_ID);
     }

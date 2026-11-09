@@ -41,6 +41,7 @@ import top.aurora.lordofmysteries.core.config.ServerConfig;
 import top.aurora.lordofmysteries.knowledge.KnowledgeCopyItem;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
+import top.aurora.lordofmysteries.player.OccultActivityService;
 import top.aurora.lordofmysteries.potion.HunterPotionItem;
 import top.aurora.lordofmysteries.potion.M2PathwayPotionItem;
 import top.aurora.lordofmysteries.potion.SpectatorPotionItem;
@@ -74,6 +75,11 @@ public final class M2FoundationAbilityHandler {
     private M2FoundationAbilityHandler() {}
 
     public static boolean use(ServerPlayer player, AbilitySlot slot) {
+        if (!player.isAlive() || player.isSpectator()) return false;
+        if (!OccultActivityService.isAvailable(player)) {
+            OccultActivityService.sendDenied(player);
+            return false;
+        }
         PlayerMysteryData data = MysteryCapability.get(player);
         if (data.pathway != null
                 && M3LaunchAbilityLogic.supports(
@@ -122,14 +128,19 @@ public final class M2FoundationAbilityHandler {
         }
 
         ItemStack stolen;
+        int stolenSlot = -1;
         if (target instanceof ServerPlayer targetPlayer) {
             if (!ServerConfig.PVP_THEFT_ENABLED.get()
-                    || !player.canHarmPlayer(targetPlayer)) {
+                    || !player.canHarmPlayer(targetPlayer)
+                    || targetPlayer.isCreative() || targetPlayer.isSpectator()
+                    || !OccultActivityService.isAvailable(targetPlayer)) {
                 player.sendSystemMessage(Component.translatable(
                         "message.lord_of_mysteries.thief.pvp_disabled"));
                 return false;
             }
-            stolen = stealFromPlayer(targetPlayer);
+            stolenSlot = findStealableSlot(targetPlayer);
+            stolen = stolenSlot < 0 ? ItemStack.EMPTY
+                    : targetPlayer.getInventory().getItem(stolenSlot).copyWithCount(1);
         } else {
             stolen = sampleLoot(player, target);
         }
@@ -140,6 +151,9 @@ public final class M2FoundationAbilityHandler {
         }
         if (!SpiritualityCost.tryConsume(data, PILFER_COST)) {
             return insufficient(player, PILFER_COST);
+        }
+        if (target instanceof ServerPlayer targetPlayer) {
+            targetPlayer.getInventory().removeItem(stolenSlot, 1);
         }
 
         data.thiefPilferCooldownEndTick = AbilityCooldowns.start(now, PILFER_COOLDOWN);
@@ -176,7 +190,7 @@ public final class M2FoundationAbilityHandler {
         return true;
     }
 
-    private static ItemStack stealFromPlayer(ServerPlayer target) {
+    private static int findStealableSlot(ServerPlayer target) {
         int selected = target.getInventory().selected;
         int offset = target.getRandom().nextInt(9);
         for (int step = 0; step < 9; step++) {
@@ -184,12 +198,9 @@ public final class M2FoundationAbilityHandler {
             if (slot == selected) continue;
             ItemStack stack = target.getInventory().getItem(slot);
             if (stack.isEmpty()) continue;
-            ItemStack stolen = stack.copy();
-            stolen.setCount(1);
-            stack.shrink(1);
-            return stolen;
+            return slot;
         }
-        return ItemStack.EMPTY;
+        return -1;
     }
 
     private static ItemStack sampleLoot(ServerPlayer player, LivingEntity target) {
@@ -343,6 +354,8 @@ public final class M2FoundationAbilityHandler {
             return;
         }
         PlayerMysteryData data = MysteryCapability.get(player);
+        if (!player.isAlive() || player.isSpectator()
+                || !OccultActivityService.isAvailable(player)) return;
         if (M2PathwayPotionItem.Pathway.THIEF.id().equals(data.pathway)
                 && data.sequence <= 9 && data.sequence >= 7) {
             tickShadowStep(player, data);

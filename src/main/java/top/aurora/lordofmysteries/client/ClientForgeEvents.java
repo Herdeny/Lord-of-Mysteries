@@ -1,7 +1,8 @@
 package top.aurora.lordofmysteries.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -32,13 +33,14 @@ public final class ClientForgeEvents {
 
     private ClientForgeEvents() {}
 
-    /**
-     * KeyMapping 的按键事件在 {@link InputEvent.Key} 上被抛出；
-     * 使用 {@code consumeClick} 是 Forge 推荐的「按一次触发一次」写法，
-     * 会自动处理按键长按只算一次的问题。
-     */
     @SubscribeEvent
-    public static void onKeyInput(InputEvent.Key event) {
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player == null || minecraft.getConnection() == null || minecraft.screen != null) {
+            PMKeyBindings.discardPendingClicks();
+            return;
+        }
         while (PMKeyBindings.TOGGLE_SPIRIT_VISION.consumeClick()) {
             PMNetwork.CHANNEL.sendToServer(new ToggleSpiritVisionC2SPacket());
         }
@@ -88,6 +90,7 @@ public final class ClientForgeEvents {
 
     @SubscribeEvent
     public static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) {
+        PMKeyBindings.discardPendingClicks();
         ClientMysteryState.clear();
         top.aurora.lordofmysteries.client.visual.OccultParticle.clearBudget();
     }

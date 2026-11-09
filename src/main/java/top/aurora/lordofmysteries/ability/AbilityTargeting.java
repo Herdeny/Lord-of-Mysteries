@@ -24,6 +24,8 @@ public final class AbilityTargeting {
                 entity -> entity instanceof LivingEntity living
                         && living.isAlive()
                         && living.isPickable()
+                        && !living.isSpectator()
+                        && player.hasLineOfSight(living)
                         && entity != player,
                 range * range);
         return hit != null && hit.getEntity() instanceof LivingEntity living ? living : null;

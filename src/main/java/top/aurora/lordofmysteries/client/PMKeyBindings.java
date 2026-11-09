@@ -7,6 +7,8 @@ import net.minecraft.client.KeyMapping;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 
+import java.util.List;
+
 /**
  * 客户端按键（批次1）。
  *
@@ -76,7 +78,7 @@ public final class PMKeyBindings {
             "key.lord_of_mysteries.use_enrage",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
-            InputConstants.KEY_L,
+            InputConstants.KEY_I,
             CATEGORY);
 
     public static final KeyMapping USE_CARD_BLADE = new KeyMapping(
@@ -128,22 +130,20 @@ public final class PMKeyBindings {
             InputConstants.KEY_U,
             CATEGORY);
 
+    public static final List<KeyMapping> ALL = List.of(
+            TOGGLE_SPIRIT_VISION, USE_DIVINATION, OPEN_STATUS, TOGGLE_EMOTION_READ,
+            USE_SURFACE_READ, USE_MENTAL_SUGGESTION, USE_PROVOKE, USE_ENRAGE,
+            USE_CARD_BLADE, USE_FLAME_LEAP, ARM_PAPER_SUBSTITUTE, USE_AIR_BULLET,
+            USE_STAGE_ILLUSION, USE_M2_PRIMARY, USE_M2_SECONDARY);
+
+    public static void discardPendingClicks() {
+        for (KeyMapping binding : ALL) {
+            while (binding.consumeClick()) {}
+        }
+    }
+
     /** 通过 mod 总线注册；由 {@code ClientModEvents} 调用。 */
     public static void register(RegisterKeyMappingsEvent event) {
-        event.register(TOGGLE_SPIRIT_VISION);
-        event.register(USE_DIVINATION);
-        event.register(OPEN_STATUS);
-        event.register(TOGGLE_EMOTION_READ);
-        event.register(USE_SURFACE_READ);
-        event.register(USE_MENTAL_SUGGESTION);
-        event.register(USE_PROVOKE);
-        event.register(USE_ENRAGE);
-        event.register(USE_CARD_BLADE);
-        event.register(USE_FLAME_LEAP);
-        event.register(ARM_PAPER_SUBSTITUTE);
-        event.register(USE_AIR_BULLET);
-        event.register(USE_STAGE_ILLUSION);
-        event.register(USE_M2_PRIMARY);
-        event.register(USE_M2_SECONDARY);
+        ALL.forEach(event::register);
     }
 }

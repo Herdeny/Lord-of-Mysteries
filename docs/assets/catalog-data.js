@@ -1286,7 +1286,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -1442,7 +1442,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -1502,7 +1502,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -1562,7 +1562,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -1596,6 +1596,10 @@ window.LOM = window.LOM || {};
       [
         "保护",
         "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ],
+      [
+        "生活循环",
+        "65%概率堆肥；农民/流浪商人可能出售种苗，老手农民可能收购草药"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
@@ -1615,6 +1619,10 @@ window.LOM = window.LOM || {};
       [
         "保护",
         "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ],
+      [
+        "生活循环",
+        "65%概率堆肥；农民/流浪商人可能出售种苗，老手农民可能收购草药"
       ]
     ]
   },
@@ -1688,13 +1696,13 @@ window.LOM = window.LOM || {};
     "id": "lord_of_mysteries:mystic_mortar",
     "name": "神秘研钵",
     "en": "Mystic Mortar",
-    "summary": "双手投料、右键加工的神秘学研钵，提供8种基础消耗品加工路线。",
+    "summary": "双手投料、右键加工的神秘学研钵，提供12种基础消耗品加工路线。",
     "tags": [
       "已注册",
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -1826,7 +1834,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -1886,7 +1894,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -1920,6 +1928,10 @@ window.LOM = window.LOM || {};
       [
         "保护",
         "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ],
+      [
+        "生活循环",
+        "65%概率堆肥；农民/流浪商人可能出售种苗，老手农民可能收购草药"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
@@ -1939,6 +1951,10 @@ window.LOM = window.LOM || {};
       [
         "保护",
         "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ],
+      [
+        "生活循环",
+        "65%概率堆肥；农民/流浪商人可能出售种苗，老手农民可能收购草药"
       ]
     ]
   },
@@ -1954,7 +1970,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -1988,6 +2004,10 @@ window.LOM = window.LOM || {};
       [
         "保护",
         "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ],
+      [
+        "生活循环",
+        "65%概率堆肥；农民/流浪商人可能出售种苗，老手农民可能收购草药"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
@@ -2007,6 +2027,10 @@ window.LOM = window.LOM || {};
       [
         "保护",
         "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ],
+      [
+        "生活循环",
+        "65%概率堆肥；农民/流浪商人可能出售种苗，老手农民可能收购草药"
       ]
     ]
   },
@@ -2022,7 +2046,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -2056,6 +2080,10 @@ window.LOM = window.LOM || {};
       [
         "保护",
         "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ],
+      [
+        "生活循环",
+        "65%概率堆肥；农民/流浪商人可能出售种苗，老手农民可能收购草药"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
@@ -2075,6 +2103,10 @@ window.LOM = window.LOM || {};
       [
         "保护",
         "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ],
+      [
+        "生活循环",
+        "65%概率堆肥；农民/流浪商人可能出售种苗，老手农民可能收购草药"
       ]
     ]
   },
@@ -4934,7 +4966,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -4968,6 +5000,10 @@ window.LOM = window.LOM || {};
       [
         "保护",
         "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ],
+      [
+        "生活循环",
+        "65%概率堆肥；农民/流浪商人可能出售种苗，老手农民可能收购草药"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
@@ -4987,6 +5023,10 @@ window.LOM = window.LOM || {};
       [
         "保护",
         "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ],
+      [
+        "生活循环",
+        "65%概率堆肥；农民/流浪商人可能出售种苗，老手农民可能收购草药"
       ]
     ]
   },
@@ -6346,7 +6386,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -6380,6 +6420,10 @@ window.LOM = window.LOM || {};
       [
         "保护",
         "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ],
+      [
+        "生活循环",
+        "65%概率堆肥；农民/流浪商人可能出售种苗，老手农民可能收购草药"
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
@@ -6399,6 +6443,10 @@ window.LOM = window.LOM || {};
       [
         "保护",
         "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"
+      ],
+      [
+        "生活循环",
+        "65%概率堆肥；农民/流浪商人可能出售种苗，老手农民可能收购草药"
       ]
     ]
   },
@@ -6536,11 +6584,13 @@ window.LOM = window.LOM || {};
     "id": "lord_of_mysteries:spirit_salt",
     "name": "灵性盐",
     "en": "Spirit Salt",
-    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "summary": "矿产、研钵、牧师和开放水域钓鱼可获得的基础神秘学耗材。",
     "tags": [
       "已注册",
       "中英双语",
-      "自动同步"
+      "自动同步",
+      "生存资源",
+      "0.9.39"
     ],
     "details": [
       [
@@ -6558,9 +6608,27 @@ window.LOM = window.LOM || {};
       [
         "资源状态",
         "item 模型已提供"
+      ],
+      [
+        "钓鱼",
+        "真实鱼竿、开放水域；保留原版渔获，20%概率额外1灵盐"
+      ],
+      [
+        "交易",
+        "学徒牧师交易池：1绿宝石换3灵盐，最多8次，按原版补货"
       ]
     ],
-    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。",
+    "survivalDetails": [
+      [
+        "钓鱼",
+        "真实鱼竿、开放水域；保留原版渔获，20%概率额外1灵盐"
+      ],
+      [
+        "交易",
+        "学徒牧师交易池：1绿宝石换3灵盐，最多8次，按原版补货"
+      ]
+    ]
   },
   {
     "type": "item",
@@ -8327,7 +8395,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -8351,6 +8419,37 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "recipe",
+    "id": "lord_of_mysteries:recipe/mortar_beeswax_candle",
+    "name": "白蜡烛 · 研钵配方",
+    "en": "beeswax_candle",
+    "summary": "蜜脾 ×1 + 线 ×1 → 白蜡烛 ×2",
+    "tags": [
+      "研钵",
+      "生存资源",
+      "0.9.39"
+    ],
+    "details": [
+      [
+        "主手",
+        "蜜脾 ×1"
+      ],
+      [
+        "副手",
+        "线 ×1"
+      ],
+      [
+        "产物",
+        "白蜡烛 ×2"
+      ],
+      [
+        "来源",
+        "recipes/mortar_beeswax_candle.json"
+      ]
+    ],
+    "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"
+  },
+  {
+    "type": "recipe",
     "id": "lord_of_mysteries:recipe/mortar_calming_blend",
     "name": "镇静熏香 · 研钵配方",
     "en": "calming_blend",
@@ -8358,7 +8457,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -8382,6 +8481,37 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "recipe",
+    "id": "lord_of_mysteries:recipe/mortar_darkened_wax",
+    "name": "黑色仪式蜡 · 研钵配方",
+    "en": "darkened_wax",
+    "summary": "蜜脾 ×1 + 墨囊 ×1 → 黑色仪式蜡 ×2",
+    "tags": [
+      "研钵",
+      "生存资源",
+      "0.9.39"
+    ],
+    "details": [
+      [
+        "主手",
+        "蜜脾 ×1"
+      ],
+      [
+        "副手",
+        "墨囊 ×1"
+      ],
+      [
+        "产物",
+        "黑色仪式蜡 ×2"
+      ],
+      [
+        "来源",
+        "recipes/mortar_darkened_wax.json"
+      ]
+    ],
+    "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"
+  },
+  {
+    "type": "recipe",
     "id": "lord_of_mysteries:recipe/mortar_heather_infusion",
     "name": "月华水 · 研钵配方",
     "en": "heather_infusion",
@@ -8389,7 +8519,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -8420,7 +8550,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -8451,7 +8581,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -8475,6 +8605,68 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "recipe",
+    "id": "lord_of_mysteries:recipe/mortar_luminous_ink",
+    "name": "神秘墨水 · 研钵配方",
+    "en": "luminous_ink",
+    "summary": "荧光墨囊 ×1 + 灰烬粉 ×1 → 神秘墨水 ×2",
+    "tags": [
+      "研钵",
+      "生存资源",
+      "0.9.39"
+    ],
+    "details": [
+      [
+        "主手",
+        "荧光墨囊 ×1"
+      ],
+      [
+        "副手",
+        "灰烬粉 ×1"
+      ],
+      [
+        "产物",
+        "神秘墨水 ×2"
+      ],
+      [
+        "来源",
+        "recipes/mortar_luminous_ink.json"
+      ]
+    ],
+    "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"
+  },
+  {
+    "type": "recipe",
+    "id": "lord_of_mysteries:recipe/mortar_pressed_manuscript",
+    "name": "空白手稿 · 研钵配方",
+    "en": "pressed_manuscript",
+    "summary": "纸 ×3 + 羽毛 ×1 → 空白手稿 ×2",
+    "tags": [
+      "研钵",
+      "生存资源",
+      "0.9.39"
+    ],
+    "details": [
+      [
+        "主手",
+        "纸 ×3"
+      ],
+      [
+        "副手",
+        "羽毛 ×1"
+      ],
+      [
+        "产物",
+        "空白手稿 ×2"
+      ],
+      [
+        "来源",
+        "recipes/mortar_pressed_manuscript.json"
+      ]
+    ],
+    "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"
+  },
+  {
+    "type": "recipe",
     "id": "lord_of_mysteries:recipe/mortar_purified_salt",
     "name": "灵性盐 · 研钵配方",
     "en": "purified_salt",
@@ -8482,7 +8674,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -8513,7 +8705,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -8544,7 +8736,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -8575,7 +8767,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "原生世界生成",
       "探索",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -8606,7 +8798,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "原生世界生成",
       "探索",
-      "0.9.38"
+      "0.9.39"
     ],
     "details": [
       [
@@ -8835,7 +9027,7 @@ window.LOM = window.LOM || {};
     if (generatedById[entry.id]) entry.image = generatedById[entry.id].image;
     if (generatedById[entry.id] && generatedById[entry.id].survivalDetails) {
       entry.details = (entry.details || []).concat(generatedById[entry.id].survivalDetails);
-      entry.tags = (entry.tags || []).concat(['生存资源', '0.9.38']);
+      entry.tags = (entry.tags || []).concat(['生存资源', '0.9.39']);
     }
   });
   manualEntries.forEach(function (entry) { manualIds[entry.id] = true; });
@@ -8850,7 +9042,7 @@ window.LOM = window.LOM || {};
   "artifactDefinitions": 24,
   "spiritWeatherDefinitions": 6,
   "spiritEncounterDefinitions": 12,
-  "uniqueRegistryEntries": 233,
+  "uniqueRegistryEntries": 237,
   "source": "Forge registries + organization/artifact/spirit + survival manifest + zh_cn/en_us"
 };
 })(window.LOM);

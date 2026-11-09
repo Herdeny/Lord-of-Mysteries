@@ -1,0 +1,842 @@
+{
+  "schema_version": 1,
+  "design_revision": "1.0-design-r1",
+  "created": "2026-11-09",
+  "status": "proposal_not_runtime_release",
+  "tasks": [
+    {
+      "id": "V1-001",
+      "title": "审计拆为原子行为",
+      "release_package": "R0",
+      "state": "planned",
+      "priority": "P0",
+      "depends_on": [],
+      "v09_chapters": [
+        57,
+        78,
+        81
+      ],
+      "acceptance": [
+        "T41",
+        "T42"
+      ],
+      "deliverable": "逐表格行给ID、获得/执行/恢复/状态/证据；去重不删语义。"
+    },
+    {
+      "id": "V1-002",
+      "title": "现有五途径真人端到端",
+      "release_package": "R1",
+      "state": "planned",
+      "priority": "P0",
+      "depends_on": [
+        "V1-001"
+      ],
+      "v09_chapters": [
+        7,
+        79
+      ],
+      "acceptance": [
+        "T01",
+        "T20",
+        "T46"
+      ],
+      "deliverable": "五条从新角色到已实现最高序列，记录非战斗用途与失败恢复。"
+    },
+    {
+      "id": "V1-003",
+      "title": "权限与库存事务审计",
+      "release_package": "R1",
+      "state": "planned",
+      "priority": "P0",
+      "depends_on": [
+        "V1-001"
+      ],
+      "v09_chapters": [
+        24,
+        77
+      ],
+      "acceptance": [
+        "T14",
+        "T17",
+        "T18"
+      ],
+      "deliverable": "命令、网络、直接调用共享门禁，全部副作用发生在校验后。"
+    },
+    {
+      "id": "V1-004",
+      "title": "历史存档与回滚包",
+      "release_package": "R1",
+      "state": "planned",
+      "priority": "P0",
+      "depends_on": [
+        "V1-001"
+      ],
+      "v09_chapters": [
+        6,
+        77
+      ],
+      "acceptance": [
+        "T02",
+        "T03",
+        "T04",
+        "T23"
+      ],
+      "deliverable": "固定历史fixture、世界账本与玩家回滚冲突、可运行恢复演练。"
+    },
+    {
+      "id": "V1-005",
+      "title": "材料可达性与经济图",
+      "release_package": "R1",
+      "state": "planned",
+      "priority": "P0",
+      "depends_on": [
+        "V1-001"
+      ],
+      "v09_chapters": [
+        40,
+        69,
+        70
+      ],
+      "acceptance": [
+        "T05",
+        "T09",
+        "T10"
+      ],
+      "deliverable": "列每个材料来源用途、无成本环、无用物与旧世界替代。"
+    },
+    {
+      "id": "V1-006",
+      "title": "不眠者序列9纵切",
+      "release_package": "R2",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-002",
+        "V1-003",
+        "V1-004"
+      ],
+      "v09_chapters": [
+        7,
+        48
+      ],
+      "acceptance": [
+        "T19",
+        "T21",
+        "T31"
+      ],
+      "deliverable": "配方、服药、夜巡能力、扮演、风险、指引、外观完整，不冒称全途径完成。"
+    },
+    {
+      "id": "V1-007",
+      "title": "水手序列9纵切",
+      "release_package": "R2",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-002",
+        "V1-003",
+        "V1-004"
+      ],
+      "v09_chapters": [
+        7,
+        48
+      ],
+      "acceptance": [
+        "T19",
+        "T08",
+        "T46"
+      ],
+      "deliverable": "海上调查/护航/船/水域能力与陆地短板。"
+    },
+    {
+      "id": "V1-008",
+      "title": "收尸人序列9纵切",
+      "release_package": "R2",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-002",
+        "V1-003",
+        "V1-004"
+      ],
+      "v09_chapters": [
+        7,
+        48
+      ],
+      "acceptance": [
+        "T19",
+        "T04",
+        "T23"
+      ],
+      "deliverable": "尸骸线索、安魂、和平替代、死亡守恒，不消耗他人资产。"
+    },
+    {
+      "id": "V1-009",
+      "title": "歌颂者序列9纵切",
+      "release_package": "R2",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-002",
+        "V1-003",
+        "V1-004"
+      ],
+      "v09_chapters": [
+        7,
+        48
+      ],
+      "acceptance": [
+        "T19",
+        "T17",
+        "T46"
+      ],
+      "deliverable": "支援贡献可见、有限净化叠加、独立单人用途。"
+    },
+    {
+      "id": "V1-010",
+      "title": "四途径8–7",
+      "release_package": "R2",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-006",
+        "V1-007",
+        "V1-008",
+        "V1-009"
+      ],
+      "v09_chapters": [
+        7,
+        48,
+        64
+      ],
+      "acceptance": [
+        "T19",
+        "T21",
+        "T22"
+      ],
+      "deliverable": "逐条补药剂、材料、生物、技能、消化、风险，不只加注册。"
+    },
+    {
+      "id": "V1-011",
+      "title": "四途径6–5及M5交叉",
+      "release_package": "R2",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-010"
+      ],
+      "v09_chapters": [
+        7,
+        48,
+        65
+      ],
+      "acceptance": [
+        "T19",
+        "T17",
+        "T31"
+      ],
+      "deliverable": "四类组队闭环、专属仪式、梦境灵界活动互斥与恢复。"
+    },
+    {
+      "id": "V1-012",
+      "title": "生产事务持久化原型",
+      "release_package": "R3",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-003",
+        "V1-004",
+        "V1-005"
+      ],
+      "v09_chapters": [
+        63,
+        70,
+        77
+      ],
+      "acceptance": [
+        "T10",
+        "T11",
+        "T12"
+      ],
+      "deliverable": "owner/recipeRevision/inputSnapshot/state/receipt；所有中断点故障注入。"
+    },
+    {
+      "id": "V1-013",
+      "title": "鉴材与蒸馏工位",
+      "release_package": "R3",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-012"
+      ],
+      "v09_chapters": [
+        63,
+        70
+      ],
+      "acceptance": [
+        "T11",
+        "T12",
+        "T13"
+      ],
+      "deliverable": "真实方块、预览、预约输入、温度、残渣、满输出和动画。"
+    },
+    {
+      "id": "V1-014",
+      "title": "封存与铭文工位",
+      "release_package": "R3",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-012",
+        "V1-013"
+      ],
+      "v09_chapters": [
+        63,
+        65,
+        70
+      ],
+      "acceptance": [
+        "T10",
+        "T13",
+        "T23"
+      ],
+      "deliverable": "质量标签与符咒白名单，不能复制凭证或运行脚本。"
+    },
+    {
+      "id": "V1-015",
+      "title": "保管柜与十工位退出",
+      "release_package": "R3",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-014"
+      ],
+      "v09_chapters": [
+        13,
+        70
+      ],
+      "acceptance": [
+        "T11",
+        "T30",
+        "T29"
+      ],
+      "deliverable": "保管预警/比较器/卸载恢复，十职责各有实际价值。"
+    },
+    {
+      "id": "V1-016",
+      "title": "JEI与EMI适配",
+      "release_package": "R3",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-012"
+      ],
+      "v09_chapters": [
+        33,
+        75
+      ],
+      "acceptance": [
+        "T12",
+        "T13",
+        "T35"
+      ],
+      "deliverable": "同源RecipeManager、知识提示；无依赖时不加载其类。"
+    },
+    {
+      "id": "V1-017",
+      "title": "Jade与Curios适配",
+      "release_package": "R3",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-003"
+      ],
+      "v09_chapters": [
+        33,
+        75
+      ],
+      "acceptance": [
+        "T25",
+        "T35",
+        "T18"
+      ],
+      "deliverable": "成熟/工位/保管提示、隐私过滤、护符插拔重算。"
+    },
+    {
+      "id": "V1-018",
+      "title": "Create与FD适配",
+      "release_package": "R3",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-014",
+        "V1-016"
+      ],
+      "v09_chapters": [
+        70,
+        75
+      ],
+      "acceptance": [
+        "T13",
+        "T35",
+        "T10"
+      ],
+      "deliverable": "普通生产厨艺、容器、simulate；不能绕知识和唯一资源。"
+    },
+    {
+      "id": "V1-019",
+      "title": "第三批六途径",
+      "release_package": "R4",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-011",
+        "V1-015",
+        "V1-018"
+      ],
+      "v09_chapters": [
+        7,
+        48
+      ],
+      "acceptance": [
+        "T20",
+        "T21",
+        "T46"
+      ],
+      "deliverable": "战士/秘祈人/阅读者/刺客/耕种者/药师9–5，各有生活职责。"
+    },
+    {
+      "id": "V1-020",
+      "title": "第四批七途径",
+      "release_package": "R5",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-019"
+      ],
+      "v09_chapters": [
+        60
+      ],
+      "acceptance": [
+        "T20",
+        "T17",
+        "T46"
+      ],
+      "deliverable": "七途径9–5，规则/概率/同意能力逐项审计。"
+    },
+    {
+      "id": "V1-021",
+      "title": "优先五途径序列4",
+      "release_package": "R6",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-020"
+      ],
+      "v09_chapters": [
+        61
+      ],
+      "acceptance": [
+        "T20",
+        "T39",
+        "T46"
+      ],
+      "deliverable": "半神晋升、知识灼伤、锚与代价，低序列仍可长期游玩。"
+    },
+    {
+      "id": "V1-022",
+      "title": "神话形态与锚表现",
+      "release_package": "R6",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-021"
+      ],
+      "v09_chapters": [
+        46,
+        61,
+        72
+      ],
+      "acceptance": [
+        "T32",
+        "T33",
+        "T37"
+      ],
+      "deliverable": "状态同步、风险提示、低配替代、锚丢失恢复。"
+    },
+    {
+      "id": "V1-023",
+      "title": "全量资源表去重落地",
+      "release_package": "R7",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-005",
+        "V1-015"
+      ],
+      "v09_chapters": [
+        40,
+        43,
+        69,
+        71
+      ],
+      "acceptance": [
+        "T05",
+        "T06",
+        "T07"
+      ],
+      "deliverable": "逐ID核对材料/状态/用途和生态来源，拒绝无用掉落。"
+    },
+    {
+      "id": "V1-024",
+      "title": "雾港档案库灰盒",
+      "release_package": "R7",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-012"
+      ],
+      "v09_chapters": [
+        19,
+        67
+      ],
+      "acceptance": [
+        "T26",
+        "T27",
+        "T28"
+      ],
+      "deliverable": "两入口、两线索路径、排水捷径、Boss和个人奖励。"
+    },
+    {
+      "id": "V1-025",
+      "title": "地牢美术与结构变体",
+      "release_package": "R7",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-024"
+      ],
+      "v09_chapters": [
+        46,
+        67,
+        72
+      ],
+      "acceptance": [
+        "T26",
+        "T32",
+        "T33"
+      ],
+      "deliverable": "房间用途/NBT/出口/地形多seed/实际截图，结构piece回归。"
+    },
+    {
+      "id": "V1-026",
+      "title": "生态和药圃扩展",
+      "release_package": "R7",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-023"
+      ],
+      "v09_chapters": [
+        49,
+        68
+      ],
+      "acceptance": [
+        "T07",
+        "T29",
+        "T05"
+      ],
+      "deliverable": "野生栽培变异观赏、传粉、有限扩散、稀有种苗保底。"
+    },
+    {
+      "id": "V1-027",
+      "title": "知识手账和配方互链",
+      "release_package": "R3",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-005",
+        "V1-016"
+      ],
+      "v09_chapters": [
+        14,
+        59,
+        65,
+        74
+      ],
+      "acceptance": [
+        "T01",
+        "T25",
+        "T34"
+      ],
+      "deliverable": "获得/用途/恢复/剧透过滤，离线游戏与Pages同源。"
+    },
+    {
+      "id": "V1-028",
+      "title": "调查模板与灾后恢复",
+      "release_package": "R7",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-002",
+        "V1-027"
+      ],
+      "v09_chapters": [
+        21,
+        73
+      ],
+      "acceptance": [
+        "T24",
+        "T28",
+        "T25"
+      ],
+      "deliverable": "丢物/NPC死亡/结构毁坏仍可解，假说与发奖幂等。"
+    },
+    {
+      "id": "V1-029",
+      "title": "组织家族和城市深化",
+      "release_package": "R7",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-028"
+      ],
+      "v09_chapters": [
+        16,
+        42,
+        66
+      ],
+      "acceptance": [
+        "T24",
+        "T30",
+        "T38"
+      ],
+      "deliverable": "声望暴露立场分开，任务板/NPC单结算，大学剧院物流。"
+    },
+    {
+      "id": "V1-030",
+      "title": "事件与12周模拟",
+      "release_package": "R7",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-025",
+        "V1-026",
+        "V1-029"
+      ],
+      "v09_chapters": [
+        18,
+        55,
+        67,
+        73
+      ],
+      "acceptance": [
+        "T29",
+        "T30",
+        "T38"
+      ],
+      "deliverable": "逐事件生命周期/清理/预算，不用随机文本凑48事件。"
+    },
+    {
+      "id": "V1-031",
+      "title": "实验终局及可选赐福",
+      "release_package": "R8",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-021",
+        "V1-030"
+      ],
+      "v09_chapters": [
+        41,
+        61,
+        62
+      ],
+      "acceptance": [
+        "T39",
+        "T17",
+        "T23"
+      ],
+      "deliverable": "3–1、唯一性、祈祷预算、停用封存和回滚。"
+    },
+    {
+      "id": "V1-032",
+      "title": "材质模型生产规范",
+      "release_package": "R1",
+      "state": "planned",
+      "priority": "P0",
+      "depends_on": [
+        "V1-001"
+      ],
+      "v09_chapters": [
+        46,
+        72
+      ],
+      "acceptance": [
+        "T32",
+        "T41",
+        "T37"
+      ],
+      "deliverable": "调色板/骨骼/源文件/许可/preview，先一复杂实体试验。"
+    },
+    {
+      "id": "V1-033",
+      "title": "粒子音效低刺激模式",
+      "release_package": "R1",
+      "state": "planned",
+      "priority": "P0",
+      "depends_on": [
+        "V1-032"
+      ],
+      "v09_chapters": [
+        22,
+        32,
+        47,
+        72
+      ],
+      "acceptance": [
+        "T33",
+        "T47",
+        "T37"
+      ],
+      "deliverable": "预算/关键预警降级/字幕/节流/生命周期清理/版权。"
+    },
+    {
+      "id": "V1-034",
+      "title": "UI网站可访问性",
+      "release_package": "R1",
+      "state": "planned",
+      "priority": "P0",
+      "depends_on": [
+        "V1-005",
+        "V1-032"
+      ],
+      "v09_chapters": [
+        23,
+        54,
+        74
+      ],
+      "acceptance": [
+        "T34",
+        "T44",
+        "T42"
+      ],
+      "deliverable": "移动键盘长文本中英离线，设计不混入实装图鉴。"
+    },
+    {
+      "id": "V1-035",
+      "title": "20人性能与网络",
+      "release_package": "RC",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-020",
+        "V1-030"
+      ],
+      "v09_chapters": [
+        24,
+        77,
+        79
+      ],
+      "acceptance": [
+        "T15",
+        "T36",
+        "T38"
+      ],
+      "deliverable": "固定硬件/场景/profile、热点限额/delta，不用空服启动替代。"
+    },
+    {
+      "id": "V1-036",
+      "title": "Addon API和整合包范例",
+      "release_package": "RC",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-018"
+      ],
+      "v09_chapters": [
+        34,
+        75
+      ],
+      "acceptance": [
+        "T45",
+        "T35",
+        "T13"
+      ],
+      "deliverable": "稳定错误码/权限事务/弃用周期/可编译示例/有无依赖。"
+    },
+    {
+      "id": "V1-037",
+      "title": "AI与外部桥接隔离",
+      "release_package": "R8",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-003"
+      ],
+      "v09_chapters": [
+        53,
+        76
+      ],
+      "acceptance": [
+        "T40",
+        "T25",
+        "T45"
+      ],
+      "deliverable": "默认关闭、离线模板、白名单奖励、签名防重放、隐私预算。"
+    },
+    {
+      "id": "V1-038",
+      "title": "正典与权利审计",
+      "release_package": "RC",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-001",
+        "V1-032"
+      ],
+      "v09_chapters": [
+        1,
+        58,
+        80
+      ],
+      "acceptance": [
+        "T41",
+        "T39",
+        "T42"
+      ],
+      "deliverable": "逐素材许可/原著来源/争议/剧透/授权或原创化；不擅改许可。"
+    },
+    {
+      "id": "V1-039",
+      "title": "公开测试与RC",
+      "release_package": "RC",
+      "state": "planned",
+      "priority": "P1",
+      "depends_on": [
+        "V1-011",
+        "V1-020",
+        "V1-022",
+        "V1-030",
+        "V1-031",
+        "V1-033",
+        "V1-034",
+        "V1-035",
+        "V1-036",
+        "V1-037",
+        "V1-038"
+      ],
+      "v09_chapters": [
+        78,
+        79,
+        81
+      ],
+      "acceptance": [
+        "T43",
+        "T42",
+        "T48"
+      ],
+      "deliverable": "100小时公开测试无P0/P1，版本/哈希/线上文档/Issue证据一致。"
+    }
+  ]
+}

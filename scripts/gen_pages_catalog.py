@@ -288,7 +288,8 @@ def survival_entries(entries, zh_cn, en_us):
 
     def name(identifier):
         vanilla = {"minecraft:string": "线", "minecraft:charcoal": "木炭",
-                   "minecraft:honey_bottle": "蜂蜜瓶", "minecraft:ink_sac": "墨囊",
+                   "minecraft:honey_bottle": "蜂蜜瓶", "minecraft:honeycomb": "蜜脾",
+                   "minecraft:glow_ink_sac": "荧光墨囊", "minecraft:paper": "纸", "minecraft:feather": "羽毛", "minecraft:ink_sac": "墨囊",
                    "minecraft:bone_meal": "骨粉", "minecraft:amethyst_shard": "紫水晶碎片",
                    "minecraft:iron_nugget": "铁粒", "minecraft:quartz": "下界石英"}
         if identifier in vanilla:
@@ -299,7 +300,7 @@ def survival_entries(entries, zh_cn, en_us):
     def enrich(identifier, summary, details):
         entry = by_id[f"{MOD_ID}:{identifier}"]
         entry["summary"] = summary
-        entry["tags"] += ["生存资源", "0.9.38"]
+        entry["tags"] += ["生存资源", config["version"]]
         entry["details"] += details
         entry["survivalDetails"] = details
         entry["long"] += " 新内容只在新生成区块出现；旧合成保留，无需重置存档。完整说明见 Wiki 的 Survival-Resource-Loop。"
@@ -315,17 +316,20 @@ def survival_entries(entries, zh_cn, en_us):
             enrich(identifier, "野外采集后直接播种，兼作魔药与研钵材料；建立可持续药圃。",
                    [["生态", "、".join(plant["biomes"])], ["种植", "材料本身即种子；耕地、光照、水分按原版作物规则"],
                     ["成熟", "年龄7；右键得到2份并留根，破坏成熟作物得到3份（其中1份可重种）"],
-                    ["保护", "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"]])
-    enrich("mystic_mortar", "双手投料、右键加工的神秘学研钵，提供8种基础消耗品加工路线。",
+                    ["保护", "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"],
+                    ["生活循环", "65%概率堆肥；农民/流浪商人可能出售种苗，老手农民可能收购草药"]])
+    enrich("mystic_mortar", "双手投料、右键加工的神秘学研钵，提供12种基础消耗品加工路线。",
            [["制作", "5石砖+1紫水晶碎片；工作台配方可解锁"], ["使用", "主手原料、副手催化材料；每次右键处理一批"],
             ["查询", "/pm survival recipes"], ["安全", "缺料、顺序错误、权限/活动冲突不扣料；返还容器；满包在玩家位置掉落"]])
+    enrich("spirit_salt", "矿产、研钵、牧师和开放水域钓鱼可获得的基础神秘学耗材。",
+           [["钓鱼", "真实鱼竿、开放水域；保留原版渔获，20%概率额外1灵盐"], ["交易", "学徒牧师交易池：1绿宝石换3灵盐，最多8次，按原版补货"]])
     for recipe in config["mortar"]:
         result_id = f"{MOD_ID}:{recipe['result']}"
         entries.append({
             "type": "recipe", "id": f"{MOD_ID}:recipe/mortar_{recipe['id']}",
             "name": name(result_id) + " · 研钵配方", "en": recipe["id"],
             "summary": f"{name(recipe['main'])} ×{recipe['main_count']} + {name(recipe['reagent'])} ×{recipe['reagent_count']} → {name(result_id)} ×{recipe['count']}",
-            "tags": ["研钵", "生存资源", "0.9.38"],
+            "tags": ["研钵", "生存资源", config["version"]],
             "details": [["主手", f"{name(recipe['main'])} ×{recipe['main_count']}"], ["副手", f"{name(recipe['reagent'])} ×{recipe['reagent_count']}"],
                         ["产物", f"{name(result_id)} ×{recipe['count']}"], ["来源", f"recipes/mortar_{recipe['id']}.json"]],
             "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"})
@@ -334,7 +338,7 @@ def survival_entries(entries, zh_cn, en_us):
             "type": "structure", "id": f"{MOD_ID}:structure/{ruin['id']}",
             "name": "旧仪式地窖" if ruin["hostile"] else "草药师遗址", "en": ruin["id"],
             "summary": "带僵尸刷怪笼、研钵与两箱补给的地下遗迹。" if ruin["hostile"] else "带药圃、研钵与两箱补给的草药师遗迹。",
-            "tags": ["原生世界生成", "探索", "0.9.38"],
+            "tags": ["原生世界生成", "探索", config["version"]],
             "details": [["地形", "平原、向日葵平原、森林、桦木森林、针叶林的新区块"],
                         ["分布", f"随机间距 {ruin['spacing']} 区块 / 最小分隔参数 {ruin['separation']} 区块；不是每隔固定距离必有"],
                         ["奖励", "每箱保证灵性草2、石楠2、灵盐3，另加2–4次低阶随机补给"],
@@ -411,7 +415,7 @@ def render():
         "    if (generatedById[entry.id]) entry.image = generatedById[entry.id].image;\n"
         "    if (generatedById[entry.id] && generatedById[entry.id].survivalDetails) {\n"
         "      entry.details = (entry.details || []).concat(generatedById[entry.id].survivalDetails);\n"
-        "      entry.tags = (entry.tags || []).concat(['生存资源', '0.9.38']);\n"
+        "      entry.tags = (entry.tags || []).concat(['生存资源', '0.9.39']);\n"
         "    }\n"
         "  });\n"
         "  manualEntries.forEach(function (entry) { manualIds[entry.id] = true; });\n"

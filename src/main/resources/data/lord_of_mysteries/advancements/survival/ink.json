@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "item": "lord_of_mysteries:mystic_ink"
+    },
+    "title": {
+      "translate": "advancement.lord_of_mysteries.survival.ink.title"
+    },
+    "description": {
+      "translate": "advancement.lord_of_mysteries.survival.ink.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "discover": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "lord_of_mysteries:mystic_ink"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "discover"
+    ]
+  ],
+  "parent": "lord_of_mysteries:survival/mortar"
+}

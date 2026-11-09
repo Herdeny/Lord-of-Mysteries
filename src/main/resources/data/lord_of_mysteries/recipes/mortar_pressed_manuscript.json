@@ -1,0 +1,15 @@
+{
+  "type": "lord_of_mysteries:mystic_mortar",
+  "main": {
+    "item": "minecraft:paper"
+  },
+  "main_count": 3,
+  "reagent": {
+    "item": "minecraft:feather"
+  },
+  "reagent_count": 1,
+  "result": {
+    "item": "lord_of_mysteries:blank_manuscript",
+    "count": 2
+  }
+}

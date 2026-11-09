@@ -213,8 +213,8 @@
     "player_activity_diagnostics": true
   },
   "validation": {
-    "junit_tests": 503,
-    "game_tests": 39,
+    "junit_tests": 507,
+    "game_tests": 43,
     "behavior_test_classes": [
       "SpiritExpeditionPolicyTest",
       "SpiritExpeditionSavedDataTest",
