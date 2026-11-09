@@ -88,6 +88,16 @@ minecraft {
     }
 }
 
+if (providers.gradleProperty('pmCompatSmoke').isPresent()) {
+    minecraft.runs.all {
+        property 'mixin.env.remapRefMap', 'true'
+        property 'mixin.env.refMapRemappingFile', project.file('build/createSrgToMcp/output.srg').absolutePath
+    }
+    tasks.matching { it.name in ['runClient', 'runServer', 'runGameTestServer'] }.configureEach {
+        dependsOn 'createSrgToMcp'
+    }
+}
+
 // Include generated datapack output in the published resources.
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
@@ -226,7 +236,7 @@ tasks.register('checkM3Foundation', Exec) {
             fileTree('src/main/resources/data/lord_of_mysteries/sequences'),
             fileTree('src/main/resources/assets/lord_of_mysteries/lang'),
             fileTree('src/test/java/top/aurora/lordofmysteries'),
-            'src/main/java/top/aurora/lordofmysteries/gametest/PlayerPersistenceGameTests.java',
+            fileTree('src/main/java/top/aurora/lordofmysteries/gametest'),
             'scripts/run_server_restart_matrix.py'
 }
 
@@ -248,7 +258,7 @@ tasks.register('checkM4Foundation', Exec) {
             fileTree('src/main/resources/assets/lord_of_mysteries/models/item'),
             fileTree('src/test/java/top/aurora/lordofmysteries/organization'),
             fileTree('src/test/java/top/aurora/lordofmysteries/artifact'),
-            'src/main/java/top/aurora/lordofmysteries/gametest/PlayerPersistenceGameTests.java',
+            fileTree('src/main/java/top/aurora/lordofmysteries/gametest'),
             'docs/assets/catalog-data.js'
 }
 
@@ -273,7 +283,7 @@ tasks.register('checkM5Foundation', Exec) {
             fileTree('src/main/resources/assets/lord_of_mysteries/models/item'),
              fileTree('src/test/java/top/aurora/lordofmysteries/spirit'),
              fileTree('src/test/java/top/aurora/lordofmysteries/dream'),
-            'src/main/java/top/aurora/lordofmysteries/gametest/PlayerPersistenceGameTests.java',
+            fileTree('src/main/java/top/aurora/lordofmysteries/gametest'),
             'docs/assets/catalog-data.js'
 }
 
@@ -323,6 +333,12 @@ tasks.register('checkPagesCatalog', Exec) {
 
 repositories {
     mavenLocal()
+    if (providers.gradleProperty('pmCompatSmoke').isPresent()) {
+        maven {
+            url = 'https://api.modrinth.com/maven'
+            content { includeGroup 'maven.modrinth' }
+        }
+    }
 }
 
 dependencies {
@@ -332,6 +348,11 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.14.4')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    if (providers.gradleProperty('pmCompatSmoke').isPresent()) {
+        runtimeOnly fg.deobf('maven.modrinth:jade:xJQHCmWJ')
+        runtimeOnly fg.deobf('maven.modrinth:jei:9jqubC9n')
+    }
 
     // 可选兼容（MVP 后启用）
     // compileOnly fg.deobf("mezz.jei:jei-1.20.1-common-api:...")

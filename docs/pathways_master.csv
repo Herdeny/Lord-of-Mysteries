@@ -7,7 +7,7 @@ secret_supplicant,chaos_sea,pathway.lord_of_mysteries.secret_supplicant,pathway.
 bard,chaos_sea,pathway.lord_of_mysteries.bard,pathway.lord_of_mysteries.bard.description,#F59E0B,planned,
 sailor,chaos_sea,pathway.lord_of_mysteries.sailor,pathway.lord_of_mysteries.sailor.description,#0EA5E9,planned,
 reader,chaos_sea,pathway.lord_of_mysteries.reader,pathway.lord_of_mysteries.reader.description,#38BDF8,planned,
-sleepless,night,pathway.lord_of_mysteries.sleepless,pathway.lord_of_mysteries.sleepless.description,#312E81,planned,
+sleepless,night,pathway.lord_of_mysteries.sleepless,pathway.lord_of_mysteries.sleepless.description,#312E81,implemented,9
 corpse_collector,night,pathway.lord_of_mysteries.corpse_collector,pathway.lord_of_mysteries.corpse_collector.description,#78716C,planned,
 warrior,night,pathway.lord_of_mysteries.warrior,pathway.lord_of_mysteries.warrior.description,#A16207,planned,
 hunter,calamity,pathway.lord_of_mysteries.hunter,pathway.lord_of_mysteries.hunter.description,#DC2626,implemented,9;8;7;6;5

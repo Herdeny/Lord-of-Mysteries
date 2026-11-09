@@ -213,8 +213,8 @@
     "player_activity_diagnostics": true
   },
   "validation": {
-    "junit_tests": 507,
-    "game_tests": 43,
+    "junit_tests": 527,
+    "game_tests": 53,
     "behavior_test_classes": [
       "SpiritExpeditionPolicyTest",
       "SpiritExpeditionSavedDataTest",
@@ -234,8 +234,8 @@
       "spiritActionsRejectExpiredFailedAndSpectatorRoutes",
       "m0ToM5ExclusiveActivityConflictsFailAtomically"
     ],
-    "pages_registered_items": 161,
-    "pages_registered_entities": 28,
+    "pages_registered_items": 168,
+    "pages_registered_entities": 30,
     "pages_weather_entries": 6,
     "pages_encounter_entries": 12
   },

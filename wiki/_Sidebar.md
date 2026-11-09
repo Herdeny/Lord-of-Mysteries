@@ -20,6 +20,8 @@
 - [M5 共享梦境与实体生态](M5-Shared-Dreams-and-Ecology)
 - [M0–M5 跨系统安全与恢复](M0-M5-Cross-System-Safety)
 - [模型、贴图与粒子](Visual-Assets)
+- [M6 不眠者9：材料、守夜与咖啡](M6-Nightwatch)
+- [0.9.40 动作与兼容验证](Visual-Polish-0.9.40)
 
 ### 调查与多人
 
@@ -75,3 +77,5 @@
 - [在线资料站](https://herdeny.github.io/Lord-of-Mysteries/)
 - [GitHub 仓库](https://github.com/Herdeny/Lord-of-Mysteries)
 - [Issues](https://github.com/Herdeny/Lord-of-Mysteries/issues)
+
+- [0.9.40验证记录与未测边界](Validation-0.9.40)

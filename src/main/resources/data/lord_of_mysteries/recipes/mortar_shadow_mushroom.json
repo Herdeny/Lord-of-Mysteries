@@ -1,0 +1,15 @@
+{
+  "type": "lord_of_mysteries:mystic_mortar",
+  "main": {
+    "item": "minecraft:brown_mushroom"
+  },
+  "main_count": 1,
+  "reagent": {
+    "item": "lord_of_mysteries:black_wax"
+  },
+  "reagent_count": 1,
+  "result": {
+    "item": "lord_of_mysteries:shadow_mushroom",
+    "count": 1
+  }
+}

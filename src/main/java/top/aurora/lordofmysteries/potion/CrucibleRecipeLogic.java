@@ -145,6 +145,7 @@ public final class CrucibleRecipeLogic {
         APPRENTICE_7,
         APPRENTICE_6,
         APPRENTICE_5,
+        SLEEPLESS_9,
         CONTAMINATED
     }
 
@@ -202,7 +203,9 @@ public final class CrucibleRecipeLogic {
         SCRIBE(BrewedPotion.APPRENTICE_6,
                 SCRIBE_GOLEM_FINGER_BONE, SPIRIT_SALT, BLACK_WAX, 65f),
         TRAVELER(BrewedPotion.APPRENTICE_5,
-                SPATIAL_RIFT_CRYSTAL, SILVER_FILINGS, SPIRIT_SALT, 75f);
+                SPATIAL_RIFT_CRYSTAL, SILVER_FILINGS, SPIRIT_SALT, 75f),
+        SLEEPLESS(BrewedPotion.SLEEPLESS_9, "lord_of_mysteries:night_owl_optic_nerve",
+                "lord_of_mysteries:nightwatch_extract", ASH_POWDER, 70f);
 
         private final BrewedPotion potion;
         private final String first;

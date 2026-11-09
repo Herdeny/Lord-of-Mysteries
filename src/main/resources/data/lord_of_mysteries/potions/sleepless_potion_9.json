@@ -1,0 +1,29 @@
+{
+  "id": "lord_of_mysteries:sleepless_potion_9",
+  "target_pathway": "lord_of_mysteries:sleepless",
+  "target_sequence": 9,
+  "ingredients": [
+    {
+      "item": "lord_of_mysteries:night_owl_optic_nerve",
+      "order": 1,
+      "required": true
+    },
+    {
+      "item": "lord_of_mysteries:nightwatch_extract",
+      "order": 2,
+      "required": true
+    },
+    {
+      "item": "lord_of_mysteries:ash_powder",
+      "order": 3,
+      "required": false,
+      "quality_bonus": 0.2
+    }
+  ],
+  "temperature_range": [
+    55,
+    85
+  ],
+  "brewing_time_ticks": 1200,
+  "failure_result": "lord_of_mysteries:contaminated_mixture"
+}

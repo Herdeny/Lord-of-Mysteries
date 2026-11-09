@@ -1,10 +1,10 @@
 # 开发状态
 
 <!-- project-status:start -->
-- 当前版本：**`0.9.39-1.20.1`**
-- 开发阶段：**v0.9 生存经济与安全增强，M6 待实施；1.0 指导书 r1**（M6）
+- 当前版本：**`0.9.40-1.20.1`**
+- 开发阶段：**v0.9 M6 不眠者序列9纵切与视觉动作增强；1.0 指导书 r1**（M6）
 - 技术基线：Minecraft **1.20.1** · Forge **47.4.20** · Java **17**
-- 最后更新：**2026-11-09 02:01:16 UTC+00:00**（`2026-11-09T02:01:16Z`）
+- 最后更新：**2026-11-09 04:27:22 UTC+00:00**（`2026-11-09T04:27:22Z`）
 <!-- project-status:end -->
 
 ## 里程碑
@@ -22,7 +22,7 @@
 | M3 | Five launch pathways | 已完成 | 占卜家、观众、猎人、偷盗者和学徒序列 9–5 已形成机器可验证的生存、调查、战斗、晋升与资源闭环，进入可玩候选和真人互补验收。 |
 | M4 | Organizations and artifacts | 已完成 | 12个组织、周战略与每日自主行动、三席轮值联络员及24/24件封印物形成机器可玩闭环。 |
 | M5 | Spirit world and dreams | 已完成 | 30分钟灵界远征、12类实体生态与2–4人组织共享梦境已形成机器可验证的进入、交互、结算和安全恢复闭环。 |
-| M6 | Second pathway wave | 进行中 | 水手、不眠者、收尸人和歌颂者序列 9–5。 |
+| M6 | Second pathway wave | 进行中 | 不眠者序列9首个可玩纵切已接入；四途径9–5仍在推进。 |
 | M7 | Production and compatibility | 规划 | 十个工位及 JEI、EMI、Curios、Create、Farmer's Delight 和 Jade 兼容。 |
 | M8 | Third pathway wave | 远期 | 战士、秘祈人、阅读者、刺客、耕种者和药师序列 9–5。 |
 | M9 | Complete 22 pathways | 远期 | 补齐 v0.9 规格中的剩余七条途径序列 9–5。 |
@@ -118,6 +118,12 @@ python scripts/run_server_restart_matrix.py --timeout 180
 
 范围、来源、配置和未完成边界见 [模型、贴图与粒子](Visual-Assets)。这不等于所有v0.9未来形态或长期多人真人验收已经完成。
 
+## 0.9.40：不眠者与表现层增量
+
+- [不眠者9入门、材料、守夜与恢复](M6-Nightwatch)：Y夜视，U状态，/pm next接入；不是M6全途径完成。
+- [贴图、模型动作、粒子降级与Jade/JEI验证](Visual-Polish-0.9.40)：6新图标、29生物配置、16粒子/8运动语义。
+- [本轮真实测试与限制](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/VALIDATION_0.9.40.md)；Pages源码图鉴345条，线上发布需看实际版本。
+
 ## 0.9.39：生存与可靠性增量
 
 新增村民/流浪商人交易候选、草药堆肥、开放水域钓鱼补给、4条研钵配方（共12条）、10节点生存进度；修复偷窃拒付先扣目标库存，并回归遮挡、PvP、重试等反向路径。
@@ -127,4 +133,4 @@ python scripts/run_server_restart_matrix.py --timeout 180
 - [1.0指导书](1.0-Design-Guide)：20领域、39任务、48类验收，属于设计目标，不是1.0成品。
 - [1.0验收矩阵](1.0-Acceptance-Matrix)：真人、性能、兼容和权利审阅不能以机器测试替代。
 
-本轮[完整验证记录](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/VALIDATION_0.9.39.md)包含507/43测试、偷窃旧顺序失败复现、实际客户端进度/输入保护，以及未完成边界。
+本轮[完整验证记录](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/VALIDATION_0.9.39.md)包含当时507/43测试、偷窃旧顺序失败复现、实际客户端进度/输入保护，以及未完成边界。

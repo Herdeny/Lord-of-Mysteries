@@ -5,6 +5,8 @@ import net.minecraft.resources.ResourceLocation;
 import top.aurora.lordofmysteries.ProjectMystery;
 
 public enum CreatureVisual {
+    NIGHT_OWL(Shape.BIRD, 8, 4, 0xBDBDFF),
+    SLEEPLESS_SHADE(Shape.HUMANOID, 0, 8, 0xBDBDFF),
     SEER_BREAKDOWN(Shape.HUMANOID, 0, 4, 0xBA9BFF),
     THIEF_BREAKDOWN(Shape.HUMANOID, 0, 2, 0x72DDCD),
     APPRENTICE_BREAKDOWN(Shape.HUMANOID, 1, 3, 0x72E8FF),

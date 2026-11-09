@@ -81,6 +81,11 @@ public final class M2FoundationAbilityHandler {
             return false;
         }
         PlayerMysteryData data = MysteryCapability.get(player);
+        if (top.aurora.lordofmysteries.nightwatch.NightwatchService.supports(player)) {
+            if (slot == AbilitySlot.PRIMARY) return top.aurora.lordofmysteries.nightwatch.NightwatchService.toggleVision(player);
+            top.aurora.lordofmysteries.nightwatch.NightwatchService.status(player);
+            return true;
+        }
         if (data.pathway != null
                 && M3LaunchAbilityLogic.supports(
                         data.pathway.getPath(), data.sequence)) {

@@ -92,7 +92,7 @@
   }
   var heroTags = $("#hero-tags");
   if (heroTags) {
-    ["五条途径", "序列晋升", "魔药炼制", "调查推理", "失控风险"].forEach(function (label) {
+    ["五条首发 + 不眠者9", "序列晋升", "魔药炼制", "调查推理", "失控风险"].forEach(function (label) {
       heroTags.appendChild(create("span", "pill type", label));
     });
   }
@@ -109,7 +109,7 @@
   var stats = [
     [entries.length, "图鉴条目"],
     [registeredContent, "注册内容"],
-    [(data.pathwaysOverview || []).length, "首发途径"],
+    [(data.pathwaysOverview || []).length, "可玩途径入口"],
     [entries.filter(function (entry) { return entry.type === "ability"; }).length, "能力说明"]
   ];
   var statsRoot = $("#stats");
@@ -168,6 +168,7 @@
 
   /* Sequence explorer */
   var sequenceSets = [
+    { id: "sleepless", name: "不眠者 · 新", accent: "#aaa3e8", entries: data.sleeplessSequences || [] },
     { id: "seer", name: "占卜家", accent: "#7c5cff", entries: (data.seerSequences || []).map(function (entry) { return Object.assign({ pathway: "占卜家" }, entry); }) },
     { id: "spectator", name: "观众", accent: "#6bcad0", entries: data.spectatorSequences || [] },
     { id: "hunter", name: "猎人", accent: "#cc5b4d", entries: data.hunterSequences || [] },
@@ -209,7 +210,9 @@
       sequenceLadder.appendChild(row);
     });
     if (sequenceSummary) {
-      sequenceSummary.textContent = group.name + " · 当前展示序列 9–5 · 序列 9–7 playable，序列 6–5 code_ready";
+      sequenceSummary.textContent = group.id === "sleepless"
+          ? "不眠者 · 仅序列9可玩纵切；序列8–5仍待实现，M6未全部完成"
+          : group.name + " · 当前展示序列 9–5 · 序列 9–7 playable，序列 6–5 code_ready";
     }
     if (focusPanel) sequenceLadder.focus({ preventScroll: true });
   }

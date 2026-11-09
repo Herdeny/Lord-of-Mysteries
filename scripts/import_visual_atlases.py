@@ -12,11 +12,12 @@ MATERIALS = ["cloth", "parchment", "iron", "brass", "porcelain", "scales", "thor
              "void", "sigil"]
 
 
-def cell(image, index, columns):
+def cell(image, index, columns, rows=None):
+    rows = rows or columns
     column, row = index % columns, index // columns
     width, height = image.size
-    return image.crop((round(column * width / columns), round(row * height / columns),
-                       round((column + 1) * width / columns), round((row + 1) * height / columns)))
+    return image.crop((round(column * width / columns), round(row * height / rows),
+                       round((column + 1) * width / columns), round((row + 1) * height / rows)))
 
 
 def save_image(image, path):
@@ -73,7 +74,7 @@ def main():
     for atlas in MANIFEST["item_atlases"]:
         image = Image.open(SOURCE / atlas["file"]).convert("RGBA")
         for index, item_id in enumerate(atlas["ids"]):
-            sprite = cell(image, index, 8)
+            sprite = cell(image, index, atlas.get("columns", 8), atlas.get("rows", 8))
             sprite = sprite.resize((56, 56), Image.Resampling.NEAREST)
             target = Image.new("RGBA", (64, 64))
             target.paste(sprite, (4, 4))
@@ -101,7 +102,7 @@ def main():
                    ASSETS / "textures/particle" / (particle_id + ".png"))
         save_json({"textures": ["lord_of_mysteries:" + particle_id]},
                   ASSETS / "particles" / (particle_id + ".json"))
-    print("Imported 123 inventory sprites, 16 material tiles, 7 workstation models, 16 particles.")
+    print(f"Imported {sum(len(sheet['ids']) for sheet in MANIFEST['item_atlases'])} inventory sprites, 16 material tiles, 7 workstation models, 16 particles.")
 
 
 if __name__ == "__main__":

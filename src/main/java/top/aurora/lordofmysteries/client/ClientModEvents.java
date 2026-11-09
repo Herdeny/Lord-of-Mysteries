@@ -34,6 +34,10 @@ public final class ClientModEvents {
 
     @SubscribeEvent
     public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(ModEntities.NIGHT_OWL.get(),
+                context -> new OccultCreatureRenderer<>(context, CreatureVisual.NIGHT_OWL));
+        event.registerEntityRenderer(ModEntities.SLEEPLESS_SHADE.get(),
+                context -> new OccultCreatureRenderer<>(context, CreatureVisual.SLEEPLESS_SHADE));
         event.registerEntityRenderer(ModEntities.SEER_BREAKDOWN.get(),
                 context -> new OccultCreatureRenderer<>(context, CreatureVisual.SEER_BREAKDOWN));
         event.registerEntityRenderer(ModEntities.THIEF_BREAKDOWN.get(),

@@ -7,7 +7,8 @@
     "particles.png": "df6b7d2c08cd180eb8590a5650d45fc5dbc31beb2d7ad39f0bd6f5f3fa39c0c7",
     "materials.png": "9ab85f4309ccd76b84aaf010689dcadb9b63574d2177eae83ddc23004ee8ba96",
     "items-a.png": "58b6a1ab236f7f9d3d5807d9ee71a9485f49f54ae4c87ce185be0fbb41f52fdc",
-    "items-b.png": "da3f4114c2d939e19532e559fcaf96bfb53df69ce50a13234ee81eba406878a8"
+    "items-b.png": "da3f4114c2d939e19532e559fcaf96bfb53df69ce50a13234ee81eba406878a8",
+    "nightwatch-items-0.9.40.png": "97db0707ddbf14c12272d66bb1d0a2868b3998495fea4ad46827866ea429fc5c"
   },
   "source": "Built-in OpenAI image generation; original generated pixel art, not official artwork",
   "item_atlases": [
@@ -145,6 +146,19 @@
         "witness_stone"
       ],
       "prompt": "Create a production game sprite atlas for a Minecraft gothic Victorian occult investigation mod inspired by mystical tarot, spirit world, brass instruments and alchemical bottles. ORIGINAL pixel artwork, no copied official artwork or logos. EXACT square 1024x1024 atlas, 8 columns by 8 rows of equal 128x128 cells with NO grid lines and NO text labels. Each cell contains exactly one distinct inventory item fully inside its own cell, centered, with at least 16 pixels TRANSPARENT padding on all sides. Transparent background. Crisp pixel art, restrained muted palette with magical bright accents, readable strong silhouettes at 32x32. Orthographic item icons not isometric squares. No scenery, no shadows outside the item. Render items in ROW-MAJOR order according to the list. Potion bottles show pathway color (apprentice cyan, hunter ember orange, seer purple, spectator gold, thief dark teal) and sequence distinguished by shape/metal bands. Cursed artifacts must be recognizable as their named object. Any unused final cells entirely transparent. Item list:\n1. hunter potion 8\n2. hunter potion 9\n3. identity salt circle\n4. imprint probe\n5. imprint washing incense\n6. investigator compass\n7. investigator notes\n8. iridescent trickbird feather\n9. knowledge copy\n10. marionette scroll\n11. marionette vine core\n12. memory fragment\n13. memory sage cocoa\n14. memory seal wax\n15. meteor dust\n16. mirror crab shell\n17. moonwater\n18. mystic ink\n19. mystic playing cards\n20. newspaper\n21. paper figurine\n22. press card\n23. protective charm\n24. pure water\n25. scribe golem finger bone\n26. sealed formula dossier\n27. seer potion 5\n28. seer potion 6\n29. seer potion 7\n30. seer potion 8\n31. seer potion 9\n32. shadow marten claw\n33. shapeshifter blood\n34. shapeshifter serpent gland\n35. silver filings\n36. sleeping giant eyelash\n37. spatial rift crystal\n38. spectator potion 5\n39. spectator potion 6\n40. spectator potion 7\n41. spectator potion 8\n42. spectator potion 9\n43. spirit alcohol\n44. spirit compass\n45. spirit herb\n46. spirit lantern\n47. spirit orchid petals\n48. spirit route lantern\n49. spirit route residue\n50. spirit salt\n51. starlight moss\n52. thief potion 5\n53. thief potion 6\n54. thief potion 7\n55. thief potion 8\n56. thief potion 9\n57. twin serpent tongue\n58. white candle\n59. witness stone"
+    },
+    {
+      "file": "nightwatch-items-0.9.40.png",
+      "columns": 3,
+      "rows": 2,
+      "ids": [
+        "night_owl_optic_nerve",
+        "coffee_beans",
+        "strong_coffee",
+        "shadow_mushroom",
+        "nightwatch_extract",
+        "sleepless_potion_9"
+      ]
     }
   ],
   "material_atlas": {

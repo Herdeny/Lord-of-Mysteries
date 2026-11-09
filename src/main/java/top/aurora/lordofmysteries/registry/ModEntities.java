@@ -1,6 +1,7 @@
 package top.aurora.lordofmysteries.registry;
 
 import net.minecraft.world.entity.EntityType;
+import top.aurora.lordofmysteries.entity.SleeplessShadeEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -45,6 +46,14 @@ public final class ModEntities {
 
     public static final DeferredRegister<EntityType<?>> ENTITIES =
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ProjectMystery.MOD_ID);
+
+    public static final RegistryObject<EntityType<top.aurora.lordofmysteries.entity.NightOwlEntity>> NIGHT_OWL =
+            ENTITIES.register("night_owl", () -> EntityType.Builder.of(
+                    top.aurora.lordofmysteries.entity.NightOwlEntity::new, MobCategory.MONSTER)
+                    .sized(0.8f, 0.95f).clientTrackingRange(8).build(ProjectMystery.MOD_ID + ":night_owl"));
+    public static final RegistryObject<EntityType<SleeplessShadeEntity>> SLEEPLESS_SHADE =
+            ENTITIES.register("sleepless_shade", () -> EntityType.Builder.of(SleeplessShadeEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).clientTrackingRange(8).build(ProjectMystery.MOD_ID + ":sleepless_shade"));
 
     private static RegistryObject<EntityType<SpiritEcologyEntity>>
             spiritEcology(String id) {
@@ -214,6 +223,8 @@ public final class ModEntities {
 
     @SubscribeEvent
     public static void onCreateAttributes(EntityAttributeCreationEvent event) {
+        event.put(NIGHT_OWL.get(), top.aurora.lordofmysteries.entity.NightOwlEntity.attributes().build());
+        event.put(SLEEPLESS_SHADE.get(), Zombie.createAttributes().add(Attributes.MAX_HEALTH, 30).add(Attributes.ATTACK_DAMAGE, 5).build());
         event.put(SEER_BREAKDOWN.get(), Zombie.createAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0)
                 .add(Attributes.ATTACK_DAMAGE, 6.0)
@@ -333,6 +344,8 @@ public final class ModEntities {
     }
 
     public static void registerSpawnPlacements() {
+        SpawnPlacements.register(NIGHT_OWL.get(), SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
         SpawnPlacements.register(
                 SHAPESHIFTER_SERPENT.get(),
                 SpawnPlacements.Type.ON_GROUND,

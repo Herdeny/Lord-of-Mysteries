@@ -29,7 +29,7 @@ public final class OccultCreatureRenderer<T extends Mob>
             public void render(PoseStack pose, MultiBufferSource buffers, int light, T entity,
                                float swing, float amount, float partialTick, float age,
                                float headYaw, float headPitch) {
-                if (!entity.isInvisible()) {
+                if (!entity.isInvisible() && VisualClientConfig.EMISSIVE_DETAILS.get()) {
                     getParentModel().renderGlow(pose,
                             buffers.getBuffer(RenderType.eyes(ATLAS)), OverlayTexture.NO_OVERLAY);
                 }

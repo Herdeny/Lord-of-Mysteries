@@ -1,5 +1,5 @@
 {
-  "version": "0.9.39",
+  "version": "0.9.40",
   "scope": "M0-M5 survival resource integration; not completion of future pathways or biomes",
   "ores": [
     {
@@ -147,20 +147,124 @@
       "reagent_count": 1,
       "result": "blank_manuscript",
       "count": 2
+    },
+    {
+      "id": "nightwatch_extract",
+      "main": "lord_of_mysteries:strong_coffee",
+      "main_count": 1,
+      "reagent": "lord_of_mysteries:shadow_mushroom",
+      "reagent_count": 1,
+      "result": "nightwatch_extract",
+      "count": 1
+    },
+    {
+      "id": "shadow_mushroom",
+      "main": "minecraft:brown_mushroom",
+      "main_count": 1,
+      "reagent": "lord_of_mysteries:black_wax",
+      "reagent_count": 1,
+      "result": "shadow_mushroom",
+      "count": 1
     }
   ],
-  "fishing": {"item": "spirit_salt", "count": 1, "chance": 0.2, "open_water": true},
+  "fishing": {
+    "item": "spirit_salt",
+    "count": 1,
+    "chance": 0.2,
+    "open_water": true
+  },
   "discoveries": [
-    {"id": "root", "item": "spirit_herb", "title": "神秘学就在身边", "en": "Occultism Next Door", "description": "获得灵性草；/pm survival 查看生存路线。", "description_en": "Obtain Spirit Herb; use /pm survival for the survival route."},
-    {"id": "heather", "parent": "root", "item": "heather", "title": "从荒野到药圃", "en": "From Wilds to Garden", "description": "获得石楠。两种草药均可种在耕地，成熟后右键留根。", "description_en": "Obtain Heather. Plant either herb on farmland; right-click mature crops to keep their roots."},
-    {"id": "salt", "parent": "root", "item": "spirit_salt", "title": "盐中的微光", "en": "A Glimmer in Salt", "description": "获得灵盐；矿石、研钵、牧师和开阔水域钓鱼均是来源。", "description_en": "Obtain Spirit Salt from ore, mortar, clerics or open-water fishing."},
-    {"id": "silver", "parent": "salt", "item": "silver_filings", "title": "银色的细屑", "en": "Silver Traces", "description": "获得银屑；石镐及以上可采银纹矿，精准采集后也可熔炼。", "description_en": "Obtain Silver Filings. Mine Argent Ore with stone tools or better, or smelt silk-touched ore."},
-    {"id": "mortar", "parent": "root", "item": "mystic_mortar", "title": "动手研磨", "en": "Hands-on Alchemy", "description": "获得研钵。主手原料、副手试剂，右键加工；/pm survival recipes 查询。", "description_en": "Obtain a Mystic Mortar. Main-hand material plus offhand reagent; right-click. See /pm survival recipes."},
-    {"id": "ink", "parent": "mortar", "item": "mystic_ink", "title": "记录未知", "en": "Record the Unknown", "description": "获得神秘墨水；墨囊与灵性草，或荧光墨囊与灰烬粉可研磨。", "description_en": "Obtain Mystic Ink. Grind ink with Spirit Herb, or glow ink with Ash Powder."},
-    {"id": "candle", "parent": "mortar", "item": "white_candle", "title": "第一缕烛火", "en": "First Candlelight", "description": "获得白蜡烛；蜂脾与线可在研钵中加工，不消耗蜂巢。", "description_en": "Obtain a White Candle. Grind honeycomb with string; no hive is consumed."},
-    {"id": "incense", "parent": "heather", "item": "calming_incense", "title": "在低语之前", "en": "Before the Whispers", "description": "准备安神熏香；先学习恢复途径，再尝试危险仪式。", "description_en": "Prepare Calming Incense. Learn recovery options before attempting dangerous rituals."},
-    {"id": "cellar", "parent": "salt", "item": "black_wax", "loot_table": "occult_cellar", "title": "地下的旧秘密", "en": "Secrets Below", "description": "首次生成密教地窖箱子战利品；小心刷怪笼，奖励不含完整特性。", "description_en": "Generate loot from an Occult Cellar chest. Beware the spawner; no complete characteristics are awarded."},
-    {"id": "herbalist", "parent": "heather", "item": "heather", "loot_table": "herbalist_ruin", "title": "草药师的遗产", "en": "The Herbalist's Legacy", "description": "首次生成草药师遗迹箱子战利品，带回药草扩建自己的药圃。", "description_en": "Generate loot from a Herbalist Ruin chest and bring herbs home to expand your garden."}
+    {
+      "id": "root",
+      "item": "spirit_herb",
+      "title": "神秘学就在身边",
+      "en": "Occultism Next Door",
+      "description": "获得灵性草；/pm survival 查看生存路线。",
+      "description_en": "Obtain Spirit Herb; use /pm survival for the survival route."
+    },
+    {
+      "id": "heather",
+      "parent": "root",
+      "item": "heather",
+      "title": "从荒野到药圃",
+      "en": "From Wilds to Garden",
+      "description": "获得石楠。两种草药均可种在耕地，成熟后右键留根。",
+      "description_en": "Obtain Heather. Plant either herb on farmland; right-click mature crops to keep their roots."
+    },
+    {
+      "id": "salt",
+      "parent": "root",
+      "item": "spirit_salt",
+      "title": "盐中的微光",
+      "en": "A Glimmer in Salt",
+      "description": "获得灵盐；矿石、研钵、牧师和开阔水域钓鱼均是来源。",
+      "description_en": "Obtain Spirit Salt from ore, mortar, clerics or open-water fishing."
+    },
+    {
+      "id": "silver",
+      "parent": "salt",
+      "item": "silver_filings",
+      "title": "银色的细屑",
+      "en": "Silver Traces",
+      "description": "获得银屑；石镐及以上可采银纹矿，精准采集后也可熔炼。",
+      "description_en": "Obtain Silver Filings. Mine Argent Ore with stone tools or better, or smelt silk-touched ore."
+    },
+    {
+      "id": "mortar",
+      "parent": "root",
+      "item": "mystic_mortar",
+      "title": "动手研磨",
+      "en": "Hands-on Alchemy",
+      "description": "获得研钵。主手原料、副手试剂，右键加工；/pm survival recipes 查询。",
+      "description_en": "Obtain a Mystic Mortar. Main-hand material plus offhand reagent; right-click. See /pm survival recipes."
+    },
+    {
+      "id": "ink",
+      "parent": "mortar",
+      "item": "mystic_ink",
+      "title": "记录未知",
+      "en": "Record the Unknown",
+      "description": "获得神秘墨水；墨囊与灵性草，或荧光墨囊与灰烬粉可研磨。",
+      "description_en": "Obtain Mystic Ink. Grind ink with Spirit Herb, or glow ink with Ash Powder."
+    },
+    {
+      "id": "candle",
+      "parent": "mortar",
+      "item": "white_candle",
+      "title": "第一缕烛火",
+      "en": "First Candlelight",
+      "description": "获得白蜡烛；蜂脾与线可在研钵中加工，不消耗蜂巢。",
+      "description_en": "Obtain a White Candle. Grind honeycomb with string; no hive is consumed."
+    },
+    {
+      "id": "incense",
+      "parent": "heather",
+      "item": "calming_incense",
+      "title": "在低语之前",
+      "en": "Before the Whispers",
+      "description": "准备安神熏香；先学习恢复途径，再尝试危险仪式。",
+      "description_en": "Prepare Calming Incense. Learn recovery options before attempting dangerous rituals."
+    },
+    {
+      "id": "cellar",
+      "parent": "salt",
+      "item": "black_wax",
+      "loot_table": "occult_cellar",
+      "title": "地下的旧秘密",
+      "en": "Secrets Below",
+      "description": "首次生成密教地窖箱子战利品；小心刷怪笼，奖励不含完整特性。",
+      "description_en": "Generate loot from an Occult Cellar chest. Beware the spawner; no complete characteristics are awarded."
+    },
+    {
+      "id": "herbalist",
+      "parent": "heather",
+      "item": "heather",
+      "loot_table": "herbalist_ruin",
+      "title": "草药师的遗产",
+      "en": "The Herbalist's Legacy",
+      "description": "首次生成草药师遗迹箱子战利品，带回药草扩建自己的药圃。",
+      "description_en": "Generate loot from a Herbalist Ruin chest and bring herbs home to expand your garden."
+    }
   ],
   "mob_drops": [
     {

@@ -11,11 +11,19 @@ import net.minecraft.core.particles.SimpleParticleType;
 public final class OccultParticle extends TextureSheetParticle {
     private static final VisualBudget BUDGET = new VisualBudget();
     private static ClientLevel budgetLevel;
+    private final ParticleMotion motion;
+    private final float baseSize;
+    private final float phase;
+    private final boolean reducedMotion;
 
     private OccultParticle(ClientLevel level, double x, double y, double z,
                            double speedX, double speedY, double speedZ,
-                           SpriteSet sprites, int color, int duration, float size) {
+                           SpriteSet sprites, int color, int duration, float size, ParticleMotion motion) {
         super(level, x, y, z);
+        this.motion = motion;
+        baseSize = size;
+        phase = level.random.nextFloat() * (float) Math.PI * 2;
+        reducedMotion = VisualClientConfig.REDUCED_MOTION.get();
         xd = speedX;
         yd = speedY;
         zd = speedZ;
@@ -23,19 +31,27 @@ public final class OccultParticle extends TextureSheetParticle {
         hasPhysics = false;
         lifetime = duration;
         quadSize = size;
+        alpha = 0;
         setColor(((color >> 16) & 255) / 255f, ((color >> 8) & 255) / 255f, (color & 255) / 255f);
         pickSprite(sprites);
     }
 
     @Override
     public void tick() {
+        var before = motion.sample((float) age / lifetime, phase, reducedMotion);
         super.tick();
-        alpha = Math.max(0, 1f - (float) age / lifetime);
+        var after = motion.sample((float) age / lifetime, phase, reducedMotion);
+        alpha = after.alpha();
+        quadSize = baseSize * after.scale();
+        oRoll = roll;
+        roll = after.roll();
+        move(after.offsetX() - before.offsetX(), after.offsetY() - before.offsetY(),
+                after.offsetZ() - before.offsetZ());
     }
 
     @Override
     protected int getLightColor(float partialTick) {
-        return 0xF000F0;
+        return VisualClientConfig.EMISSIVE_DETAILS.get() ? 0xF000F0 : super.getLightColor(partialTick);
     }
 
     @Override
@@ -60,7 +76,8 @@ public final class OccultParticle extends TextureSheetParticle {
             }
             if (!BUDGET.allow(level.getGameTime(), VisualClientConfig.PARTICLE_DENSITY.get(), duration)) return null;
             return new OccultParticle(level, x, y, z, speedX, speedY, speedZ,
-                    sprites, color, duration, size);
+                    sprites, color, duration, size, ParticleMotion.forId(
+                            net.minecraft.core.registries.BuiltInRegistries.PARTICLE_TYPE.getKey(type).getPath()));
         }
     }
 }

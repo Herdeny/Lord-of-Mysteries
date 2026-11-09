@@ -1,0 +1,15 @@
+{
+  "type": "lord_of_mysteries:mystic_mortar",
+  "main": {
+    "item": "lord_of_mysteries:strong_coffee"
+  },
+  "main_count": 1,
+  "reagent": {
+    "item": "lord_of_mysteries:shadow_mushroom"
+  },
+  "reagent_count": 1,
+  "result": {
+    "item": "lord_of_mysteries:nightwatch_extract",
+    "count": 1
+  }
+}

@@ -87,6 +87,10 @@ public final class ProjectMysteryCommands {
 
     private static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("pm")
+                .then(Commands.literal("nightwatch")
+                        .executes(context -> top.aurora.lordofmysteries.nightwatch.NightwatchService.guide(context.getSource().getPlayerOrException()))
+                        .then(Commands.literal("status").executes(context -> top.aurora.lordofmysteries.nightwatch.NightwatchService.status(context.getSource().getPlayerOrException())))
+                        .then(Commands.literal("vision").executes(context -> top.aurora.lordofmysteries.nightwatch.NightwatchService.toggleVision(context.getSource().getPlayerOrException()) ? 1 : 0)))
                 .then(Commands.literal("survival")
                         .executes(context -> top.aurora.lordofmysteries.survival.SurvivalGuide.show(
                                 context.getSource().getPlayerOrException()))

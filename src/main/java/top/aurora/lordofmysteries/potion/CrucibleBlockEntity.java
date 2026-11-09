@@ -176,6 +176,7 @@ public final class CrucibleBlockEntity extends BlockEntity {
                     SeerPotionItem.create(ModItems.APPRENTICE_POTION_6.get(), brew.quality());
             case APPRENTICE_5 ->
                     SeerPotionItem.create(ModItems.APPRENTICE_POTION_5.get(), brew.quality());
+            case SLEEPLESS_9 -> SeerPotionItem.create(ModItems.SLEEPLESS_POTION_9.get(), brew.quality());
             case CONTAMINATED -> new ItemStack(ModItems.CONTAMINATED_MIXTURE.get());
         };
         brewing = false;
@@ -192,7 +193,9 @@ public final class CrucibleBlockEntity extends BlockEntity {
     }
 
     private static boolean isIngredient(ItemStack stack) {
-        return stack.is(ModItems.SPIRIT_HERB.get())
+        return stack.is(ModItems.NIGHT_OWL_OPTIC_NERVE.get())
+                || stack.is(ModItems.NIGHTWATCH_EXTRACT.get())
+                || stack.is(ModItems.SPIRIT_HERB.get())
                 || stack.is(ModItems.DIVINATION_CRYSTAL.get())
                 || stack.is(ModItems.MOONWATER.get())
                 || stack.is(ModItems.DEEP_GRAY_SPIRIT_TEAR.get())

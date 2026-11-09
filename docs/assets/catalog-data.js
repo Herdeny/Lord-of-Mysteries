@@ -1286,7 +1286,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -1442,7 +1442,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -1502,7 +1502,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -1562,7 +1562,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -1696,13 +1696,13 @@ window.LOM = window.LOM || {};
     "id": "lord_of_mysteries:mystic_mortar",
     "name": "神秘研钵",
     "en": "Mystic Mortar",
-    "summary": "双手投料、右键加工的神秘学研钵，提供12种基础消耗品加工路线。",
+    "summary": "双手投料、右键加工的神秘学研钵，提供14种基础消耗品与守夜材料加工路线。",
     "tags": [
       "已注册",
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -1834,7 +1834,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -1894,7 +1894,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -1970,7 +1970,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -2046,7 +2046,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -2529,6 +2529,38 @@ window.LOM = window.LOM || {};
   {
     "type": "entity",
     "image": null,
+    "id": "lord_of_mysteries:night_owl",
+    "name": "夜枭",
+    "en": "Night Owl",
+    "summary": "暗色耳羽、面盘、分层翼羽的夜间敌对飞行生物。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "不眠者",
+      "守夜",
+      "M6",
+      "0.9.40"
+    ],
+    "details": [
+      [
+        "生态",
+        "暗森林/针叶林/原始松木针叶林；原版黑暗怪物条件"
+      ],
+      [
+        "战斗",
+        "16生命、3基础攻击、24格跟踪；非穿墙飞行"
+      ],
+      [
+        "掉落",
+        "夜枭视络1、羽毛0–2"
+      ]
+    ],
+    "long": "本轮是M6不眠者序列9纵切，不是四途径全部完成。完整入门、风险、多人和存档边界见Wiki的M6-Nightwatch。所有技能由服务端校验，粒子不造成额外伤害。"
+  },
+  {
+    "type": "entity",
+    "image": null,
     "id": "lord_of_mysteries:prayer_echo",
     "name": "祈祷回声",
     "en": "Prayer Echo",
@@ -2749,6 +2781,38 @@ window.LOM = window.LOM || {};
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "entity",
+    "image": null,
+    "id": "lord_of_mysteries:sleepless_shade",
+    "name": "不眠暗影",
+    "en": "Sleepless Shade",
+    "summary": "不眠者失控后的兜帽与新月残影，延续特性掉落链。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "不眠者",
+      "守夜",
+      "M6",
+      "0.9.40"
+    ],
+    "details": [
+      [
+        "来源",
+        "不眠者失控转化；不会水中转成原版溺尸"
+      ],
+      [
+        "表现",
+        "独立兜帽/新月饰纹/触须；30生命、5基础攻击"
+      ],
+      [
+        "边界",
+        "原生分部动画；声音复用原版幻翼，不声称原作音效"
+      ]
+    ],
+    "long": "本轮是M6不眠者序列9纵切，不是四途径全部完成。完整入门、风险、多人和存档边界见Wiki的M6-Nightwatch。所有技能由服务端校验，粒子不造成额外伤害。"
   },
   {
     "type": "entity",
@@ -4188,6 +4252,34 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/coffee_beans.png",
+    "id": "lord_of_mysteries:coffee_beans",
+    "name": "深焙咖啡豆",
+    "en": "Dark-Roasted Coffee Beans",
+    "summary": "营火和农民提供的浓黑咖啡原料。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "不眠者",
+      "守夜",
+      "M6",
+      "0.9.40"
+    ],
+    "details": [
+      [
+        "获取",
+        "农民新手候选1绿宝石/4豆、最多8次；营火烘烤可可30秒"
+      ],
+      [
+        "适配",
+        "烘烤可可是MC替代获取，不是植物学或原著设定"
+      ]
+    ],
+    "long": "本轮是M6不眠者序列9纵切，不是四途径全部完成。完整入门、风险、多人和存档边界见Wiki的M6-Nightwatch。所有技能由服务端校验，粒子不造成额外伤害。"
+  },
+  {
+    "type": "item",
     "image": null,
     "id": "lord_of_mysteries:color_eater_spawn_egg",
     "name": "噬色兽刷怪蛋",
@@ -4966,7 +5058,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -5704,6 +5796,94 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/night_owl_optic_nerve.png",
+    "id": "lord_of_mysteries:night_owl_optic_nerve",
+    "name": "夜枭视络",
+    "en": "Night Owl Optic Nerve",
+    "summary": "不眠者序列9的坩埚核心材料。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "不眠者",
+      "守夜",
+      "M6",
+      "0.9.40"
+    ],
+    "details": [
+      [
+        "获取",
+        "夜枭固定掉落1；新手牧师交易池8绿宝石/份、最多3次"
+      ],
+      [
+        "下一步",
+        "坩埚第1项 → 守夜辅料 → 可选灰烬粉末"
+      ]
+    ],
+    "long": "本轮是M6不眠者序列9纵切，不是四途径全部完成。完整入门、风险、多人和存档边界见Wiki的M6-Nightwatch。所有技能由服务端校验，粒子不造成额外伤害。"
+  },
+  {
+    "type": "item",
+    "image": null,
+    "id": "lord_of_mysteries:night_owl_spawn_egg",
+    "name": "夜枭刷怪蛋",
+    "en": "Night Owl Spawn Egg",
+    "summary": "已在 Forge 物品注册表中实现、具备中英双语名称的可获取物品。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步"
+    ],
+    "details": [
+      [
+        "注册表",
+        "Forge item registry"
+      ],
+      [
+        "注册 ID",
+        "lord_of_mysteries:night_owl_spawn_egg"
+      ],
+      [
+        "代码来源",
+        "ModItems.java"
+      ],
+      [
+        "资源状态",
+        "item 模型已提供"
+      ]
+    ],
+    "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "image": "assets/item-icons/nightwatch_extract.png",
+    "id": "lord_of_mysteries:nightwatch_extract",
+    "name": "守夜辅料",
+    "en": "Nightwatch Reagents",
+    "summary": "把咖啡与暗影蘑菇预处理成适配三槽坩埚的材料。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "不眠者",
+      "守夜",
+      "M6",
+      "0.9.40"
+    ],
+    "details": [
+      [
+        "加工",
+        "研钵浓黑咖啡1+暗影蘑菇1，返玻璃瓶"
+      ],
+      [
+        "投料",
+        "夜枭视络之后投入，灰烬粉末之前"
+      ]
+    ],
+    "long": "本轮是M6不眠者序列9纵切，不是四途径全部完成。完整入门、风险、多人和存档边界见Wiki的M6-Nightwatch。所有技能由服务端校验，粒子不造成额外伤害。"
+  },
+  {
+    "type": "item",
     "image": "assets/item-icons/paper_figurine.png",
     "id": "lord_of_mysteries:paper_figurine",
     "name": "替身纸人",
@@ -6088,6 +6268,34 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "item",
+    "image": "assets/item-icons/shadow_mushroom.png",
+    "id": "lord_of_mysteries:shadow_mushroom",
+    "name": "暗影蘑菇",
+    "en": "Shadow Mushroom",
+    "summary": "低阶夜巡材料，也可通过研钵稳定获得。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "不眠者",
+      "守夜",
+      "M6",
+      "0.9.40"
+    ],
+    "details": [
+      [
+        "获取",
+        "牧师新手候选1绿宝石/2菇；研钵棕色蘑菇+黑蜡；不眠残影掉落"
+      ],
+      [
+        "用途",
+        "加工守夜辅料"
+      ]
+    ],
+    "long": "本轮是M6不眠者序列9纵切，不是四途径全部完成。完整入门、风险、多人和存档边界见Wiki的M6-Nightwatch。所有技能由服务端校验，粒子不造成额外伤害。"
+  },
+  {
+    "type": "item",
     "image": "assets/item-icons/shapeshifter_blood.png",
     "id": "lord_of_mysteries:shapeshifter_blood",
     "name": "变形怪之血",
@@ -6386,7 +6594,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -6590,7 +6798,7 @@ window.LOM = window.LOM || {};
       "中英双语",
       "自动同步",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -6693,6 +6901,38 @@ window.LOM = window.LOM || {};
       ]
     ],
     "long": "此条目由 <code>scripts/gen_pages_catalog.py</code> 从实际 Forge 注册类和语言资源自动生成。若注册内容、ID 或翻译发生变化，Pages 图鉴会在构建门禁中要求同步更新。已有人工详细说明的同 ID 条目会优先保留。"
+  },
+  {
+    "type": "item",
+    "image": "assets/item-icons/strong_coffee.png",
+    "id": "lord_of_mysteries:strong_coffee",
+    "name": "浓黑咖啡",
+    "en": "Strong Black Coffee",
+    "summary": "清除不眠者当日白昼倦怠，保留守夜层数。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "不眠者",
+      "守夜",
+      "M6",
+      "0.9.40"
+    ],
+    "details": [
+      [
+        "合成",
+        "2咖啡豆+糖+水桶+玻璃瓶；返空桶"
+      ],
+      [
+        "饮用",
+        "32tick；无倦怠不消耗；生存返玻璃瓶；满包掉落"
+      ],
+      [
+        "加工",
+        "研钵主手咖啡、副手暗影蘑菇，各1 → 守夜辅料，返玻璃瓶"
+      ]
+    ],
+    "long": "本轮是M6不眠者序列9纵切，不是四途径全部完成。完整入门、风险、多人和存档边界见Wiki的M6-Nightwatch。所有技能由服务端校验，粒子不造成额外伤害。"
   },
   {
     "type": "item",
@@ -8068,6 +8308,42 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "potion",
+    "image": "assets/item-icons/sleepless_potion_9.png",
+    "id": "lord_of_mysteries:sleepless_potion_9",
+    "name": "不眠者魔药",
+    "en": "Sleepless Potion",
+    "summary": "普通人的第二批途径入口：不眠者序列9。",
+    "tags": [
+      "已注册",
+      "中英双语",
+      "自动同步",
+      "不眠者",
+      "守夜",
+      "M6",
+      "0.9.40"
+    ],
+    "details": [
+      [
+        "门槛",
+        "未选择途径、存活、非旁观、无独占活动"
+      ],
+      [
+        "灵性",
+        "114上限；Y夜视0.5/秒；U状态"
+      ],
+      [
+        "守夜",
+        "完整夜晚最多5层；夜间移速+4%/层、攻击+6%/层，昼移速-10%/层"
+      ],
+      [
+        "说明",
+        "/pm nightwatch；后续序列8–5未实现"
+      ]
+    ],
+    "long": "本轮是M6不眠者序列9纵切，不是四途径全部完成。完整入门、风险、多人和存档边界见Wiki的M6-Nightwatch。所有技能由服务端校验，粒子不造成额外伤害。"
+  },
+  {
+    "type": "potion",
     "image": "assets/item-icons/spectator_potion_5.png",
     "id": "lord_of_mysteries:spectator_potion_5",
     "name": "梦境行者魔药",
@@ -8395,7 +8671,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -8426,7 +8702,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -8457,7 +8733,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -8488,7 +8764,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -8519,7 +8795,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -8550,7 +8826,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -8581,7 +8857,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -8612,7 +8888,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -8636,6 +8912,37 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "recipe",
+    "id": "lord_of_mysteries:recipe/mortar_nightwatch_extract",
+    "name": "守夜辅料 · 研钵配方",
+    "en": "nightwatch_extract",
+    "summary": "浓黑咖啡 ×1 + 暗影蘑菇 ×1 → 守夜辅料 ×1",
+    "tags": [
+      "研钵",
+      "生存资源",
+      "0.9.40"
+    ],
+    "details": [
+      [
+        "主手",
+        "浓黑咖啡 ×1"
+      ],
+      [
+        "副手",
+        "暗影蘑菇 ×1"
+      ],
+      [
+        "产物",
+        "守夜辅料 ×1"
+      ],
+      [
+        "来源",
+        "recipes/mortar_nightwatch_extract.json"
+      ]
+    ],
+    "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"
+  },
+  {
+    "type": "recipe",
     "id": "lord_of_mysteries:recipe/mortar_pressed_manuscript",
     "name": "空白手稿 · 研钵配方",
     "en": "pressed_manuscript",
@@ -8643,7 +8950,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -8674,7 +8981,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -8705,7 +9012,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -8729,6 +9036,37 @@ window.LOM = window.LOM || {};
   },
   {
     "type": "recipe",
+    "id": "lord_of_mysteries:recipe/mortar_shadow_mushroom",
+    "name": "暗影蘑菇 · 研钵配方",
+    "en": "shadow_mushroom",
+    "summary": "棕色蘑菇 ×1 + 黑色仪式蜡 ×1 → 暗影蘑菇 ×1",
+    "tags": [
+      "研钵",
+      "生存资源",
+      "0.9.40"
+    ],
+    "details": [
+      [
+        "主手",
+        "棕色蘑菇 ×1"
+      ],
+      [
+        "副手",
+        "黑色仪式蜡 ×1"
+      ],
+      [
+        "产物",
+        "暗影蘑菇 ×1"
+      ],
+      [
+        "来源",
+        "recipes/mortar_shadow_mushroom.json"
+      ]
+    ],
+    "long": "不是无消耗法术；保持双手顺序，对研钵右键。支持数据包覆盖，游戏内命令显示实际已加载配方。蜂蜜瓶配方返还玻璃瓶。旧工作台和坩埚链路不受替代。"
+  },
+  {
+    "type": "recipe",
     "id": "lord_of_mysteries:recipe/mortar_silver_grinding",
     "name": "银屑 · 研钵配方",
     "en": "silver_grinding",
@@ -8736,7 +9074,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "研钵",
       "生存资源",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -8767,7 +9105,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "原生世界生成",
       "探索",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -8798,7 +9136,7 @@ window.LOM = window.LOM || {};
     "tags": [
       "原生世界生成",
       "探索",
-      "0.9.39"
+      "0.9.40"
     ],
     "details": [
       [
@@ -9027,7 +9365,7 @@ window.LOM = window.LOM || {};
     if (generatedById[entry.id]) entry.image = generatedById[entry.id].image;
     if (generatedById[entry.id] && generatedById[entry.id].survivalDetails) {
       entry.details = (entry.details || []).concat(generatedById[entry.id].survivalDetails);
-      entry.tags = (entry.tags || []).concat(['生存资源', '0.9.39']);
+      entry.tags = (entry.tags || []).concat(['生存资源', '0.9.40']);
     }
   });
   manualEntries.forEach(function (entry) { manualIds[entry.id] = true; });
@@ -9035,14 +9373,14 @@ window.LOM = window.LOM || {};
     return !manualIds[entry.id];
   }));
   D.catalogMeta = {
-  "registeredItems": 161,
+  "registeredItems": 168,
   "registeredBlocks": 16,
-  "registeredEntities": 28,
+  "registeredEntities": 30,
   "organizationDefinitions": 12,
   "artifactDefinitions": 24,
   "spiritWeatherDefinitions": 6,
   "spiritEncounterDefinitions": 12,
-  "uniqueRegistryEntries": 237,
+  "uniqueRegistryEntries": 248,
   "source": "Forge registries + organization/artifact/spirit + survival manifest + zh_cn/en_us"
 };
 })(window.LOM);

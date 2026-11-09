@@ -65,6 +65,17 @@ public final class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, ProjectMystery.MOD_ID);
 
+    public static final RegistryObject<Item> NIGHT_OWL_OPTIC_NERVE = ITEMS.register("night_owl_optic_nerve", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> COFFEE_BEANS = ITEMS.register("coffee_beans", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> SHADOW_MUSHROOM = ITEMS.register("shadow_mushroom", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> NIGHTWATCH_EXTRACT = ITEMS.register("nightwatch_extract", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> STRONG_COFFEE = ITEMS.register("strong_coffee",
+            () -> new top.aurora.lordofmysteries.nightwatch.StrongCoffeeItem(new Item.Properties()));
+    public static final RegistryObject<Item> SLEEPLESS_POTION_9 = ITEMS.register("sleepless_potion_9",
+            () -> new top.aurora.lordofmysteries.potion.SleeplessPotionItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> NIGHT_OWL_SPAWN_EGG = ITEMS.register("night_owl_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.NIGHT_OWL, 0x252344, 0xb7b8e6, new Item.Properties()));
+
     /**
      * 创建无特殊行为的普通物品。
      *

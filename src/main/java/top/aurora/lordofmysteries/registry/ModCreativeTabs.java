@@ -39,6 +39,13 @@ public final class ModCreativeTabs {
                     .displayItems((params, output) -> {
                         // 展示顺序按“材料 -> 封印物 -> 功能方块”排列，便于测试时扫描。
                         output.accept(ModItems.SPIRIT_HERB.get());
+                        output.accept(ModItems.NIGHT_OWL_OPTIC_NERVE.get());
+                        output.accept(ModItems.COFFEE_BEANS.get());
+                        output.accept(ModItems.STRONG_COFFEE.get());
+                        output.accept(ModItems.SHADOW_MUSHROOM.get());
+                        output.accept(ModItems.NIGHTWATCH_EXTRACT.get());
+                        output.accept(ModItems.SLEEPLESS_POTION_9.get());
+                        output.accept(ModItems.NIGHT_OWL_SPAWN_EGG.get());
                         output.accept(ModItems.SALTSTONE_ORE.get());
                         output.accept(ModItems.DEEPSLATE_SALTSTONE_ORE.get());
                         output.accept(ModItems.ARGENT_ORE.get());

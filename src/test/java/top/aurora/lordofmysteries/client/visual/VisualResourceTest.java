@@ -42,7 +42,7 @@ class VisualResourceTest {
                 count++;
             }
         }
-        assertEquals(123, count);
+        assertEquals(129, count);
     }
 
     @Test

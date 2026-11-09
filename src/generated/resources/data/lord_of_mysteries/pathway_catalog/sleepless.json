@@ -16,11 +16,13 @@
     "used_by": [],
     "countered_by": []
   },
-  "implementation_state": "planned",
+  "implementation_state": "playable",
   "group": "night",
   "display_name_key": "pathway.lord_of_mysteries.sleepless",
   "description_key": "pathway.lord_of_mysteries.sleepless.description",
   "color": "#312E81",
-  "status": "planned",
-  "implemented_sequences": []
+  "status": "implemented",
+  "implemented_sequences": [
+    9
+  ]
 }

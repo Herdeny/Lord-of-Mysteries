@@ -110,7 +110,10 @@ public final class InsanityEventHandler {
         if (!(player.level() instanceof ServerLevel level)) return false;
         Mob body;
         String translationKey;
-        if (M2PathwayPotionItem.Pathway.THIEF.id().equals(data.pathway)) {
+        if (top.aurora.lordofmysteries.nightwatch.NightwatchService.PATHWAY.equals(data.pathway)) {
+            body = ModEntities.SLEEPLESS_SHADE.get().create(level);
+            translationKey = "entity.lord_of_mysteries.sleepless_shade";
+        } else if (M2PathwayPotionItem.Pathway.THIEF.id().equals(data.pathway)) {
             body = ModEntities.THIEF_BREAKDOWN.get().create(level);
             translationKey = "entity.lord_of_mysteries.thief_breakdown";
         } else if (M2PathwayPotionItem.Pathway.APPRENTICE.id().equals(data.pathway)) {

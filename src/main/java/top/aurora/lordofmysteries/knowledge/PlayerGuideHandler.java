@@ -16,6 +16,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import top.aurora.lordofmysteries.ProjectMystery;
+import top.aurora.lordofmysteries.nightwatch.NightwatchService;
 import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.PlayerMysteryData;
 import top.aurora.lordofmysteries.registry.ModItems;
@@ -68,6 +69,7 @@ public final class PlayerGuideHandler {
     }
 
     public static int showNextStep(ServerPlayer player) {
+        if (NightwatchService.supports(player)) return NightwatchService.guide(player);
         PlayerMysteryData data = MysteryCapability.get(player);
         M1ProgressAdvisor.Stage m1Stage = currentStage(player, data);
         if (shouldUseM3Advisor(data, m1Stage)) {
@@ -194,6 +196,10 @@ public final class PlayerGuideHandler {
 
     private static void sendNextStep(ServerPlayer player,
                                      M1ProgressAdvisor.Stage stage) {
+        if (NightwatchService.supports(player)) {
+            NightwatchService.guide(player);
+            return;
+        }
         player.sendSystemMessage(Component.translatable(
                 "guide.lord_of_mysteries.next.title")
                 .withStyle(ChatFormatting.GOLD));

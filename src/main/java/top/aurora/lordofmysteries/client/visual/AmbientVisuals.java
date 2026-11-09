@@ -17,7 +17,7 @@ public final class AmbientVisuals {
     public static void onTick(TickEvent.ClientTickEvent event) {
         Minecraft client = Minecraft.getInstance();
         if (event.phase != TickEvent.Phase.END || client.level == null
-                || client.player == null || client.isPaused()
+                || client.player == null || client.isPaused() || !VisualClientConfig.AMBIENT_PARTICLES.get()
                 || client.player.tickCount % 10 != 0) return;
         var dimension = client.level.dimension().location();
         if (!ProjectMystery.MOD_ID.equals(dimension.getNamespace())) return;

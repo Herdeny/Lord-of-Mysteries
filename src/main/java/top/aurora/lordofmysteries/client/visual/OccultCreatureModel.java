@@ -40,7 +40,12 @@ public final class OccultCreatureModel<T extends Mob>
                 pivotBox(root, "left_leg", trim, -1.5f, 0, -2, 3, 9, 4, 3, -9, 0);
                 pivotBox(root, "right_leg", trim, -1.5f, 0, -2, 3, 9, 4, -3, -9, 0);
                 box(root.getChild("head"), "eyes", 15, -2.5f, -4.5f, -3.65f, 5, 1, 0.3f);
-                if (visual == CreatureVisual.SEER_BREAKDOWN) {
+                if (visual == CreatureVisual.SLEEPLESS_SHADE) {
+                    box(root.getChild("head"), "hood", 0, -4.5f, -8, -3, 9, 9, 8);
+                    box(root, "moon_left", 4, -3, -20, -3.2f, 1, 5, 0.5f);
+                    box(root, "moon_lower", 4, -2, -16, -3.2f, 4, 1, 0.5f);
+                    tendrils(root, 8, 5, 0, -10, 3);
+                } else if (visual == CreatureVisual.SEER_BREAKDOWN) {
                     box(root, "crown", 14, -5, -32, -5, 10, 1, 10);
                     box(root, "crown_top", 0, -3, -36, -3, 6, 4, 6);
                     tendrils(root, 0, 4, 0, -22, 4);
@@ -99,7 +104,18 @@ public final class OccultCreatureModel<T extends Mob>
                     box(root, "tail", skin, -2, -7, 3, 4, 1, 7);
                     box(root, "left_foot", trim, 1, -4, -1, 1, 4, 3);
                     box(root, "right_foot", trim, -2, -4, -1, 1, 4, 3);
-                    if (visual == CreatureVisual.COMPASS_BIRD) {
+                    if (visual == CreatureVisual.NIGHT_OWL) {
+                        box(root, "face_disc", 4, -3.5f, -16.5f, -4, 7, 6, 0.5f);
+                        box(root, "owl_eyes", 15, -2.5f, -14.5f, -4.3f, 5, 1.5f, 0.3f);
+                        box(root, "ear_left", 8, 1.5f, -19, -2, 1.5f, 4, 2);
+                        box(root, "ear_right", 8, -3, -19, -2, 1.5f, 4, 2);
+                        for (int feather = 0; feather < 3; feather++) {
+                            box(root.getChild("left_wing"), "feather_" + feather, 4,
+                                    4 + feather * 2, -0.5f, 4, 2, 1, 3 + feather);
+                            box(root.getChild("right_wing"), "feather_" + feather, 4,
+                                    -6 - feather * 2, -0.5f, 4, 2, 1, 3 + feather);
+                        }
+                    } else if (visual == CreatureVisual.COMPASS_BIRD) {
                         box(root, "compass", 3, -2, -10, -3.2f, 4, 4, 0.5f);
                         box(root, "crest", 3, -0.5f, -20, -1, 1, 4, 3);
                     }
@@ -188,28 +204,40 @@ public final class OccultCreatureModel<T extends Mob>
     @Override
     public void setupAnim(T entity, float limbSwing, float limbAmount,
                           float age, float headYaw, float headPitch) {
+        applyPose(limbSwing, limbAmount, age + entity.getId() * 2.7f, headYaw, headPitch,
+                attackTime, entity.isAggressive(), entity.onGround(), riding, VisualClientConfig.REDUCED_MOTION.get());
+    }
+
+    public void applyPose(float limbSwing, float limbAmount, float age, float headYaw, float headPitch,
+                          float attack, boolean aggressive, boolean grounded, boolean seated, boolean reducedMotion) {
         root.getAllParts().forEach(ModelPart::resetPose);
+        var pose = CreatureAnimationLogic.sample(limbSwing, limbAmount, age, attack, aggressive, grounded, reducedMotion);
+        limbAmount = CreatureAnimationLogic.clamp(limbAmount, 0, 1);
+        age = Float.isFinite(age) ? age : 0;
+        limbSwing = Float.isFinite(limbSwing) ? limbSwing : 0;
         if (root.hasChild("head") && visual.shape == CreatureVisual.Shape.HUMANOID) {
-            root.getChild("head").yRot = headYaw * Mth.DEG_TO_RAD;
-            root.getChild("head").xRot = headPitch * Mth.DEG_TO_RAD * 0.5f;
+            root.getChild("head").yRot = CreatureAnimationLogic.clamp(headYaw, -85, 85) * Mth.DEG_TO_RAD;
+            root.getChild("head").xRot = CreatureAnimationLogic.clamp(headPitch, -65, 65) * Mth.DEG_TO_RAD * 0.5f;
         }
-        float walk = Mth.cos(limbSwing * 0.6662f) * limbAmount;
-        rotate("left_arm", walk - attackTime * 1.8f, 0, 0.08f);
-        rotate("right_arm", -walk - attackTime * 1.8f, 0, -0.08f);
-        if (visual.shape == CreatureVisual.Shape.HUMANOID && entity.isAggressive()) {
-            float strike = Mth.sin(Mth.sqrt(attackTime) * Mth.PI);
+        float walk = pose.walk();
+        root.y += pose.breathing();
+        root.xRot = -pose.lean();
+        rotate("left_arm", walk + pose.armPitch(), 0, 0.08f);
+        rotate("right_arm", -walk + pose.armPitch(), 0, -0.08f);
+        if (visual.shape == CreatureVisual.Shape.HUMANOID && aggressive) {
+            float strike = pose.strike();
             rotate("left_arm", -0.95f - strike * 0.75f + walk * 0.3f, 0.12f, 0.08f);
             rotate("right_arm", -0.95f - strike * 0.75f - walk * 0.3f, -0.12f, -0.08f);
         }
         rotate("left_leg", -walk, 0, 0);
         rotate("right_leg", walk, 0, 0);
-        float flap = Mth.sin(age * 0.55f) * (entity.onGround() ? 0.12f : 0.7f);
+        float flap = pose.flap();
         rotate("left_wing", 0, 0, flap);
         rotate("right_wing", 0, 0, -flap);
         for (int index = 0; index < 8; index++) {
-            rotate("segment_" + index, 0, Mth.sin(age * 0.12f + index * 0.7f) * 0.25f, 0);
-            rotate("tendril_" + index, Mth.sin(age * 0.08f + index) * 0.25f, 0,
-                    Mth.cos(age * 0.1f + index) * 0.2f);
+            rotate("segment_" + index, 0, Mth.sin(age * 0.12f + index * 0.7f) * (reducedMotion ? limbAmount * 0.15f : 0.25f), 0);
+            rotate("tendril_" + index, reducedMotion ? 0 : Mth.sin(age * 0.08f + index) * 0.25f, 0,
+                    reducedMotion ? 0 : Mth.cos(age * 0.1f + index) * 0.2f);
             float side = index % 2 == 0 ? 1 : -1;
             rotate("leg_" + index, 0, (index / 2 - 1.5f) * 0.3f,
                     side * (0.55f + Mth.sin(limbSwing + index) * limbAmount * 0.3f));
@@ -217,9 +245,9 @@ public final class OccultCreatureModel<T extends Mob>
         if (visual.shape == CreatureVisual.Shape.WISP
                 || visual.shape == CreatureVisual.Shape.LANTERN
                 || visual.shape == CreatureVisual.Shape.MASK) {
-            root.y += Mth.sin(age * 0.08f) * 0.6f;
+            if (!reducedMotion) root.y += Mth.sin(age * 0.08f) * 0.6f;
         }
-        if (riding) {
+        if (seated) {
             rotate("left_leg", -1.2f, 0, 0.2f);
             rotate("right_leg", -1.2f, 0, -0.2f);
         }
@@ -247,7 +275,7 @@ public final class OccultCreatureModel<T extends Mob>
         float blue = (visual.glow & 255) / 255f;
         pose.pushPose();
         root.translateAndRotate(pose);
-        for (String name : new String[] {"eyes", "core", "second_eyes"}) {
+        for (String name : new String[] {"eyes", "core", "second_eyes", "owl_eyes"}) {
             if (root.hasChild(name)) {
                 root.getChild(name).render(pose, vertices, 0xF000F0, overlay, red, green, blue, 1);
             }

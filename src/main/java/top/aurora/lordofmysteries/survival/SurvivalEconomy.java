@@ -26,11 +26,14 @@ public final class SurvivalEconomy {
     @SubscribeEvent
     public static void villagers(VillagerTradesEvent event) {
         if (event.getType() == VillagerProfession.FARMER) {
+            event.getTrades().get(1).add(sell(ModItems.COFFEE_BEANS.get(), 4, 1, 8, 2));
             event.getTrades().get(2).add(sell(ModItems.SPIRIT_HERB.get(), 4, 1, 8, 5));
             event.getTrades().get(2).add(sell(ModItems.HEATHER.get(), 4, 1, 8, 5));
             event.getTrades().get(3).add(buy(ModItems.SPIRIT_HERB.get(), 24));
             event.getTrades().get(3).add(buy(ModItems.HEATHER.get(), 24));
         } else if (event.getType() == VillagerProfession.CLERIC) {
+            event.getTrades().get(1).add(sell(ModItems.NIGHT_OWL_OPTIC_NERVE.get(), 1, 8, 3, 2));
+            event.getTrades().get(1).add(sell(ModItems.SHADOW_MUSHROOM.get(), 2, 1, 8, 2));
             event.getTrades().get(2).add(sell(ModItems.SPIRIT_SALT.get(), 3, 1, 8, 5));
             event.getTrades().get(3).add(sell(ModItems.MYSTIC_INK.get(), 1, 3, 4, 10));
         }

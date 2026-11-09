@@ -917,8 +917,7 @@ def main():
                 f"{pathway} ritual support focus is missing")
 
     validation = contract["validation"]
-    game_tests = source(
-        JAVA / "gametest" / "PlayerPersistenceGameTests.java")
+    game_tests = "\n".join(source(path) for path in (JAVA / "gametest").glob("*.java"))
     require(game_tests.count("@GameTest") == validation["game_tests"],
             "GameTest count drifted")
     restart_script = source(ROOT / "scripts" / "run_server_restart_matrix.py")

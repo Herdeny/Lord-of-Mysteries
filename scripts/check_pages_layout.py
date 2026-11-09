@@ -134,10 +134,10 @@ def main() -> int:
     require(
         contains_all(
             wiki_data,
-            ("Capability schema 30", "507 JUnit · 43 GameTest",
-             "616 JSON · 2115 双语键", "844静态引用",
-             "161 物品 · 16 方块 · 28 实体",
-             "164 节点 · 214 关系", "334 条图鉴")),
+            ("Capability schema 30", "527 JUnit · 53 GameTest",
+             "632 JSON · 2141 双语键", "852静态引用",
+             "168 物品 · 16 方块 · 30 实体",
+             "165 节点 · 216 关系", "345 条图鉴")),
         "Dynamic Pages cards do not match the current validation baseline", errors)
     require(
         contains_all(
@@ -166,8 +166,8 @@ def main() -> int:
             ('"organizationDefinitions": 12', '"artifactDefinitions": 24',
              '"spiritWeatherDefinitions": 6',
              '"spiritEncounterDefinitions": 12',
-             '"registeredItems": 161',
-             '"registeredEntities": 28',
+             '"registeredItems": 168',
+             '"registeredEntities": 30',
              '"id": "lord_of_mysteries:organization/church_night_watch"',
              '"id": "lord_of_mysteries:artifact_3_091_kindly_umbrella"',
              '"id": "lord_of_mysteries:artifact_1_026_ferryman_ticket"',
@@ -178,13 +178,21 @@ def main() -> int:
         "Generated Pages catalog is missing M4/M5 definitions or registrations", errors)
 
     require(
-        contains_all(html, ("SURVIVAL · 0.9.39", "/pm survival recipes", "Survival-Resource-Loop", "PROJECT_MYSTERY_1_0_GUIDE.md", "V09_COMPLETION_AUDIT.md"))
+        contains_all(html, ("SURVIVAL · 0.9.40", "/pm survival recipes", "Survival-Resource-Loop", "PROJECT_MYSTERY_1_0_GUIDE.md", "V09_COMPLETION_AUDIT.md"))
         and contains_all(wiki_data, ('recipe: "加工配方"', 'structure: "遗迹 / 地牢"'))
         and contains_all(catalog_data, ('"id": "lord_of_mysteries:recipe/mortar_honey_spirit"',
                                        '"id": "lord_of_mysteries:structure/occult_cellar"',
                                        '"id": "lord_of_mysteries:structure/herbalist_ruin"',
                                        '"survivalDetails"', "蜂蜜瓶")),
         "Survival guide, acquisition details, recipe and ruin filters must stay synchronized", errors)
+
+    require(
+        contains_all(html, ("M6-Nightwatch", "nightwatch-creatures-0.9.40.png"))
+        and contains_all(wiki_data, ("LOM.sleeplessSequences", "/pm nightwatch", "后续8–5未实现"))
+        and contains_all(catalog_data, ('"id": "lord_of_mysteries:strong_coffee"',
+                                       '"id": "lord_of_mysteries:night_owl"',
+                                       '"id": "lord_of_mysteries:sleepless_potion_9"')),
+        "M6 nightwatch guide, screenshot and acquisitions must stay discoverable", errors)
 
     stale_markers = (
         "而不是独立可生成实体",

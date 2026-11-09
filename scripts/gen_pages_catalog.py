@@ -291,7 +291,7 @@ def survival_entries(entries, zh_cn, en_us):
                    "minecraft:honey_bottle": "蜂蜜瓶", "minecraft:honeycomb": "蜜脾",
                    "minecraft:glow_ink_sac": "荧光墨囊", "minecraft:paper": "纸", "minecraft:feather": "羽毛", "minecraft:ink_sac": "墨囊",
                    "minecraft:bone_meal": "骨粉", "minecraft:amethyst_shard": "紫水晶碎片",
-                   "minecraft:iron_nugget": "铁粒", "minecraft:quartz": "下界石英"}
+                   "minecraft:iron_nugget": "铁粒", "minecraft:quartz": "下界石英", "minecraft:brown_mushroom": "棕色蘑菇"}
         if identifier in vanilla:
             return vanilla[identifier]
         return zh_cn.get(f"item.{identifier.replace(':', '.')}",
@@ -318,7 +318,7 @@ def survival_entries(entries, zh_cn, en_us):
                     ["成熟", "年龄7；右键得到2份并留根，破坏成熟作物得到3份（其中1份可重种）"],
                     ["保护", "骨粉有效；年龄6不可收获；重复或冲突交互不重复发货"],
                     ["生活循环", "65%概率堆肥；农民/流浪商人可能出售种苗，老手农民可能收购草药"]])
-    enrich("mystic_mortar", "双手投料、右键加工的神秘学研钵，提供12种基础消耗品加工路线。",
+    enrich("mystic_mortar", "双手投料、右键加工的神秘学研钵，提供14种基础消耗品与守夜材料加工路线。",
            [["制作", "5石砖+1紫水晶碎片；工作台配方可解锁"], ["使用", "主手原料、副手催化材料；每次右键处理一批"],
             ["查询", "/pm survival recipes"], ["安全", "缺料、顺序错误、权限/活动冲突不扣料；返还容器；满包在玩家位置掉落"]])
     enrich("spirit_salt", "矿产、研钵、牧师和开放水域钓鱼可获得的基础神秘学耗材。",
@@ -344,6 +344,27 @@ def survival_entries(entries, zh_cn, en_us):
                         ["奖励", "每箱保证灵性草2、石楠2、灵盐3，另加2–4次低阶随机补给"],
                         ["定位", f"/locate structure {MOD_ID}:{ruin['id']}（管理员命令）"]],
             "long": "从石砖与提灯入口探索，备好食物、镐和照明。箱子只在首次打开生成物品；不掉完整非凡特性，不跳过知识或晋升门槛。不回填旧区块，也不覆盖既有建筑。"})
+    return entries
+
+
+def nightwatch_entries(entries):
+    specifications = {
+        "night_owl_optic_nerve": ("不眠者序列9的坩埚核心材料。", [["获取", "夜枭固定掉落1；新手牧师交易池8绿宝石/份、最多3次"], ["下一步", "坩埚第1项 → 守夜辅料 → 可选灰烬粉末"]]),
+        "coffee_beans": ("营火和农民提供的浓黑咖啡原料。", [["获取", "农民新手候选1绿宝石/4豆、最多8次；营火烘烤可可30秒"], ["适配", "烘烤可可是MC替代获取，不是植物学或原著设定"]]),
+        "strong_coffee": ("清除不眠者当日白昼倦怠，保留守夜层数。", [["合成", "2咖啡豆+糖+水桶+玻璃瓶；返空桶"], ["饮用", "32tick；无倦怠不消耗；生存返玻璃瓶；满包掉落"], ["加工", "研钵主手咖啡、副手暗影蘑菇，各1 → 守夜辅料，返玻璃瓶"]]),
+        "shadow_mushroom": ("低阶夜巡材料，也可通过研钵稳定获得。", [["获取", "牧师新手候选1绿宝石/2菇；研钵棕色蘑菇+黑蜡；不眠残影掉落"], ["用途", "加工守夜辅料"]]),
+        "nightwatch_extract": ("把咖啡与暗影蘑菇预处理成适配三槽坩埚的材料。", [["加工", "研钵浓黑咖啡1+暗影蘑菇1，返玻璃瓶"], ["投料", "夜枭视络之后投入，灰烬粉末之前"]]),
+        "sleepless_potion_9": ("普通人的第二批途径入口：不眠者序列9。", [["门槛", "未选择途径、存活、非旁观、无独占活动"], ["灵性", "114上限；Y夜视0.5/秒；U状态"], ["守夜", "完整夜晚最多5层；夜间移速+4%/层、攻击+6%/层，昼移速-10%/层"], ["说明", "/pm nightwatch；后续序列8–5未实现"]]),
+        "night_owl": ("暗色耳羽、面盘、分层翼羽的夜间敌对飞行生物。", [["生态", "暗森林/针叶林/原始松木针叶林；原版黑暗怪物条件"], ["战斗", "16生命、3基础攻击、24格跟踪；非穿墙飞行"], ["掉落", "夜枭视络1、羽毛0–2"]]),
+        "sleepless_shade": ("不眠者失控后的兜帽与新月残影，延续特性掉落链。", [["来源", "不眠者失控转化；不会水中转成原版溺尸"], ["表现", "独立兜帽/新月饰纹/触须；30生命、5基础攻击"], ["边界", "原生分部动画；声音复用原版幻翼，不声称原作音效"]]),
+    }
+    for entry in entries:
+        spec = specifications.get(entry["id"].split(":")[-1])
+        if spec:
+            entry["summary"] = spec[0]
+            entry["details"] = spec[1]
+            entry["tags"] += ["不眠者", "守夜", "M6", "0.9.40"]
+            entry["long"] = "本轮是M6不眠者序列9纵切，不是四途径全部完成。完整入门、风险、多人和存档边界见Wiki的M6-Nightwatch。所有技能由服务端校验，粒子不造成额外伤害。"
     return entries
 
 
@@ -386,7 +407,7 @@ def render():
         spirit_encounter_entry(definition, zh_cn, en_us)
         for definition in spirit_encounters.values()
     )
-    entries = survival_entries(entries, zh_cn, en_us)
+    entries = nightwatch_entries(survival_entries(entries, zh_cn, en_us))
     entries.sort(key=lambda entry: (entry["type"], entry["id"]))
 
     metadata = {
@@ -415,7 +436,7 @@ def render():
         "    if (generatedById[entry.id]) entry.image = generatedById[entry.id].image;\n"
         "    if (generatedById[entry.id] && generatedById[entry.id].survivalDetails) {\n"
         "      entry.details = (entry.details || []).concat(generatedById[entry.id].survivalDetails);\n"
-        "      entry.tags = (entry.tags || []).concat(['生存资源', '0.9.39']);\n"
+        "      entry.tags = (entry.tags || []).concat(['生存资源', '0.9.40']);\n"
         "    }\n"
         "  });\n"
         "  manualEntries.forEach(function (entry) { manualIds[entry.id] = true; });\n"

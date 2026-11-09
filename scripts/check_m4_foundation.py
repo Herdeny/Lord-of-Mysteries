@@ -263,8 +263,7 @@ def main():
     for test_class in validation["behavior_test_classes"]:
         require(f"class {test_class}" in test_sources,
                 f"behavior test {test_class} is missing")
-    game_tests = source(
-        JAVA / "gametest" / "PlayerPersistenceGameTests.java")
+    game_tests = "\n".join(source(path) for path in (JAVA / "gametest").glob("*.java"))
     require(game_tests.count("@GameTest") == validation["game_tests"],
             "GameTest count drifted")
     for method in validation["game_test_methods"]:

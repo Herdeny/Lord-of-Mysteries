@@ -2,6 +2,10 @@ package top.aurora.lordofmysteries.player;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import top.aurora.lordofmysteries.nightwatch.NightwatchService;
+import top.aurora.lordofmysteries.nightwatch.NightwatchProgress;
 
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -44,7 +48,9 @@ public final class SpiritualityRegenHandler {
 
         PlayerMysteryData data = MysteryCapability.get(player);
         // 普通人没有途径，不参与灵性恢复；未来可给普通人设计基础灵感值时再扩展。
-        if (data.pathway == null) return;
+        if (data.pathway == null || !player.isAlive() || player.isSpectator()
+                || !(player instanceof ServerPlayer serverPlayer)
+                || !OccultActivityService.isAvailable(serverPlayer)) return;
 
         // 最近 5 秒内被生物伤害过，视为战斗状态，不自然恢复。
         boolean inCombat = player.getLastHurtByMobTimestamp() > player.tickCount - 100;
@@ -62,6 +68,8 @@ public final class SpiritualityRegenHandler {
                         regenRate, data.sequence,
                         player.level().canSeeSky(player.blockPosition()));
             }
+            if (NightwatchService.supports(serverPlayer) && player.level().dimension().equals(Level.OVERWORLD)
+                    && NightwatchProgress.isNight(player.level().getDayTime())) regenRate *= 1.4f;
             var overworld = player.level().getServer().overworld();
             long day = Math.max(
                     0L, Math.floorDiv(overworld.getDayTime(), 24_000L));
