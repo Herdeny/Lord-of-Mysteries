@@ -1,5 +1,5 @@
 {
-  "version": "0.9.40",
+  "version": "0.9.41",
   "scope": "M0-M5 survival resource integration; not completion of future pathways or biomes",
   "ores": [
     {
@@ -164,6 +164,24 @@
       "reagent": "lord_of_mysteries:black_wax",
       "reagent_count": 1,
       "result": "shadow_mushroom",
+      "count": 1
+    },
+    {
+      "id": "raven_ink_quill",
+      "main": "minecraft:feather",
+      "main_count": 1,
+      "reagent": "minecraft:ink_sac",
+      "reagent_count": 1,
+      "result": "raven_ink_quill",
+      "count": 1
+    },
+    {
+      "id": "poet_reagent",
+      "main": "lord_of_mysteries:raven_ink_quill",
+      "main_count": 1,
+      "reagent": "lord_of_mysteries:heather",
+      "reagent_count": 1,
+      "result": "poet_reagent",
       "count": 1
     }
   ],

@@ -17,12 +17,22 @@ import top.aurora.lordofmysteries.player.MysteryCapability;
 import top.aurora.lordofmysteries.player.OccultActivityService;
 
 public final class SleeplessPotionItem extends Item {
-    public SleeplessPotionItem(Properties properties) { super(properties.stacksTo(1)); }
+    private final int targetSequence;
 
-    private static boolean eligible(Player player) {
+    public SleeplessPotionItem(Properties properties) { this(properties, 9); }
+
+    public SleeplessPotionItem(Properties properties, int targetSequence) {
+        super(properties.stacksTo(1));
+        if (targetSequence != 8 && targetSequence != 9) throw new IllegalArgumentException("Unsupported Sleepless sequence");
+        this.targetSequence = targetSequence;
+    }
+
+    private boolean eligible(Player player) {
         var data = MysteryCapability.get(player);
         return player.isAlive() && !player.isSpectator()
-                && data.pathway == null && data.sequence < 0
+                && Float.isFinite(data.digestion)
+                && PotionAdvancementRules.canAdvance(data.pathway == null ? null : data.pathway.getPath(),
+                        data.sequence, data.digestion, "sleepless", targetSequence)
                 && (!(player instanceof ServerPlayer server) || OccultActivityService.isAvailable(server));
     }
 
@@ -43,17 +53,18 @@ public final class SleeplessPotionItem extends Item {
         var data = MysteryCapability.get(player);
         PotionQuality quality = SeerPotionItem.getQuality(stack);
         data.pathway = NightwatchService.PATHWAY;
-        data.sequence = 9;
-        data.spiritualityMax = 114;
-        data.spirituality = 114;
+        boolean firstPotion = data.sequence < 0;
+        data.sequence = targetSequence;
+        data.spiritualityMax = targetSequence == 9 ? 114 : 140;
+        data.spirituality = data.spiritualityMax;
         data.digestion = 0;
-        data.insanityPressure = Math.min(100, data.insanityPressure + Math.max(10, quality.initialPressure()));
+        data.insanityPressure = Math.min(100, data.insanityPressure + Math.max(targetSequence == 9 ? 10 : 14, quality.initialPressure()));
         data.pollution = Math.min(100, data.pollution + quality.initialPollution());
         data.potionQuality = quality.id();
         data.spiritVisionActive = false;
-        data.knownKnowledge.add(NightwatchService.id("knowledge/sleepless_9_acting"));
-        CharacteristicLedger.recordPotionAdvancement(data, data.pathway, 9, quality, level.getGameTime());
-        IdentityKitService.onPotionAdvancement(player, data, true);
+        data.knownKnowledge.add(NightwatchService.id("knowledge/sleepless_" + targetSequence + "_acting"));
+        CharacteristicLedger.recordPotionAdvancement(data, data.pathway, targetSequence, quality, level.getGameTime());
+        IdentityKitService.onPotionAdvancement(player, data, firstPotion);
         NightwatchService.pulse(player);
         NightwatchService.guide(player);
         if (!player.getAbilities().instabuild) stack.shrink(1);

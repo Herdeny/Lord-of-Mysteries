@@ -62,7 +62,8 @@ def check():
             errors.append("Invalid PNG: " + str(path))
             continue
         width, height = struct.unpack(">II", data[16:24])
-        if width != height or width not in (32, 64, 256):
+        budget = (512,) if path == assets / "textures/entity/occult_atlas.png" else (32, 64, 256)
+        if width != height or width not in budget:
             errors.append("Texture outside size budget: " + str(path))
         offset = 8
         while offset < len(data):

@@ -84,7 +84,10 @@ def main():
                 "layer0": "lord_of_mysteries:item/" + item_id}},
                 ASSETS / "models/item" / (item_id + ".json"))
     material = Image.open(SOURCE / MANIFEST["material_atlas"]["file"]).convert("RGB")
-    save_image(material.resize((256, 256), Image.Resampling.NEAREST),
+    runtime_size = MANIFEST["material_atlas"].get("runtime_size", 256)
+    if runtime_size not in (256, 512):
+        raise ValueError("Entity material atlas must be 256 or 512 pixels")
+    save_image(material.resize((runtime_size, runtime_size), Image.Resampling.NEAREST),
                ASSETS / "textures/entity/occult_atlas.png")
     for index, name in enumerate(MATERIALS):
         save_image(cell(material, index, 4).resize((64, 64), Image.Resampling.NEAREST),

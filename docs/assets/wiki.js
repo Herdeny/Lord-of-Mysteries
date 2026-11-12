@@ -92,7 +92,7 @@
   }
   var heroTags = $("#hero-tags");
   if (heroTags) {
-    ["五条首发 + 不眠者9", "序列晋升", "魔药炼制", "调查推理", "失控风险"].forEach(function (label) {
+    ["五条首发 + 不眠者9–8", "序列晋升", "魔药炼制", "调查推理", "失控风险"].forEach(function (label) {
       heroTags.appendChild(create("span", "pill type", label));
     });
   }
@@ -211,7 +211,7 @@
     });
     if (sequenceSummary) {
       sequenceSummary.textContent = group.id === "sleepless"
-          ? "不眠者 · 仅序列9可玩纵切；序列8–5仍待实现，M6未全部完成"
+          ? "不眠者 · 序列9–8可玩纵切；序列7–5仍待实现，M6未全部完成"
           : group.name + " · 当前展示序列 9–5 · 序列 9–7 playable，序列 6–5 code_ready";
     }
     if (focusPanel) sequenceLadder.focus({ preventScroll: true });

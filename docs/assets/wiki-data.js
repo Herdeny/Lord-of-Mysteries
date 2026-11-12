@@ -35,8 +35,8 @@ LOM.roadmap = roadmapMeta.milestones || [];
 /* ── 途径概览 ── */
 LOM.pathwaysOverview = [
   { id: "sleepless", name: "不眠者", en: "Sleepless", accent: "#aaa3e8",
-    desc: "M6首个纵切：材料加工、序列9魔药、耗灵夜视、惊醒、静夜脚步、整夜守望与咖啡恢复。序列8–5仍待实现。",
-    traits: ["夜视", "守夜层数", "惊醒", "咖啡恢复"], spirit: "序列9 114", status: "仅序列9 playable candidate" },
+    desc: "不眠者9→午夜诗人8：采梦、炼药、低吟恐惧与安眠；夜视、守夜和咖啡恢复保留。序列7–5仍待实现。",
+    traits: ["夜视", "恐惧", "安眠", "守夜层数"], spirit: "序列9 114 · 8 140", status: "序列9–8 playable candidate" },
   { id: "seer", name: "占卜家", en: "Seer", accent: "#7c5cff",
     desc: "以观察、占卜与灵视见长。序列 9–5 已接入最终材料；无面人拥有八槽形体记录，秘偶大师拥有持久编队与权威收纳。",
     traits: ["灵视", "形体记录", "替身", "灵体之线"], baseSpirit: 100, growth: 22, status: "序列9–5 playable candidate" },
@@ -60,7 +60,10 @@ LOM.pathwaysOverview = [
 LOM.sleeplessSequences = [
   { pathway: "不眠者", seq: 9, name: "不眠者 Sleepless", state: "active", spiritMax: 114,
     abilities: ["夜视 · Y", "惊醒保护", "静夜脚步", "守夜层数"],
-    desc: "已实现首个纵切。夜视0.5灵性/秒；整夜守望并击退3个有效袭击者触发扮演。白昼喝浓黑咖啡消除当日倦怠。后续8–5未实现；详见 /pm nightwatch。" }
+    desc: "夜视0.5灵性/秒；整夜守望并击退3个有效袭击者触发扮演。白昼喝浓黑咖啡消除当日倦怠。接续午夜诗人8；后续7–5未实现；详见 /pm nightwatch。" },
+  { pathway: "不眠者", seq: 8, name: "午夜诗人 Midnight Poet", state: "active", spiritMax: 140,
+    abilities: ["低吟 · Y", "安眠诗 · U", "暗处韵律感知", "夜视 · Shift+Y"],
+    desc: "不眠者9消化满100后晋升。18灵性/25秒低吟：8格敌怪恐惧+2，5层寻路逃散；15灵性/60秒安眠：最多8秒，实际伤害唤醒。不控制玩家、Boss、盟友或宠物。详见 /pm nightwatch。" }
 ];
 LOM.seerSequences = [
   { seq: 9, name: "占卜家 Seer", state: "active", spiritMax: 122,
@@ -153,6 +156,21 @@ LOM.foundationSequences = [
 
 /* ── 详细条目（卡片 + 详情弹窗） ── */
 LOM.entries = [
+  { type: "ability", id: "poet_murmur", name: "低吟", en: "Midnight Murmur",
+    summary: "午夜诗人Y能力：18灵性、25秒冷却，8格可见普通敌怪恐惧+2，达到5层尝试寻路逃散。",
+    tags: ["能力", "不眠者", "午夜诗人", "M6", "恐惧"],
+    details: [["范围", "8格，最多16目标"], ["扮演", "至少3个目标实际逃散才触发"], ["保护", "玩家/盟友/宠物/Boss不受控制"]],
+    long: "恐惧记忆60秒，三次低吟达到5层；需要有效逃跑路径，不能用墙角空放刷扮演。低吟浮动页符和暗影碎片不造成额外伤害。" },
+  { type: "ability", id: "poet_sleep", name: "安眠诗", en: "Slumber Poem",
+    summary: "午夜诗人U能力：15灵性、60秒冷却，瞄准8格可见普通敌怪，使其最多安眠8秒。",
+    tags: ["能力", "不眠者", "午夜诗人", "M6", "安眠"],
+    details: [["醒来", "实际伤害、距离/视线丢失、登出、卸载或活动切换"], ["抗性", "每个受害者共享20秒，防多人连续锁定"], ["恢复", "临时AI目标，不写NoAI"]],
+    long: "只在服务端验证成功后扣资源。排除玩家、盟友、宠物、中立生物、Boss及Brain猪灵；用少量梦泡提示控制状态。" },
+  { type: "ability", id: "poet_rhythm", name: "韵律感知", en: "Rhythm Perception",
+    summary: "午夜诗人暗处被动：亮度低于7，标记8格可见敌怪，仅施法者本人接收。",
+    tags: ["能力", "不眠者", "午夜诗人", "M6", "感知"],
+    details: [["预算", "每秒最多8个目标各1页符"], ["隐私", "不透墙、不揭示隐形单位"], ["继承", "Shift+Y切换0.5灵性/秒夜视"]],
+    long: "以低频页符实现声呐式感知的MC适配，不提供穿墙轮廓或剥夺玩家视觉。普通活动门禁、低动态和粒子预算继续生效。" },
   /* 能力 ability */
   { type: "ability", id: "lord_of_mysteries:spirit_vision", name: "灵视", en: "Spirit Vision",
     summary: "持续被动，可开关。开启后扫描 32 格内实体，并以定向彩色粒子标记阵营与威胁。",
@@ -283,7 +301,7 @@ LOM.entries = [
   { type: "system", id: "lord_of_mysteries:m5_spirit_expedition", name: "M5 灵界远征", en: "M5 Spirit World Expedition",
     summary: "独立灵界维度、五类语义投影、六段航路、六种天气与十二类所有者隔离实体形成30分钟可退出闭环。",
     tags: ["系统", "灵界", "航路", "天气", "实体生态", "多人隔离", "持久化", "M5", "machine complete"],
-    details: [["入口", "/pm m5 · /pm spirit"], ["维度", "lord_of_mysteries:spirit_world"], ["投影", "教堂 · 墓园 · 剧院 · 港口 · 庄园"], ["航路", "6段 · 30分钟 · 罗盘四方向"], ["天气", "6种 · 风险1–3 · 低配规则降级"], ["遭遇", "12实体 · 观察/援助/避让/交涉"], ["风险", "稳定0–100 · 漂移0–100"], ["恢复", "超时 · 虚空 · 灵界死亡 · 错误维度 · 重连"], ["多人", "独立SavedData · 独立lane · 实体所有者"], ["验证", "527 JUnit · 53 GameTest · M5合同"]],
+    details: [["入口", "/pm m5 · /pm spirit"], ["维度", "lord_of_mysteries:spirit_world"], ["投影", "教堂 · 墓园 · 剧院 · 港口 · 庄园"], ["航路", "6段 · 30分钟 · 罗盘四方向"], ["天气", "6种 · 风险1–3 · 低配规则降级"], ["遭遇", "12实体 · 观察/援助/避让/交涉"], ["风险", "稳定0–100 · 漂移0–100"], ["恢复", "超时 · 虚空 · 灵界死亡 · 错误维度 · 重连"], ["多人", "独立SavedData · 独立lane · 实体所有者"], ["验证", "534 JUnit · 62 GameTest · M5合同"]],
     long: "现实维度只保存进入锚点，灵界不复制主世界区块。服务端保存路线种子、潮汐、天气、节点、稳定、漂移、收益与待处理遭遇；失败进入和失败稳定不扣材料，返航成功后才删除记录。六段完成后结算航路余辉、记忆碎片和高分灵兰花瓣，提前撤离不发未完成收益。十二类遭遇均有实体、生成蛋、所有者绑定、重连补建和退出清理；实体当前使用共享降级渲染器与差异化粒子。" },
   { type: "system", id: "lord_of_mysteries:m5_shared_dream", name: "M5 组织共享梦境", en: "M5 Organization Shared Dream",
     summary: "2–4名同队、同组织信任玩家逐人明确接受邀请，在独立语义梦境中完成四轮符号投票并分别安全结算。",
@@ -308,7 +326,7 @@ LOM.entries = [
   { type: "system", id: "lord_of_mysteries:characteristic_processing", name: "非凡特性处理闭环", en: "Beyonder Characteristic Processing",
     summary: "检查、拆分、重组、封存和洗涤完整特性载荷，并管理可见额外负载、危险吸收、活体析出与全服来源审计。",
     tags: ["系统", "非凡特性", "额外负载", "守恒", "来源账本", "烙印", "污染", "身份盐环", "析出", "M3", "code_ready"],
-    details: [["引导", "/pm characteristic · B 状态面板"], ["物品加工", "拆分 · 重组 · 封存 · 洗涤"], ["直接吸收", "同途径单单位 · 潜行持续64 tick"], ["消化代价", "每层 -12% · 最低40%"], ["扮演收益", "灵性至多 +6 · 压力至多 +2"], ["析出材料", "身份盐环 · 洗涤香 · 灵性盐×4"], ["协助", "最多3名潜行持探针玩家 · 每人 +10% 稳定"], ["来源门禁", "拆分 · 重组 · 洗涤 · 吸收 · 析出"], ["验证", "527 JUnit · 53 Forge GameTest"]],
+    details: [["引导", "/pm characteristic · B 状态面板"], ["物品加工", "拆分 · 重组 · 封存 · 洗涤"], ["直接吸收", "同途径单单位 · 潜行持续64 tick"], ["消化代价", "每层 -12% · 最低40%"], ["扮演收益", "灵性至多 +6 · 压力至多 +2"], ["析出材料", "身份盐环 · 洗涤香 · 灵性盐×4"], ["协助", "最多3名潜行持探针玩家 · 每人 +10% 稳定"], ["来源门禁", "拆分 · 重组 · 洗涤 · 吸收 · 析出"], ["验证", "534 JUnit · 62 Forge GameTest"]],
     long: "玩家正常晋升的每层一单位不算负载；重复或异常更高位阶单位计入额外负载。单单位同途径特性可潜行持续吸收，但立即增加污染与压力。安全析出要求身份已锚定，在真实分离台主手身份盐环、副手洗涤香且背包有4份灵性盐；普通右键只检查，潜行右键才扣费结算。成功精确生成一份守恒特性，失败保留负载并增加风险，任何结果都不会删除途径、序列或存档。0.9.24 的主世界来源账本会在任何资源变化前原子拒绝已消费来源。" },
   { type: "system", id: "lord_of_mysteries:characteristic_provenance", name: "全服特性来源账本", en: "Server-Wide Characteristic Provenance Ledger",
     summary: "以主世界 SavedData 记录特性来源消费历史，阻止复制来源跨玩家、跨维度或重启后再次产生收益。",
@@ -353,12 +371,12 @@ LOM.entries = [
   { type: "system", id: "lord_of_mysteries:server_validation", name: "专用服务器与运行诊断", en: "Dedicated Server Validation",
     summary: "用 v0.9 设计源、内容图、玩家自检、合同、完整测试、资源门禁和 CI 专服运行诊断保护现有纵切。",
     tags: ["系统", "专用服务器", "CI", "诊断", "M1"],
-    details: [["诊断", "/pm doctor · /pm servercheck · /pm activity · characteristic audit"], ["测试", "527 JUnit · 53 GameTest"], ["协议", "13 · 14 固定消息 ID"], ["资源", "632 JSON · 2141 双语键 · 852静态引用"], ["内容图", "165 节点 · 216 关系"], ["迁移", "schema 30 快照 · 精确回滚 · 孤儿保留"], ["专服", "连续启动2次 · 种子/marker/两种M5维度幂等 · 保存停服"]],
+    details: [["诊断", "/pm doctor · /pm servercheck · /pm activity · characteristic audit"], ["测试", "534 JUnit · 62 GameTest"], ["协议", "13 · 14 固定消息 ID"], ["资源", "641 JSON · 2153 双语键 · 859静态引用"], ["内容图", "166 节点 · 218 关系"], ["迁移", "schema 30 快照 · 精确回滚 · 孤儿保留"], ["专服", "连续启动2次 · 种子/marker/两种M5维度幂等 · 保存停服"]],
     long: "Build 工作流在 clean build 后执行43项Forge GameTest、隔离恢复演练和两次Forge专用服务器启动。除M1/M2生命周期与调查恢复、M3五途径与多人权限负向路径、M4组织/封印物、M5两种真实维度/实体生态/共享梦境外，第29项验证梦境大厅对灵界、远门、仪式和秘偶的原子拒绝，以及受保护维度不能被伪造远门绕过。" },
   { type: "system", id: "lord_of_mysteries:resource_integrity", name: "统一资源完整性门禁", en: "Unified Resource Integrity Gate",
     summary: "在 Gradle 与 GitHub Actions 中统一阻止 JSON、双语、模型、纹理和注册资源漂移。",
     tags: ["系统", "资源", "CI", "双语", "稳定性"],
-    details: [["JSON", "632"], ["双语键", "2141 对"], ["静态引用", "852"], ["模型", "190"], ["注册", "168 物品 · 16 方块 · 30 实体"], ["定义", "12 组织 · 24 封印物 · 6 灵界天气 · 12 航路遭遇"], ["Pages", "345 条图鉴"]],
+    details: [["JSON", "632"], ["双语键", "2141 对"], ["静态引用", "852"], ["模型", "190"], ["注册", "172 物品 · 16 方块 · 30 实体"], ["定义", "12 组织 · 24 封印物 · 6 灵界天气 · 12 航路遭遇"], ["Pages", "354 条图鉴"]],
     long: "scripts/check_resource_integrity.py 解析主资源和生成资源，比较 en_us/zh_cn，追踪Java/JSON静态翻译引用，验证本命名空间模型/纹理链，并识别直接注册、ManagedArtifactKind、spiritEcology与spiritEcologyEgg辅助注册。Pages生成器再从Forge注册表、组织/封印物/灵界数据和双语资源生成图鉴；有序配方仍限制为合法3×3范围。" },
   { type: "system", id: "lord_of_mysteries:occult_handbook", name: "九章神秘学手账", en: "Nine-Chapter Occult Handbook",
     summary: "主动查询式引导系统，按普通人、途径、传闻和未来邀请逐步解锁九章。",
@@ -368,7 +386,7 @@ LOM.entries = [
   { type: "system", id: "lord_of_mysteries:v09_content_graph", name: "v0.9 内容图与迁移门禁", en: "v0.9 Content Graph and Migration Gate",
     summary: "schema v4 统一来源、剧透、知识门槛、关系与实现状态，并从仓库证据建立全局内容图。",
     tags: ["系统", "数据包", "schema v4", "内容图", "M0"],
-    details: [["途径", "22 条"], ["序列", "26 个"], ["组织", "12 个"], ["封印物", "24 件"], ["委托", "4 种"], ["任务链", "4 条 · 15 类目标"], ["图谱", "165 节点 · 216 关系"], ["报告", "孤儿 · 剧透 · 兼容 · 本地化 · 资产"]],
+    details: [["途径", "22 条"], ["序列", "26 个"], ["组织", "12 个"], ["封印物", "24 件"], ["委托", "4 种"], ["任务链", "4 条 · 15 类目标"], ["图谱", "166 节点 · 218 关系"], ["报告", "孤儿 · 剧透 · 兼容 · 本地化 · 资产"]],
     long: "人工维护 CSV 和领域 JSON，生成器与 ContentMetadata 校验 schema v4；build_content_graph.py 只按已注册、已翻译、已建模和已引用的仓库证据统计完成度，不把 v0.9 设计规格误报为实现。" },
   { type: "entity", id: "lord_of_mysteries:shapeshifter_serpent", name: "幻形蛇", en: "Shapeshifter Serpent",
     summary: "主世界低概率生成的隐匿非凡生物，靠近玩家后显形并掉落魔术师主材料。",

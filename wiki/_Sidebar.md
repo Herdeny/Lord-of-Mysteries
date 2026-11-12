@@ -21,6 +21,9 @@
 - [M0–M5 跨系统安全与恢复](M0-M5-Cross-System-Safety)
 - [模型、贴图与粒子](Visual-Assets)
 - [M6 不眠者9：材料、守夜与咖啡](M6-Nightwatch)
+- [午夜诗人8与采梦](M6-Midnight-Poet)
+- [0.9.41 美术与材质](Visual-Polish-0.9.41)
+- [0.9.41 验证记录](Validation-0.9.41)
 - [0.9.40 动作与兼容验证](Visual-Polish-0.9.40)
 
 ### 调查与多人

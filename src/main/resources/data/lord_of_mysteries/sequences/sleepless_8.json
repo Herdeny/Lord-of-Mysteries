@@ -1,0 +1,39 @@
+{
+  "id": "lord_of_mysteries:sleepless_8",
+  "type": "sequence",
+  "schema_version": 4,
+  "canon_status": "adaptation",
+  "source_tier": "B-tech",
+  "source_refs": [
+    "GDD:v0.9/7.9.2",
+    "GDD:v0.9/9.6",
+    "REPO:NightwatchService",
+    "REPO:MidnightPoetService"
+  ],
+  "spoiler_level": 1,
+  "knowledge_gate": "lord_of_mysteries:knowledge/pathway_catalog",
+  "links": {
+    "requires": [
+      "lord_of_mysteries:sleepless_9",
+      "lord_of_mysteries:sleepless_potion_8"
+    ],
+    "produces": [],
+    "used_by": [],
+    "countered_by": []
+  },
+  "implementation_state": "playable",
+  "pathway": "lord_of_mysteries:sleepless",
+  "sequence": 8,
+  "spirituality_max": 140,
+  "initial_pressure": 14,
+  "abilities": [
+    "lord_of_mysteries:poet_murmur",
+    "lord_of_mysteries:poet_sleep",
+    "lord_of_mysteries:nightwatch_vision"
+  ],
+  "acting_events": [
+    "lord_of_mysteries:poet8_fear_rout"
+  ],
+  "potion_id": "lord_of_mysteries:sleepless_potion_8",
+  "digestion_target": 100
+}

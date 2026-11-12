@@ -122,7 +122,7 @@ class SurvivalContentTest {
     void mortarRecipesHaveBoundedCostsAndNoProgressionBypassOutputs() throws Exception {
         var manifest = read(Path.of("docs/survival-content.json"));
         var recipes = manifest.getAsJsonArray("mortar");
-        assertEquals(14, recipes.size());
+        assertEquals(16, recipes.size());
         for (var raw : recipes) {
             var spec = raw.getAsJsonObject();
             var actual = read(DATA.resolve("recipes/mortar_" + spec.get("id").getAsString() + ".json"));

@@ -45,6 +45,10 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.SHADOW_MUSHROOM.get());
                         output.accept(ModItems.NIGHTWATCH_EXTRACT.get());
                         output.accept(ModItems.SLEEPLESS_POTION_9.get());
+                        output.accept(ModItems.SLEEPLESS_POTION_8.get());
+                        output.accept(ModItems.DREAM_MURMUR_CRYSTAL.get());
+                        output.accept(ModItems.RAVEN_INK_QUILL.get());
+                        output.accept(ModItems.POET_REAGENT.get());
                         output.accept(ModItems.NIGHT_OWL_SPAWN_EGG.get());
                         output.accept(ModItems.SALTSTONE_ORE.get());
                         output.accept(ModItems.DEEPSLATE_SALTSTONE_ORE.get());

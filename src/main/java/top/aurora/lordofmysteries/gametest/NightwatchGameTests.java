@@ -47,7 +47,7 @@ import top.aurora.lordofmysteries.spirit.SpiritProjection;
 public final class NightwatchGameTests {
     private NightwatchGameTests() {}
 
-    private static ServerPlayer player(GameTestHelper helper, boolean sleepless) {
+    static ServerPlayer player(GameTestHelper helper, boolean sleepless) {
         var level = helper.getLevel();
         ServerPlayer player = new ServerPlayer(level.getServer(), level, new GameProfile(UUID.randomUUID(), "nightwatch-qa")) {
             @Override

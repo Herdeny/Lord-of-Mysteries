@@ -1,6 +1,7 @@
 package top.aurora.lordofmysteries.acting;
 
 public enum ActingEvent {
+    POET8_FEAR_ROUT("sleepless", 8, "poet8_fear_rout", 15f, 4800L),
     SLEEPLESS9_ALL_NIGHT("sleepless", 9, "sleepless9_all_night", 12f, 24000L),
     DIVINATION_SUCCESS("seer", 9, "seer9_divination_success", 12f, 1200L),
     ABSTAIN_DIVINATION("seer", 9, "seer9_abstain_divination", 8f, 0L),

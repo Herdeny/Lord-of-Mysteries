@@ -146,6 +146,7 @@ public final class CrucibleRecipeLogic {
         APPRENTICE_6,
         APPRENTICE_5,
         SLEEPLESS_9,
+        SLEEPLESS_8,
         CONTAMINATED
     }
 
@@ -205,7 +206,9 @@ public final class CrucibleRecipeLogic {
         TRAVELER(BrewedPotion.APPRENTICE_5,
                 SPATIAL_RIFT_CRYSTAL, SILVER_FILINGS, SPIRIT_SALT, 75f),
         SLEEPLESS(BrewedPotion.SLEEPLESS_9, "lord_of_mysteries:night_owl_optic_nerve",
-                "lord_of_mysteries:nightwatch_extract", ASH_POWDER, 70f);
+                "lord_of_mysteries:nightwatch_extract", ASH_POWDER, 70f),
+        MIDNIGHT_POET(BrewedPotion.SLEEPLESS_8, "lord_of_mysteries:dream_murmur_crystal",
+                "lord_of_mysteries:poet_reagent", SPIRIT_SALT, 75f);
 
         private final BrewedPotion potion;
         private final String first;

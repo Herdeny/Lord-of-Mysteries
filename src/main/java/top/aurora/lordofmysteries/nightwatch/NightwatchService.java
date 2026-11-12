@@ -52,7 +52,7 @@ public final class NightwatchService {
 
     public static boolean supports(ServerPlayer player) {
         var data = MysteryCapability.get(player);
-        return PATHWAY.equals(data.pathway) && data.sequence == 9;
+        return PATHWAY.equals(data.pathway) && (data.sequence == 9 || data.sequence == 8);
     }
 
     public static boolean available(ServerPlayer player) {
@@ -62,9 +62,12 @@ public final class NightwatchService {
     }
 
     public static int guide(ServerPlayer player) {
-        for (String section : new String[]{"intro", "brew", "abilities", "watch", "recovery"}) {
+        boolean poet = MysteryCapability.get(player).sequence == 8;
+        for (String section : poet ? new String[]{"watch", "recovery"}
+                : new String[]{"intro", "brew", "abilities", "watch", "recovery"}) {
             player.sendSystemMessage(Component.translatable("message.lord_of_mysteries.nightwatch.guide." + section));
         }
+        if (poet) player.sendSystemMessage(Component.translatable("message.lord_of_mysteries.poet.guide"));
         return status(player);
     }
 
@@ -122,6 +125,14 @@ public final class NightwatchService {
         }
         modifier(player, Attributes.MOVEMENT_SPEED, SPEED, overworld ? progress.speedModifier(worldTime) : 0);
         modifier(player, Attributes.ATTACK_DAMAGE, ATTACK, night ? progress.stacks * 0.06 : 0);
+        if (MysteryCapability.get(player).sequence == 8 && !VISION.contains(player.getUUID())
+                && player.level().getMaxLocalRawBrightness(player.blockPosition()) < 7) {
+            player.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.PathfinderMob.class,
+                    player.getBoundingBox().inflate(8), mob -> MidnightPoetService.validTarget(player, mob))
+                    .stream().limit(8).forEach(mob -> player.serverLevel().sendParticles(player,
+                            ModParticles.PAGE_GLYPH.get(), false, mob.getX(), mob.getEyeY(), mob.getZ(),
+                            1, 0.1, 0.1, 0.1, 0.01));
+        }
         if (VISION.contains(player.getUUID())) {
             var data = MysteryCapability.get(player);
             if (!Float.isFinite(data.spirituality) || data.spirituality < 0.5f) {

@@ -11,6 +11,8 @@ public final class NightwatchProgress {
     public long rewardedDay = -1;
     public long wakeCooldown;
     public long wardUntil;
+    public long murmurCooldown;
+    public long poemCooldown;
     private long nightDay = -1;
     private long lastWorldTime = -1;
     private long lastGameTime = -1;
@@ -89,6 +91,8 @@ public final class NightwatchProgress {
         tag.putLong("rewarded_day", rewardedDay);
         tag.putLong("wake_cooldown", wakeCooldown);
         tag.putLong("ward_until", wardUntil);
+        tag.putLong("murmur_cooldown", murmurCooldown);
+        tag.putLong("poem_cooldown", poemCooldown);
         return tag;
     }
 
@@ -99,6 +103,8 @@ public final class NightwatchProgress {
         progress.rewardedDay = tag.contains("rewarded_day") ? Math.max(-1, tag.getLong("rewarded_day")) : -1;
         progress.wakeCooldown = Math.max(0, tag.getLong("wake_cooldown"));
         progress.wardUntil = Math.max(0, tag.getLong("ward_until"));
+        progress.murmurCooldown = Math.max(0, tag.getLong("murmur_cooldown"));
+        progress.poemCooldown = Math.max(0, tag.getLong("poem_cooldown"));
         return progress;
     }
 }

@@ -73,7 +73,7 @@ class VisualMotionTest {
     @Test
     void nightOwlAndShadeHaveDistinctGeometryRatherThanOnlyRecoloredBodies() {
         var owl = OccultCreatureModel.createLayer(CreatureVisual.NIGHT_OWL).bakeRoot().getChild("root");
-        assertTrue(owl.hasChild("face_disc") && owl.hasChild("ear_left"));
+        assertTrue(owl.getChild("head").hasChild("face_disc") && owl.getChild("head").hasChild("ear_left"));
         assertTrue(owl.getChild("left_wing").hasChild("feather_2"));
         var shade = OccultCreatureModel.createLayer(CreatureVisual.SLEEPLESS_SHADE).bakeRoot().getChild("root");
         assertTrue(shade.hasChild("moon_left") && shade.getChild("head").hasChild("hood"));

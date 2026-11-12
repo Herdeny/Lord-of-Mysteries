@@ -65,6 +65,11 @@ public final class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, ProjectMystery.MOD_ID);
 
+    public static final RegistryObject<Item> DREAM_MURMUR_CRYSTAL = simple("dream_murmur_crystal");
+    public static final RegistryObject<Item> RAVEN_INK_QUILL = simple("raven_ink_quill");
+    public static final RegistryObject<Item> POET_REAGENT = simple("poet_reagent");
+    public static final RegistryObject<Item> SLEEPLESS_POTION_8 = ITEMS.register("sleepless_potion_8",
+            () -> new top.aurora.lordofmysteries.potion.SleeplessPotionItem(new Item.Properties().rarity(Rarity.UNCOMMON), 8));
     public static final RegistryObject<Item> NIGHT_OWL_OPTIC_NERVE = ITEMS.register("night_owl_optic_nerve", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> COFFEE_BEANS = ITEMS.register("coffee_beans", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> SHADOW_MUSHROOM = ITEMS.register("shadow_mushroom", () -> new Item(new Item.Properties()));

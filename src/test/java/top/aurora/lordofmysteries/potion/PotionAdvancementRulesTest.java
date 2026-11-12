@@ -12,6 +12,13 @@ class PotionAdvancementRulesTest {
     private static final String SEER = "lord_of_mysteries:seer";
 
     @Test
+    void nonFiniteDigestionCannotBypassAdvancement() {
+        for (float value : new float[]{Float.NaN, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY}) {
+            assertFalse(PotionAdvancementRules.canAdvance(SEER, 9, value, SEER, 8));
+        }
+    }
+
+    @Test
     void commonerCanDrinkSequenceNinePotion() {
         assertTrue(PotionAdvancementRules.canAdvance(null, -1, 0f, SPECTATOR, 9));
     }

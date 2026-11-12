@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "version": "0.9.40-1.20.1",
-  "stage": "v0.9 M6 不眠者序列9纵切与视觉动作增强；1.0 指导书 r1",
+  "version": "0.9.41-1.20.1",
+  "stage": "v0.9 M6 午夜诗人序列8、原创材质精修与控制安全",
   "milestone": "M6",
   "minecraft_version": "1.20.1",
   "forge_version": "47.4.20",
   "java_version": "17",
-  "last_updated": "2026-11-09T04:27:22+00:00",
-  "last_updated_utc": "2026-11-09T04:27:22Z"
+  "last_updated": "2026-11-12T02:44:49+00:00",
+  "last_updated_utc": "2026-11-12T02:44:49Z"
 }

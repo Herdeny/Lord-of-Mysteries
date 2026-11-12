@@ -82,6 +82,11 @@ public final class M2FoundationAbilityHandler {
         }
         PlayerMysteryData data = MysteryCapability.get(player);
         if (top.aurora.lordofmysteries.nightwatch.NightwatchService.supports(player)) {
+            if (data.sequence == 8 && !(slot == AbilitySlot.PRIMARY && player.isShiftKeyDown())) {
+                return slot == AbilitySlot.PRIMARY
+                        ? top.aurora.lordofmysteries.nightwatch.MidnightPoetService.murmur(player)
+                        : top.aurora.lordofmysteries.nightwatch.MidnightPoetService.sleep(player);
+            }
             if (slot == AbilitySlot.PRIMARY) return top.aurora.lordofmysteries.nightwatch.NightwatchService.toggleVision(player);
             top.aurora.lordofmysteries.nightwatch.NightwatchService.status(player);
             return true;

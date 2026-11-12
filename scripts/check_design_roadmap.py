@@ -74,7 +74,7 @@ def render(audit):
         "",
         "## 已知规模差异",
         "",
-        "- 现有五途径9–5与新增不眠者9不能算作22途径全部完成；M6四条、M8六条、M9七条仍待完整纵切。",
+        "- 现有五途径9–5与新增不眠者9–8不能算作22途径全部完成；M6四条、M8六条、M9七条仍待完整纵切。",
         "- 12组织、24保管封印物、12灵界生态实体不等于原文全部世界内容。",
         "- 2种草药/2类矿石/2原生遗迹及生存加工是扩展子集；不是36新植物、40新生物、32结构增量全部实装。",
         "- v0.9 manifest中的104物品、80配方、64状态、38粒子等是设计增量数，必须按ID/语义核对，不能拿注册总数直接比较。",
@@ -135,6 +135,9 @@ def main():
         ("V1_ACCEPTANCE_MATRIX.md", "1.0-Acceptance-Matrix.md"),
         ("SURVIVAL_RESOURCE_LOOP.md", "Survival-Resource-Loop.md"),
         ("M6_NIGHTWATCH.md", "M6-Nightwatch.md"),
+        ("M6_MIDNIGHT_POET.md", "M6-Midnight-Poet.md"),
+        ("VISUAL_POLISH_0.9.41.md", "Visual-Polish-0.9.41.md"),
+        ("VALIDATION_0.9.41.md", "Validation-0.9.41.md"),
         ("VISUAL_POLISH_0.9.40.md", "Visual-Polish-0.9.40.md"),
         ("VALIDATION_0.9.40.md", "Validation-0.9.40.md"),
     ]:

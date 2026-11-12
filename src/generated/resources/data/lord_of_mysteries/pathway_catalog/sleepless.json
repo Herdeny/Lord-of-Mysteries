@@ -23,6 +23,7 @@
   "color": "#312E81",
   "status": "implemented",
   "implemented_sequences": [
+    8,
     9
   ]
 }

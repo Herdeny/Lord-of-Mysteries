@@ -22,7 +22,7 @@ public final class NightwatchClientSounds {
                 || !player.level().dimension().equals(Level.OVERWORLD) || event.getSound() == null
                 || !NightwatchProgress.isNight(player.level().getDayTime())) return;
         var summary = ClientMysteryState.latest().orElse(null);
-        if (summary == null || summary.sequence() != 9
+        if (summary == null || (summary.sequence() != 9 && summary.sequence() != 8)
                 || !"lord_of_mysteries:sleepless".equals(summary.pathway())) return;
         var sound = ForgeRegistries.SOUND_EVENTS.getKey(event.getSound().value());
         if (sound != null && sound.getPath().endsWith(".step")) event.setNewVolume(event.getNewVolume() * 0.3f);

@@ -8,7 +8,9 @@
     "materials.png": "9ab85f4309ccd76b84aaf010689dcadb9b63574d2177eae83ddc23004ee8ba96",
     "items-a.png": "58b6a1ab236f7f9d3d5807d9ee71a9485f49f54ae4c87ce185be0fbb41f52fdc",
     "items-b.png": "da3f4114c2d939e19532e559fcaf96bfb53df69ce50a13234ee81eba406878a8",
-    "nightwatch-items-0.9.40.png": "97db0707ddbf14c12272d66bb1d0a2868b3998495fea4ad46827866ea429fc5c"
+    "nightwatch-items-0.9.40.png": "97db0707ddbf14c12272d66bb1d0a2868b3998495fea4ad46827866ea429fc5c",
+    "materials-0.9.41.png": "460e2eed24ec7d8a0ae81806e1292797343c5f58a10ad8b4531982020bc89964",
+    "poet-items-0.9.41.png": "c4362062c24d04bcbc25ee7a8f0d201a6186ee3d2393878870f4729ab752eb04"
   },
   "source": "Built-in OpenAI image generation; original generated pixel art, not official artwork",
   "item_atlases": [
@@ -159,11 +161,24 @@
         "nightwatch_extract",
         "sleepless_potion_9"
       ]
+    },
+    {
+      "file": "poet-items-0.9.41.png",
+      "columns": 2,
+      "rows": 2,
+      "ids": [
+        "dream_murmur_crystal",
+        "raven_ink_quill",
+        "poet_reagent",
+        "sleepless_potion_8"
+      ],
+      "prompt": "Create ONE production inventory sprite atlas for an original gothic Victorian occult Minecraft mod. EXACT 2 columns by 2 rows, square canvas, NO grid lines, NO labels. Transparent background. Each of FOUR cells has one separate centered pixel-art item occupying no more than 70% of its cell width/height, ample transparent margins, never crossing cells. Readable silhouettes at 32 pixels, hand-crafted crisp pixels, nocturnal indigo, silver and restrained lavender highlights. TOP LEFT: a small cluster of translucent lavender dream crystals, a tiny silver crescent reflection inside. TOP RIGHT: one elegant black raven quill with a silver ferrule and indigo ink on its nib, diagonally oriented. BOTTOM LEFT: a shallow antique silver mortar bowl containing violet ink, a tiny dark feather and green calming leaves (a prepared poetic alchemy reagent). BOTTOM RIGHT: an ornate square-shouldered midnight-blue potion flask, sealed silver crescent stopper, two silver neck bands, lavender liquid and tiny star glints; distinct powerful advanced potion silhouette. Genuine alpha transparency, no checkerboard, no backdrop, no drop shadows outside items. Original art; no logos or copied game assets."
     }
   ],
   "material_atlas": {
-    "file": "materials.png",
-    "prompt": "Production texture atlas for ORIGINAL low-poly Minecraft occult Victorian mod creatures and alchemy furniture. Square 1024x1024, EXACT 4 columns x4 rows equal square tiles256. Each of16 tiles is a full flat material swatch edge to edge, NO gaps NO borders NO text NO perspective NO rendered objects. Painterly pixel-art, designed to reduce cleanly to256x256. Materials row-major: 1 midnight indigo tattered wool with subtle silver stitches; 2 aged parchment with tiny abstract dark ink glyphs; 3 soot black rough iron; 4 antique burnished brass; 5 bone-white cracked porcelain; 6 green-black serpent scales; 7 burgundy thorny bark; 8 lavender moth wing scales eye-spot pattern; 9 blue-black raven feathers; 10 dark weathered mahogany; 11 charcoal stone with cyan fissures; 12 turquoise luminous misty glass; 13 ash-gray desiccated skin; 14 ember red volcanic cracks; 15 deep purple starry void; 16 silver-white luminous etched sigils on light grey. Even diffuse light, strong readable textures, no gradients across tiles. Original art only; no official assets."
+    "file": "materials-0.9.41.png",
+    "runtime_size": 512,
+    "prompt": "Edit this production game MATERIAL atlas, preserving exactly the 4 by 4 grid and the identity and color family of all 16 tiles. ORIGINAL handcrafted pixel-art textures for gothic Victorian occult Minecraft creatures and furniture. Improve small-scale material legibility: finer weave stitches, small etched marks, finer scales and feathers, believable wear, restrained highlights. Remove huge floral ornaments and oversized glyphs in favor of small subtle repeated decorative motifs. Tiles must be perfectly square, edge to edge, no borders or gutters, flat diffuse illumination, no perspective, no labels. Keep row-major order: midnight indigo stitched wool; aged occult parchment; soot black iron; aged brass; cracked ivory porcelain; dark green serpent scales; burgundy thorn bark; lavender moth wings; blue black raven feathers; weathered mahogany; cyan fissured charcoal stone; translucent-looking turquoise spirit glass but opaque texture; ash grey skin; ember fissured rock; purple starry void; silver etched sigils on grey. Each tile densely detailed but clearly recognizable at 64 pixels. Exact square 1024x1024 canvas 4 columns 4 rows. Opaque RGB material sheet, NOT inventory icons. Avoid copying any commercial artwork."
   },
   "particle_atlas": {
     "file": "particles.png",

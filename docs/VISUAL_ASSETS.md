@@ -1,6 +1,12 @@
 # M0–M5 视觉资源与验收
 
-## 0.9.40 当前增量
+## 0.9.41 当前增量
+
+新增4款原创64×64物品贴图，累计133张sprite；16种共享材质细化、实体图集512×512、鸟类与飞蛾头部枢轴及嵌套发光修复。当前194模型、30实体renderer、16粒子provider。不是每种生物的独立全身UV重绘，也未新增原创音频或完整施法动作。
+
+[新版美术与来源](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/VISUAL_POLISH_0.9.41.md) · [真实客户端、Jade/JEI及测试范围](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/VALIDATION_0.9.41.md)。后续各段均为带版本的历史记录，不代表当前注册计数。
+
+## 0.9.40 历史增量
 
 新增6款物品贴图、夜枭/残影独立部件、8类粒子运动与减少动态/发光/环境开关。当前129独立图标、30实体渲染器、190模型、16粒子；[完整说明与边界](https://github.com/Herdeny/Lord-of-Mysteries/blob/main/docs/VISUAL_POLISH_0.9.40.md)。以下各版本是历史记录，历史计数不代表当前版本。
 

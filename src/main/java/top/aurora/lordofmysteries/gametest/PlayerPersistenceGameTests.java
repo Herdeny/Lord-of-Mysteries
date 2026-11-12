@@ -105,6 +105,7 @@ public final class PlayerPersistenceGameTests {
     public static void register(RegisterGameTestsEvent event) {
         event.register(PlayerPersistenceGameTests.class);
         event.register(NightwatchGameTests.class);
+        event.register(MidnightPoetGameTests.class);
     }
 
     @GameTest(templateNamespace = TEMPLATE_NAMESPACE, template = TEMPLATE)
@@ -2408,7 +2409,7 @@ public final class PlayerPersistenceGameTests {
     public static void survivalMortarRecipesRoundTripAndRejectInvalidCounts(GameTestHelper helper) {
         var manager = helper.getLevel().getRecipeManager();
         var recipes = manager.getAllRecipesFor(top.aurora.lordofmysteries.registry.ModSurvival.MORTAR_TYPE.get());
-        helper.assertTrue(recipes.size() == 14, "all fourteen datapack recipes load");
+        helper.assertTrue(recipes.size() == 16, "all sixteen datapack recipes load");
         var serializer = new top.aurora.lordofmysteries.survival.MortarRecipe.Serializer();
         for (var recipe : recipes) {
             var buffer = new net.minecraft.network.FriendlyByteBuf(io.netty.buffer.Unpooled.buffer());

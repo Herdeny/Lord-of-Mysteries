@@ -31,7 +31,7 @@ public final class PotionAdvancementRules {
                     || currentSequence != targetSequence + 1) {
                 return Eligibility.INCOMPATIBLE;
             }
-            if (digestion < 100f) {
+            if (!Float.isFinite(digestion) || digestion < 100f) {
                 return Eligibility.DIGESTION_INCOMPLETE;
             }
             if (targetSequence == 5 && !sequenceFiveRitualComplete) {

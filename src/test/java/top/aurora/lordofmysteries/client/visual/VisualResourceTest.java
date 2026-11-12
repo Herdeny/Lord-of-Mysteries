@@ -13,6 +13,23 @@ class VisualResourceTest {
     private static final Path ASSETS = Path.of("src/main/resources/assets/lord_of_mysteries");
 
     @Test
+    void SharedMaterialBudgetAndArticulatedBirdFaceStayConsistent() throws Exception {
+        var atlas = ImageIO.read(ASSETS.resolve("textures/entity/occult_atlas.png").toFile());
+        assertEquals(512, atlas.getWidth());
+        assertEquals(512, atlas.getHeight());
+        var root = OccultCreatureModel.createLayer(CreatureVisual.NIGHT_OWL).bakeRoot();
+        var head = root.getChild("root").getChild("head");
+        for (String child : new String[]{"beak", "face_disc", "owl_eyes", "ear_left", "ear_right"}) {
+            assertTrue(head.hasChild(child), child + " must follow head rotation");
+        }
+        var model = new OccultCreatureModel<>(root, CreatureVisual.NIGHT_OWL);
+        model.applyPose(0, 0, 20, 45, 30, 0, false, true, false, false);
+        assertTrue(head.yRot > 0 && head.xRot > 0);
+        model.applyPose(0, 0, 0, Float.NaN, Float.POSITIVE_INFINITY, 0, false, true, false, true);
+        assertTrue(Float.isFinite(head.yRot) && Float.isFinite(head.xRot));
+    }
+
+    @Test
     void EveryAtlasInventoryEntryHasVisibleIndependentRuntimeSprite() throws Exception {
         var manifest = JsonParser.parseString(Files.readString(Path.of("docs/art-source/manifest.json"))).getAsJsonObject();
         var hashes = new HashSet<Integer>();
@@ -42,7 +59,7 @@ class VisualResourceTest {
                 count++;
             }
         }
-        assertEquals(129, count);
+        assertEquals(133, count);
     }
 
     @Test

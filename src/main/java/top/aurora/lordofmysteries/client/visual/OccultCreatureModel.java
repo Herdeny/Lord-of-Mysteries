@@ -95,20 +95,20 @@ public final class OccultCreatureModel<T extends Mob>
             }
             case MOTH, BIRD -> {
                 box(root, "body", skin, -3, -12, -3, 6, 8, 7);
-                box(root, "head", trim, -2.5f, -16, -4, 5, 5, 5);
-                box(root, "eyes", 15, -2, -14, -4.1f, 4, 1, 0.3f);
+                pivotBox(root, "head", trim, -2.5f, -5, -4, 5, 5, 5, 0, -11, 0);
+                box(root.getChild("head"), "eyes", 15, -2, -3, -4.1f, 4, 1, 0.3f);
                 pivotBox(root, "left_wing", skin, 0, -1, -4, 11, 1, 10, 2, -11, 0);
                 pivotBox(root, "right_wing", skin, -11, -1, -4, 11, 1, 10, -2, -11, 0);
                 if (visual.shape == CreatureVisual.Shape.BIRD) {
-                    box(root, "beak", trim, -1, -13, -8, 2, 2, 5);
+                    box(root.getChild("head"), "beak", trim, -1, -2, -8, 2, 2, 5);
                     box(root, "tail", skin, -2, -7, 3, 4, 1, 7);
                     box(root, "left_foot", trim, 1, -4, -1, 1, 4, 3);
                     box(root, "right_foot", trim, -2, -4, -1, 1, 4, 3);
                     if (visual == CreatureVisual.NIGHT_OWL) {
-                        box(root, "face_disc", 4, -3.5f, -16.5f, -4, 7, 6, 0.5f);
-                        box(root, "owl_eyes", 15, -2.5f, -14.5f, -4.3f, 5, 1.5f, 0.3f);
-                        box(root, "ear_left", 8, 1.5f, -19, -2, 1.5f, 4, 2);
-                        box(root, "ear_right", 8, -3, -19, -2, 1.5f, 4, 2);
+                        box(root.getChild("head"), "face_disc", 4, -3.5f, -5.5f, -4, 7, 6, 0.5f);
+                        box(root.getChild("head"), "owl_eyes", 15, -2.5f, -3.5f, -4.3f, 5, 1.5f, 0.3f);
+                        box(root.getChild("head"), "ear_left", 8, 1.5f, -8, -2, 1.5f, 4, 2);
+                        box(root.getChild("head"), "ear_right", 8, -3, -8, -2, 1.5f, 4, 2);
                         for (int feather = 0; feather < 3; feather++) {
                             box(root.getChild("left_wing"), "feather_" + feather, 4,
                                     4 + feather * 2, -0.5f, 4, 2, 1, 3 + feather);
@@ -117,11 +117,11 @@ public final class OccultCreatureModel<T extends Mob>
                         }
                     } else if (visual == CreatureVisual.COMPASS_BIRD) {
                         box(root, "compass", 3, -2, -10, -3.2f, 4, 4, 0.5f);
-                        box(root, "crest", 3, -0.5f, -20, -1, 1, 4, 3);
+                        box(root.getChild("head"), "crest", 3, -0.5f, -9, -1, 1, 4, 3);
                     }
                 } else {
-                    box(root, "antenna_left", trim, 1, -20, -2, 0.5f, 5, 0.5f);
-                    box(root, "antenna_right", trim, -1.5f, -20, -2, 0.5f, 5, 0.5f);
+                    box(root.getChild("head"), "antenna_left", trim, 1, -9, -2, 0.5f, 5, 0.5f);
+                    box(root.getChild("head"), "antenna_right", trim, -1.5f, -9, -2, 0.5f, 5, 0.5f);
                     if (visual == CreatureVisual.LANTERN_MOTH_SWARM) {
                         box(root, "satellite_left", 11, -9, -6, 2, 3, 3, 3);
                         box(root, "satellite_right", 11, 6, -17, 2, 3, 3, 3);
@@ -215,7 +215,8 @@ public final class OccultCreatureModel<T extends Mob>
         limbAmount = CreatureAnimationLogic.clamp(limbAmount, 0, 1);
         age = Float.isFinite(age) ? age : 0;
         limbSwing = Float.isFinite(limbSwing) ? limbSwing : 0;
-        if (root.hasChild("head") && visual.shape == CreatureVisual.Shape.HUMANOID) {
+        if (root.hasChild("head") && (visual.shape == CreatureVisual.Shape.HUMANOID
+                || visual.shape == CreatureVisual.Shape.BIRD || visual.shape == CreatureVisual.Shape.MOTH)) {
             root.getChild("head").yRot = CreatureAnimationLogic.clamp(headYaw, -85, 85) * Mth.DEG_TO_RAD;
             root.getChild("head").xRot = CreatureAnimationLogic.clamp(headPitch, -65, 65) * Mth.DEG_TO_RAD * 0.5f;
         }
@@ -283,6 +284,8 @@ public final class OccultCreatureModel<T extends Mob>
         if (root.hasChild("head") && root.getChild("head").hasChild("eyes")) {
             root.getChild("head").translateAndRotate(pose);
             root.getChild("head").getChild("eyes").render(
+                    pose, vertices, 0xF000F0, overlay, red, green, blue, 1);
+            if (root.getChild("head").hasChild("owl_eyes")) root.getChild("head").getChild("owl_eyes").render(
                     pose, vertices, 0xF000F0, overlay, red, green, blue, 1);
         }
         pose.popPose();
